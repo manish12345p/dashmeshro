@@ -13,10 +13,9 @@ class AppNavigationScaffold extends StatelessWidget {
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
-    if (location.startsWith('/calendar')) return 1;
-    if (location.startsWith('/customers')) return 2;
-    if (location.startsWith('/emi')) return 3;
-    if (location.startsWith('/service')) return 4;
+    if (location.startsWith('/customers')) return 1;
+    if (location.startsWith('/emi')) return 2;
+    if (location.startsWith('/service')) return 3;
     return 0; // Default to Home ('/')
   }
 
@@ -26,15 +25,12 @@ class AppNavigationScaffold extends StatelessWidget {
         context.go('/');
         break;
       case 1:
-        context.go('/calendar');
-        break;
-      case 2:
         context.go('/customers');
         break;
-      case 3:
+      case 2:
         context.go('/emi');
         break;
-      case 4:
+      case 3:
         context.go('/service');
         break;
     }
@@ -61,10 +57,6 @@ class AppNavigationScaffold extends StatelessWidget {
           items: [
             CrystalNavigationBarItem(
               icon: Icons.home_rounded,
-              selectedColor: colors.primary,
-            ),
-            CrystalNavigationBarItem(
-              icon: Icons.calendar_month_rounded,
               selectedColor: colors.primary,
             ),
             CrystalNavigationBarItem(
