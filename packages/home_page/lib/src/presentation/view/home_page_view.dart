@@ -1,0 +1,14 @@
+import 'package:flutter/material.dart';
+
+class HomePageView extends StatelessWidget {
+  const HomePageView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: const Center(
+        child: Text('home_page'),
+      ),
+    );
+  }
+}
