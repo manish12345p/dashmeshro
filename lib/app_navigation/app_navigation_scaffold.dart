@@ -28,7 +28,7 @@ class AppNavigationScaffold extends StatelessWidget {
         context.go('/customers');
         break;
       case 2:
-        context.go('/emi');
+        context.go('/emi');        
         break;
       case 3:
         context.go('/service');
