@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1081525613523",
+    "project_id": "dashmesh-mechanix-dev",
+    "storage_bucket": "dashmesh-mechanix-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081525613523:android:5ffd948f9b0fbcc06c7526",
+        "android_client_info": {
+          "package_name": "com.dev.dashmesh_ro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOllY2K6kEN6xclhrJ5QfMHCS_BlGhi44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081525613523:android:2e6f11a374514fe36c7526",
+        "android_client_info": {
+          "package_name": "com.example.dashmeshro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOllY2K6kEN6xclhrJ5QfMHCS_BlGhi44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
