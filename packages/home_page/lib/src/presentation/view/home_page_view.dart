@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../data/repositories/home_repository.dart';
 import '../../domain/use_cases/get_home_data_usecase.dart';
@@ -129,7 +130,7 @@ class _HomeContent extends StatelessWidget {
                     title: AppStrings.todayServiceSchedule,
                     trailing: CustomButton(
                       label: AppStrings.viewCalendar,
-                      onPressed: () {},
+                      onPressed: () => context.go('/calendar'),
                     ),
                   ),
                   const SizedBox(height: AppPadding.p16),
