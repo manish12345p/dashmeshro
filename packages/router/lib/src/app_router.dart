@@ -31,6 +31,15 @@ GoRouter createAppRouter({
           GoRoute(
             path: '/customers',
             builder: (context, state) => const CustomerDirectoryView(),
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return CustomerDetailsView(customerId: id);
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: '/emi',

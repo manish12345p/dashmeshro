@@ -28,6 +28,9 @@ class HomeRepository implements IHomeRepository {
       }
       final data = snapshot.data() ?? {};
       return HomeData.fromMap(data);
+    }).handleError((error) {
+      print('Firestore error in getHomeData: $error. Falling back to mock.');
+      return _getInitialMockData();
     });
   }
 
