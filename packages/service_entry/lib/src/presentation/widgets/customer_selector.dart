@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../../../../../lib/theme/app_colors.dart';
 
 /// Step 1 – Identify Customer
 /// A premium card widget with a search field for finding customers
@@ -7,11 +6,13 @@ import '../../../../../../../../lib/theme/app_colors.dart';
 class CustomerSelectorWidget extends StatelessWidget {
   const CustomerSelectorWidget({super.key});
 
+  static const _primaryColor = Color(0xFF2F80ED);
+  static const _darkPrimary = Color(0xFF0D2137);
+
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).extension<AppColors>();
-    final primaryColor = appColors?.primaryColor ?? const Color(0xFF2F80ED);
-    final darkPrimary = appColors?.darkPrimaryColor ?? const Color(0xFF0D2137);
+    const primaryColor = _primaryColor;
+    const darkPrimary = _darkPrimary;
 
     return Container(
       decoration: BoxDecoration(
