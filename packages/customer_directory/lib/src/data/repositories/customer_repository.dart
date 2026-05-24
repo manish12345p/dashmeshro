@@ -34,6 +34,9 @@ class CustomerRepository implements ICustomerRepository {
       return snapshot.docs.map((doc) {
         return Customer.fromMap(doc.data(), documentId: doc.id);
       }).toList();
+    }).handleError((error) {
+      print('Firestore error in getCustomers: $error. Falling back to mocks.');
+      return _getInitialMockCustomers();
     });
   }
 
@@ -54,6 +57,13 @@ class CustomerRepository implements ICustomerRepository {
         return _getInitialMockCustomers().first;
       }
       return Customer.fromMap(snapshot.data()!, documentId: snapshot.id);
+    }).handleError((error) {
+      print('Firestore error in getCustomerById: $error. Falling back to mock.');
+      final match = _getInitialMockCustomers().firstWhere(
+        (c) => c.id == id,
+        orElse: () => _getInitialMockCustomers().first,
+      );
+      return match;
     });
   }
 

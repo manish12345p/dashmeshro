@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/customer.dart';
 import '../../domain/use_cases/get_customer_by_id_usecase.dart';
 import 'customer_details_event.dart';
 import 'customer_details_state.dart';
@@ -15,6 +14,7 @@ class CustomerDetailsBloc extends Bloc<CustomerDetailsEvent, CustomerDetailsStat
         super(const CustomerDetailsInitial()) {
     on<LoadCustomerDetails>(_onLoadCustomerDetails);
     on<UpdateCustomerDetails>(_onUpdateCustomerDetails);
+    on<LoadCustomerDetailsError>(_onLoadCustomerDetailsError);
   }
 
   void _onLoadCustomerDetails(LoadCustomerDetails event, Emitter<CustomerDetailsState> emit) {
@@ -22,8 +22,12 @@ class CustomerDetailsBloc extends Bloc<CustomerDetailsEvent, CustomerDetailsStat
     _subscription?.cancel();
     _subscription = _getCustomerByIdUseCase(event.id).listen(
       (customer) => add(UpdateCustomerDetails(customer)),
-      onError: (error) => emit(CustomerDetailsError(error.toString())),
+      onError: (error) => add(LoadCustomerDetailsError(error.toString())),
     );
+  }
+
+  void _onLoadCustomerDetailsError(LoadCustomerDetailsError event, Emitter<CustomerDetailsState> emit) {
+    emit(CustomerDetailsError(event.error));
   }
 
   void _onUpdateCustomerDetails(UpdateCustomerDetails event, Emitter<CustomerDetailsState> emit) {

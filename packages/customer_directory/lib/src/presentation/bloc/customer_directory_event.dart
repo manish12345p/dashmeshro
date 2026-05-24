@@ -17,3 +17,9 @@ class SearchCustomers extends CustomerDirectoryEvent {
   final String query;
   const SearchCustomers(this.query);
 }
+
+class LoadCustomersError extends CustomerDirectoryEvent {
+  final String error;
+  const LoadCustomersError(this.error);
+}
+

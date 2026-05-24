@@ -16,6 +16,7 @@ class CustomerDirectoryBloc extends Bloc<CustomerDirectoryEvent, CustomerDirecto
     on<LoadCustomers>(_onLoadCustomers);
     on<UpdateCustomersList>(_onUpdateCustomersList);
     on<SearchCustomers>(_onSearchCustomers);
+    on<LoadCustomersError>(_onLoadCustomersError);
   }
 
   void _onLoadCustomers(LoadCustomers event, Emitter<CustomerDirectoryState> emit) {
@@ -23,8 +24,12 @@ class CustomerDirectoryBloc extends Bloc<CustomerDirectoryEvent, CustomerDirecto
     _subscription?.cancel();
     _subscription = _getCustomersUseCase().listen(
       (customers) => add(UpdateCustomersList(customers)),
-      onError: (error) => emit(CustomerDirectoryError(error.toString())),
+      onError: (error) => add(LoadCustomersError(error.toString())),
     );
+  }
+
+  void _onLoadCustomersError(LoadCustomersError event, Emitter<CustomerDirectoryState> emit) {
+    emit(CustomerDirectoryError(event.error));
   }
 
   void _onUpdateCustomersList(UpdateCustomersList event, Emitter<CustomerDirectoryState> emit) {

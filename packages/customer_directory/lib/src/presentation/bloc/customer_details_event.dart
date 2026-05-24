@@ -13,3 +13,9 @@ class UpdateCustomerDetails extends CustomerDetailsEvent {
   final Customer customer;
   const UpdateCustomerDetails(this.customer);
 }
+
+class LoadCustomerDetailsError extends CustomerDetailsEvent {
+  final String error;
+  const LoadCustomerDetailsError(this.error);
+}
+
