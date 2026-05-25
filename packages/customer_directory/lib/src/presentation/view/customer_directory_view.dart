@@ -298,85 +298,32 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                   ),
                   const SizedBox(height: AppPadding.p16),
 
-                  // Filter & New Client buttons
-                  Row(
-                    children: [
-                      // Filter button
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          _showFilterBottomSheet(context);
-                        },
-                        icon: const Icon(
-                          Icons.tune_rounded,
-                          size: 18,
-                          color: Color(0xFF334155),
-                        ),
-                        label: const Text(
-                          'Filter',
-                          style: TextStyle(
-                            color: Color(0xFF334155),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          side: const BorderSide(color: Color(0xFFCBD5E1)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          backgroundColor: Colors.white,
-                        ),
+                  // Filter button
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      _showFilterBottomSheet(context);
+                    },
+                    icon: const Icon(
+                      Icons.tune_rounded,
+                      size: 18,
+                      color: Color(0xFF334155),
+                    ),
+                    label: const Text(
+                      'Filter',
+                      style: TextStyle(
+                        color: Color(0xFF334155),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
                       ),
-                      const SizedBox(width: 12),
-                      // New Client button
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFF0D2137), Color(0xFF1A3A5C)],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF0D2137).withOpacity(0.3),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(12),
-                              onTap: () {
-                                // TODO: Navigate to add new client
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 12),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.add_rounded, color: Colors.white, size: 20),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      'New Client',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      side: const BorderSide(color: Color(0xFFCBD5E1)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ],
+                      backgroundColor: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: AppPadding.p24),
 
