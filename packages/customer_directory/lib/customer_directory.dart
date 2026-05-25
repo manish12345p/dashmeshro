@@ -1,5 +1,6 @@
 export 'src/presentation/view/customer_directory_view.dart';
 export 'src/presentation/view/customer_details_view.dart';
+export 'src/presentation/view/new_client_profile_view.dart';
 export 'src/presentation/bloc/customer_directory_bloc.dart';
 export 'src/presentation/bloc/customer_directory_event.dart';
 export 'src/presentation/bloc/customer_directory_state.dart';

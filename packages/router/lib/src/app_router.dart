@@ -33,6 +33,11 @@ GoRouter createAppRouter({
             builder: (context, state) => const CustomerDirectoryView(),
             routes: [
               GoRoute(
+                parentNavigatorKey: _rootNavigatorKey,
+                path: 'new',
+                builder: (context, state) => const NewClientProfileView(),
+              ),
+              GoRoute(
                 path: ':id',
                 builder: (context, state) {
                   final id = state.pathParameters['id']!;
@@ -54,3 +59,4 @@ GoRouter createAppRouter({
     ],
   );
 }
+
