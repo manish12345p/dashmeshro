@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/new_client_header_bar.dart';
 import '../widgets/new_client_form_card.dart';
 import '../widgets/new_client_action_buttons.dart';
@@ -76,7 +77,8 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
                   Navigator.of(context).pop();
                 },
                 onSaveAndCreateEntry: () {
-                  // TODO: Save and navigate to service entry
+                  // TODO: Save client logic first
+                  context.go('/service');
                 },
               ),
               const SizedBox(height: 28),
