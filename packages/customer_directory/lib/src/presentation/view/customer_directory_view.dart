@@ -295,6 +295,7 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                         borderSide: BorderSide(color: Theme.of(context).primaryColor),
                       ),
                     ),
+                  ),
                   const SizedBox(height: AppPadding.p16),
 
                   // Filter & New Client buttons
