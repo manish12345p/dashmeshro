@@ -51,6 +51,11 @@ GoRouter createAppRouter({
           ),
         ],
       ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: '/customers/new',
+        builder: (context, state) => const NewClientProfileView(),
+      ),
     ],
   );
 }

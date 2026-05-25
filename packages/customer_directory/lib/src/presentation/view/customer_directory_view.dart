@@ -248,7 +248,7 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(14),
                             onTap: () {
-                              // TODO: Navigate to add customer
+                              context.push('/customers/new');
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(12),
