@@ -37,7 +37,7 @@ class AppTheme {
         primary: AppColors.dark.primary,
         surface: AppColors.dark.surface,
         error: AppColors.dark.error,
-        onPrimary: Colors.white,
+        onPrimary: Colors.black, // Dark text on white primary
         onSurface: AppColors.dark.textPrimary,
         onError: Colors.white,
       ),

@@ -158,9 +158,9 @@ class AppColors extends ThemeExtension<AppColors> {
 
   // Define Dark Theme Colors
   static const dark = AppColors(
-    primary: Color(0xFF60A5FA),
-    primaryDark: Color(0xFF3B82F6),
-    primaryLight: Color(0xFF1E3A8A),
+    primary: Color(0xFFFFFFFF), // White
+    primaryDark: Color(0xFFE5E7EB),
+    primaryLight: Color(0xFF9CA3AF),
     background: Color(0xFF0F172A),
     surface: Color(0xFF111827),
     surfaceSecondary: Color(0xFF1F2937),
