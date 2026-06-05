@@ -38,10 +38,13 @@ class _ExpenseFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => AddExpenseDialog.show(context),
-      backgroundColor: const Color(0xFF003366),
-      child: const Icon(Icons.add, color: Colors.white),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 80.0), // Offset to avoid overlapping with bottom nav bar
+      child: FloatingActionButton(
+        onPressed: () => AddExpenseDialog.show(context),
+        backgroundColor: const Color(0xFF003366),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 }
