@@ -23,7 +23,7 @@ class CustomerRepository implements ICustomerRepository {
           }
 
           return snapshot.docs.map((doc) {
-            return Customer.fromMap(doc.data(), documentId: doc.id);
+            return Customer.fromJson(doc.data() as Map<String, dynamic>..['id'] = doc.id);
           }).toList();
         })
         .handleError((error) {
@@ -52,7 +52,7 @@ class CustomerRepository implements ICustomerRepository {
               .toList();
           data['serviceHistory'] = servicesList;
 
-          return Customer.fromMap(data, documentId: snapshot.id);
+          return Customer.fromJson((data as Map<String, dynamic>)..['id'] = snapshot.id);
         })
         .handleError((error) {
           print('Firestore error in getCustomerById: $error');
@@ -64,7 +64,7 @@ class CustomerRepository implements ICustomerRepository {
   Future<String> createCustomer(Customer customer) async {
     final collectionRef = firestore.collection('Customer');
     final docId = customer.id.isEmpty ? collectionRef.doc().id : customer.id;
-    await collectionRef.doc(docId).set(customer.toMap()..['id'] = docId);
+    await collectionRef.doc(docId).set(customer.toJson()..['id'] = docId);
 
     // Create Rent installment automatically if they are a Rent Customer
     if (customer.isRentCustomer) {
@@ -114,7 +114,7 @@ class CustomerRepository implements ICustomerRepository {
   @override
   Future<void> updateCustomer(Customer customer) async {
     final collectionRef = firestore.collection('Customer');
-    await collectionRef.doc(customer.id).update(customer.toMap());
+    await collectionRef.doc(customer.id).update(customer.toJson());
   }
 
   @override
@@ -126,3 +126,4 @@ class CustomerRepository implements ICustomerRepository {
     });
   }
 }
+

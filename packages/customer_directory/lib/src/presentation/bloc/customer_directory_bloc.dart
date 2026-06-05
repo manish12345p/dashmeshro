@@ -74,7 +74,7 @@ class CustomerDirectoryBloc
     if (query.isEmpty) return customers;
     final lowercaseQuery = query.toLowerCase();
     return customers.where((c) {
-      final mapData = c.toMap();
+      final mapData = c.toJson();
       bool match = false;
       for (var entry in mapData.entries) {
         final keyLower = entry.key.toLowerCase();
@@ -106,3 +106,4 @@ class CustomerDirectoryBloc
     return super.close();
   }
 }
+

@@ -324,8 +324,9 @@ class __$$VisitRecordImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$VisitRecordImpl extends _VisitRecord {
+
+@JsonSerializable(explicitToJson: true)
+class _$VisitRecordImpl implements _VisitRecord {
   const _$VisitRecordImpl({
     required this.id,
     required this.customerId,
@@ -344,7 +345,7 @@ class _$VisitRecordImpl extends _VisitRecord {
     this.isDeleted = false,
     this.deletedAt,
     this.deletedBy,
-  }) : super._();
+  });
 
   factory _$VisitRecordImpl.fromJson(Map<String, dynamic> json) =>
       _$$VisitRecordImplFromJson(json);
@@ -472,7 +473,7 @@ class _$VisitRecordImpl extends _VisitRecord {
   }
 }
 
-abstract class _VisitRecord extends VisitRecord {
+abstract class _VisitRecord implements VisitRecord {
   const factory _VisitRecord({
     required final String id,
     required final String customerId,
@@ -492,7 +493,6 @@ abstract class _VisitRecord extends VisitRecord {
     final String? deletedAt,
     final String? deletedBy,
   }) = _$VisitRecordImpl;
-  const _VisitRecord._() : super._();
 
   factory _VisitRecord.fromJson(Map<String, dynamic> json) =
       _$VisitRecordImpl.fromJson;

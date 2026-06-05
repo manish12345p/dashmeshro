@@ -9,4 +9,5 @@ class CalendarEvent with _$CalendarEvent {
   const factory CalendarEvent.selectCategory(String category) = SelectCategory;
   const factory CalendarEvent.searchQueryChanged(String query) =
       SearchQueryChanged;
+  const factory CalendarEvent.dismissSchedule(ScheduleItem item, bool isDismissed) = DismissSchedule;
 }

@@ -15,6 +15,10 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+ScheduleItem _$ScheduleItemFromJson(Map<String, dynamic> json) {
+  return _ScheduleItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ScheduleItem {
   String get id => throw _privateConstructorUsedError;
@@ -28,6 +32,9 @@ mixin _$ScheduleItem {
   bool get isDismissed => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   String get customerId => throw _privateConstructorUsedError;
+
+  /// Serializes this ScheduleItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of ScheduleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -239,7 +246,7 @@ class __$$ScheduleItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ScheduleItemImpl implements _ScheduleItem {
   const _$ScheduleItemImpl({
     required this.id,
@@ -254,6 +261,9 @@ class _$ScheduleItemImpl implements _ScheduleItem {
     this.phone = '',
     this.customerId = '',
   });
+
+  factory _$ScheduleItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ScheduleItemImplFromJson(json);
 
   @override
   final String id;
@@ -309,6 +319,7 @@ class _$ScheduleItemImpl implements _ScheduleItem {
                 other.customerId == customerId));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -332,6 +343,11 @@ class _$ScheduleItemImpl implements _ScheduleItem {
   @pragma('vm:prefer-inline')
   _$$ScheduleItemImplCopyWith<_$ScheduleItemImpl> get copyWith =>
       __$$ScheduleItemImplCopyWithImpl<_$ScheduleItemImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ScheduleItemImplToJson(this);
+  }
 }
 
 abstract class _ScheduleItem implements ScheduleItem {
@@ -348,6 +364,9 @@ abstract class _ScheduleItem implements ScheduleItem {
     final String phone,
     final String customerId,
   }) = _$ScheduleItemImpl;
+
+  factory _ScheduleItem.fromJson(Map<String, dynamic> json) =
+      _$ScheduleItemImpl.fromJson;
 
   @override
   String get id;

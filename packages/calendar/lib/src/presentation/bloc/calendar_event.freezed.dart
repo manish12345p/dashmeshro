@@ -23,6 +23,8 @@ mixin _$CalendarEvent {
     required TResult Function(DateTime date) selectDate,
     required TResult Function(String category) selectCategory,
     required TResult Function(String query) searchQueryChanged,
+    required TResult Function(ScheduleItem item, bool isDismissed)
+    dismissSchedule,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -30,6 +32,7 @@ mixin _$CalendarEvent {
     TResult? Function(DateTime date)? selectDate,
     TResult? Function(String category)? selectCategory,
     TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -37,6 +40,7 @@ mixin _$CalendarEvent {
     TResult Function(DateTime date)? selectDate,
     TResult Function(String category)? selectCategory,
     TResult Function(String query)? searchQueryChanged,
+    TResult Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -45,6 +49,7 @@ mixin _$CalendarEvent {
     required TResult Function(SelectDate value) selectDate,
     required TResult Function(SelectCategory value) selectCategory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(DismissSchedule value) dismissSchedule,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -52,6 +57,7 @@ mixin _$CalendarEvent {
     TResult? Function(SelectDate value)? selectDate,
     TResult? Function(SelectCategory value)? selectCategory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(DismissSchedule value)? dismissSchedule,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -59,6 +65,7 @@ mixin _$CalendarEvent {
     TResult Function(SelectDate value)? selectDate,
     TResult Function(SelectCategory value)? selectCategory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(DismissSchedule value)? dismissSchedule,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -166,6 +173,8 @@ class _$LoadMonthImpl implements LoadMonth {
     required TResult Function(DateTime date) selectDate,
     required TResult Function(String category) selectCategory,
     required TResult Function(String query) searchQueryChanged,
+    required TResult Function(ScheduleItem item, bool isDismissed)
+    dismissSchedule,
   }) {
     return loadMonth(year, month);
   }
@@ -177,6 +186,7 @@ class _$LoadMonthImpl implements LoadMonth {
     TResult? Function(DateTime date)? selectDate,
     TResult? Function(String category)? selectCategory,
     TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
   }) {
     return loadMonth?.call(year, month);
   }
@@ -188,6 +198,7 @@ class _$LoadMonthImpl implements LoadMonth {
     TResult Function(DateTime date)? selectDate,
     TResult Function(String category)? selectCategory,
     TResult Function(String query)? searchQueryChanged,
+    TResult Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (loadMonth != null) {
@@ -203,6 +214,7 @@ class _$LoadMonthImpl implements LoadMonth {
     required TResult Function(SelectDate value) selectDate,
     required TResult Function(SelectCategory value) selectCategory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(DismissSchedule value) dismissSchedule,
   }) {
     return loadMonth(this);
   }
@@ -214,6 +226,7 @@ class _$LoadMonthImpl implements LoadMonth {
     TResult? Function(SelectDate value)? selectDate,
     TResult? Function(SelectCategory value)? selectCategory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(DismissSchedule value)? dismissSchedule,
   }) {
     return loadMonth?.call(this);
   }
@@ -225,6 +238,7 @@ class _$LoadMonthImpl implements LoadMonth {
     TResult Function(SelectDate value)? selectDate,
     TResult Function(SelectCategory value)? selectCategory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(DismissSchedule value)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (loadMonth != null) {
@@ -321,6 +335,8 @@ class _$SelectDateImpl implements SelectDate {
     required TResult Function(DateTime date) selectDate,
     required TResult Function(String category) selectCategory,
     required TResult Function(String query) searchQueryChanged,
+    required TResult Function(ScheduleItem item, bool isDismissed)
+    dismissSchedule,
   }) {
     return selectDate(date);
   }
@@ -332,6 +348,7 @@ class _$SelectDateImpl implements SelectDate {
     TResult? Function(DateTime date)? selectDate,
     TResult? Function(String category)? selectCategory,
     TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
   }) {
     return selectDate?.call(date);
   }
@@ -343,6 +360,7 @@ class _$SelectDateImpl implements SelectDate {
     TResult Function(DateTime date)? selectDate,
     TResult Function(String category)? selectCategory,
     TResult Function(String query)? searchQueryChanged,
+    TResult Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (selectDate != null) {
@@ -358,6 +376,7 @@ class _$SelectDateImpl implements SelectDate {
     required TResult Function(SelectDate value) selectDate,
     required TResult Function(SelectCategory value) selectCategory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(DismissSchedule value) dismissSchedule,
   }) {
     return selectDate(this);
   }
@@ -369,6 +388,7 @@ class _$SelectDateImpl implements SelectDate {
     TResult? Function(SelectDate value)? selectDate,
     TResult? Function(SelectCategory value)? selectCategory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(DismissSchedule value)? dismissSchedule,
   }) {
     return selectDate?.call(this);
   }
@@ -380,6 +400,7 @@ class _$SelectDateImpl implements SelectDate {
     TResult Function(SelectDate value)? selectDate,
     TResult Function(SelectCategory value)? selectCategory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(DismissSchedule value)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (selectDate != null) {
@@ -479,6 +500,8 @@ class _$SelectCategoryImpl implements SelectCategory {
     required TResult Function(DateTime date) selectDate,
     required TResult Function(String category) selectCategory,
     required TResult Function(String query) searchQueryChanged,
+    required TResult Function(ScheduleItem item, bool isDismissed)
+    dismissSchedule,
   }) {
     return selectCategory(category);
   }
@@ -490,6 +513,7 @@ class _$SelectCategoryImpl implements SelectCategory {
     TResult? Function(DateTime date)? selectDate,
     TResult? Function(String category)? selectCategory,
     TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
   }) {
     return selectCategory?.call(category);
   }
@@ -501,6 +525,7 @@ class _$SelectCategoryImpl implements SelectCategory {
     TResult Function(DateTime date)? selectDate,
     TResult Function(String category)? selectCategory,
     TResult Function(String query)? searchQueryChanged,
+    TResult Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (selectCategory != null) {
@@ -516,6 +541,7 @@ class _$SelectCategoryImpl implements SelectCategory {
     required TResult Function(SelectDate value) selectDate,
     required TResult Function(SelectCategory value) selectCategory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(DismissSchedule value) dismissSchedule,
   }) {
     return selectCategory(this);
   }
@@ -527,6 +553,7 @@ class _$SelectCategoryImpl implements SelectCategory {
     TResult? Function(SelectDate value)? selectDate,
     TResult? Function(SelectCategory value)? selectCategory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(DismissSchedule value)? dismissSchedule,
   }) {
     return selectCategory?.call(this);
   }
@@ -538,6 +565,7 @@ class _$SelectCategoryImpl implements SelectCategory {
     TResult Function(SelectDate value)? selectDate,
     TResult Function(SelectCategory value)? selectCategory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(DismissSchedule value)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (selectCategory != null) {
@@ -636,6 +664,8 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     required TResult Function(DateTime date) selectDate,
     required TResult Function(String category) selectCategory,
     required TResult Function(String query) searchQueryChanged,
+    required TResult Function(ScheduleItem item, bool isDismissed)
+    dismissSchedule,
   }) {
     return searchQueryChanged(query);
   }
@@ -647,6 +677,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult? Function(DateTime date)? selectDate,
     TResult? Function(String category)? selectCategory,
     TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
   }) {
     return searchQueryChanged?.call(query);
   }
@@ -658,6 +689,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult Function(DateTime date)? selectDate,
     TResult Function(String category)? selectCategory,
     TResult Function(String query)? searchQueryChanged,
+    TResult Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (searchQueryChanged != null) {
@@ -673,6 +705,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     required TResult Function(SelectDate value) selectDate,
     required TResult Function(SelectCategory value) selectCategory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(DismissSchedule value) dismissSchedule,
   }) {
     return searchQueryChanged(this);
   }
@@ -684,6 +717,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult? Function(SelectDate value)? selectDate,
     TResult? Function(SelectCategory value)? selectCategory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(DismissSchedule value)? dismissSchedule,
   }) {
     return searchQueryChanged?.call(this);
   }
@@ -695,6 +729,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult Function(SelectDate value)? selectDate,
     TResult Function(SelectCategory value)? selectCategory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(DismissSchedule value)? dismissSchedule,
     required TResult orElse(),
   }) {
     if (searchQueryChanged != null) {
@@ -714,5 +749,185 @@ abstract class SearchQueryChanged implements CalendarEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchQueryChangedImplCopyWith<_$SearchQueryChangedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DismissScheduleImplCopyWith<$Res> {
+  factory _$$DismissScheduleImplCopyWith(
+    _$DismissScheduleImpl value,
+    $Res Function(_$DismissScheduleImpl) then,
+  ) = __$$DismissScheduleImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ScheduleItem item, bool isDismissed});
+}
+
+/// @nodoc
+class __$$DismissScheduleImplCopyWithImpl<$Res>
+    extends _$CalendarEventCopyWithImpl<$Res, _$DismissScheduleImpl>
+    implements _$$DismissScheduleImplCopyWith<$Res> {
+  __$$DismissScheduleImplCopyWithImpl(
+    _$DismissScheduleImpl _value,
+    $Res Function(_$DismissScheduleImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of CalendarEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? item = freezed, Object? isDismissed = null}) {
+    return _then(
+      _$DismissScheduleImpl(
+        freezed == item
+            ? _value.item
+            : item // ignore: cast_nullable_to_non_nullable
+                  as ScheduleItem,
+        null == isDismissed
+            ? _value.isDismissed
+            : isDismissed // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$DismissScheduleImpl implements DismissSchedule {
+  const _$DismissScheduleImpl(this.item, this.isDismissed);
+
+  @override
+  final ScheduleItem item;
+  @override
+  final bool isDismissed;
+
+  @override
+  String toString() {
+    return 'CalendarEvent.dismissSchedule(item: $item, isDismissed: $isDismissed)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DismissScheduleImpl &&
+            const DeepCollectionEquality().equals(other.item, item) &&
+            (identical(other.isDismissed, isDismissed) ||
+                other.isDismissed == isDismissed));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    const DeepCollectionEquality().hash(item),
+    isDismissed,
+  );
+
+  /// Create a copy of CalendarEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DismissScheduleImplCopyWith<_$DismissScheduleImpl> get copyWith =>
+      __$$DismissScheduleImplCopyWithImpl<_$DismissScheduleImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int year, int month) loadMonth,
+    required TResult Function(DateTime date) selectDate,
+    required TResult Function(String category) selectCategory,
+    required TResult Function(String query) searchQueryChanged,
+    required TResult Function(ScheduleItem item, bool isDismissed)
+    dismissSchedule,
+  }) {
+    return dismissSchedule(item, isDismissed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int year, int month)? loadMonth,
+    TResult? Function(DateTime date)? selectDate,
+    TResult? Function(String category)? selectCategory,
+    TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
+  }) {
+    return dismissSchedule?.call(item, isDismissed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int year, int month)? loadMonth,
+    TResult Function(DateTime date)? selectDate,
+    TResult Function(String category)? selectCategory,
+    TResult Function(String query)? searchQueryChanged,
+    TResult Function(ScheduleItem item, bool isDismissed)? dismissSchedule,
+    required TResult orElse(),
+  }) {
+    if (dismissSchedule != null) {
+      return dismissSchedule(item, isDismissed);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadMonth value) loadMonth,
+    required TResult Function(SelectDate value) selectDate,
+    required TResult Function(SelectCategory value) selectCategory,
+    required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(DismissSchedule value) dismissSchedule,
+  }) {
+    return dismissSchedule(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadMonth value)? loadMonth,
+    TResult? Function(SelectDate value)? selectDate,
+    TResult? Function(SelectCategory value)? selectCategory,
+    TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(DismissSchedule value)? dismissSchedule,
+  }) {
+    return dismissSchedule?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadMonth value)? loadMonth,
+    TResult Function(SelectDate value)? selectDate,
+    TResult Function(SelectCategory value)? selectCategory,
+    TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(DismissSchedule value)? dismissSchedule,
+    required TResult orElse(),
+  }) {
+    if (dismissSchedule != null) {
+      return dismissSchedule(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DismissSchedule implements CalendarEvent {
+  const factory DismissSchedule(
+    final ScheduleItem item,
+    final bool isDismissed,
+  ) = _$DismissScheduleImpl;
+
+  ScheduleItem get item;
+  bool get isDismissed;
+
+  /// Create a copy of CalendarEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DismissScheduleImplCopyWith<_$DismissScheduleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

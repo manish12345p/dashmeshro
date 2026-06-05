@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:core/core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/customer.dart';
@@ -118,15 +119,8 @@ class ProfileHeaderCard extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.chat, color: context.colors.success),
                   onPressed: () async {
-                    final rawNumber = customer.number.split(',').first.trim();
-                    final cleanNum = rawNumber.replaceAll(
-                      RegExp(r'[^0-9]'),
-                      '',
-                    );
-                    final finalNum = cleanNum.length == 10
-                        ? '91$cleanNum'
-                        : cleanNum;
-                    final url = Uri.parse('https://wa.me/$finalNum');
+                    final url = PhoneUtils.getWhatsAppUri(customer.number);
+                    if (url == null) return;
                     try {
                       await launchUrl(
                         url,

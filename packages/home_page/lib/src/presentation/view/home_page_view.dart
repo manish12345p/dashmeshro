@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:core/core.dart';
+
 import '../../data/repositories/home_repository.dart';
 import '../../domain/use_cases/get_home_data_usecase.dart';
 import '../bloc/home_bloc.dart';
@@ -22,9 +24,7 @@ class HomePageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value:
-          bloc ??
-          (HomeBloc(getHomeDataUseCase: GetHomeDataUseCase(HomeRepository()))
-            ..add(const HomeEvent.loadHomeData())),
+          bloc ?? (sl<HomeBloc>()..add(const HomeEvent.loadHomeData())),
       child: const Scaffold(
         body: _HomeContent(),
         floatingActionButton: _ExpenseFab(),

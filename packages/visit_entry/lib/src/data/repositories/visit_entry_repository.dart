@@ -25,7 +25,7 @@ class VisitEntryRepository implements IVisitEntryRepository {
       entry.serviceDate.month + 2,
       entry.serviceDate.day,
     );
-    final data = entry.toMap()
+    final data = entry.toJson()
       ..['id'] = docId
       ..['notificationDate'] = notificationDate.toIso8601String();
 
@@ -175,3 +175,4 @@ class VisitEntryRepository implements IVisitEntryRepository {
     }
   }
 }
+

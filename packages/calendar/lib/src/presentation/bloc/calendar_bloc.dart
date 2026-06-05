@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/use_cases/get_calendar_schedules_usecase.dart';
 import 'calendar_event.dart';
 import 'calendar_state.dart';
+import '../../domain/use_cases/dismiss_schedule_usecase.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   final GetCalendarSchedulesUseCase _getCalendarSchedulesUseCase;
+  final DismissScheduleUseCase _dismissScheduleUseCase;
   StreamSubscription? _schedulesSubscription;
 
   CalendarBloc({
@@ -16,6 +18,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<SelectDate>(_onSelectDate);
     on<SelectCategory>(_onSelectCategory);
     on<SearchQueryChanged>(_onSearchQueryChanged);
+    on<DismissSchedule>(_onDismissSchedule);
   }
 
   Future<void> _onLoadMonth(
@@ -82,3 +85,17 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     return super.close();
   }
 }
+
+  Future<void> _onDismissSchedule(
+    DismissSchedule event,
+    Emitter<CalendarState> emit,
+  ) async {
+    try {
+      await _dismissScheduleUseCase.execute(
+        event.item.customerId,
+        event.item.id,
+        event.isDismissed,
+      );
+    } catch (_) {}
+  }
+

@@ -81,4 +81,15 @@ class CalendarRepository implements ICalendarRepository {
           return <ScheduleItem>[];
         });
   }
+
+  @override
+  Future<void> dismissSchedule(String customerId, String serviceId, bool isDismissed) async {
+    final cleanServiceId = serviceId.replaceFirst('notif_', '');
+    await _firestore
+        .collection('Customer')
+        .doc(customerId)
+        .collection('services')
+        .doc(cleanServiceId)
+        .update({'isDismissed': isDismissed});
+  }
 }

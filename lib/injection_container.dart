@@ -22,11 +22,16 @@ Future<void> init() async {
   // Feature: Home Page
   sl.registerLazySingleton<IHomeRepository>(() => HomeRepository());
   sl.registerLazySingleton(() => GetHomeDataUseCase(sl()));
+  sl.registerFactory(() => HomeBloc(getHomeDataUseCase: sl()));
 
   // Feature: Calendar
   sl.registerLazySingleton<ICalendarRepository>(() => CalendarRepository());
   sl.registerLazySingleton(() => GetCalendarSchedulesUseCase(sl()));
-  sl.registerFactory(() => CalendarBloc(getCalendarSchedulesUseCase: sl()));
+  sl.registerLazySingleton(() => DismissScheduleUseCase(sl()));
+  sl.registerFactory(() => CalendarBloc(
+    getCalendarSchedulesUseCase: sl(),
+    dismissScheduleUseCase: sl(),
+  ));
 
   // Other features...
 }

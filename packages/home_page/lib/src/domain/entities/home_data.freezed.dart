@@ -15,6 +15,10 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+ExpiryItem _$ExpiryItemFromJson(Map<String, dynamic> json) {
+  return _ExpiryItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ExpiryItem {
   String get customerName => throw _privateConstructorUsedError;
@@ -23,6 +27,9 @@ mixin _$ExpiryItem {
       throw _privateConstructorUsedError; // 'Service' or 'Guarantee'
   String get expiryDate => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+
+  /// Serializes this ExpiryItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of ExpiryItem
   /// with the given fields replaced by the non-null parameter values.
@@ -162,26 +169,34 @@ class __$$ExpiryItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ExpiryItemImpl extends _ExpiryItem {
   const _$ExpiryItemImpl({
-    required this.customerName,
-    required this.customerId,
-    required this.type,
-    required this.expiryDate,
-    required this.phone,
+    this.customerName = '',
+    this.customerId = '',
+    this.type = '',
+    this.expiryDate = '',
+    this.phone = '',
   }) : super._();
 
+  factory _$ExpiryItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExpiryItemImplFromJson(json);
+
   @override
+  @JsonKey()
   final String customerName;
   @override
+  @JsonKey()
   final String customerId;
   @override
+  @JsonKey()
   final String type;
   // 'Service' or 'Guarantee'
   @override
+  @JsonKey()
   final String expiryDate;
   @override
+  @JsonKey()
   final String phone;
 
   @override
@@ -204,6 +219,7 @@ class _$ExpiryItemImpl extends _ExpiryItem {
             (identical(other.phone, phone) || other.phone == phone));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -221,17 +237,25 @@ class _$ExpiryItemImpl extends _ExpiryItem {
   @pragma('vm:prefer-inline')
   _$$ExpiryItemImplCopyWith<_$ExpiryItemImpl> get copyWith =>
       __$$ExpiryItemImplCopyWithImpl<_$ExpiryItemImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ExpiryItemImplToJson(this);
+  }
 }
 
 abstract class _ExpiryItem extends ExpiryItem {
   const factory _ExpiryItem({
-    required final String customerName,
-    required final String customerId,
-    required final String type,
-    required final String expiryDate,
-    required final String phone,
+    final String customerName,
+    final String customerId,
+    final String type,
+    final String expiryDate,
+    final String phone,
   }) = _$ExpiryItemImpl;
   const _ExpiryItem._() : super._();
+
+  factory _ExpiryItem.fromJson(Map<String, dynamic> json) =
+      _$ExpiryItemImpl.fromJson;
 
   @override
   String get customerName;
@@ -252,12 +276,19 @@ abstract class _ExpiryItem extends ExpiryItem {
       throw _privateConstructorUsedError;
 }
 
+PendingPaymentItem _$PendingPaymentItemFromJson(Map<String, dynamic> json) {
+  return _PendingPaymentItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$PendingPaymentItem {
   String get customerName => throw _privateConstructorUsedError;
   String get customerId => throw _privateConstructorUsedError;
   double get amountPending => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+
+  /// Serializes this PendingPaymentItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of PendingPaymentItem
   /// with the given fields replaced by the non-null parameter values.
@@ -385,22 +416,29 @@ class __$$PendingPaymentItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$PendingPaymentItemImpl extends _PendingPaymentItem {
   const _$PendingPaymentItemImpl({
-    required this.customerName,
-    required this.customerId,
-    required this.amountPending,
-    required this.phone,
+    this.customerName = '',
+    this.customerId = '',
+    this.amountPending = 0.0,
+    this.phone = '',
   }) : super._();
 
+  factory _$PendingPaymentItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PendingPaymentItemImplFromJson(json);
+
   @override
+  @JsonKey()
   final String customerName;
   @override
+  @JsonKey()
   final String customerId;
   @override
+  @JsonKey()
   final double amountPending;
   @override
+  @JsonKey()
   final String phone;
 
   @override
@@ -422,6 +460,7 @@ class _$PendingPaymentItemImpl extends _PendingPaymentItem {
             (identical(other.phone, phone) || other.phone == phone));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, customerName, customerId, amountPending, phone);
@@ -436,16 +475,24 @@ class _$PendingPaymentItemImpl extends _PendingPaymentItem {
         this,
         _$identity,
       );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PendingPaymentItemImplToJson(this);
+  }
 }
 
 abstract class _PendingPaymentItem extends PendingPaymentItem {
   const factory _PendingPaymentItem({
-    required final String customerName,
-    required final String customerId,
-    required final double amountPending,
-    required final String phone,
+    final String customerName,
+    final String customerId,
+    final double amountPending,
+    final String phone,
   }) = _$PendingPaymentItemImpl;
   const _PendingPaymentItem._() : super._();
+
+  factory _PendingPaymentItem.fromJson(Map<String, dynamic> json) =
+      _$PendingPaymentItemImpl.fromJson;
 
   @override
   String get customerName;
@@ -464,6 +511,10 @@ abstract class _PendingPaymentItem extends PendingPaymentItem {
       throw _privateConstructorUsedError;
 }
 
+ScheduleItem _$ScheduleItemFromJson(Map<String, dynamic> json) {
+  return _ScheduleItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ScheduleItem {
   String get title => throw _privateConstructorUsedError;
@@ -472,6 +523,9 @@ mixin _$ScheduleItem {
   bool get isUrgent => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   String get customerId => throw _privateConstructorUsedError;
+
+  /// Serializes this ScheduleItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of ScheduleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -623,22 +677,28 @@ class __$$ScheduleItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ScheduleItemImpl extends _ScheduleItem {
   const _$ScheduleItemImpl({
-    required this.title,
-    required this.subtitle,
-    required this.time,
+    this.title = '',
+    this.subtitle = '',
+    this.time = '',
     this.isUrgent = false,
     this.phone = '',
     this.customerId = '',
   }) : super._();
 
+  factory _$ScheduleItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ScheduleItemImplFromJson(json);
+
   @override
+  @JsonKey()
   final String title;
   @override
+  @JsonKey()
   final String subtitle;
   @override
+  @JsonKey()
   final String time;
   @override
   @JsonKey()
@@ -671,6 +731,7 @@ class _$ScheduleItemImpl extends _ScheduleItem {
                 other.customerId == customerId));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -689,18 +750,26 @@ class _$ScheduleItemImpl extends _ScheduleItem {
   @pragma('vm:prefer-inline')
   _$$ScheduleItemImplCopyWith<_$ScheduleItemImpl> get copyWith =>
       __$$ScheduleItemImplCopyWithImpl<_$ScheduleItemImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ScheduleItemImplToJson(this);
+  }
 }
 
 abstract class _ScheduleItem extends ScheduleItem {
   const factory _ScheduleItem({
-    required final String title,
-    required final String subtitle,
-    required final String time,
+    final String title,
+    final String subtitle,
+    final String time,
     final bool isUrgent,
     final String phone,
     final String customerId,
   }) = _$ScheduleItemImpl;
   const _ScheduleItem._() : super._();
+
+  factory _ScheduleItem.fromJson(Map<String, dynamic> json) =
+      _$ScheduleItemImpl.fromJson;
 
   @override
   String get title;
@@ -723,12 +792,19 @@ abstract class _ScheduleItem extends ScheduleItem {
       throw _privateConstructorUsedError;
 }
 
+ComplaintItem _$ComplaintItemFromJson(Map<String, dynamic> json) {
+  return _ComplaintItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ComplaintItem {
   String get customerName => throw _privateConstructorUsedError;
   String get customerId => throw _privateConstructorUsedError;
   String get issueType => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+
+  /// Serializes this ComplaintItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of ComplaintItem
   /// with the given fields replaced by the non-null parameter values.
@@ -856,22 +932,29 @@ class __$$ComplaintItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ComplaintItemImpl extends _ComplaintItem {
   const _$ComplaintItemImpl({
-    required this.customerName,
-    required this.customerId,
-    required this.issueType,
-    required this.status,
+    this.customerName = '',
+    this.customerId = '',
+    this.issueType = '',
+    this.status = '',
   }) : super._();
 
+  factory _$ComplaintItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ComplaintItemImplFromJson(json);
+
   @override
+  @JsonKey()
   final String customerName;
   @override
+  @JsonKey()
   final String customerId;
   @override
+  @JsonKey()
   final String issueType;
   @override
+  @JsonKey()
   final String status;
 
   @override
@@ -893,6 +976,7 @@ class _$ComplaintItemImpl extends _ComplaintItem {
             (identical(other.status, status) || other.status == status));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, customerName, customerId, issueType, status);
@@ -904,16 +988,24 @@ class _$ComplaintItemImpl extends _ComplaintItem {
   @pragma('vm:prefer-inline')
   _$$ComplaintItemImplCopyWith<_$ComplaintItemImpl> get copyWith =>
       __$$ComplaintItemImplCopyWithImpl<_$ComplaintItemImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ComplaintItemImplToJson(this);
+  }
 }
 
 abstract class _ComplaintItem extends ComplaintItem {
   const factory _ComplaintItem({
-    required final String customerName,
-    required final String customerId,
-    required final String issueType,
-    required final String status,
+    final String customerName,
+    final String customerId,
+    final String issueType,
+    final String status,
   }) = _$ComplaintItemImpl;
   const _ComplaintItem._() : super._();
+
+  factory _ComplaintItem.fromJson(Map<String, dynamic> json) =
+      _$ComplaintItemImpl.fromJson;
 
   @override
   String get customerName;
@@ -932,12 +1024,19 @@ abstract class _ComplaintItem extends ComplaintItem {
       throw _privateConstructorUsedError;
 }
 
+AmcProgress _$AmcProgressFromJson(Map<String, dynamic> json) {
+  return _AmcProgress.fromJson(json);
+}
+
 /// @nodoc
 mixin _$AmcProgress {
   String get companyName => throw _privateConstructorUsedError;
   double get progress => throw _privateConstructorUsedError;
   String get statusText => throw _privateConstructorUsedError;
   bool get isUrgent => throw _privateConstructorUsedError;
+
+  /// Serializes this AmcProgress to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of AmcProgress
   /// with the given fields replaced by the non-null parameter values.
@@ -1065,20 +1164,26 @@ class __$$AmcProgressImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$AmcProgressImpl extends _AmcProgress {
   const _$AmcProgressImpl({
-    required this.companyName,
-    required this.progress,
-    required this.statusText,
+    this.companyName = '',
+    this.progress = 0.0,
+    this.statusText = '',
     this.isUrgent = false,
   }) : super._();
 
+  factory _$AmcProgressImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AmcProgressImplFromJson(json);
+
   @override
+  @JsonKey()
   final String companyName;
   @override
+  @JsonKey()
   final double progress;
   @override
+  @JsonKey()
   final String statusText;
   @override
   @JsonKey()
@@ -1104,6 +1209,7 @@ class _$AmcProgressImpl extends _AmcProgress {
                 other.isUrgent == isUrgent));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, companyName, progress, statusText, isUrgent);
@@ -1115,16 +1221,24 @@ class _$AmcProgressImpl extends _AmcProgress {
   @pragma('vm:prefer-inline')
   _$$AmcProgressImplCopyWith<_$AmcProgressImpl> get copyWith =>
       __$$AmcProgressImplCopyWithImpl<_$AmcProgressImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AmcProgressImplToJson(this);
+  }
 }
 
 abstract class _AmcProgress extends AmcProgress {
   const factory _AmcProgress({
-    required final String companyName,
-    required final double progress,
-    required final String statusText,
+    final String companyName,
+    final double progress,
+    final String statusText,
     final bool isUrgent,
   }) = _$AmcProgressImpl;
   const _AmcProgress._() : super._();
+
+  factory _AmcProgress.fromJson(Map<String, dynamic> json) =
+      _$AmcProgressImpl.fromJson;
 
   @override
   String get companyName;
@@ -1143,6 +1257,10 @@ abstract class _AmcProgress extends AmcProgress {
       throw _privateConstructorUsedError;
 }
 
+NotificationItem _$NotificationItemFromJson(Map<String, dynamic> json) {
+  return _NotificationItem.fromJson(json);
+}
+
 /// @nodoc
 mixin _$NotificationItem {
   String get customerName => throw _privateConstructorUsedError;
@@ -1153,6 +1271,9 @@ mixin _$NotificationItem {
   String get notificationDate => throw _privateConstructorUsedError;
   bool get isDismissed => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+
+  /// Serializes this NotificationItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of NotificationItem
   /// with the given fields replaced by the non-null parameter values.
@@ -1328,30 +1449,39 @@ class __$$NotificationItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$NotificationItemImpl extends _NotificationItem {
   const _$NotificationItemImpl({
-    required this.customerName,
-    required this.customerId,
-    required this.address,
-    required this.serviceType,
-    required this.serviceId,
-    required this.notificationDate,
+    this.customerName = '',
+    this.customerId = '',
+    this.address = '',
+    this.serviceType = '',
+    this.serviceId = '',
+    this.notificationDate = '',
     this.isDismissed = false,
     this.phone = '',
   }) : super._();
 
+  factory _$NotificationItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NotificationItemImplFromJson(json);
+
   @override
+  @JsonKey()
   final String customerName;
   @override
+  @JsonKey()
   final String customerId;
   @override
+  @JsonKey()
   final String address;
   @override
+  @JsonKey()
   final String serviceType;
   @override
+  @JsonKey()
   final String serviceId;
   @override
+  @JsonKey()
   final String notificationDate;
   @override
   @JsonKey()
@@ -1386,6 +1516,7 @@ class _$NotificationItemImpl extends _NotificationItem {
             (identical(other.phone, phone) || other.phone == phone));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -1409,20 +1540,28 @@ class _$NotificationItemImpl extends _NotificationItem {
         this,
         _$identity,
       );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NotificationItemImplToJson(this);
+  }
 }
 
 abstract class _NotificationItem extends NotificationItem {
   const factory _NotificationItem({
-    required final String customerName,
-    required final String customerId,
-    required final String address,
-    required final String serviceType,
-    required final String serviceId,
-    required final String notificationDate,
+    final String customerName,
+    final String customerId,
+    final String address,
+    final String serviceType,
+    final String serviceId,
+    final String notificationDate,
     final bool isDismissed,
     final String phone,
   }) = _$NotificationItemImpl;
   const _NotificationItem._() : super._();
+
+  factory _NotificationItem.fromJson(Map<String, dynamic> json) =
+      _$NotificationItemImpl.fromJson;
 
   @override
   String get customerName;
@@ -1449,6 +1588,10 @@ abstract class _NotificationItem extends NotificationItem {
       throw _privateConstructorUsedError;
 }
 
+HomeData _$HomeDataFromJson(Map<String, dynamic> json) {
+  return _HomeData.fromJson(json);
+}
+
 /// @nodoc
 mixin _$HomeData {
   int get newSells => throw _privateConstructorUsedError;
@@ -1473,6 +1616,9 @@ mixin _$HomeData {
   int get todaySellsSummary => throw _privateConstructorUsedError;
   int get weekSellsSummary => throw _privateConstructorUsedError;
   String get projectedGrowth => throw _privateConstructorUsedError;
+
+  /// Serializes this HomeData to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeData
   /// with the given fields replaced by the non-null parameter values.
@@ -1778,28 +1924,28 @@ class __$$HomeDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$HomeDataImpl extends _HomeData {
   const _$HomeDataImpl({
-    required this.newSells,
-    required this.activeRentals,
-    required this.activeAmcs,
-    required this.totalServices,
-    required this.totalCollectedThisMonth,
-    required this.amcServices,
-    required this.newRoServices,
-    required this.repairServices,
-    required this.resolutionRatePercent,
-    required this.pendingComplaintsCount,
-    required final List<ScheduleItem> todaySchedules,
-    required final List<ComplaintItem> pendingComplaints,
-    required final List<AmcProgress> amcProgresses,
-    required final List<NotificationItem> todayNotifications,
+    this.newSells = 0,
+    this.activeRentals = 0,
+    this.activeAmcs = 0,
+    this.totalServices = 0,
+    this.totalCollectedThisMonth = 0.0,
+    this.amcServices = 0,
+    this.newRoServices = 0,
+    this.repairServices = 0,
+    this.resolutionRatePercent = 0,
+    this.pendingComplaintsCount = 0,
+    final List<ScheduleItem> todaySchedules = const [],
+    final List<ComplaintItem> pendingComplaints = const [],
+    final List<AmcProgress> amcProgresses = const [],
+    final List<NotificationItem> todayNotifications = const [],
     final List<ExpiryItem> expiringItems = const [],
     final List<PendingPaymentItem> pendingPayments = const [],
-    required this.todaySellsSummary,
-    required this.weekSellsSummary,
-    required this.projectedGrowth,
+    this.todaySellsSummary = 0,
+    this.weekSellsSummary = 0,
+    this.projectedGrowth = '',
   }) : _todaySchedules = todaySchedules,
        _pendingComplaints = pendingComplaints,
        _amcProgresses = amcProgresses,
@@ -1808,28 +1954,42 @@ class _$HomeDataImpl extends _HomeData {
        _pendingPayments = pendingPayments,
        super._();
 
+  factory _$HomeDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HomeDataImplFromJson(json);
+
   @override
+  @JsonKey()
   final int newSells;
   @override
+  @JsonKey()
   final int activeRentals;
   @override
+  @JsonKey()
   final int activeAmcs;
   @override
+  @JsonKey()
   final int totalServices;
   @override
+  @JsonKey()
   final double totalCollectedThisMonth;
   @override
+  @JsonKey()
   final int amcServices;
   @override
+  @JsonKey()
   final int newRoServices;
   @override
+  @JsonKey()
   final int repairServices;
   @override
+  @JsonKey()
   final int resolutionRatePercent;
   @override
+  @JsonKey()
   final int pendingComplaintsCount;
   final List<ScheduleItem> _todaySchedules;
   @override
+  @JsonKey()
   List<ScheduleItem> get todaySchedules {
     if (_todaySchedules is EqualUnmodifiableListView) return _todaySchedules;
     // ignore: implicit_dynamic_type
@@ -1838,6 +1998,7 @@ class _$HomeDataImpl extends _HomeData {
 
   final List<ComplaintItem> _pendingComplaints;
   @override
+  @JsonKey()
   List<ComplaintItem> get pendingComplaints {
     if (_pendingComplaints is EqualUnmodifiableListView)
       return _pendingComplaints;
@@ -1847,6 +2008,7 @@ class _$HomeDataImpl extends _HomeData {
 
   final List<AmcProgress> _amcProgresses;
   @override
+  @JsonKey()
   List<AmcProgress> get amcProgresses {
     if (_amcProgresses is EqualUnmodifiableListView) return _amcProgresses;
     // ignore: implicit_dynamic_type
@@ -1855,6 +2017,7 @@ class _$HomeDataImpl extends _HomeData {
 
   final List<NotificationItem> _todayNotifications;
   @override
+  @JsonKey()
   List<NotificationItem> get todayNotifications {
     if (_todayNotifications is EqualUnmodifiableListView)
       return _todayNotifications;
@@ -1881,10 +2044,13 @@ class _$HomeDataImpl extends _HomeData {
   }
 
   @override
+  @JsonKey()
   final int todaySellsSummary;
   @override
+  @JsonKey()
   final int weekSellsSummary;
   @override
+  @JsonKey()
   final String projectedGrowth;
 
   @override
@@ -1952,6 +2118,7 @@ class _$HomeDataImpl extends _HomeData {
                 other.projectedGrowth == projectedGrowth));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
     runtimeType,
@@ -1983,31 +2150,39 @@ class _$HomeDataImpl extends _HomeData {
   @pragma('vm:prefer-inline')
   _$$HomeDataImplCopyWith<_$HomeDataImpl> get copyWith =>
       __$$HomeDataImplCopyWithImpl<_$HomeDataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$HomeDataImplToJson(this);
+  }
 }
 
 abstract class _HomeData extends HomeData {
   const factory _HomeData({
-    required final int newSells,
-    required final int activeRentals,
-    required final int activeAmcs,
-    required final int totalServices,
-    required final double totalCollectedThisMonth,
-    required final int amcServices,
-    required final int newRoServices,
-    required final int repairServices,
-    required final int resolutionRatePercent,
-    required final int pendingComplaintsCount,
-    required final List<ScheduleItem> todaySchedules,
-    required final List<ComplaintItem> pendingComplaints,
-    required final List<AmcProgress> amcProgresses,
-    required final List<NotificationItem> todayNotifications,
+    final int newSells,
+    final int activeRentals,
+    final int activeAmcs,
+    final int totalServices,
+    final double totalCollectedThisMonth,
+    final int amcServices,
+    final int newRoServices,
+    final int repairServices,
+    final int resolutionRatePercent,
+    final int pendingComplaintsCount,
+    final List<ScheduleItem> todaySchedules,
+    final List<ComplaintItem> pendingComplaints,
+    final List<AmcProgress> amcProgresses,
+    final List<NotificationItem> todayNotifications,
     final List<ExpiryItem> expiringItems,
     final List<PendingPaymentItem> pendingPayments,
-    required final int todaySellsSummary,
-    required final int weekSellsSummary,
-    required final String projectedGrowth,
+    final int todaySellsSummary,
+    final int weekSellsSummary,
+    final String projectedGrowth,
   }) = _$HomeDataImpl;
   const _HomeData._() : super._();
+
+  factory _HomeData.fromJson(Map<String, dynamic> json) =
+      _$HomeDataImpl.fromJson;
 
   @override
   int get newSells;

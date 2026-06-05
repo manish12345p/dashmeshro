@@ -371,3 +371,4 @@ class HomeRepository implements IHomeRepository {
     // Dynamic calculation now, so deleting static document is a no-op
   }
 }
+

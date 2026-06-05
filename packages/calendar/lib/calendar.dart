@@ -6,3 +6,4 @@ export 'src/domain/use_cases/get_calendar_schedules_usecase.dart';
 export 'src/presentation/bloc/calendar_bloc.dart';
 export 'src/presentation/bloc/calendar_event.dart';
 export 'src/presentation/bloc/calendar_state.dart';
+export 'src/domain/use_cases/dismiss_schedule_usecase.dart';

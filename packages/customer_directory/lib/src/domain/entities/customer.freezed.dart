@@ -220,8 +220,9 @@ class __$$ServiceActivityImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$ServiceActivityImpl extends _ServiceActivity {
+
+@JsonSerializable(explicitToJson: true)
+class _$ServiceActivityImpl implements _ServiceActivity {
   const _$ServiceActivityImpl({
     required this.id,
     required this.serviceType,
@@ -232,7 +233,7 @@ class _$ServiceActivityImpl extends _ServiceActivity {
     this.guaranteeDuration = '',
     this.remarks = '',
     required this.serviceDate,
-  }) : super._();
+  });
 
   factory _$ServiceActivityImpl.fromJson(Map<String, dynamic> json) =>
       _$$ServiceActivityImplFromJson(json);
@@ -317,7 +318,7 @@ class _$ServiceActivityImpl extends _ServiceActivity {
   }
 }
 
-abstract class _ServiceActivity extends ServiceActivity {
+abstract class _ServiceActivity implements ServiceActivity {
   const factory _ServiceActivity({
     required final String id,
     required final String serviceType,
@@ -329,7 +330,6 @@ abstract class _ServiceActivity extends ServiceActivity {
     final String remarks,
     required final DateTime serviceDate,
   }) = _$ServiceActivityImpl;
-  const _ServiceActivity._() : super._();
 
   factory _ServiceActivity.fromJson(Map<String, dynamic> json) =
       _$ServiceActivityImpl.fromJson;
@@ -389,11 +389,13 @@ mixin _$Customer {
   String get customerValue => throw _privateConstructorUsedError;
   int get openTickets => throw _privateConstructorUsedError;
   List<ServiceActivity> get serviceHistory =>
-      throw _privateConstructorUsedError; // Rent support
+      throw _privateConstructorUsedError;
+  @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
   bool get isRentCustomer => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
   double get rentAmount => throw _privateConstructorUsedError;
-  int get rentDueDay =>
-      throw _privateConstructorUsedError; // Soft delete support
+  @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
+  int get rentDueDay => throw _privateConstructorUsedError;
   bool get isDeleted => throw _privateConstructorUsedError;
   String? get deletedAt => throw _privateConstructorUsedError;
   String? get deletedBy => throw _privateConstructorUsedError;
@@ -436,9 +438,10 @@ abstract class $CustomerCopyWith<$Res> {
     String customerValue,
     int openTickets,
     List<ServiceActivity> serviceHistory,
+    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
     bool isRentCustomer,
-    double rentAmount,
-    int rentDueDay,
+    @JsonKey(name: 'rentAmount', readValue: _readRentAmount) double rentAmount,
+    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay) int rentDueDay,
     bool isDeleted,
     String? deletedAt,
     String? deletedBy,
@@ -641,9 +644,10 @@ abstract class _$$CustomerImplCopyWith<$Res>
     String customerValue,
     int openTickets,
     List<ServiceActivity> serviceHistory,
+    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
     bool isRentCustomer,
-    double rentAmount,
-    int rentDueDay,
+    @JsonKey(name: 'rentAmount', readValue: _readRentAmount) double rentAmount,
+    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay) int rentDueDay,
     bool isDeleted,
     String? deletedAt,
     String? deletedBy,
@@ -813,10 +817,11 @@ class __$$CustomerImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$CustomerImpl extends _Customer {
+
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
+class _$CustomerImpl implements _Customer {
   const _$CustomerImpl({
-    required this.id,
+    this.id = '',
     required this.name,
     required this.customerId,
     required this.number,
@@ -827,7 +832,7 @@ class _$CustomerImpl extends _Customer {
     this.note = '',
     this.role = '',
     this.status = 'active',
-    this.customerType = '',
+    this.customerType = 'Active AMC',
     this.avatarUrl = '',
     this.deviceName = '',
     this.deviceInstalledOn = '',
@@ -835,22 +840,25 @@ class _$CustomerImpl extends _Customer {
     this.deviceFilterHealth = 1.0,
     this.totalVisits = 0,
     this.activeAmc = false,
-    this.customerValue = '',
+    this.customerValue = '0',
     this.openTickets = 0,
     final List<ServiceActivity> serviceHistory = const [],
+    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
     this.isRentCustomer = false,
+    @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
     this.rentAmount = 0.0,
+    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
     this.rentDueDay = 1,
     this.isDeleted = false,
     this.deletedAt,
     this.deletedBy,
-  }) : _serviceHistory = serviceHistory,
-       super._();
+  }) : _serviceHistory = serviceHistory;
 
   factory _$CustomerImpl.fromJson(Map<String, dynamic> json) =>
       _$$CustomerImplFromJson(json);
 
   @override
+  @JsonKey()
   final String id;
   @override
   final String name;
@@ -918,17 +926,15 @@ class _$CustomerImpl extends _Customer {
     return EqualUnmodifiableListView(_serviceHistory);
   }
 
-  // Rent support
   @override
-  @JsonKey()
+  @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
   final bool isRentCustomer;
   @override
-  @JsonKey()
+  @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
   final double rentAmount;
   @override
-  @JsonKey()
+  @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
   final int rentDueDay;
-  // Soft delete support
   @override
   @JsonKey()
   final bool isDeleted;
@@ -1046,9 +1052,9 @@ class _$CustomerImpl extends _Customer {
   }
 }
 
-abstract class _Customer extends Customer {
+abstract class _Customer implements Customer {
   const factory _Customer({
-    required final String id,
+    final String id,
     required final String name,
     required final String customerId,
     required final String number,
@@ -1070,14 +1076,16 @@ abstract class _Customer extends Customer {
     final String customerValue,
     final int openTickets,
     final List<ServiceActivity> serviceHistory,
+    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
     final bool isRentCustomer,
+    @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
     final double rentAmount,
+    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
     final int rentDueDay,
     final bool isDeleted,
     final String? deletedAt,
     final String? deletedBy,
   }) = _$CustomerImpl;
-  const _Customer._() : super._();
 
   factory _Customer.fromJson(Map<String, dynamic> json) =
       _$CustomerImpl.fromJson;
@@ -1125,13 +1133,16 @@ abstract class _Customer extends Customer {
   @override
   int get openTickets;
   @override
-  List<ServiceActivity> get serviceHistory; // Rent support
+  List<ServiceActivity> get serviceHistory;
   @override
+  @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
   bool get isRentCustomer;
   @override
+  @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
   double get rentAmount;
   @override
-  int get rentDueDay; // Soft delete support
+  @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
+  int get rentDueDay;
   @override
   bool get isDeleted;
   @override
