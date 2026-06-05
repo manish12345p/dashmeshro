@@ -1,7 +1,7 @@
 <div align="center">
   <img src="assets/logo.jpg" width="150" height="150" alt="Dashmesh Mechanix Logo">
   <h1>Dashmesh Mechanix</h1>
-  <p><strong>A Modern, Comprehensive Management App for RO & Water Purifier Field Service</strong></p>
+  <p><strong>A Modern, CRM App for RO & Water Purifier Field Service</strong></p>
 </div>
 
 <br>
