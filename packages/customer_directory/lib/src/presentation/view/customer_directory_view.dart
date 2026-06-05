@@ -35,10 +35,7 @@ class CustomerDirectoryView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: context.colors.background,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.menu, color: context.colors.textSecondary),
-            onPressed: () {},
-          ),
+          automaticallyImplyLeading: false,
           title: Text(
             'Dashmesh Mechanix',
             style: TextStyle(

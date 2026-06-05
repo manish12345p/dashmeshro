@@ -30,10 +30,7 @@ class EmiPageView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: context.colors.background,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.menu, color: context.colors.textPrimary),
-            onPressed: () {},
-          ),
+          automaticallyImplyLeading: false,
           title: Text(
             'Dashmesh Mechanix',
             style: TextStyle(
