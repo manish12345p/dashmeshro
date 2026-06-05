@@ -74,10 +74,29 @@ class CustomerDirectoryBloc
     if (query.isEmpty) return customers;
     final lowercaseQuery = query.toLowerCase();
     return customers.where((c) {
-      return c.name.toLowerCase().contains(lowercaseQuery) ||
-          c.customerId.toLowerCase().contains(lowercaseQuery) ||
-          c.locality.toLowerCase().contains(lowercaseQuery) ||
-          c.roType.toLowerCase().contains(lowercaseQuery);
+      final mapData = c.toMap();
+      bool match = false;
+      for (var entry in mapData.entries) {
+        final keyLower = entry.key.toLowerCase();
+        // Skip purely numeric/date fields or fields we shouldn't search
+        if (keyLower.contains('amount') ||
+            keyLower.contains('date') ||
+            keyLower.contains('time') ||
+            keyLower.contains('health') ||
+            keyLower.contains('visit') ||
+            keyLower.contains('deletedat')) {
+          continue;
+        }
+
+        final val = entry.value;
+        if (val != null) {
+          if (val.toString().toLowerCase().contains(lowercaseQuery)) {
+            match = true;
+            break;
+          }
+        }
+      }
+      return match;
     }).toList();
   }
 
