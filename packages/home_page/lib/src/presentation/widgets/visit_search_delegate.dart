@@ -87,19 +87,19 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
     return docs.where((doc) {
       final data = doc.data() as Map<String, dynamic>? ?? {};
 
-      // Search customer-level fields: name, address, phone, customer_type
+      // Search customer-level fields: name, address, phone, ro_type
       final name = (data['name'] as String? ?? '').toLowerCase();
       final address = (data['address'] as String? ?? '').toLowerCase();
       final phone =
           (data['number'] as String? ?? data['phone'] as String? ?? '')
               .toLowerCase();
-      final customerType = (data['customer_type'] as String? ?? '')
+      final roType = (data['ro_type'] as String? ?? '')
           .toLowerCase();
 
       if (name.contains(q) ||
           address.contains(q) ||
           phone.contains(q) ||
-          customerType.contains(q)) {
+          roType.contains(q)) {
         return true;
       }
 
@@ -164,7 +164,7 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
         final phone =
             data['number'] as String? ?? data['phone'] as String? ?? 'N/A';
         final address = data['address'] as String? ?? 'No address';
-        final customerType = data['customer_type'] as String? ?? '';
+        final roType = data['ro_type'] as String? ?? '';
 
         return Card(
           elevation: 0,
@@ -229,7 +229,7 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
                     ),
                   ],
                 ),
-                if (customerType.isNotEmpty) ...[
+                if (roType.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Row(
                     children: [
@@ -240,7 +240,7 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        customerType,
+                        roType,
                         style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,

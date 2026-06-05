@@ -72,31 +72,21 @@ class CustomerDirectoryBloc
 
   List<Customer> _filterCustomers(List<Customer> customers, String query) {
     if (query.isEmpty) return customers;
-    final lowercaseQuery = query.toLowerCase();
+    final lowercaseQuery = query.toLowerCase().trim();
     return customers.where((c) {
-      final mapData = c.toJson();
-      bool match = false;
-      for (var entry in mapData.entries) {
-        final keyLower = entry.key.toLowerCase();
-        // Skip purely numeric/date fields or fields we shouldn't search
-        if (keyLower.contains('amount') ||
-            keyLower.contains('date') ||
-            keyLower.contains('time') ||
-            keyLower.contains('health') ||
-            keyLower.contains('visit') ||
-            keyLower.contains('deletedat')) {
-          continue;
-        }
+      final nameMatches = c.name.toLowerCase().contains(lowercaseQuery);
+      final numberMatches = c.number.toLowerCase().contains(lowercaseQuery);
+      final addressMatches = c.address.toLowerCase().contains(lowercaseQuery);
+      final localityMatches = c.locality.toLowerCase().contains(lowercaseQuery);
+      final roTypeMatches = c.roType.toLowerCase().contains(lowercaseQuery);
+      final customerIdMatches = c.customerId.toLowerCase().contains(lowercaseQuery);
 
-        final val = entry.value;
-        if (val != null) {
-          if (val.toString().toLowerCase().contains(lowercaseQuery)) {
-            match = true;
-            break;
-          }
-        }
-      }
-      return match;
+      return nameMatches ||
+          numberMatches ||
+          addressMatches ||
+          localityMatches ||
+          roTypeMatches ||
+          customerIdMatches;
     }).toList();
   }
 

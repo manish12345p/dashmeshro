@@ -18,6 +18,15 @@ GoRouter createAppRouter({
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
+    redirect: (context, state) {
+      if (state.uri.toString().startsWith('/emi')) {
+        final role = context.read<RoleCubit>().state;
+        if (role != AppRole.admin) {
+          return '/';
+        }
+      }
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',

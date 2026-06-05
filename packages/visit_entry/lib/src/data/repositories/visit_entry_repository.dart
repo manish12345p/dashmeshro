@@ -12,6 +12,7 @@ class VisitEntryRepository implements IVisitEntryRepository {
   Future<void> createVisitEntry(
     VisitRecord entry, {
     double? emiAmountPerMonth,
+    int? totalAmcVisitsToPurchase,
   }) async {
     final collectionRef = _firestore
         .collection('Customer')
@@ -30,6 +31,31 @@ class VisitEntryRepository implements IVisitEntryRepository {
       ..['notificationDate'] = notificationDate.toIso8601String();
 
     await collectionRef.doc(docId).set(data);
+
+    // AMC tracking logic
+    if (entry.serviceType.toLowerCase().contains('amc')) {
+      final custDocRef = _firestore.collection('Customer').doc(entry.customerId);
+      await _firestore.runTransaction((transaction) async {
+        final snap = await transaction.get(custDocRef);
+        if (snap.exists) {
+          final customerData = snap.data()!;
+          int remaining = customerData['remainingAmcVisits'] ?? customerData['remaining_amc_visits'] ?? 0;
+          if (remaining > 0) {
+            transaction.update(custDocRef, {
+              'remainingAmcVisits': remaining - 1,
+              'remaining_amc_visits': remaining - 1,
+            });
+          } else if (totalAmcVisitsToPurchase != null && totalAmcVisitsToPurchase > 0) {
+            transaction.update(custDocRef, {
+              'totalAmcVisits': totalAmcVisitsToPurchase,
+              'total_amc_visits': totalAmcVisitsToPurchase,
+              'remainingAmcVisits': totalAmcVisitsToPurchase - 1,
+              'remaining_amc_visits': totalAmcVisitsToPurchase - 1,
+            });
+          }
+        }
+      });
+    }
 
     // Record payment if amountPaid > 0
     if (entry.amountPaid > 0) {

@@ -57,13 +57,15 @@ class CustomerSelectorWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12),
-                Text(
-                  '1. Identify Customer',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: darkPrimary,
-                    letterSpacing: -0.3,
+                Expanded(
+                  child: Text(
+                    '1. Identify Customer',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: darkPrimary,
+                      letterSpacing: -0.3,
+                    ),
                   ),
                 ),
               ],
@@ -92,7 +94,7 @@ class CustomerSelectorWidget extends StatelessWidget {
                 }
                 // Update bloc with arbitrary text in case user doesn't select from list
                 context.read<VisitEntryBloc>().add(
-                  SelectCustomer(textEditingValue.text, textEditingValue.text),
+                  SelectCustomer(textEditingValue.text, textEditingValue.text, 0),
                 );
 
                 final repo = sl<IVisitEntryRepository>();
@@ -104,10 +106,12 @@ class CustomerSelectorWidget extends StatelessWidget {
               displayStringForOption: (Map<String, dynamic> option) =>
                   option['name'] ?? '',
               onSelected: (Map<String, dynamic> selection) {
+                final remainingAmc = selection['remainingAmcVisits'] ?? selection['remaining_amc_visits'] ?? 0;
                 context.read<VisitEntryBloc>().add(
                   SelectCustomer(
                     selection['id'] as String,
                     selection['name'] as String? ?? '',
+                    remainingAmc as int,
                   ),
                 );
               },

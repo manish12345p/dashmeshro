@@ -371,31 +371,14 @@ mixin _$Customer {
   String get name => throw _privateConstructorUsedError;
   String get customerId => throw _privateConstructorUsedError;
   String get number => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
   String get locality => throw _privateConstructorUsedError;
   String get roType => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
-  String get role => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
-  String get customerType => throw _privateConstructorUsedError;
-  String get avatarUrl => throw _privateConstructorUsedError;
-  String get deviceName => throw _privateConstructorUsedError;
-  String get deviceInstalledOn => throw _privateConstructorUsedError;
-  String get deviceLastService => throw _privateConstructorUsedError;
-  double get deviceFilterHealth => throw _privateConstructorUsedError;
-  int get totalVisits => throw _privateConstructorUsedError;
-  bool get activeAmc => throw _privateConstructorUsedError;
-  String get customerValue => throw _privateConstructorUsedError;
-  int get openTickets => throw _privateConstructorUsedError;
   List<ServiceActivity> get serviceHistory =>
       throw _privateConstructorUsedError;
-  @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-  bool get isRentCustomer => throw _privateConstructorUsedError;
-  @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
-  double get rentAmount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
-  int get rentDueDay => throw _privateConstructorUsedError;
+  int get totalAmcVisits => throw _privateConstructorUsedError;
+  int get remainingAmcVisits => throw _privateConstructorUsedError;
   bool get isDeleted => throw _privateConstructorUsedError;
   String? get deletedAt => throw _privateConstructorUsedError;
   String? get deletedBy => throw _privateConstructorUsedError;
@@ -420,28 +403,13 @@ abstract class $CustomerCopyWith<$Res> {
     String name,
     String customerId,
     String number,
-    String email,
     String address,
     String locality,
     String roType,
     String note,
-    String role,
-    String status,
-    String customerType,
-    String avatarUrl,
-    String deviceName,
-    String deviceInstalledOn,
-    String deviceLastService,
-    double deviceFilterHealth,
-    int totalVisits,
-    bool activeAmc,
-    String customerValue,
-    int openTickets,
     List<ServiceActivity> serviceHistory,
-    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-    bool isRentCustomer,
-    @JsonKey(name: 'rentAmount', readValue: _readRentAmount) double rentAmount,
-    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay) int rentDueDay,
+    int totalAmcVisits,
+    int remainingAmcVisits,
     bool isDeleted,
     String? deletedAt,
     String? deletedBy,
@@ -467,27 +435,13 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
     Object? name = null,
     Object? customerId = null,
     Object? number = null,
-    Object? email = null,
     Object? address = null,
     Object? locality = null,
     Object? roType = null,
     Object? note = null,
-    Object? role = null,
-    Object? status = null,
-    Object? customerType = null,
-    Object? avatarUrl = null,
-    Object? deviceName = null,
-    Object? deviceInstalledOn = null,
-    Object? deviceLastService = null,
-    Object? deviceFilterHealth = null,
-    Object? totalVisits = null,
-    Object? activeAmc = null,
-    Object? customerValue = null,
-    Object? openTickets = null,
     Object? serviceHistory = null,
-    Object? isRentCustomer = null,
-    Object? rentAmount = null,
-    Object? rentDueDay = null,
+    Object? totalAmcVisits = null,
+    Object? remainingAmcVisits = null,
     Object? isDeleted = null,
     Object? deletedAt = freezed,
     Object? deletedBy = freezed,
@@ -510,10 +464,6 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
                 ? _value.number
                 : number // ignore: cast_nullable_to_non_nullable
                       as String,
-            email: null == email
-                ? _value.email
-                : email // ignore: cast_nullable_to_non_nullable
-                      as String,
             address: null == address
                 ? _value.address
                 : address // ignore: cast_nullable_to_non_nullable
@@ -530,69 +480,17 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
                 ? _value.note
                 : note // ignore: cast_nullable_to_non_nullable
                       as String,
-            role: null == role
-                ? _value.role
-                : role // ignore: cast_nullable_to_non_nullable
-                      as String,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as String,
-            customerType: null == customerType
-                ? _value.customerType
-                : customerType // ignore: cast_nullable_to_non_nullable
-                      as String,
-            avatarUrl: null == avatarUrl
-                ? _value.avatarUrl
-                : avatarUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            deviceName: null == deviceName
-                ? _value.deviceName
-                : deviceName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            deviceInstalledOn: null == deviceInstalledOn
-                ? _value.deviceInstalledOn
-                : deviceInstalledOn // ignore: cast_nullable_to_non_nullable
-                      as String,
-            deviceLastService: null == deviceLastService
-                ? _value.deviceLastService
-                : deviceLastService // ignore: cast_nullable_to_non_nullable
-                      as String,
-            deviceFilterHealth: null == deviceFilterHealth
-                ? _value.deviceFilterHealth
-                : deviceFilterHealth // ignore: cast_nullable_to_non_nullable
-                      as double,
-            totalVisits: null == totalVisits
-                ? _value.totalVisits
-                : totalVisits // ignore: cast_nullable_to_non_nullable
-                      as int,
-            activeAmc: null == activeAmc
-                ? _value.activeAmc
-                : activeAmc // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            customerValue: null == customerValue
-                ? _value.customerValue
-                : customerValue // ignore: cast_nullable_to_non_nullable
-                      as String,
-            openTickets: null == openTickets
-                ? _value.openTickets
-                : openTickets // ignore: cast_nullable_to_non_nullable
-                      as int,
             serviceHistory: null == serviceHistory
                 ? _value.serviceHistory
                 : serviceHistory // ignore: cast_nullable_to_non_nullable
                       as List<ServiceActivity>,
-            isRentCustomer: null == isRentCustomer
-                ? _value.isRentCustomer
-                : isRentCustomer // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            rentAmount: null == rentAmount
-                ? _value.rentAmount
-                : rentAmount // ignore: cast_nullable_to_non_nullable
-                      as double,
-            rentDueDay: null == rentDueDay
-                ? _value.rentDueDay
-                : rentDueDay // ignore: cast_nullable_to_non_nullable
+            totalAmcVisits: null == totalAmcVisits
+                ? _value.totalAmcVisits
+                : totalAmcVisits // ignore: cast_nullable_to_non_nullable
+                      as int,
+            remainingAmcVisits: null == remainingAmcVisits
+                ? _value.remainingAmcVisits
+                : remainingAmcVisits // ignore: cast_nullable_to_non_nullable
                       as int,
             isDeleted: null == isDeleted
                 ? _value.isDeleted
@@ -626,28 +524,13 @@ abstract class _$$CustomerImplCopyWith<$Res>
     String name,
     String customerId,
     String number,
-    String email,
     String address,
     String locality,
     String roType,
     String note,
-    String role,
-    String status,
-    String customerType,
-    String avatarUrl,
-    String deviceName,
-    String deviceInstalledOn,
-    String deviceLastService,
-    double deviceFilterHealth,
-    int totalVisits,
-    bool activeAmc,
-    String customerValue,
-    int openTickets,
     List<ServiceActivity> serviceHistory,
-    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-    bool isRentCustomer,
-    @JsonKey(name: 'rentAmount', readValue: _readRentAmount) double rentAmount,
-    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay) int rentDueDay,
+    int totalAmcVisits,
+    int remainingAmcVisits,
     bool isDeleted,
     String? deletedAt,
     String? deletedBy,
@@ -672,27 +555,13 @@ class __$$CustomerImplCopyWithImpl<$Res>
     Object? name = null,
     Object? customerId = null,
     Object? number = null,
-    Object? email = null,
     Object? address = null,
     Object? locality = null,
     Object? roType = null,
     Object? note = null,
-    Object? role = null,
-    Object? status = null,
-    Object? customerType = null,
-    Object? avatarUrl = null,
-    Object? deviceName = null,
-    Object? deviceInstalledOn = null,
-    Object? deviceLastService = null,
-    Object? deviceFilterHealth = null,
-    Object? totalVisits = null,
-    Object? activeAmc = null,
-    Object? customerValue = null,
-    Object? openTickets = null,
     Object? serviceHistory = null,
-    Object? isRentCustomer = null,
-    Object? rentAmount = null,
-    Object? rentDueDay = null,
+    Object? totalAmcVisits = null,
+    Object? remainingAmcVisits = null,
     Object? isDeleted = null,
     Object? deletedAt = freezed,
     Object? deletedBy = freezed,
@@ -715,10 +584,6 @@ class __$$CustomerImplCopyWithImpl<$Res>
             ? _value.number
             : number // ignore: cast_nullable_to_non_nullable
                   as String,
-        email: null == email
-            ? _value.email
-            : email // ignore: cast_nullable_to_non_nullable
-                  as String,
         address: null == address
             ? _value.address
             : address // ignore: cast_nullable_to_non_nullable
@@ -735,69 +600,17 @@ class __$$CustomerImplCopyWithImpl<$Res>
             ? _value.note
             : note // ignore: cast_nullable_to_non_nullable
                   as String,
-        role: null == role
-            ? _value.role
-            : role // ignore: cast_nullable_to_non_nullable
-                  as String,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as String,
-        customerType: null == customerType
-            ? _value.customerType
-            : customerType // ignore: cast_nullable_to_non_nullable
-                  as String,
-        avatarUrl: null == avatarUrl
-            ? _value.avatarUrl
-            : avatarUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        deviceName: null == deviceName
-            ? _value.deviceName
-            : deviceName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        deviceInstalledOn: null == deviceInstalledOn
-            ? _value.deviceInstalledOn
-            : deviceInstalledOn // ignore: cast_nullable_to_non_nullable
-                  as String,
-        deviceLastService: null == deviceLastService
-            ? _value.deviceLastService
-            : deviceLastService // ignore: cast_nullable_to_non_nullable
-                  as String,
-        deviceFilterHealth: null == deviceFilterHealth
-            ? _value.deviceFilterHealth
-            : deviceFilterHealth // ignore: cast_nullable_to_non_nullable
-                  as double,
-        totalVisits: null == totalVisits
-            ? _value.totalVisits
-            : totalVisits // ignore: cast_nullable_to_non_nullable
-                  as int,
-        activeAmc: null == activeAmc
-            ? _value.activeAmc
-            : activeAmc // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        customerValue: null == customerValue
-            ? _value.customerValue
-            : customerValue // ignore: cast_nullable_to_non_nullable
-                  as String,
-        openTickets: null == openTickets
-            ? _value.openTickets
-            : openTickets // ignore: cast_nullable_to_non_nullable
-                  as int,
         serviceHistory: null == serviceHistory
             ? _value._serviceHistory
             : serviceHistory // ignore: cast_nullable_to_non_nullable
                   as List<ServiceActivity>,
-        isRentCustomer: null == isRentCustomer
-            ? _value.isRentCustomer
-            : isRentCustomer // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        rentAmount: null == rentAmount
-            ? _value.rentAmount
-            : rentAmount // ignore: cast_nullable_to_non_nullable
-                  as double,
-        rentDueDay: null == rentDueDay
-            ? _value.rentDueDay
-            : rentDueDay // ignore: cast_nullable_to_non_nullable
+        totalAmcVisits: null == totalAmcVisits
+            ? _value.totalAmcVisits
+            : totalAmcVisits // ignore: cast_nullable_to_non_nullable
+                  as int,
+        remainingAmcVisits: null == remainingAmcVisits
+            ? _value.remainingAmcVisits
+            : remainingAmcVisits // ignore: cast_nullable_to_non_nullable
                   as int,
         isDeleted: null == isDeleted
             ? _value.isDeleted
@@ -825,30 +638,13 @@ class _$CustomerImpl implements _Customer {
     required this.name,
     required this.customerId,
     required this.number,
-    this.email = '',
     this.address = '',
     this.locality = '',
     this.roType = '',
     this.note = '',
-    this.role = '',
-    this.status = 'active',
-    this.customerType = 'Active AMC',
-    this.avatarUrl = '',
-    this.deviceName = '',
-    this.deviceInstalledOn = '',
-    this.deviceLastService = '',
-    this.deviceFilterHealth = 1.0,
-    this.totalVisits = 0,
-    this.activeAmc = false,
-    this.customerValue = '0',
-    this.openTickets = 0,
     final List<ServiceActivity> serviceHistory = const [],
-    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-    this.isRentCustomer = false,
-    @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
-    this.rentAmount = 0.0,
-    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
-    this.rentDueDay = 1,
+    this.totalAmcVisits = 0,
+    this.remainingAmcVisits = 0,
     this.isDeleted = false,
     this.deletedAt,
     this.deletedBy,
@@ -868,9 +664,6 @@ class _$CustomerImpl implements _Customer {
   final String number;
   @override
   @JsonKey()
-  final String email;
-  @override
-  @JsonKey()
   final String address;
   @override
   @JsonKey()
@@ -881,42 +674,6 @@ class _$CustomerImpl implements _Customer {
   @override
   @JsonKey()
   final String note;
-  @override
-  @JsonKey()
-  final String role;
-  @override
-  @JsonKey()
-  final String status;
-  @override
-  @JsonKey()
-  final String customerType;
-  @override
-  @JsonKey()
-  final String avatarUrl;
-  @override
-  @JsonKey()
-  final String deviceName;
-  @override
-  @JsonKey()
-  final String deviceInstalledOn;
-  @override
-  @JsonKey()
-  final String deviceLastService;
-  @override
-  @JsonKey()
-  final double deviceFilterHealth;
-  @override
-  @JsonKey()
-  final int totalVisits;
-  @override
-  @JsonKey()
-  final bool activeAmc;
-  @override
-  @JsonKey()
-  final String customerValue;
-  @override
-  @JsonKey()
-  final int openTickets;
   final List<ServiceActivity> _serviceHistory;
   @override
   @JsonKey()
@@ -927,14 +684,11 @@ class _$CustomerImpl implements _Customer {
   }
 
   @override
-  @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-  final bool isRentCustomer;
+  @JsonKey()
+  final int totalAmcVisits;
   @override
-  @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
-  final double rentAmount;
-  @override
-  @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
-  final int rentDueDay;
+  @JsonKey()
+  final int remainingAmcVisits;
   @override
   @JsonKey()
   final bool isDeleted;
@@ -945,7 +699,7 @@ class _$CustomerImpl implements _Customer {
 
   @override
   String toString() {
-    return 'Customer(id: $id, name: $name, customerId: $customerId, number: $number, email: $email, address: $address, locality: $locality, roType: $roType, note: $note, role: $role, status: $status, customerType: $customerType, avatarUrl: $avatarUrl, deviceName: $deviceName, deviceInstalledOn: $deviceInstalledOn, deviceLastService: $deviceLastService, deviceFilterHealth: $deviceFilterHealth, totalVisits: $totalVisits, activeAmc: $activeAmc, customerValue: $customerValue, openTickets: $openTickets, serviceHistory: $serviceHistory, isRentCustomer: $isRentCustomer, rentAmount: $rentAmount, rentDueDay: $rentDueDay, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
+    return 'Customer(id: $id, name: $name, customerId: $customerId, number: $number, address: $address, locality: $locality, roType: $roType, note: $note, serviceHistory: $serviceHistory, totalAmcVisits: $totalAmcVisits, remainingAmcVisits: $remainingAmcVisits, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
   }
 
   @override
@@ -958,44 +712,19 @@ class _$CustomerImpl implements _Customer {
             (identical(other.customerId, customerId) ||
                 other.customerId == customerId) &&
             (identical(other.number, number) || other.number == number) &&
-            (identical(other.email, email) || other.email == email) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.locality, locality) ||
                 other.locality == locality) &&
             (identical(other.roType, roType) || other.roType == roType) &&
             (identical(other.note, note) || other.note == note) &&
-            (identical(other.role, role) || other.role == role) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.customerType, customerType) ||
-                other.customerType == customerType) &&
-            (identical(other.avatarUrl, avatarUrl) ||
-                other.avatarUrl == avatarUrl) &&
-            (identical(other.deviceName, deviceName) ||
-                other.deviceName == deviceName) &&
-            (identical(other.deviceInstalledOn, deviceInstalledOn) ||
-                other.deviceInstalledOn == deviceInstalledOn) &&
-            (identical(other.deviceLastService, deviceLastService) ||
-                other.deviceLastService == deviceLastService) &&
-            (identical(other.deviceFilterHealth, deviceFilterHealth) ||
-                other.deviceFilterHealth == deviceFilterHealth) &&
-            (identical(other.totalVisits, totalVisits) ||
-                other.totalVisits == totalVisits) &&
-            (identical(other.activeAmc, activeAmc) ||
-                other.activeAmc == activeAmc) &&
-            (identical(other.customerValue, customerValue) ||
-                other.customerValue == customerValue) &&
-            (identical(other.openTickets, openTickets) ||
-                other.openTickets == openTickets) &&
             const DeepCollectionEquality().equals(
               other._serviceHistory,
               _serviceHistory,
             ) &&
-            (identical(other.isRentCustomer, isRentCustomer) ||
-                other.isRentCustomer == isRentCustomer) &&
-            (identical(other.rentAmount, rentAmount) ||
-                other.rentAmount == rentAmount) &&
-            (identical(other.rentDueDay, rentDueDay) ||
-                other.rentDueDay == rentDueDay) &&
+            (identical(other.totalAmcVisits, totalAmcVisits) ||
+                other.totalAmcVisits == totalAmcVisits) &&
+            (identical(other.remainingAmcVisits, remainingAmcVisits) ||
+                other.remainingAmcVisits == remainingAmcVisits) &&
             (identical(other.isDeleted, isDeleted) ||
                 other.isDeleted == isDeleted) &&
             (identical(other.deletedAt, deletedAt) ||
@@ -1006,37 +735,23 @@ class _$CustomerImpl implements _Customer {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hashAll([
+  int get hashCode => Object.hash(
     runtimeType,
     id,
     name,
     customerId,
     number,
-    email,
     address,
     locality,
     roType,
     note,
-    role,
-    status,
-    customerType,
-    avatarUrl,
-    deviceName,
-    deviceInstalledOn,
-    deviceLastService,
-    deviceFilterHealth,
-    totalVisits,
-    activeAmc,
-    customerValue,
-    openTickets,
     const DeepCollectionEquality().hash(_serviceHistory),
-    isRentCustomer,
-    rentAmount,
-    rentDueDay,
+    totalAmcVisits,
+    remainingAmcVisits,
     isDeleted,
     deletedAt,
     deletedBy,
-  ]);
+  );
 
   /// Create a copy of Customer
   /// with the given fields replaced by the non-null parameter values.
@@ -1058,30 +773,13 @@ abstract class _Customer implements Customer {
     required final String name,
     required final String customerId,
     required final String number,
-    final String email,
     final String address,
     final String locality,
     final String roType,
     final String note,
-    final String role,
-    final String status,
-    final String customerType,
-    final String avatarUrl,
-    final String deviceName,
-    final String deviceInstalledOn,
-    final String deviceLastService,
-    final double deviceFilterHealth,
-    final int totalVisits,
-    final bool activeAmc,
-    final String customerValue,
-    final int openTickets,
     final List<ServiceActivity> serviceHistory,
-    @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-    final bool isRentCustomer,
-    @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
-    final double rentAmount,
-    @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
-    final int rentDueDay,
+    final int totalAmcVisits,
+    final int remainingAmcVisits,
     final bool isDeleted,
     final String? deletedAt,
     final String? deletedBy,
@@ -1099,8 +797,6 @@ abstract class _Customer implements Customer {
   @override
   String get number;
   @override
-  String get email;
-  @override
   String get address;
   @override
   String get locality;
@@ -1109,40 +805,11 @@ abstract class _Customer implements Customer {
   @override
   String get note;
   @override
-  String get role;
-  @override
-  String get status;
-  @override
-  String get customerType;
-  @override
-  String get avatarUrl;
-  @override
-  String get deviceName;
-  @override
-  String get deviceInstalledOn;
-  @override
-  String get deviceLastService;
-  @override
-  double get deviceFilterHealth;
-  @override
-  int get totalVisits;
-  @override
-  bool get activeAmc;
-  @override
-  String get customerValue;
-  @override
-  int get openTickets;
-  @override
   List<ServiceActivity> get serviceHistory;
   @override
-  @JsonKey(name: 'isRentCustomer', readValue: _readIsRentCustomer)
-  bool get isRentCustomer;
+  int get totalAmcVisits;
   @override
-  @JsonKey(name: 'rentAmount', readValue: _readRentAmount)
-  double get rentAmount;
-  @override
-  @JsonKey(name: 'rentDueDay', readValue: _readRentDueDay)
-  int get rentDueDay;
+  int get remainingAmcVisits;
   @override
   bool get isDeleted;
   @override

@@ -36,300 +36,275 @@ class HomeRepository implements IHomeRepository {
       return Stream.value(_getInitialMockData());
     }
 
-    final customersStream = firestore.collection('Customer').snapshots();
-    return customersStream
-        .asyncMap((QuerySnapshot customersSnap) async {
-          // 1. Process Customers
-          int activeAmcs = 0;
-          int activeRentals = 0;
-          int newSells = 0;
-          List<AmcProgress> progresses = [];
+    final customersStream = firestore
+        .collection('Customer')
+        .where('is_deleted', isEqualTo: false)
+        .snapshots();
 
-          for (var doc in customersSnap.docs) {
-            final data = doc.data() as Map<String, dynamic>;
-            final type = data['customer_type'] as String? ?? '';
-            if (type == 'Active AMC') {
-              activeAmcs++;
-              if (progresses.length < 5) {
-                progresses.add(
-                  AmcProgress(
-                    companyName: data['name'] as String? ?? 'Unknown',
-                    progress:
-                        (data['device_filter_health'] as num?)?.toDouble() ??
-                        0.5,
-                    statusText:
-                        'Filter health ${((data['device_filter_health'] as num? ?? 0) * 100).toInt()}%',
-                    isUrgent:
-                        (data['device_filter_health'] as num? ?? 1.0) < 0.3,
-                  ),
-                );
-              }
-            } else if (type == 'Rental Customer') {
-              activeRentals++;
-            } else if (type == 'Recent Purchase') {
-              newSells++;
+    final servicesStream = firestore.collectionGroup('services').snapshots();
+    final installmentsStream =
+        firestore.collectionGroup('installments').snapshots();
+
+    return Rx.combineLatest3(
+      customersStream,
+      servicesStream,
+      installmentsStream,
+      (
+        QuerySnapshot customersSnap,
+        QuerySnapshot servicesSnap,
+        QuerySnapshot installmentsSnap,
+      ) {
+        // 1. Process Customers
+        Map<String, Map<String, dynamic>> customerDataById = {};
+        for (var doc in customersSnap.docs) {
+          customerDataById[doc.id] = doc.data() as Map<String, dynamic>;
+        }
+
+        int activeAmcs = 0;
+        int activeRentals = 0;
+        int newSells = 0;
+        List<AmcProgress> progresses = [];
+
+        // In the Excel data, customer type logic relies more on service types now
+        // But we can check 'ro_type' just in case.
+        for (var doc in customersSnap.docs) {
+          final data = doc.data() as Map<String, dynamic>;
+          final roType = (data['ro_type'] as String? ?? '').toLowerCase();
+          
+          if (roType.contains('amc')) {
+             activeAmcs++;
+          }
+        }
+
+        // 2. Process Service Entries
+        int pendingComplaintsCount = 0;
+        int totalServicesCount = 0;
+        int amcServicesCount = 0;
+        int newRoServicesCount = 0;
+        int repairServicesCount = 0;
+
+        int todayNewSells = 0;
+        int weekNewSells = 0;
+        int lastWeekNewSells = 0;
+
+        List<ScheduleItem> todaySchedules = [];
+        List<ComplaintItem> pendingComplaints = [];
+
+        final now = DateTime.now();
+        final todayStr = now.toIso8601String().split('T')[0];
+        final currentMonthStr =
+            '${now.year}-${now.month.toString().padLeft(2, '0')}';
+
+        double totalCollectedThisMonth = 0.0;
+        List<NotificationItem> todayNotifications = [];
+        List<ExpiryItem> expiringItems = [];
+        List<PendingPaymentItem> pendingPayments = [];
+
+        // Process Rent installments
+        for (var idoc in installmentsSnap.docs) {
+          final idata = idoc.data() as Map<String, dynamic>;
+          final isRent = idata['isRent'] as bool? ?? false;
+          final status = idata['status'] as String? ?? 'pending';
+          final dueDateStr = idata['dueDate'] as String? ?? '';
+          
+          // Determine parent customer ID by stripping the last segment of the path
+          // Document path is like: Customer/{customerId}/installments/{installmentId}
+          final custId = idoc.reference.parent.parent?.id ?? '';
+          
+          final custData = customerDataById[custId];
+          final customerName = custData?['name'] as String? ?? 'Unknown';
+          final phone = custData?['number'] as String? ?? '';
+
+          if (isRent && (status == 'pending' || status == 'overdue')) {
+            if (dueDateStr.isNotEmpty) {
+              try {
+                final dueDate = DateTime.parse(dueDateStr);
+                if (dueDate.year == now.year &&
+                    dueDate.month == now.month &&
+                    (dueDate.isBefore(now) ||
+                        dueDateStr.startsWith(todayStr))) {
+                  todayNotifications.add(
+                    NotificationItem(
+                      customerName: customerName,
+                      customerId: custId,
+                      address: custData?['address'] as String? ?? '',
+                      serviceType: 'Rent Due',
+                      serviceId: idoc.id,
+                      notificationDate: dueDateStr,
+                      isDismissed: false,
+                      phone: phone,
+                    ),
+                  );
+                }
+              } catch (_) {}
             }
           }
+        }
 
-          // 2. Process Service Entries
-          int pendingComplaintsCount = 0;
-          int totalComplaints = 0;
-          int resolvedComplaints = 0;
-          int totalServicesCount = 0;
-          int amcServicesCount = 0;
-          int newRoServicesCount = 0;
-          int repairServicesCount = 0;
+        for (var sdoc in servicesSnap.docs) {
+          final data = sdoc.data() as Map<String, dynamic>;
+          final custId = sdoc.reference.parent.parent?.id ?? '';
+          final custData = customerDataById[custId];
+          
+          final type =
+              (data['serviceType'] as String? ?? data['service_type'] as String? ?? '').toLowerCase().trim();
+          final status = data['status'] as String? ?? '';
+          final date =
+              data['serviceDate'] as String? ?? data['service_date'] as String? ?? '';
 
-          int todayNewSells = 0;
-          int weekNewSells = 0;
-          int lastWeekNewSells = 0;
-
-          List<ScheduleItem> todaySchedules = [];
-          List<ComplaintItem> pendingComplaints = [];
-
-          final now = DateTime.now();
-          final todayStr = now.toIso8601String().split('T')[0];
-          final currentMonthStr =
-              '${now.year}-${now.month.toString().padLeft(2, '0')}';
-
-          double totalCollectedThisMonth = 0.0;
-
-          // Fetch services and installments for each customer
-          List<Map<String, dynamic>> allServices = [];
-          List<Map<String, dynamic>> allInstallments = [];
-          Map<String, Map<String, dynamic>> customerDataById = {};
-          for (var doc in customersSnap.docs) {
-            customerDataById[doc.id] = doc.data() as Map<String, dynamic>;
-            final servicesSnap = await doc.reference
-                .collection('services')
-                .get();
-            for (var sdoc in servicesSnap.docs) {
-              final sdata = sdoc.data();
-              sdata['_customerId'] = doc.id;
-              sdata['_serviceDocId'] = sdoc.id;
-              allServices.add(sdata);
-            }
-
-            final installmentsSnap = await doc.reference
-                .collection('installments')
-                .get();
-            for (var idoc in installmentsSnap.docs) {
-              final idata = idoc.data();
-              idata['_customerId'] = doc.id;
-              idata['_installmentDocId'] = idoc.id;
-              allInstallments.add(idata);
-            }
+          if (date.startsWith(currentMonthStr)) {
+            totalCollectedThisMonth += (data['amountPaid'] as num? ?? 0.0).toDouble();
           }
 
-          List<NotificationItem> todayNotifications = [];
-          List<ExpiryItem> expiringItems = [];
-          List<PendingPaymentItem> pendingPayments = [];
+          totalServicesCount++;
+          
+          // Categorize Service
+          if (type.contains('amc')) {
+            amcServicesCount++;
+          } else if (type.contains('new ro')) {
+            newRoServicesCount++;
 
-          // Process Rent installments for notifications
-          for (var idata in allInstallments) {
-            final isRent = idata['isRent'] as bool? ?? false;
-            final status = idata['status'] as String? ?? 'pending';
-            final dueDateStr = idata['dueDate'] as String? ?? '';
-            final custId = idata['_customerId'] as String? ?? '';
-            final custData = customerDataById[custId];
-            final customerName = custData?['name'] as String? ?? 'Unknown';
-            final phone = custData?['number'] as String? ?? '';
-
-            if (isRent && (status == 'pending' || status == 'overdue')) {
-              if (dueDateStr.isNotEmpty) {
-                try {
-                  final dueDate = DateTime.parse(dueDateStr);
-                  // If due date is today or earlier in the current month, show notification
-                  if (dueDate.year == now.year &&
-                      dueDate.month == now.month &&
-                      (dueDate.isBefore(now) ||
-                          dueDateStr.startsWith(todayStr))) {
-                    todayNotifications.add(
-                      NotificationItem(
-                        customerName: customerName,
-                        customerId: custId,
-                        address: custData?['address'] as String? ?? '',
-                        serviceType: 'Rent Due',
-                        serviceId: idata['_installmentDocId'] as String? ?? '',
-                        notificationDate: dueDateStr,
-                        isDismissed: false,
-                        phone: phone,
-                      ),
-                    );
-                  }
-                } catch (_) {}
-              }
+            if (date.startsWith(todayStr)) {
+              todayNewSells++;
             }
+            if (date.isNotEmpty) {
+              try {
+                final serviceDate = DateTime.parse(date);
+                final daysDifference = now.difference(serviceDate).inDays;
+                if (daysDifference >= 0 && daysDifference <= 7) {
+                  weekNewSells++;
+                } else if (daysDifference > 7 && daysDifference <= 14) {
+                  lastWeekNewSells++;
+                }
+              } catch (_) {}
+            }
+          } else if (type.contains('service') || type.contains('repair')) {
+            // Service, Repair
+            repairServicesCount++;
           }
 
-          for (var data in allServices) {
-            final type =
-                data['serviceType'] as String? ??
-                data['service_type'] as String? ??
-                '';
-            final status = data['status'] as String? ?? '';
-            final date =
-                data['serviceDate'] as String? ??
-                data['service_date'] as String? ??
-                '';
-
-            if (date.startsWith(currentMonthStr)) {
-              totalCollectedThisMonth += (data['amountPaid'] as num? ?? 0.0)
-                  .toDouble();
-            }
-
-            totalServicesCount++;
-            if (type == 'AMC') {
-              amcServicesCount++;
-            } else if (type == 'New RO' || type == 'Sell') {
-              newRoServicesCount++;
-
-              if (date.startsWith(todayStr)) {
-                todayNewSells++;
-              }
-              if (date.isNotEmpty) {
-                try {
-                  final serviceDate = DateTime.parse(date);
-                  final daysDifference = now.difference(serviceDate).inDays;
-                  if (daysDifference >= 0 && daysDifference <= 7) {
-                    weekNewSells++;
-                  } else if (daysDifference > 7 && daysDifference <= 14) {
-                    lastWeekNewSells++;
-                  }
-                } catch (_) {}
-              }
-            } else if (type == 'Service' || type == 'Repair') {
-              repairServicesCount++;
-            }
-
-            if (date == todayStr || status == 'in_progress') {
-              if (todaySchedules.length < 5) {
-                todaySchedules.add(
-                  ScheduleItem(
-                    title: '$type - ${data['customer_name'] ?? 'Unknown'}',
-                    subtitle: data['remarks'] as String? ?? 'No remarks',
-                    time: date,
-                    isUrgent: status == 'in_progress',
-                  ),
-                );
-              }
-            }
-
-            // Check notificationDate
-            final notifDate = data['notificationDate'] as String? ?? '';
-            final custId = data['_customerId'] as String? ?? '';
-            final custData = customerDataById[custId];
-            final customerName =
-                custData?['name'] as String? ??
-                data['customer_name'] as String? ??
-                'Unknown';
-            final phone = custData?['number'] as String? ?? '';
-
-            if (notifDate.startsWith(todayStr)) {
-              todayNotifications.add(
-                NotificationItem(
-                  customerName: customerName,
-                  customerId: custId,
-                  address: custData?['address'] as String? ?? '',
-                  serviceType: type,
-                  serviceId: data['_serviceDocId'] as String? ?? '',
-                  notificationDate: notifDate,
-                  isDismissed: data['isDismissed'] as bool? ?? false,
-                  phone: phone,
+          if (date == todayStr || status == 'in_progress') {
+            if (todaySchedules.length < 5) {
+              todaySchedules.add(
+                ScheduleItem(
+                  title: '${data['serviceType']} - ${data['customer_name'] ?? custData?['name'] ?? 'Unknown'}',
+                  subtitle: data['remarks'] as String? ?? 'No remarks',
+                  time: date,
+                  isUrgent: status == 'in_progress',
                 ),
               );
             }
+          }
 
-            // Check expiries
-            final serviceDuration = data['serviceDuration'] as String? ?? '';
-            final guaranteeDuration =
-                data['guaranteeDuration'] as String? ?? '';
+          // Check notificationDate
+          final notifDate = data['notificationDate'] as String? ?? '';
+          final customerName =
+              custData?['name'] as String? ??
+              data['customer_name'] as String? ??
+              'Unknown';
+          final phone = custData?['number'] as String? ?? '';
 
-            final serviceExpiry = _calculateExpiry(date, serviceDuration);
-            final guaranteeExpiry = _calculateExpiry(date, guaranteeDuration);
+          if (notifDate.startsWith(todayStr)) {
+            todayNotifications.add(
+              NotificationItem(
+                customerName: customerName,
+                customerId: custId,
+                address: custData?['address'] as String? ?? '',
+                serviceType: data['serviceType'] as String? ?? '',
+                serviceId: sdoc.id,
+                notificationDate: notifDate,
+                isDismissed: data['isDismissed'] as bool? ?? false,
+                phone: phone,
+              ),
+            );
+          }
 
-            if (serviceExpiry != null) {
-              final diff = serviceExpiry.difference(now).inDays;
-              if (diff <= 7 && diff >= -30) {
-                expiringItems.add(
-                  ExpiryItem(
-                    customerName: customerName,
-                    customerId: custId,
-                    type: 'Service',
-                    expiryDate: serviceExpiry.toIso8601String().split('T')[0],
-                    phone: phone,
-                  ),
-                );
-              }
-            }
+          // Check expiries
+          final serviceDuration = data['serviceDuration'] as String? ?? '';
+          final guaranteeDuration = data['guaranteeDuration'] as String? ?? '';
 
-            if (guaranteeExpiry != null) {
-              final diff = guaranteeExpiry.difference(now).inDays;
-              if (diff <= 7 && diff >= -30) {
-                expiringItems.add(
-                  ExpiryItem(
-                    customerName: customerName,
-                    customerId: custId,
-                    type: 'Guarantee',
-                    expiryDate: guaranteeExpiry.toIso8601String().split('T')[0],
-                    phone: phone,
-                  ),
-                );
-              }
-            }
+          final serviceExpiry = _calculateExpiry(date, serviceDuration);
+          final guaranteeExpiry = _calculateExpiry(date, guaranteeDuration);
 
-            final amountPending =
-                (data['amountPending'] ?? data['amount_pending'] ?? 0.0) as num;
-            if (amountPending > 0) {
-              pendingPayments.add(
-                PendingPaymentItem(
+          if (serviceExpiry != null) {
+            final diff = serviceExpiry.difference(now).inDays;
+            if (diff <= 7 && diff >= -30) {
+              expiringItems.add(
+                ExpiryItem(
                   customerName: customerName,
                   customerId: custId,
-                  amountPending: amountPending.toDouble(),
+                  type: 'Service',
+                  expiryDate: serviceExpiry.toIso8601String().split('T')[0],
                   phone: phone,
                 ),
               );
             }
           }
 
-          String growthText = '0% vs LW';
-          if (lastWeekNewSells > 0) {
-            final growth =
-                ((weekNewSells - lastWeekNewSells) / lastWeekNewSells) * 100;
-            growthText = '${growth >= 0 ? '+' : ''}${growth.round()}% vs LW';
-          } else if (weekNewSells > 0) {
-            growthText = '+100% vs LW';
+          if (guaranteeExpiry != null) {
+            final diff = guaranteeExpiry.difference(now).inDays;
+            if (diff <= 7 && diff >= -30) {
+              expiringItems.add(
+                ExpiryItem(
+                  customerName: customerName,
+                  customerId: custId,
+                  type: 'Guarantee',
+                  expiryDate: guaranteeExpiry.toIso8601String().split('T')[0],
+                  phone: phone,
+                ),
+              );
+            }
           }
 
-          // Return calculated aggregate
-          return HomeData(
-            newSells: newSells,
-            activeRentals: activeRentals,
-            activeAmcs: activeAmcs,
-            totalServices: totalServicesCount,
-            totalCollectedThisMonth: totalCollectedThisMonth,
-            amcServices: amcServicesCount,
-            newRoServices: newRoServicesCount,
-            repairServices: repairServicesCount,
-            resolutionRatePercent: 100,
-            pendingComplaintsCount: pendingComplaintsCount,
-            todaySchedules: todaySchedules,
-            pendingComplaints: pendingComplaints,
-            amcProgresses: progresses,
-            todayNotifications: todayNotifications,
-            expiringItems: expiringItems,
-            pendingPayments: pendingPayments,
-            todaySellsSummary: todayNewSells,
-            weekSellsSummary: weekNewSells,
-            projectedGrowth: growthText,
-          );
-        })
-        .handleError((error) {
-          print(
-            'Firestore error in getHomeData: $error. Falling back to mock.',
-          );
-          return _getInitialMockData();
-        });
+          final amountPending =
+              (data['amountPending'] ?? data['amount_pending'] ?? 0.0) as num;
+          if (amountPending > 0) {
+            pendingPayments.add(
+              PendingPaymentItem(
+                customerName: customerName,
+                customerId: custId,
+                amountPending: amountPending.toDouble(),
+                phone: phone,
+              ),
+            );
+          }
+        }
+
+        String growthText = '0% vs LW';
+        if (lastWeekNewSells > 0) {
+          final growth =
+              ((weekNewSells - lastWeekNewSells) / lastWeekNewSells) * 100;
+          growthText = '${growth >= 0 ? '+' : ''}${growth.round()}% vs LW';
+        } else if (weekNewSells > 0) {
+          growthText = '+100% vs LW';
+        }
+
+        return HomeData(
+          newSells: newSells,
+          activeRentals: activeRentals,
+          activeAmcs: activeAmcs,
+          totalServices: totalServicesCount,
+          totalCollectedThisMonth: totalCollectedThisMonth,
+          amcServices: amcServicesCount,
+          newRoServices: newRoServicesCount,
+          repairServices: repairServicesCount,
+          resolutionRatePercent: 100,
+          pendingComplaintsCount: pendingComplaintsCount,
+          todaySchedules: todaySchedules,
+          pendingComplaints: pendingComplaints,
+          amcProgresses: progresses,
+          todayNotifications: todayNotifications,
+          expiringItems: expiringItems,
+          pendingPayments: pendingPayments,
+          todaySellsSummary: todayNewSells,
+          weekSellsSummary: weekNewSells,
+          projectedGrowth: growthText,
+        );
+      },
+    ).handleError((error) {
+      print('Firestore error in getHomeData: $error. Falling back to mock.');
+      return _getInitialMockData();
+    });
   }
 
   HomeData _getInitialMockData() {
@@ -357,18 +332,12 @@ class HomeRepository implements IHomeRepository {
   }
 
   @override
-  Future<void> createHomeData(HomeData data) async {
-    // Dynamic calculation now, so creating static document is a no-op
-  }
+  Future<void> createHomeData(HomeData data) async {}
 
   @override
-  Future<void> updateHomeData(HomeData data) async {
-    // Dynamic calculation now, so updating static document is a no-op
-  }
+  Future<void> updateHomeData(HomeData data) async {}
 
   @override
-  Future<void> deleteHomeData(String id) async {
-    // Dynamic calculation now, so deleting static document is a no-op
-  }
+  Future<void> deleteHomeData(String id) async {}
 }
 

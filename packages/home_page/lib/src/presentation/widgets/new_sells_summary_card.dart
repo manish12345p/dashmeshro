@@ -23,11 +23,13 @@ class NewSellsSummaryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Today\'s Summary',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  'Today\'s Summary',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Icon(Icons.account_balance_wallet_outlined, color: Colors.white),
@@ -37,10 +39,12 @@ class NewSellsSummaryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Work Done',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
+              Expanded(
+                child: Text(
+                  'Work Done',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white70,
+                  ),
                 ),
               ),
               Text(

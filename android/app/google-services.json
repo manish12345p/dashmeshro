@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1081525613523",
-    "project_id": "dashmesh-mechanix-dev",
-    "storage_bucket": "dashmesh-mechanix-dev.firebasestorage.app"
+    "project_number": "426568631045",
+    "project_id": "dashmesh-mechanix",
+    "storage_bucket": "dashmesh-mechanix.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1081525613523:android:5ffd948f9b0fbcc06c7526",
+        "mobilesdk_app_id": "1:426568631045:android:745c21d158fdf506642d6c",
         "android_client_info": {
-          "package_name": "com.dev.dashmesh_ro"
+          "package_name": "com.example.dashmesh_ro"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBOllY2K6kEN6xclhrJ5QfMHCS_BlGhi44"
+          "current_key": "AIzaSyDwwO-xjnmH2BTb5WlC12va8sgrTiHTMkY"
         }
       ],
       "services": {
@@ -26,7 +26,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1081525613523:android:2e6f11a374514fe36c7526",
+        "mobilesdk_app_id": "1:426568631045:android:f64d703b5ffd133c642d6c",
         "android_client_info": {
           "package_name": "com.example.dashmeshro"
         }
@@ -34,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBOllY2K6kEN6xclhrJ5QfMHCS_BlGhi44"
+          "current_key": "AIzaSyDwwO-xjnmH2BTb5WlC12va8sgrTiHTMkY"
         }
       ],
       "services": {

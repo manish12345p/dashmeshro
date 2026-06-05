@@ -476,33 +476,12 @@ class InstallmentListItem extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        installment.isRent ? 'Rent Amount' : 'EMI Amount',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: context.colors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        currencyFormatter.format(installment.amount),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: context.colors.textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (!installment.isRent && installment.totalAmount > 0)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Total Pending',
+                          installment.isRent ? 'Rent Amount' : 'EMI Amount',
                           style: TextStyle(
                             fontSize: 12,
                             color: context.colors.textSecondary,
@@ -510,14 +489,39 @@ class InstallmentListItem extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          currencyFormatter.format(installment.totalAmount),
+                          currencyFormatter.format(installment.amount),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: context.colors.error,
+                            color: context.colors.textPrimary,
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  if (!installment.isRent && installment.totalAmount > 0)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Total Pending',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: context.colors.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            currencyFormatter.format(installment.totalAmount),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: context.colors.error,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                 ],
               ),

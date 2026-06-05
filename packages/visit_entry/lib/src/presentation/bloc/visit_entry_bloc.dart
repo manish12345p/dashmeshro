@@ -24,6 +24,8 @@ class VisitEntryState {
   final String serviceDuration;
   final String guaranteeDuration;
   final String? serviceDate;
+  final int remainingAmcVisits;
+  final int totalAmcVisitsToPurchase;
 
   const VisitEntryState({
     this.status = VisitEntryStatus.initial,
@@ -42,6 +44,8 @@ class VisitEntryState {
     this.serviceDuration = '',
     this.guaranteeDuration = '',
     this.serviceDate,
+    this.remainingAmcVisits = 0,
+    this.totalAmcVisitsToPurchase = 0,
   });
 
   // Helper to ensure serviceDate defaults to today if not provided
@@ -65,6 +69,8 @@ class VisitEntryState {
     String? serviceDuration,
     String? guaranteeDuration,
     String? serviceDate,
+    int? remainingAmcVisits,
+    int? totalAmcVisitsToPurchase,
   }) {
     return VisitEntryState(
       status: status ?? this.status,
@@ -85,6 +91,8 @@ class VisitEntryState {
       serviceDuration: serviceDuration ?? this.serviceDuration,
       guaranteeDuration: guaranteeDuration ?? this.guaranteeDuration,
       serviceDate: serviceDate ?? this.serviceDate,
+      remainingAmcVisits: remainingAmcVisits ?? this.remainingAmcVisits,
+      totalAmcVisitsToPurchase: totalAmcVisitsToPurchase ?? this.totalAmcVisitsToPurchase,
     );
   }
 }
@@ -96,15 +104,18 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     this._saveServiceUseCase, {
     String? initialCustomerId,
     String? initialCustomerName,
+    int? initialRemainingAmcVisits,
   }) : super(
          VisitEntryState(
            customerId: initialCustomerId,
            customerName: initialCustomerName,
+           remainingAmcVisits: initialRemainingAmcVisits ?? 0,
          ),
        ) {
     on<SelectCustomer>(_onSelectCustomer);
     on<SelectServiceType>(_onSelectServiceType);
     on<ToggleUrgency>(_onToggleUrgency);
+    on<UpdateTotalAmcVisitsToPurchase>(_onUpdateTotalAmcVisitsToPurchase);
     on<UpdateRemarks>(_onUpdateRemarks);
     on<UpdateFixes>(_onUpdateFixes);
     on<UpdateAmountPaid>(_onUpdateAmountPaid);
@@ -118,8 +129,19 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     on<SubmitVisitEntry>(_onSubmit);
   }
 
+  void _onUpdateTotalAmcVisitsToPurchase(
+    UpdateTotalAmcVisitsToPurchase event,
+    Emitter<VisitEntryState> emit,
+  ) {
+    emit(state.copyWith(totalAmcVisitsToPurchase: event.visits));
+  }
+
   void _onSelectCustomer(SelectCustomer event, Emitter<VisitEntryState> emit) {
-    emit(state.copyWith(customerId: event.id, customerName: event.name));
+    emit(state.copyWith(
+      customerId: event.id,
+      customerName: event.name,
+      remainingAmcVisits: event.remainingAmcVisits,
+    ));
   }
 
   void _onSelectServiceType(
@@ -261,6 +283,9 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
       await _saveServiceUseCase(
         entry,
         emiAmountPerMonth: state.emiAmountPerMonth,
+        totalAmcVisitsToPurchase: state.serviceType == 'AMC' && state.remainingAmcVisits <= 0
+            ? state.totalAmcVisitsToPurchase
+            : null,
       );
       emit(const VisitEntryState(status: VisitEntryStatus.success));
     } catch (e) {

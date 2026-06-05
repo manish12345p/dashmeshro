@@ -6,10 +6,11 @@ class SaveServiceUseCase {
 
   SaveServiceUseCase(this.repository);
 
-  Future<void> call(VisitRecord entry, {double? emiAmountPerMonth}) async {
+  Future<void> call(VisitRecord entry, {double? emiAmountPerMonth, int? totalAmcVisitsToPurchase}) async {
     return await repository.createVisitEntry(
       entry,
       emiAmountPerMonth: emiAmountPerMonth,
+      totalAmcVisitsToPurchase: totalAmcVisitsToPurchase,
     );
   }
 }

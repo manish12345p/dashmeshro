@@ -4,11 +4,12 @@ part 'visit_entry_event.freezed.dart';
 
 @freezed
 class VisitEntryEvent with _$VisitEntryEvent {
-  const factory VisitEntryEvent.selectCustomer(String id, String name) =
+  const factory VisitEntryEvent.selectCustomer(String id, String name, int remainingAmcVisits) =
       SelectCustomer;
   const factory VisitEntryEvent.selectServiceType(String type) =
       SelectServiceType;
   const factory VisitEntryEvent.toggleUrgency(bool isUrgent) = ToggleUrgency;
+  const factory VisitEntryEvent.updateTotalAmcVisitsToPurchase(int visits) = UpdateTotalAmcVisitsToPurchase;
   const factory VisitEntryEvent.updateRemarks(String remarks) = UpdateRemarks;
   const factory VisitEntryEvent.updateFixes(String fixes) = UpdateFixes;
   const factory VisitEntryEvent.updateAmountPaid(double amount) =

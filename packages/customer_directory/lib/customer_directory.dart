@@ -14,6 +14,6 @@ export 'src/domain/use_cases/get_customers_usecase.dart';
 export 'src/domain/use_cases/get_customer_by_id_usecase.dart';
 export 'src/presentation/widgets/customer_card.dart';
 export 'src/presentation/widgets/profile_header_card.dart';
-export 'src/presentation/widgets/device_card.dart';
+
 export 'src/presentation/widgets/stats_grid.dart';
 export 'src/presentation/widgets/activity_card.dart';

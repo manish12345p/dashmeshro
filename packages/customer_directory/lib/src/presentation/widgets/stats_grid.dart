@@ -9,15 +9,28 @@ class StatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: _buildStatCard(
-        context,
-        'TOTAL VISITS',
-        customer.serviceHistory.length.toString(),
-        context.colors.infoBg,
-        context.colors.primaryDark,
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: _buildStatCard(
+            context,
+            'TOTAL VISITS',
+            customer.serviceHistory.length.toString(),
+            context.colors.infoBg,
+            context.colors.primaryDark,
+          ),
+        ),
+        SizedBox(width: 12),
+        Expanded(
+          child: _buildStatCard(
+            context,
+            'REMAINING AMC',
+            customer.remainingAmcVisits.toString(),
+            context.colors.warning.withValues(alpha: 0.1),
+            context.colors.warning,
+          ),
+        ),
+      ],
     );
   }
 

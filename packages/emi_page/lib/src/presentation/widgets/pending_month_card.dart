@@ -63,9 +63,9 @@ class PendingMonthCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 4),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
             children: [
               Text(
                 currencyFormatter.format(pendingAmount),
@@ -75,7 +75,6 @@ class PendingMonthCard extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              SizedBox(width: 8),
               Text(
                 '$clientsCount clients pending',
                 style: TextStyle(

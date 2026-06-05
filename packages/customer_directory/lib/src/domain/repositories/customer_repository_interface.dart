@@ -6,4 +6,5 @@ abstract class ICustomerRepository {
   Future<String> createCustomer(Customer customer);
   Future<void> updateCustomer(Customer customer);
   Future<void> deleteCustomer(String id);
+  Future<bool> checkCustomerExistsByPhone(String phone);
 }

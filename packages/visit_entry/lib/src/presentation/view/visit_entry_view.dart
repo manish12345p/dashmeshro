@@ -15,12 +15,14 @@ class VisitEntryView extends StatelessWidget {
   final bool showBackButton;
   final String? initialCustomerId;
   final String? initialCustomerName;
+  final int? initialRemainingAmcVisits;
 
   const VisitEntryView({
     super.key,
     this.showBackButton = false,
     this.initialCustomerId,
     this.initialCustomerName,
+    this.initialRemainingAmcVisits,
   });
 
   void _showSuccessPopup(BuildContext context, String message) {
@@ -103,6 +105,7 @@ class VisitEntryView extends StatelessWidget {
         sl<SaveServiceUseCase>(),
         initialCustomerId: initialCustomerId,
         initialCustomerName: initialCustomerName,
+        initialRemainingAmcVisits: initialRemainingAmcVisits,
       ),
       child: BlocListener<VisitEntryBloc, VisitEntryState>(
         listener: (context, state) {

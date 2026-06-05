@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get_it/get_it.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:core/core.dart'; // import role cubit
 
 import '../../domain/repositories/customer_repository_interface.dart';
 import '../../data/repositories/customer_repository.dart';
@@ -64,6 +65,7 @@ class _CustomerDirectoryContent extends StatefulWidget {
 
 class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
   String _selectedFilter = 'All';
+  bool _showAll = false;
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +82,21 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
           }
           if (state is CustomerDirectoryLoaded) {
             final customers = state.filteredCustomers;
-            return SingleChildScrollView(
+            
+            int displayCount = customers.length;
+            bool showViewAllButton = false;
+            
+            if (!_showAll && customers.length > 5) {
+              displayCount = 5;
+              showViewAllButton = true;
+            }
+
+            return Padding(
               padding: EdgeInsets.fromLTRB(
                 AppPadding.p16,
                 AppPadding.p16,
                 AppPadding.p16,
-                AppPadding.p48 + 80,
+                0,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,45 +117,46 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                               ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              context.colors.primaryDark,
-                              context.colors.primary,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: [
-                            BoxShadow(
-                              color: context.colors.primaryDark.withOpacity(
-                                0.35,
-                              ),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
+                      if (context.read<RoleCubit>().state == AppRole.admin)
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                context.colors.primaryDark,
+                                context.colors.primary,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                          ],
-                        ),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
                             borderRadius: BorderRadius.circular(14),
-                            onTap: () {
-                              context.push('/customers/new');
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Icon(
-                                Icons.add_rounded,
-                                color: context.colors.surface,
-                                size: 26,
+                            boxShadow: [
+                              BoxShadow(
+                                color: context.colors.primaryDark.withValues(
+                                  alpha: 0.35,
+                                ),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(14),
+                              onTap: () {
+                                context.push('/customers/new');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Icon(
+                                  Icons.add_rounded,
+                                  color: context.colors.surface,
+                                  size: 26,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                   SizedBox(height: AppPadding.p8),
@@ -159,6 +171,10 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                   // Search Bar
                   TextField(
                     onChanged: (val) {
+                      setState(() {
+                        // Reset to show 5 when searching
+                        _showAll = false;
+                      });
                       context.read<CustomerDirectoryBloc>().add(
                         SearchCustomers(val),
                       );
@@ -190,25 +206,46 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                   SizedBox(height: AppPadding.p16),
 
                   // Customer List
-                  if (customers.isEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(top: 100),
-                      child: Center(
-                        child: Text(
-                          'No data found',
-                          style: TextStyle(
-                            color: context.colors.textTertiary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: customers.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No data found',
+                              style: TextStyle(
+                                color: context.colors.textTertiary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.only(bottom: AppPadding.p48 + 80),
+                            itemCount: displayCount + (showViewAllButton ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == displayCount && showViewAllButton) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _showAll = true;
+                                      });
+                                    },
+                                    child: Text(
+                                      'View All (${customers.length})',
+                                      style: TextStyle(
+                                        color: context.colors.primary,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                              return CustomerCard(customer: customers[index]);
+                            },
                           ),
-                        ),
-                      ),
-                    )
-                  else
-                    ...customers.map(
-                      (customer) => CustomerCard(customer: customer),
-                    ),
-                  SizedBox(height: AppPadding.p24),
+                  ),
                 ],
               ),
             );

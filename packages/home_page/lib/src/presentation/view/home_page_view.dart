@@ -14,6 +14,7 @@ import '../widgets/visit_schedule_card.dart';
 import '../widgets/visit_search_delegate.dart';
 import '../widgets/notification_dialog.dart';
 import '../widgets/expense_dialogs.dart';
+import '../widgets/manage_ro_types_dialog.dart';
 
 class HomePageView extends StatelessWidget {
   final HomeBloc? bloc;
@@ -94,15 +95,7 @@ class _HomeContent extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: AppPadding.p8),
-                          Text(
-                            AppStrings.appTitle,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1.1,
-                                  height: 1.1,
-                                ),
-                          ),
+                          const _AdminUnlockTitle(),
                           const SizedBox(width: AppPadding.p4),
                           BlocBuilder<ThemeCubit, ThemeMode>(
                             builder: (context, themeMode) {
@@ -134,6 +127,10 @@ class _HomeContent extends StatelessWidget {
                                 delegate: VisitSearchDelegate(),
                               );
                             },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.settings_outlined),
+                            onPressed: () => ManageRoTypesDialog.show(context),
                           ),
                           IconButton(
                             icon: const Icon(Icons.notifications_outlined),
@@ -258,12 +255,12 @@ class _HomeContent extends StatelessWidget {
         color: isSelected ? Colors.white : Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isSelected ? Colors.transparent : Colors.grey.withOpacity(0.3),
+          color: isSelected ? Colors.transparent : Colors.grey.withValues(alpha: 0.3),
         ),
         boxShadow: isSelected
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -277,6 +274,88 @@ class _HomeContent extends StatelessWidget {
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           fontSize: 12,
         ),
+      ),
+    );
+  }
+}
+
+class _AdminUnlockTitle extends StatefulWidget {
+  const _AdminUnlockTitle();
+
+  @override
+  State<_AdminUnlockTitle> createState() => _AdminUnlockTitleState();
+}
+
+class _AdminUnlockTitleState extends State<_AdminUnlockTitle> {
+  int _tapCount = 0;
+  DateTime? _lastTapTime;
+
+  void _handleTap() {
+    final now = DateTime.now();
+    if (_lastTapTime == null || now.difference(_lastTapTime!) > const Duration(seconds: 1)) {
+      _tapCount = 1;
+    } else {
+      _tapCount++;
+    }
+    _lastTapTime = now;
+
+    if (_tapCount == 7) {
+      _tapCount = 0;
+      _showAdminPasswordDialog();
+    }
+  }
+
+  void _showAdminPasswordDialog() {
+    final TextEditingController controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Admin Unlock'),
+        content: TextField(
+          controller: controller,
+          obscureText: true,
+          decoration: const InputDecoration(
+            hintText: 'Enter Admin Password',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final password = controller.text;
+              final unlocked = context.read<RoleCubit>().unlockAdmin(password);
+              Navigator.pop(ctx);
+              if (unlocked) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Admin Mode Unlocked')),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Incorrect Password')),
+                );
+              }
+            },
+            child: const Text('Unlock'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: Text(
+        AppStrings.appTitle,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.1,
+              height: 1.1,
+            ),
       ),
     );
   }

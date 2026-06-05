@@ -195,12 +195,14 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
                     ),
                   ),
                   SizedBox(width: 12),
-                  Text(
-                    '3. Remarks & Date',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                  Expanded(
+                    child: Text(
+                      '3. Remarks & Date',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
                   ),
                 ],

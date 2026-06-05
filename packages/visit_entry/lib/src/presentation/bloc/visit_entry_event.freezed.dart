@@ -19,9 +19,11 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$VisitEntryEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -36,9 +38,11 @@ mixin _$VisitEntryEvent {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -53,9 +57,11 @@ mixin _$VisitEntryEvent {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -74,6 +80,8 @@ mixin _$VisitEntryEvent {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -94,6 +102,8 @@ mixin _$VisitEntryEvent {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -111,6 +121,8 @@ mixin _$VisitEntryEvent {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -155,7 +167,7 @@ abstract class _$$SelectCustomerImplCopyWith<$Res> {
     $Res Function(_$SelectCustomerImpl) then,
   ) = __$$SelectCustomerImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, int remainingAmcVisits});
 }
 
 /// @nodoc
@@ -171,7 +183,11 @@ class __$$SelectCustomerImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? name = null}) {
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? remainingAmcVisits = null,
+  }) {
     return _then(
       _$SelectCustomerImpl(
         null == id
@@ -182,6 +198,10 @@ class __$$SelectCustomerImplCopyWithImpl<$Res>
             ? _value.name
             : name // ignore: cast_nullable_to_non_nullable
                   as String,
+        null == remainingAmcVisits
+            ? _value.remainingAmcVisits
+            : remainingAmcVisits // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -190,16 +210,18 @@ class __$$SelectCustomerImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SelectCustomerImpl implements SelectCustomer {
-  const _$SelectCustomerImpl(this.id, this.name);
+  const _$SelectCustomerImpl(this.id, this.name, this.remainingAmcVisits);
 
   @override
   final String id;
   @override
   final String name;
+  @override
+  final int remainingAmcVisits;
 
   @override
   String toString() {
-    return 'VisitEntryEvent.selectCustomer(id: $id, name: $name)';
+    return 'VisitEntryEvent.selectCustomer(id: $id, name: $name, remainingAmcVisits: $remainingAmcVisits)';
   }
 
   @override
@@ -208,11 +230,13 @@ class _$SelectCustomerImpl implements SelectCustomer {
         (other.runtimeType == runtimeType &&
             other is _$SelectCustomerImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.remainingAmcVisits, remainingAmcVisits) ||
+                other.remainingAmcVisits == remainingAmcVisits));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, remainingAmcVisits);
 
   /// Create a copy of VisitEntryEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -228,9 +252,11 @@ class _$SelectCustomerImpl implements SelectCustomer {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -243,15 +269,17 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
-    return selectCustomer(id, name);
+    return selectCustomer(id, name, remainingAmcVisits);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -264,15 +292,17 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
-    return selectCustomer?.call(id, name);
+    return selectCustomer?.call(id, name, remainingAmcVisits);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -287,7 +317,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult orElse(),
   }) {
     if (selectCustomer != null) {
-      return selectCustomer(id, name);
+      return selectCustomer(id, name, remainingAmcVisits);
     }
     return orElse();
   }
@@ -298,6 +328,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -322,6 +354,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -343,6 +377,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -364,11 +400,15 @@ class _$SelectCustomerImpl implements SelectCustomer {
 }
 
 abstract class SelectCustomer implements VisitEntryEvent {
-  const factory SelectCustomer(final String id, final String name) =
-      _$SelectCustomerImpl;
+  const factory SelectCustomer(
+    final String id,
+    final String name,
+    final int remainingAmcVisits,
+  ) = _$SelectCustomerImpl;
 
   String get id;
   String get name;
+  int get remainingAmcVisits;
 
   /// Create a copy of VisitEntryEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -450,9 +490,11 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -471,9 +513,11 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -492,9 +536,11 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -520,6 +566,8 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -544,6 +592,8 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -565,6 +615,8 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -668,9 +720,11 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -689,9 +743,11 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -710,9 +766,11 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -738,6 +796,8 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -762,6 +822,8 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -783,6 +845,8 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -813,6 +877,248 @@ abstract class ToggleUrgency implements VisitEntryEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ToggleUrgencyImplCopyWith<_$ToggleUrgencyImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateTotalAmcVisitsToPurchaseImplCopyWith<$Res> {
+  factory _$$UpdateTotalAmcVisitsToPurchaseImplCopyWith(
+    _$UpdateTotalAmcVisitsToPurchaseImpl value,
+    $Res Function(_$UpdateTotalAmcVisitsToPurchaseImpl) then,
+  ) = __$$UpdateTotalAmcVisitsToPurchaseImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int visits});
+}
+
+/// @nodoc
+class __$$UpdateTotalAmcVisitsToPurchaseImplCopyWithImpl<$Res>
+    extends
+        _$VisitEntryEventCopyWithImpl<
+          $Res,
+          _$UpdateTotalAmcVisitsToPurchaseImpl
+        >
+    implements _$$UpdateTotalAmcVisitsToPurchaseImplCopyWith<$Res> {
+  __$$UpdateTotalAmcVisitsToPurchaseImplCopyWithImpl(
+    _$UpdateTotalAmcVisitsToPurchaseImpl _value,
+    $Res Function(_$UpdateTotalAmcVisitsToPurchaseImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? visits = null}) {
+    return _then(
+      _$UpdateTotalAmcVisitsToPurchaseImpl(
+        null == visits
+            ? _value.visits
+            : visits // ignore: cast_nullable_to_non_nullable
+                  as int,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$UpdateTotalAmcVisitsToPurchaseImpl
+    implements UpdateTotalAmcVisitsToPurchase {
+  const _$UpdateTotalAmcVisitsToPurchaseImpl(this.visits);
+
+  @override
+  final int visits;
+
+  @override
+  String toString() {
+    return 'VisitEntryEvent.updateTotalAmcVisitsToPurchase(visits: $visits)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateTotalAmcVisitsToPurchaseImpl &&
+            (identical(other.visits, visits) || other.visits == visits));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, visits);
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateTotalAmcVisitsToPurchaseImplCopyWith<
+    _$UpdateTotalAmcVisitsToPurchaseImpl
+  >
+  get copyWith =>
+      __$$UpdateTotalAmcVisitsToPurchaseImplCopyWithImpl<
+        _$UpdateTotalAmcVisitsToPurchaseImpl
+      >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
+    required TResult Function(String type) selectServiceType,
+    required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
+    required TResult Function(String remarks) updateRemarks,
+    required TResult Function(String fixes) updateFixes,
+    required TResult Function(double amount) updateAmountPaid,
+    required TResult Function(double amount) updateAmountPending,
+    required TResult Function(double amount) updateTotalAmount,
+    required TResult Function(String equipments) updateEquipmentsUsed,
+    required TResult Function(String duration) updateServiceDuration,
+    required TResult Function(String duration) updateGuaranteeDuration,
+    required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(String date) setDate,
+    required TResult Function() submit,
+  }) {
+    return updateTotalAmcVisitsToPurchase(visits);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
+    TResult? Function(String type)? selectServiceType,
+    TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
+    TResult? Function(String remarks)? updateRemarks,
+    TResult? Function(String fixes)? updateFixes,
+    TResult? Function(double amount)? updateAmountPaid,
+    TResult? Function(double amount)? updateAmountPending,
+    TResult? Function(double amount)? updateTotalAmount,
+    TResult? Function(String equipments)? updateEquipmentsUsed,
+    TResult? Function(String duration)? updateServiceDuration,
+    TResult? Function(String duration)? updateGuaranteeDuration,
+    TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(String date)? setDate,
+    TResult? Function()? submit,
+  }) {
+    return updateTotalAmcVisitsToPurchase?.call(visits);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
+    TResult Function(String type)? selectServiceType,
+    TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
+    TResult Function(String remarks)? updateRemarks,
+    TResult Function(String fixes)? updateFixes,
+    TResult Function(double amount)? updateAmountPaid,
+    TResult Function(double amount)? updateAmountPending,
+    TResult Function(double amount)? updateTotalAmount,
+    TResult Function(String equipments)? updateEquipmentsUsed,
+    TResult Function(String duration)? updateServiceDuration,
+    TResult Function(String duration)? updateGuaranteeDuration,
+    TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(String date)? setDate,
+    TResult Function()? submit,
+    required TResult orElse(),
+  }) {
+    if (updateTotalAmcVisitsToPurchase != null) {
+      return updateTotalAmcVisitsToPurchase(visits);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(SelectServiceType value) selectServiceType,
+    required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
+    required TResult Function(UpdateRemarks value) updateRemarks,
+    required TResult Function(UpdateFixes value) updateFixes,
+    required TResult Function(UpdateAmountPaid value) updateAmountPaid,
+    required TResult Function(UpdateAmountPending value) updateAmountPending,
+    required TResult Function(UpdateTotalAmount value) updateTotalAmount,
+    required TResult Function(UpdateEquipmentsUsed value) updateEquipmentsUsed,
+    required TResult Function(UpdateServiceDuration value)
+    updateServiceDuration,
+    required TResult Function(UpdateGuaranteeDuration value)
+    updateGuaranteeDuration,
+    required TResult Function(UpdateEmiAmountPerMonth value)
+    updateEmiAmountPerMonth,
+    required TResult Function(SetDate value) setDate,
+    required TResult Function(SubmitVisitEntry value) submit,
+  }) {
+    return updateTotalAmcVisitsToPurchase(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(SelectServiceType value)? selectServiceType,
+    TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
+    TResult? Function(UpdateRemarks value)? updateRemarks,
+    TResult? Function(UpdateFixes value)? updateFixes,
+    TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
+    TResult? Function(UpdateAmountPending value)? updateAmountPending,
+    TResult? Function(UpdateTotalAmount value)? updateTotalAmount,
+    TResult? Function(UpdateEquipmentsUsed value)? updateEquipmentsUsed,
+    TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
+    TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
+    TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(SetDate value)? setDate,
+    TResult? Function(SubmitVisitEntry value)? submit,
+  }) {
+    return updateTotalAmcVisitsToPurchase?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(SelectServiceType value)? selectServiceType,
+    TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
+    TResult Function(UpdateRemarks value)? updateRemarks,
+    TResult Function(UpdateFixes value)? updateFixes,
+    TResult Function(UpdateAmountPaid value)? updateAmountPaid,
+    TResult Function(UpdateAmountPending value)? updateAmountPending,
+    TResult Function(UpdateTotalAmount value)? updateTotalAmount,
+    TResult Function(UpdateEquipmentsUsed value)? updateEquipmentsUsed,
+    TResult Function(UpdateServiceDuration value)? updateServiceDuration,
+    TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
+    TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(SetDate value)? setDate,
+    TResult Function(SubmitVisitEntry value)? submit,
+    required TResult orElse(),
+  }) {
+    if (updateTotalAmcVisitsToPurchase != null) {
+      return updateTotalAmcVisitsToPurchase(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdateTotalAmcVisitsToPurchase implements VisitEntryEvent {
+  const factory UpdateTotalAmcVisitsToPurchase(final int visits) =
+      _$UpdateTotalAmcVisitsToPurchaseImpl;
+
+  int get visits;
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UpdateTotalAmcVisitsToPurchaseImplCopyWith<
+    _$UpdateTotalAmcVisitsToPurchaseImpl
+  >
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -885,9 +1191,11 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -906,9 +1214,11 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -927,9 +1237,11 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -955,6 +1267,8 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -979,6 +1293,8 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1000,6 +1316,8 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1102,9 +1420,11 @@ class _$UpdateFixesImpl implements UpdateFixes {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -1123,9 +1443,11 @@ class _$UpdateFixesImpl implements UpdateFixes {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -1144,9 +1466,11 @@ class _$UpdateFixesImpl implements UpdateFixes {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -1172,6 +1496,8 @@ class _$UpdateFixesImpl implements UpdateFixes {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -1196,6 +1522,8 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1217,6 +1545,8 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1322,9 +1652,11 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -1343,9 +1675,11 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -1364,9 +1698,11 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -1392,6 +1728,8 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -1416,6 +1754,8 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1437,6 +1777,8 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1542,9 +1884,11 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -1563,9 +1907,11 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -1584,9 +1930,11 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -1612,6 +1960,8 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -1636,6 +1986,8 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1657,6 +2009,8 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1763,9 +2117,11 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -1784,9 +2140,11 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -1805,9 +2163,11 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -1833,6 +2193,8 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -1857,6 +2219,8 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1878,6 +2242,8 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -1986,9 +2352,11 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -2007,9 +2375,11 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -2028,9 +2398,11 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -2056,6 +2428,8 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -2080,6 +2454,8 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2101,6 +2477,8 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2209,9 +2587,11 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -2230,9 +2610,11 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -2251,9 +2633,11 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -2279,6 +2663,8 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -2303,6 +2689,8 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2324,6 +2712,8 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2431,9 +2821,11 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -2452,9 +2844,11 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -2473,9 +2867,11 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -2501,6 +2897,8 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -2525,6 +2923,8 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2546,6 +2946,8 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2652,9 +3054,11 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -2673,9 +3077,11 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -2694,9 +3100,11 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -2722,6 +3130,8 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -2746,6 +3156,8 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2767,6 +3179,8 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2870,9 +3284,11 @@ class _$SetDateImpl implements SetDate {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -2891,9 +3307,11 @@ class _$SetDateImpl implements SetDate {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -2912,9 +3330,11 @@ class _$SetDateImpl implements SetDate {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -2940,6 +3360,8 @@ class _$SetDateImpl implements SetDate {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -2964,6 +3386,8 @@ class _$SetDateImpl implements SetDate {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -2985,6 +3409,8 @@ class _$SetDateImpl implements SetDate {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -3060,9 +3486,11 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
     required TResult Function(double amount) updateAmountPaid,
@@ -3081,9 +3509,11 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
     TResult? Function(double amount)? updateAmountPaid,
@@ -3102,9 +3532,11 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
     TResult Function(double amount)? updateAmountPaid,
@@ -3130,6 +3562,8 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
     required TResult Function(UpdateFixes value) updateFixes,
     required TResult Function(UpdateAmountPaid value) updateAmountPaid,
@@ -3154,6 +3588,8 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
     TResult? Function(UpdateFixes value)? updateFixes,
     TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
@@ -3175,6 +3611,8 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
     TResult Function(UpdateFixes value)? updateFixes,
     TResult Function(UpdateAmountPaid value)? updateAmountPaid,

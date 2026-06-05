@@ -13,7 +13,8 @@ import '../bloc/customer_details_event.dart';
 import '../bloc/customer_details_state.dart';
 import '../../domain/entities/customer.dart';
 import '../widgets/profile_header_card.dart';
-import '../widgets/device_card.dart';
+import 'package:core/core.dart'; // import app_role
+
 import '../widgets/stats_grid.dart';
 import '../widgets/activity_card.dart';
 
@@ -497,33 +498,34 @@ class _PendingAmountCard extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: 12),
-                                InkWell(
-                                  onTap: () {
-                                    _showPartialPaymentDialog(
-                                      context,
-                                      bloc,
-                                      doc,
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: context.colors.success,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      'Pay',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
+                                if (context.read<RoleCubit>().state == AppRole.admin)
+                                  InkWell(
+                                    onTap: () {
+                                      _showPartialPaymentDialog(
+                                        context,
+                                        bloc,
+                                        doc,
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: context.colors.success,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        'Pay',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                           ],

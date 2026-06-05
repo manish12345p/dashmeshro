@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
+import 'package:core/core.dart'; // import app_role
+import 'package:flutter_bloc/flutter_bloc.dart'; // import bloc
 import '../theme/app_colors.dart';
 
 class AppNavigationScaffold extends StatelessWidget {
@@ -8,28 +10,23 @@ class AppNavigationScaffold extends StatelessWidget {
 
   const AppNavigationScaffold({super.key, required this.child});
 
-  int _calculateSelectedIndex(BuildContext context) {
+  int _calculateSelectedIndex(BuildContext context, bool isAdmin) {
     final String location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/customers')) return 1;
-    if (location.startsWith('/emi')) return 2;
-    if (location.startsWith('/service')) return 3;
+    if (isAdmin && location.startsWith('/emi')) return 2;
+    if (location.startsWith('/service')) return isAdmin ? 3 : 2;
     return 0; // Default to Home ('/')
   }
 
-  void _onItemTapped(int index, BuildContext context) {
-    switch (index) {
-      case 0:
-        context.go('/');
-        break;
-      case 1:
-        context.go('/customers');
-        break;
-      case 2:
-        context.go('/emi');
-        break;
-      case 3:
-        context.go('/service');
-        break;
+  void _onItemTapped(int index, BuildContext context, bool isAdmin) {
+    if (index == 0) {
+      context.go('/');
+    } else if (index == 1) {
+      context.go('/customers');
+    } else if (isAdmin && index == 2) {
+      context.go('/emi');
+    } else if ((isAdmin && index == 3) || (!isAdmin && index == 2)) {
+      context.go('/service');
     }
   }
 
@@ -38,40 +35,46 @@ class AppNavigationScaffold extends StatelessWidget {
     // Using the custom enterprise AppColors extension we built earlier!
     final colors = context.colors;
 
-    return Scaffold(
-      extendBody: true, // Required for the crystal floating effect
-      body: child,
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: 10),
-        child: CrystalNavigationBar(
-          currentIndex: _calculateSelectedIndex(context),
-          onTap: (index) => _onItemTapped(index, context),
-          indicatorColor: colors.primary,
-          backgroundColor: colors.surface.withOpacity(0.85),
-          selectedItemColor: colors.primary,
-          unselectedItemColor: colors.textSecondary,
-          splashBorderRadius: 30,
-          items: [
-            CrystalNavigationBarItem(
-              icon: Icons.home_rounded,
-              selectedColor: colors.primary,
-            ),
+    return BlocBuilder<RoleCubit, AppRole>(
+      builder: (context, role) {
+        final isAdmin = role == AppRole.admin;
 
-            CrystalNavigationBarItem(
-              icon: Icons.people_rounded,
-              selectedColor: colors.primary,
+        return Scaffold(
+          extendBody: true, // Required for the crystal floating effect
+          body: child,
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: CrystalNavigationBar(
+              currentIndex: _calculateSelectedIndex(context, isAdmin),
+              onTap: (index) => _onItemTapped(index, context, isAdmin),
+              indicatorColor: colors.primary,
+              backgroundColor: colors.surface.withValues(alpha: 0.85),
+              selectedItemColor: colors.primary,
+              unselectedItemColor: colors.textSecondary,
+              splashBorderRadius: 30,
+              items: [
+                CrystalNavigationBarItem(
+                  icon: Icons.home_rounded,
+                  selectedColor: colors.primary,
+                ),
+                CrystalNavigationBarItem(
+                  icon: Icons.people_rounded,
+                  selectedColor: colors.primary,
+                ),
+                if (isAdmin)
+                  CrystalNavigationBarItem(
+                    icon: Icons.calculate_rounded,
+                    selectedColor: colors.primary,
+                  ),
+                CrystalNavigationBarItem(
+                  icon: Icons.design_services_rounded,
+                  selectedColor: colors.primary,
+                ),
+              ],
             ),
-            CrystalNavigationBarItem(
-              icon: Icons.calculate_rounded,
-              selectedColor: colors.primary,
-            ),
-            CrystalNavigationBarItem(
-              icon: Icons.design_services_rounded,
-              selectedColor: colors.primary,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

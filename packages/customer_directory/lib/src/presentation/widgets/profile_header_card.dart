@@ -39,20 +39,6 @@ class ProfileHeaderCard extends StatelessWidget {
                 color: context.colors.textPrimary,
               ),
             ),
-            SizedBox(height: 6),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  customer.role,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: context.colors.primaryDark,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
             SizedBox(height: 24),
 
             // Contact Info Fields
