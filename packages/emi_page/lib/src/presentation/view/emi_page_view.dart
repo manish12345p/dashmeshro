@@ -32,7 +32,7 @@ class EmiPageView extends StatelessWidget {
           elevation: 0,
           automaticallyImplyLeading: false,
           title: Text(
-            'Dashmesh Mechanix',
+            AppStrings.emiAppTitle,
             style: TextStyle(
               color: context.colors.textPrimary,
               fontSize: 18,
@@ -53,12 +53,16 @@ class EmiPageView extends StatelessWidget {
               }
 
               if (state.status == EmiStatus.failure) {
-                return Center(child: Text('Error: ${state.errorMessage}'));
+                return Center(
+                  child: Text(
+                    '${AppStrings.genericError}: ${state.errorMessage}',
+                  ),
+                );
               }
 
               final data = state.data;
               if (data == null) {
-                return const Center(child: Text('No data found'));
+                return const Center(child: Text(AppStrings.noDataFound));
               }
 
               final today = DateTime.now();
@@ -154,9 +158,9 @@ class EmiPageView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        'Total paid this month: ₹${data.collectedThisMonth.toStringAsFixed(0)}',
+                        '${AppStrings.totalPaidThisMonth}: ₹${data.collectedThisMonth.toStringAsFixed(0)}',
                         style: TextStyle(
-                          color: Colors.blue.shade700,
+                          color: context.colors.primary,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -170,8 +174,11 @@ class EmiPageView extends StatelessWidget {
                           context.read<EmiBloc>().add(SearchInstallments(val));
                         },
                         decoration: InputDecoration(
-                          hintText: 'Search pending or overdue...',
-                          prefixIcon: const Icon(Icons.search),
+                          hintText: AppStrings.searchPendingOrOverdue,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: context.colors.textSecondary,
+                          ),
                           filled: true,
                           fillColor: context.colors.surface,
                           border: OutlineInputBorder(
@@ -220,7 +227,7 @@ class EmiPageView extends StatelessWidget {
                     const SizedBox(height: 24),
                     _buildCustomerNamesList(
                       context: context,
-                      title: 'Overdue Customers',
+                      title: AppStrings.overdueCustomers,
                       installments: data.activeInstallments.where((i) {
                         return i.status == 'overdue';
                       }).toList(),
@@ -229,7 +236,7 @@ class EmiPageView extends StatelessWidget {
                     const SizedBox(height: 16),
                     _buildCustomerNamesList(
                       context: context,
-                      title: 'Pending Customers',
+                      title: AppStrings.pendingCustomers,
                       installments: data.activeInstallments.where((i) {
                         if (i.status != 'pending') return false;
                         try {
@@ -242,7 +249,7 @@ class EmiPageView extends StatelessWidget {
                         } catch (_) {}
                         return false;
                       }).toList(),
-                      color: Colors.orange,
+                      color: context.colors.warning,
                     ),
                     const SizedBox(
                       height: 120,
@@ -284,7 +291,7 @@ class EmiPageView extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '(None)',
+              AppStrings.none,
               style: TextStyle(
                 color: context.colors.textTertiary,
                 fontSize: 14,

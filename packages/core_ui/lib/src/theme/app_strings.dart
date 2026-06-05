@@ -70,6 +70,17 @@ class AppStrings {
   static const String errorValidAmount = 'Please enter a valid amount';
   static const String successExpenseSaved = 'Expense saved!';
 
+  // EMI Page
+  static const String emiAppTitle = 'Dashmesh Mechanix';
+  static const String noDataFound = 'No data found';
+  static const String totalPaidThisMonth = 'Total paid this month';
+  static const String searchPendingOrOverdue = 'Search pending or overdue...';
+  static const String overdueCustomers = 'Overdue Customers';
+  static const String pendingCustomers = 'Pending Customers';
+  static const String none = '(None)';
+  static const String confirmPartialPayment = 'Confirm Partial Payment';
+  static const String confirm = 'Confirm';
+
   // Common Errors
   static const String genericError = 'Something went wrong';
 }

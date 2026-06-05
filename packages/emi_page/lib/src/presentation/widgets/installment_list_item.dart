@@ -333,7 +333,7 @@ class InstallmentListItem extends StatelessWidget {
                             width: 6,
                             height: 6,
                             decoration: BoxDecoration(
-                              color: Colors.orange,
+                              color: context.colors.warning,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -341,7 +341,7 @@ class InstallmentListItem extends StatelessWidget {
                           Text(
                             'Pending',
                             style: TextStyle(
-                              color: Colors.orange,
+                              color: context.colors.warning,
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
                             ),
@@ -441,7 +441,7 @@ class InstallmentListItem extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -559,20 +559,18 @@ class InstallmentListItem extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       final amount = double.tryParse(controller.text) ?? 0.0;
-                      if (amount <= 0) return;
-
-                      if (amount < installment.amount) {
+                      if (amount > 0 && amount < installment.amount) {
                         showDialog(
                           context: sheetContext,
                           builder: (confirmCtx) => AlertDialog(
-                            title: const Text('Confirm Partial Payment'),
+                            title: const Text(AppStrings.confirmPartialPayment),
                             content: Text(
                               'The amount is ₹${installment.amount.toStringAsFixed(0)}, but you entered ₹${amount.toStringAsFixed(0)}. Are you sure you want to pay less?',
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(confirmCtx),
-                                child: const Text('Cancel'),
+                                child: const Text(AppStrings.cancel),
                               ),
                               TextButton(
                                 onPressed: () {
@@ -580,7 +578,7 @@ class InstallmentListItem extends StatelessWidget {
                                   Navigator.pop(sheetContext);
                                   onAddPayment(amount);
                                 },
-                                child: const Text('Confirm'),
+                                child: const Text(AppStrings.confirm),
                               ),
                             ],
                           ),
@@ -597,10 +595,10 @@ class InstallmentListItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Pay Now',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
