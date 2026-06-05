@@ -145,57 +145,59 @@ class _HomeContent extends StatelessWidget {
 
                   // Top Summary Cards
                   SummaryCard(
-                    overlineText: 'Total Visits',
+                    overlineText: AppStrings.totalVisits,
                     valueText: '${data.totalServices}',
-                    subtitleText: 'Overall visits',
-                    trailingIcon: const Icon(
+                    subtitleText: AppStrings.totalVisitsSubtitle,
+                    trailingIcon: Icon(
                       Icons.trending_up,
-                      color: Colors.green,
+                      color: context.colors.success,
                       size: 20,
                     ),
-                    trailingBackgroundColor: Colors.green.withOpacity(0.1),
+                    trailingBackgroundColor: context.colors.successBg,
                   ),
                   const SizedBox(height: AppPadding.p12),
                   SummaryCard(
-                    overlineText: 'New RO',
+                    overlineText: AppStrings.newRo,
                     valueText: '${data.newRoServices}',
-                    subtitleText: 'Newly installed ROs',
-                    trailingIcon: const Icon(
+                    subtitleText: AppStrings.newRoSubtitle,
+                    trailingIcon: Icon(
                       Icons.water_drop,
-                      color: Colors.blue,
+                      color: context.colors.primary,
                       size: 20,
                     ),
-                    trailingBackgroundColor: Colors.blue.withOpacity(0.1),
+                    trailingBackgroundColor: context.colors.primary.withValues(
+                      alpha: 0.1,
+                    ),
                   ),
                   const SizedBox(height: AppPadding.p12),
                   SummaryCard(
-                    overlineText: 'Total AMC',
+                    overlineText: AppStrings.totalAmc,
                     valueText: '${data.amcServices}',
-                    subtitleText: 'AMC visits performed',
-                    trailingIcon: const Icon(
+                    subtitleText: AppStrings.totalAmcSubtitle,
+                    trailingIcon: Icon(
                       Icons.verified_user,
-                      color: Colors.green,
+                      color: context.colors.success,
                       size: 20,
                     ),
-                    trailingBackgroundColor: Colors.green.withOpacity(0.1),
+                    trailingBackgroundColor: context.colors.successBg,
                   ),
                   const SizedBox(height: AppPadding.p12),
                   SummaryCard(
-                    overlineText: 'Service & Repair',
+                    overlineText: AppStrings.serviceAndRepair,
                     valueText: '${data.repairServices}',
-                    subtitleText: 'Combined service and repair',
-                    trailingIcon: const Icon(
+                    subtitleText: AppStrings.serviceAndRepairSubtitle,
+                    trailingIcon: Icon(
                       Icons.build,
-                      color: Colors.orange,
+                      color: context.colors.warning,
                       size: 20,
                     ),
-                    trailingBackgroundColor: Colors.orange.withOpacity(0.1),
+                    trailingBackgroundColor: context.colors.warningBg,
                   ),
                   const SizedBox(height: AppPadding.p32),
 
                   // Today's Service Schedule
                   SectionHeader(
-                    title: 'Total Visit Schedule',
+                    title: AppStrings.totalVisitSchedule,
                     trailing: TextButton(
                       onPressed: () => context.go('/calendar'),
                       style: TextButton.styleFrom(
@@ -203,10 +205,10 @@ class _HomeContent extends StatelessWidget {
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text(
-                        'View Calendar',
+                      child: Text(
+                        AppStrings.viewCalendar,
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: context.colors.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),
@@ -224,12 +226,14 @@ class _HomeContent extends StatelessWidget {
                       ),
                     ),
                   if (data.todayNotifications.isEmpty)
-                    const Center(
+                    Center(
                       child: Padding(
-                        padding: EdgeInsets.all(24.0),
+                        padding: const EdgeInsets.all(24.0),
                         child: Text(
-                          'No visits scheduled for today',
-                          style: TextStyle(color: Colors.grey),
+                          AppStrings.noVisitsToday,
+                          style: TextStyle(
+                            color: context.colors.textQuaternary,
+                          ),
                         ),
                       ),
                     ),
