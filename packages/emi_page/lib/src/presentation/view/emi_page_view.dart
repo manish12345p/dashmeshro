@@ -143,18 +143,7 @@ class EmiPageView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const EmiHeader(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Total Paid This Month: ₹',
-                        style: TextStyle(
-                          color: context.colors.textPrimary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
                     PendingMonthCard(
                       pendingAmount: data.pendingThisMonth,
                       clientsCount: data.pendingClientsCount,
