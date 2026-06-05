@@ -24,7 +24,6 @@ class VisitEntryState {
   final String serviceDuration;
   final String guaranteeDuration;
   final String? serviceDate;
-  final int? rentDueDay;
 
   const VisitEntryState({
     this.status = VisitEntryStatus.initial,
@@ -43,7 +42,6 @@ class VisitEntryState {
     this.serviceDuration = '',
     this.guaranteeDuration = '',
     this.serviceDate,
-    this.rentDueDay = 1,
   });
 
   // Helper to ensure serviceDate defaults to today if not provided
@@ -67,7 +65,6 @@ class VisitEntryState {
     String? serviceDuration,
     String? guaranteeDuration,
     String? serviceDate,
-    int? rentDueDay,
   }) {
     return VisitEntryState(
       status: status ?? this.status,
@@ -88,7 +85,6 @@ class VisitEntryState {
       serviceDuration: serviceDuration ?? this.serviceDuration,
       guaranteeDuration: guaranteeDuration ?? this.guaranteeDuration,
       serviceDate: serviceDate ?? this.serviceDate,
-      rentDueDay: rentDueDay ?? this.rentDueDay,
     );
   }
 }
@@ -118,7 +114,6 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     on<UpdateServiceDuration>(_onUpdateServiceDuration);
     on<UpdateGuaranteeDuration>(_onUpdateGuaranteeDuration);
     on<UpdateEmiAmountPerMonth>(_onUpdateEmiAmountPerMonth);
-    on<UpdateRentDueDay>(_onUpdateRentDueDay);
     on<SetDate>(_onSetDate);
     on<SubmitVisitEntry>(_onSubmit);
   }
@@ -201,13 +196,6 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     emit(state.copyWith(emiAmountPerMonth: event.amount ?? 0.0));
   }
 
-  void _onUpdateRentDueDay(
-    UpdateRentDueDay event,
-    Emitter<VisitEntryState> emit,
-  ) {
-    emit(state.copyWith(rentDueDay: event.day));
-  }
-
   void _onSetDate(SetDate event, Emitter<VisitEntryState> emit) {
     emit(state.copyWith(serviceDate: event.date));
   }
@@ -238,8 +226,7 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
       return;
     }
 
-    if (state.serviceType != 'Rent' &&
-        state.amountPaid + state.amountPending > state.totalAmount) {
+    if (state.amountPaid + state.amountPending > state.totalAmount) {
       emit(
         state.copyWith(
           status: VisitEntryStatus.failure,
@@ -274,8 +261,6 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
       await _saveServiceUseCase(
         entry,
         emiAmountPerMonth: state.emiAmountPerMonth,
-        isRent: state.serviceType == 'Rent',
-        rentDueDay: state.rentDueDay,
       );
       emit(const VisitEntryState(status: VisitEntryStatus.success));
     } catch (e) {

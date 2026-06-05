@@ -79,6 +79,11 @@ class Customer with _$Customer {
     @Default(0) int openTickets,
     @Default([]) List<ServiceActivity> serviceHistory,
 
+    // Rent support
+    @Default(false) bool isRentCustomer,
+    @Default(0.0) double rentAmount,
+    @Default(1) int rentDueDay,
+
     // Soft delete support
     @Default(false) bool isDeleted,
     String? deletedAt,
@@ -140,6 +145,12 @@ class Customer with _$Customer {
                 ),
               )
               .toList(),
+      isRentCustomer:
+          map['isRentCustomer'] as bool? ??
+          map['is_rent_customer'] as bool? ??
+          false,
+      rentAmount: (map['rentAmount'] ?? map['rent_amount'] ?? 0.0) as double,
+      rentDueDay: (map['rentDueDay'] ?? map['rent_due_day'] ?? 1) as int,
       isDeleted: map['isDeleted'] as bool? ?? false,
       deletedAt: map['deletedAt'] as String?,
       deletedBy: map['deletedBy'] as String?,
@@ -178,6 +189,11 @@ class Customer with _$Customer {
       map['service_history'] = serviceHistory
           .map((item) => item.toMap())
           .toList();
+    if (isRentCustomer) {
+      map['isRentCustomer'] = isRentCustomer;
+      map['rentAmount'] = rentAmount;
+      map['rentDueDay'] = rentDueDay;
+    }
     map['isDeleted'] = isDeleted;
     if (deletedAt != null) map['deletedAt'] = deletedAt;
     if (deletedBy != null) map['deletedBy'] = deletedBy;

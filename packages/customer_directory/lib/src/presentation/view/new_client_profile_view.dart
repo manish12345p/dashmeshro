@@ -26,7 +26,10 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
   final _localityController = TextEditingController();
   final _addressController = TextEditingController();
   final _notesController = TextEditingController();
+  final _rentAmountController = TextEditingController();
   String _roType = '';
+  bool _isRentCustomer = false;
+  int _rentDueDay = 1;
 
   @override
   void dispose() {
@@ -35,6 +38,7 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
     _localityController.dispose();
     _addressController.dispose();
     _notesController.dispose();
+    _rentAmountController.dispose();
     super.dispose();
   }
 
@@ -216,6 +220,166 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
                   ),
                   SizedBox(height: 24),
 
+                  // Rent Configuration
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: context.colors.surfaceSecondary,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: context.colors.border),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.home_work_rounded,
+                                  color: context.colors.primary,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'RENT CUSTOMER',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: context.colors.textSecondary,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Switch(
+                              value: _isRentCustomer,
+                              onChanged: (val) {
+                                setState(() {
+                                  _isRentCustomer = val;
+                                });
+                              },
+                              activeColor: context.colors.primary,
+                            ),
+                          ],
+                        ),
+                        if (_isRentCustomer) ...[
+                          SizedBox(height: 20),
+                          Text(
+                            'MONTHLY RENT AMOUNT (₹)',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: context.colors.textSecondary,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          TextField(
+                            controller: _rentAmountController,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: '0.00',
+                              hintStyle: TextStyle(
+                                color: context.colors.textTertiary,
+                                fontSize: 14,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.currency_rupee_rounded,
+                                color: context.colors.primary,
+                                size: 20,
+                              ),
+                              filled: true,
+                              fillColor: context.colors.surface,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                  color: context.colors.border,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                  color: context.colors.primary,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'RENT DUE DATE',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: context.colors.textSecondary,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          DropdownButtonFormField<int>(
+                            value: _rentDueDay,
+                            decoration: InputDecoration(
+                              hintText: 'Select day of month',
+                              hintStyle: TextStyle(
+                                color: context.colors.textTertiary,
+                                fontSize: 14,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.calendar_today_rounded,
+                                color: context.colors.primary,
+                                size: 20,
+                              ),
+                              filled: true,
+                              fillColor: context.colors.surface,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                  color: context.colors.border,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                  color: context.colors.primary,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                            items: List.generate(31, (index) {
+                              final day = index + 1;
+                              return DropdownMenuItem(
+                                value: day,
+                                child: Text('$day of every month'),
+                              );
+                            }),
+                            onChanged: (val) {
+                              if (val != null) {
+                                setState(() {
+                                  _rentDueDay = val;
+                                });
+                              }
+                            },
+                            dropdownColor: context.colors.surface,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 24),
+
                   // Action Buttons
                   BlocBuilder<NewCustomerBloc, NewCustomerState>(
                     builder: (context, state) {
@@ -271,6 +435,9 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
       locality: _localityController.text,
       roType: _roType,
       note: _notesController.text,
+      isRentCustomer: _isRentCustomer,
+      rentAmount: double.tryParse(_rentAmountController.text) ?? 0.0,
+      rentDueDay: _rentDueDay,
     );
 
     context.read<NewCustomerBloc>().add(

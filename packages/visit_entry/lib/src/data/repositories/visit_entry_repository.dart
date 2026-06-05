@@ -12,8 +12,6 @@ class VisitEntryRepository implements IVisitEntryRepository {
   Future<void> createVisitEntry(
     VisitRecord entry, {
     double? emiAmountPerMonth,
-    bool isRent = false,
-    int? rentDueDay,
   }) async {
     final collectionRef = _firestore
         .collection('Customer')
@@ -48,8 +46,8 @@ class VisitEntryRepository implements IVisitEntryRepository {
       }
     }
 
-    // Create EMI / Rent installment if needed
-    if (entry.amountPending > 0 || isRent) {
+    // Create EMI installment if needed
+    if (entry.amountPending > 0) {
       try {
         final customerSnap = await _firestore
             .collection('Customer')
@@ -70,9 +68,7 @@ class VisitEntryRepository implements IVisitEntryRepository {
           final emiId = 'emi_$docId';
 
           double monthlyAmount = entry.amountPending;
-          if (isRent) {
-            monthlyAmount = emiAmountPerMonth ?? 0.0;
-          } else if (emiAmountPerMonth != null &&
+          if (emiAmountPerMonth != null &&
               emiAmountPerMonth > 0 &&
               emiAmountPerMonth < entry.amountPending) {
             monthlyAmount = emiAmountPerMonth;
@@ -80,13 +76,7 @@ class VisitEntryRepository implements IVisitEntryRepository {
 
           // Calendar-month advancement for initial due date (not +30 days)
           final now = DateTime.now();
-          DateTime initialDueDate;
-
-          if (isRent && rentDueDay != null) {
-            initialDueDate = DateTime(now.year, now.month, rentDueDay);
-          } else {
-            initialDueDate = DateTime(now.year, now.month + 1, now.day);
-          }
+          DateTime initialDueDate = DateTime(now.year, now.month + 1, now.day);
 
           // Create a meaningful service identifier
           final String svcName = [
@@ -103,16 +93,14 @@ class VisitEntryRepository implements IVisitEntryRepository {
             'service_name': svcName.isEmpty
                 ? 'Service #${docId.substring(0, 5)}'
                 : svcName,
-            'amount': isRent ? 999999.0 : monthlyAmount,
+            'amount': monthlyAmount,
             'emi_monthly_amount': monthlyAmount,
-            'total_amount': isRent ? 999999.0 : entry.amountPending,
-            'original_loan_amount': isRent ? 999999.0 : entry.amountPending,
+            'total_amount': entry.amountPending,
+            'original_loan_amount': entry.amountPending,
             'status': 'pending',
             'due_date': initialDueDate.toIso8601String(),
             'created_at': now.toIso8601String(),
             'service_id': docId,
-            'is_rent': isRent,
-            'rent_due_day': rentDueDay,
           });
         }
       } catch (e) {
@@ -154,9 +142,29 @@ class VisitEntryRepository implements IVisitEntryRepository {
             return data;
           })
           .where((data) {
-            final name = (data['name'] as String?)?.toLowerCase() ?? '';
-            final phone = (data['number'] as String?)?.toLowerCase() ?? '';
-            return name.contains(queryLower) || phone.contains(queryLower);
+            bool matches = false;
+            for (var entry in data.entries) {
+              final key = entry.key.toLowerCase();
+              final val = entry.value;
+
+              if (val == null) continue;
+
+              // Skip amounts and dates/times
+              if (key.contains('date') ||
+                  key.contains('amount') ||
+                  key.contains('time') ||
+                  key.contains('health') ||
+                  key.contains('visit') ||
+                  key.contains('deletedat')) {
+                continue;
+              }
+
+              if (val.toString().toLowerCase().contains(queryLower)) {
+                matches = true;
+                break;
+              }
+            }
+            return matches;
           })
           .take(10)
           .toList();

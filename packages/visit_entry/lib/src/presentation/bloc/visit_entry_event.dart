@@ -25,7 +25,6 @@ class VisitEntryEvent with _$VisitEntryEvent {
       UpdateGuaranteeDuration;
   const factory VisitEntryEvent.updateEmiAmountPerMonth(double? amount) =
       UpdateEmiAmountPerMonth;
-  const factory VisitEntryEvent.updateRentDueDay(int day) = UpdateRentDueDay;
   const factory VisitEntryEvent.setDate(String date) = SetDate;
   const factory VisitEntryEvent.submit() = SubmitVisitEntry;
 }

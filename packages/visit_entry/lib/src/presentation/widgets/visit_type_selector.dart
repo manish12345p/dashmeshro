@@ -30,7 +30,6 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
     'Alkaline',
     'Alkaline Set',
     'Set SMPS',
-    'Rent',
     'Not Applicable',
   ];
 
