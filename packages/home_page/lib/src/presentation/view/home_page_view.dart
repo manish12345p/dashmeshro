@@ -8,7 +8,11 @@ import '../../domain/use_cases/get_home_data_usecase.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
-import '../widgets/new_sells_summary_card.dart';
+import '../widgets/visit_schedule_card.dart';
+import '../widgets/visit_search_delegate.dart';
+import '../widgets/notification_dialog.dart';
+import '../widgets/expense_dialogs.dart';
+
 
 class HomePageView extends StatelessWidget {
   final HomeBloc? bloc;
@@ -23,7 +27,21 @@ class HomePageView extends StatelessWidget {
       )..add(const HomeEvent.loadHomeData())),
       child: const Scaffold(
         body: _HomeContent(),
+        floatingActionButton: _ExpenseFab(),
       ),
+    );
+  }
+}
+
+class _ExpenseFab extends StatelessWidget {
+  const _ExpenseFab();
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => AddExpenseDialog.show(context),
+      backgroundColor: const Color(0xFF003366),
+      child: const Icon(Icons.add, color: Colors.white),
     );
   }
 }
@@ -61,7 +79,10 @@ class _HomeContent extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.waves, color: Theme.of(context).primaryColor),
+                          GestureDetector(
+                            onTap: () => ViewExpensesDialog.show(context),
+                            child: Icon(Icons.waves, color: Theme.of(context).primaryColor),
+                          ),
                           const SizedBox(width: AppPadding.p8),
                           Text(
                             AppStrings.appTitle,
@@ -77,11 +98,16 @@ class _HomeContent extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.search),
-                            onPressed: () {},
+                            onPressed: () {
+                              showSearch(
+                                context: context,
+                                delegate: VisitSearchDelegate(),
+                              );
+                            },
                           ),
                           IconButton(
                             icon: const Icon(Icons.notifications_outlined),
-                            onPressed: () {},
+                            onPressed: () => NotificationDialog.show(context),
                           ),
                         ],
                       ),
@@ -91,216 +117,62 @@ class _HomeContent extends StatelessWidget {
 
                   // Top Summary Cards
                   SummaryCard(
-                    overlineText: AppStrings.revenueFlow,
-                    valueText: '${data.newSells} New Sells',
-                    subtitleText: AppStrings.thisWeekPerformance,
+                    overlineText: 'Total Visits',
+                    valueText: '${data.totalServices}',
+                    subtitleText: 'Overall visits',
                     trailingIcon: const Icon(Icons.trending_up, color: Colors.green, size: 20),
                     trailingBackgroundColor: Colors.green.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p12),
                   SummaryCard(
-                    overlineText: AppStrings.assetRental,
-                    valueText: '${data.activeRentals} Active',
-                    subtitleText: AppStrings.currentRentalPortfolio,
-                    trailingIcon: const Icon(Icons.calendar_today, color: Colors.blue, size: 20),
+                    overlineText: 'New RO',
+                    valueText: '${data.newRoServices}',
+                    subtitleText: 'Newly installed ROs',
+                    trailingIcon: const Icon(Icons.water_drop, color: Colors.blue, size: 20),
                     trailingBackgroundColor: Colors.blue.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p12),
                   SummaryCard(
-                    overlineText: AppStrings.serviceContracts,
-                    valueText: '${data.activeAmcs} AMCs',
-                    subtitleText: AppStrings.activeMaintenance,
-                    trailingIcon: const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                    overlineText: 'Total AMC',
+                    valueText: '${data.amcServices}',
+                    subtitleText: 'AMC visits performed',
+                    trailingIcon: const Icon(Icons.verified_user, color: Colors.green, size: 20),
                     trailingBackgroundColor: Colors.green.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p12),
                   SummaryCard(
-                    overlineText: AppStrings.resolutionRate,
-                    valueText: '${data.resolutionRatePercent}% Resolved',
-                    subtitleText: '${data.pendingComplaintsCount} ${AppStrings.complaintsPending}',
-                    trailingIcon: const Icon(Icons.error_outline, color: Colors.red, size: 20),
-                    trailingBackgroundColor: Colors.red.withOpacity(0.1),
-                    borderColor: Colors.red.withOpacity(0.5),
+                    overlineText: 'Service & Repair',
+                    valueText: '${data.repairServices}',
+                    subtitleText: 'Combined service and repair',
+                    trailingIcon: const Icon(Icons.build, color: Colors.orange, size: 20),
+                    trailingBackgroundColor: Colors.orange.withOpacity(0.1),
                   ),
-
                   const SizedBox(height: AppPadding.p32),
 
                   // Today's Service Schedule
                   SectionHeader(
-                    title: AppStrings.todayServiceSchedule,
-                    trailing: CustomButton(
-                      label: AppStrings.viewCalendar,
+                    title: 'Total Visit Schedule',
+                    trailing: TextButton(
                       onPressed: () => context.go('/calendar'),
+                      style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                      child: const Text('View Calendar', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                   ),
                   const SizedBox(height: AppPadding.p16),
                   
-                  // Scheduled Items
-                  Text(
-                    '| ${AppStrings.urgentAssignments}',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ...data.todaySchedules.where((s) => s.isUrgent).map((schedule) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppPadding.p12),
-                    child: ScheduleItemCard(
-                      title: schedule.title,
-                      subtitle: schedule.subtitle,
-                      time: schedule.time,
-                      accentColor: Colors.red,
-                      trailingBadge: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.priority_high, size: 12, color: Colors.white),
+                  // List of today's visit schedules
+                  if (data.todayNotifications.isNotEmpty)
+                    ...data.todayNotifications.map((item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: VisitScheduleCard(item: item),
+                    )),
+                  if (data.todayNotifications.isEmpty)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: Text('No visits scheduled for today', style: TextStyle(color: Colors.grey)),
                       ),
                     ),
-                  )),
-
-                  const SizedBox(height: AppPadding.p16),
-                  Text(
-                    '| ${AppStrings.amcPeriodicChecks}',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ...data.todaySchedules.where((s) => !s.isUrgent).map((schedule) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppPadding.p12),
-                    child: ScheduleItemCard(
-                      title: schedule.title,
-                      subtitle: schedule.subtitle,
-                      time: schedule.time,
-                      accentColor: Colors.green,
-                      trailingBadge: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.2),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.check, size: 12, color: Colors.green),
-                      ),
-                    ),
-                  )),
-
-                  const SizedBox(height: AppPadding.p32),
-
-                  // Pending Complaints
-                  SectionHeader(
-                    title: AppStrings.pendingComplaints,
-                    subtitle: AppStrings.pendingComplaintsSubtitle,
-                  ),
-                  const SizedBox(height: AppPadding.p16),
-                  Row(
-                    children: [
-                      _buildFilterChip(AppStrings.filterAll, true),
-                      _buildFilterChip(AppStrings.filterUrgent, false),
-                      _buildFilterChip(AppStrings.filterHigh, false),
-                      _buildFilterChip(AppStrings.filterNormal, false),
-                    ],
-                  ),
-                  const SizedBox(height: AppPadding.p16),
-                  Container(
-                    padding: AppPadding.all16,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),
-                    ),
-                    child: Column(
-                      children: data.pendingComplaints.map((complaint) {
-                        Color statusColor;
-                        if (complaint.status == 'urgent') {
-                          statusColor = Colors.red;
-                        } else if (complaint.status == 'high') {
-                          statusColor = Colors.orange;
-                        } else {
-                          statusColor = Colors.green;
-                        }
-                        return Column(
-                          children: [
-                            ComplaintListItem(
-                              customerName: complaint.customerName,
-                              customerId: complaint.customerId,
-                              issueType: complaint.issueType,
-                              statusColor: statusColor,
-                            ),
-                            if (complaint != data.pendingComplaints.last)
-                              const Divider(height: 1),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
-
-                  const SizedBox(height: AppPadding.p32),
-
-                  // Active AMC Focus
-                  Container(
-                    padding: AppPadding.all16,
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.check_circle, color: Colors.green, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              AppStrings.activeAmcFocus,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppPadding.p16),
-                        ...data.amcProgresses.map((amc) => ProgressSummaryCard(
-                          title: amc.companyName,
-                          subtitle: amc.statusText,
-                          progressValue: amc.progress,
-                          progressColor: amc.isUrgent ? Colors.orange : Colors.green,
-                          trackColor: Colors.grey.withOpacity(0.2),
-                          trailingBadge: amc.isUrgent 
-                            ? Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Text(AppStrings.badgeRenew, style: TextStyle(color: Colors.white, fontSize: 10)),
-                              )
-                            : Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.greenAccent,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Text(AppStrings.badgeOnTrack, style: TextStyle(color: Colors.black, fontSize: 10)),
-                              ),
-                        )),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: AppPadding.p32),
-
-                  // New Sells Summary
-                  NewSellsSummaryCard(
-                    todaySells: data.todaySellsSummary,
-                    weekSells: data.weekSellsSummary,
-                    projectedGrowth: data.projectedGrowth,
-                  ),
-
                   const SizedBox(height: AppPadding.p32),
                 ],
               ),

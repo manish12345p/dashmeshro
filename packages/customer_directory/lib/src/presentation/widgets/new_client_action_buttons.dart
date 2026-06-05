@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:core_ui/core_ui.dart';
 
 /// Action buttons: Save Client (primary) and Save & Create Service Entry (secondary).
 class NewClientActionButtons extends StatelessWidget {
@@ -20,15 +21,15 @@ class NewClientActionButtons extends StatelessWidget {
           width: double.infinity,
           child: Container(
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF0D2137), Color(0xFF1A3A5C)],
+              gradient: LinearGradient(
+                colors: [context.colors.primaryDark, context.colors.primary],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0D2137).withOpacity(0.35),
+                  color: context.colors.primaryDark.withOpacity(0.35),
                   blurRadius: 14,
                   offset: const Offset(0, 6),
                 ),
@@ -39,7 +40,7 @@ class NewClientActionButtons extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: onSave ?? () => Navigator.of(context).pop(),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -61,58 +62,58 @@ class NewClientActionButtons extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         // ── Save & Create Service Entry ──
         GestureDetector(
           onTap: onSaveAndCreateEntry,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.colors.surface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(color: context.colors.border),
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEFF6FF),
+                    color: context.colors.infoBg,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.miscellaneous_services_rounded,
-                    color: Color(0xFF2F80ED),
+                    color: context.colors.primary,
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: 14),
                 Expanded(
                   child: Text(
-                    'Save & Create Service Entry',
+                    'Create Visit Entry',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: const Color(0xFF0F172A),
+                          color: context.colors.textPrimary,
                         ),
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_rounded,
-                  color: Color(0xFF94A3B8),
+                  color: context.colors.textTertiary,
                   size: 20,
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Center(
           child: Text(
             'QUICK SHORTCUT FOR RECURRING CLIENTS',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: const Color(0xFF94A3B8),
+                  color: context.colors.textTertiary,
                   letterSpacing: 1.2,
                   fontWeight: FontWeight.w600,
                   fontSize: 10,

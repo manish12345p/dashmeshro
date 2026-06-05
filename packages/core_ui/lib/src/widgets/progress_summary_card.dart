@@ -27,7 +27,7 @@ class ProgressSummaryCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: AppPadding.all16,
-      margin: const EdgeInsets.only(bottom: AppPadding.p12),
+      margin: EdgeInsets.only(bottom: AppPadding.p12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),
@@ -47,7 +47,7 @@ class ProgressSummaryCard extends StatelessWidget {
               if (trailingBadge != null) trailingBadge!,
             ],
           ),
-          const SizedBox(height: AppPadding.p12),
+          SizedBox(height: AppPadding.p12),
           LinearProgressIndicator(
             value: progressValue,
             backgroundColor: trackColor,
@@ -55,7 +55,7 @@ class ProgressSummaryCard extends StatelessWidget {
             minHeight: 6,
             borderRadius: BorderRadius.circular(3),
           ),
-          const SizedBox(height: AppPadding.p8),
+          SizedBox(height: AppPadding.p8),
           Text(
             subtitle,
             style: theme.textTheme.bodySmall?.copyWith(

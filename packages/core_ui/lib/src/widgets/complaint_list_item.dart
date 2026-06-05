@@ -35,7 +35,7 @@ class ComplaintListItem extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   'ID: $customerId',
                   style: theme.textTheme.bodySmall?.copyWith(
@@ -57,7 +57,7 @@ class ComplaintListItem extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                 ),
-                const SizedBox(width: AppPadding.p8),
+                SizedBox(width: AppPadding.p8),
                 Expanded(
                   child: Text(
                     issueType,

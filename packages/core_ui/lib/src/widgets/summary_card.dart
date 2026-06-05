@@ -52,7 +52,7 @@ class SummaryCard extends StatelessWidget {
                   color: theme.textTheme.bodySmall?.color?.withOpacity(0.6),
                 ),
               ),
-              const SizedBox(height: AppPadding.p8),
+              SizedBox(height: AppPadding.p8),
               Text(
                 valueText,
                 style: theme.textTheme.headlineSmall?.copyWith(
@@ -60,7 +60,7 @@ class SummaryCard extends StatelessWidget {
                   color: borderColor != null ? borderColor : null, // Inherit border color if exists (like red for errors)
                 ),
               ),
-              const SizedBox(height: AppPadding.p4),
+              SizedBox(height: AppPadding.p4),
               Text(
                 subtitleText,
                 style: theme.textTheme.bodySmall?.copyWith(

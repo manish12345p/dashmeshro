@@ -7,6 +7,9 @@ part 'home_state.freezed.dart';
 class HomeState with _$HomeState {
   const factory HomeState.initial() = HomeInitial;
   const factory HomeState.loading() = HomeLoading;
-  const factory HomeState.loaded({required HomeData data}) = HomeLoaded;
+  const factory HomeState.loaded({
+    required HomeData data,
+    @Default('All') String filter,
+  }) = HomeLoaded;
   const factory HomeState.error({required String message}) = HomeError;
 }

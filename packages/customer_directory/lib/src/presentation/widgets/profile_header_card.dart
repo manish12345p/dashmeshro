@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/customer.dart';
 
 class ProfileHeaderCard extends StatelessWidget {
@@ -12,116 +14,140 @@ class ProfileHeaderCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: context.colors.textSecondary.withOpacity(0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p24),
+        padding: EdgeInsets.all(AppPadding.p24),
         child: Column(
           children: [
-            // Big avatar with badge
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      image: NetworkImage(customer.avatarUrl.isNotEmpty
-                          ? customer.avatarUrl
-                          : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -8,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFDCFCE7),
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(color: Colors.white, width: 2),
-                      ),
-                      child: Text(
-                        customer.status.toUpperCase(),
-                        style: const TextStyle(
-                          color: Color(0xFF15803D),
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Customer Name & Subtitle
+            // Removed Image and Badge, jumping straight to name
             Text(
               customer.name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: context.colors.textPrimary,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.verified, size: 16, color: Color(0xFF1E3A8A)),
-                const SizedBox(width: 4),
                 Text(
                   customer.role,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF1E3A8A),
+                    color: context.colors.primaryDark,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // Contact Info Fields
-            _buildContactRow(Icons.phone, customer.number),
-            const SizedBox(height: 12),
-            _buildContactRow(Icons.email_outlined, customer.email),
-            const SizedBox(height: 12),
-            _buildContactRow(Icons.location_on_outlined, customer.address, isMultiline: true),
+            Row(
+              children: [
+                Icon(Icons.phone, size: 18, color: context.colors.primaryDark),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    customer.number,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: context.colors.textPrimary,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.add_circle_outline, color: context.colors.primary),
+                  tooltip: 'Add another number',
+                  onPressed: () {
+                    final controller = TextEditingController();
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) => AlertDialog(
+                        title: const Text('Add Phone Number'),
+                        content: TextField(
+                          controller: controller,
+                          keyboardType: TextInputType.phone,
+                          decoration: const InputDecoration(
+                            labelText: 'New Phone Number',
+                            hintText: 'e.g. 9876543210',
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(dialogContext),
+                            child: const Text('Cancel'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              final newNumber = controller.text.trim();
+                              if (newNumber.isNotEmpty) {
+                                final updatedNumber = customer.number.isEmpty ? newNumber : '${customer.number}, $newNumber';
+                                FirebaseFirestore.instance.collection('Customer').doc(customer.id).update({'number': updatedNumber});
+                                Navigator.pop(dialogContext);
+                              }
+                            },
+                            child: const Text('Save'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.chat, color: context.colors.success),
+                  onPressed: () async {
+                    final rawNumber = customer.number.split(',').first.trim();
+                    final cleanNum = rawNumber.replaceAll(RegExp(r'[^0-9]'), '');
+                    final finalNum = cleanNum.length == 10 ? '91$cleanNum' : cleanNum;
+                    final url = Uri.parse('https://wa.me/$finalNum');
+                    try {
+                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                    } catch (e) {
+                      debugPrint('Could not launch WhatsApp: $e');
+                    }
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
+            _buildContactRow(context, Icons.location_on_outlined, customer.address, isMultiline: true),
+            SizedBox(height: 12),
+            _buildContactRow(context, Icons.water_drop_outlined, customer.roType.isNotEmpty ? customer.roType : 'N/A'),
+            if (customer.note.isNotEmpty) ...[
+              SizedBox(height: 12),
+              _buildContactRow(context, Icons.note_alt_outlined, customer.note, isMultiline: true),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _buildContactRow(IconData icon, String text, {bool isMultiline = false}) {
+  Widget _buildContactRow(BuildContext context, IconData icon, String text, {bool isMultiline = false}) {
     return Row(
       crossAxisAlignment: isMultiline ? CrossAxisAlignment.start : CrossAxisAlignment.center,
       children: [
-        Icon(icon, size: 18, color: const Color(0xFF1E3A8A)),
-        const SizedBox(width: 12),
+        Icon(icon, size: 18, color: context.colors.primaryDark),
+        SizedBox(width: 12),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
-              color: Color(0xFF334155),
+              color: context.colors.textPrimary,
               height: 1.4,
             ),
           ),

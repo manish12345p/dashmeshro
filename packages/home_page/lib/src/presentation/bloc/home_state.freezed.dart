@@ -21,21 +21,21 @@ mixin _$HomeState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HomeData data) loaded,
+    required TResult Function(HomeData data, String filter) loaded,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HomeData data)? loaded,
+    TResult? Function(HomeData data, String filter)? loaded,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HomeData data)? loaded,
+    TResult Function(HomeData data, String filter)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -128,7 +128,7 @@ class _$HomeInitialImpl implements HomeInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HomeData data) loaded,
+    required TResult Function(HomeData data, String filter) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -139,7 +139,7 @@ class _$HomeInitialImpl implements HomeInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HomeData data)? loaded,
+    TResult? Function(HomeData data, String filter)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -150,7 +150,7 @@ class _$HomeInitialImpl implements HomeInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HomeData data)? loaded,
+    TResult Function(HomeData data, String filter)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -247,7 +247,7 @@ class _$HomeLoadingImpl implements HomeLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HomeData data) loaded,
+    required TResult Function(HomeData data, String filter) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -258,7 +258,7 @@ class _$HomeLoadingImpl implements HomeLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HomeData data)? loaded,
+    TResult? Function(HomeData data, String filter)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -269,7 +269,7 @@ class _$HomeLoadingImpl implements HomeLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HomeData data)? loaded,
+    TResult Function(HomeData data, String filter)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -328,7 +328,7 @@ abstract class _$$HomeLoadedImplCopyWith<$Res> {
     $Res Function(_$HomeLoadedImpl) then,
   ) = __$$HomeLoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({HomeData data});
+  $Res call({HomeData data, String filter});
 
   $HomeDataCopyWith<$Res> get data;
 }
@@ -346,13 +346,17 @@ class __$$HomeLoadedImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? data = null}) {
+  $Res call({Object? data = null, Object? filter = null}) {
     return _then(
       _$HomeLoadedImpl(
         data: null == data
             ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
                   as HomeData,
+        filter: null == filter
+            ? _value.filter
+            : filter // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -371,14 +375,17 @@ class __$$HomeLoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeLoadedImpl implements HomeLoaded {
-  const _$HomeLoadedImpl({required this.data});
+  const _$HomeLoadedImpl({required this.data, this.filter = 'All'});
 
   @override
   final HomeData data;
+  @override
+  @JsonKey()
+  final String filter;
 
   @override
   String toString() {
-    return 'HomeState.loaded(data: $data)';
+    return 'HomeState.loaded(data: $data, filter: $filter)';
   }
 
   @override
@@ -386,11 +393,12 @@ class _$HomeLoadedImpl implements HomeLoaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeLoadedImpl &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.filter, filter) || other.filter == filter));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
+  int get hashCode => Object.hash(runtimeType, data, filter);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -405,10 +413,10 @@ class _$HomeLoadedImpl implements HomeLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HomeData data) loaded,
+    required TResult Function(HomeData data, String filter) loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(data);
+    return loaded(data, filter);
   }
 
   @override
@@ -416,10 +424,10 @@ class _$HomeLoadedImpl implements HomeLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HomeData data)? loaded,
+    TResult? Function(HomeData data, String filter)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(data);
+    return loaded?.call(data, filter);
   }
 
   @override
@@ -427,12 +435,12 @@ class _$HomeLoadedImpl implements HomeLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HomeData data)? loaded,
+    TResult Function(HomeData data, String filter)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(data);
+      return loaded(data, filter);
     }
     return orElse();
   }
@@ -476,9 +484,13 @@ class _$HomeLoadedImpl implements HomeLoaded {
 }
 
 abstract class HomeLoaded implements HomeState {
-  const factory HomeLoaded({required final HomeData data}) = _$HomeLoadedImpl;
+  const factory HomeLoaded({
+    required final HomeData data,
+    final String filter,
+  }) = _$HomeLoadedImpl;
 
   HomeData get data;
+  String get filter;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -559,7 +571,7 @@ class _$HomeErrorImpl implements HomeError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HomeData data) loaded,
+    required TResult Function(HomeData data, String filter) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -570,7 +582,7 @@ class _$HomeErrorImpl implements HomeError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HomeData data)? loaded,
+    TResult? Function(HomeData data, String filter)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -581,7 +593,7 @@ class _$HomeErrorImpl implements HomeError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HomeData data)? loaded,
+    TResult Function(HomeData data, String filter)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

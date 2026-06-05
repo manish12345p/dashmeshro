@@ -21,13 +21,15 @@ ServiceActivity _$ServiceActivityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ServiceActivity {
-  String get activityType =>
-      throw _privateConstructorUsedError; // 'complaint', 'maintenance', 'receipt', 'installation'
-  String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get technicianName => throw _privateConstructorUsedError;
-  String get dateText => throw _privateConstructorUsedError;
-  String get statusBadge => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  String get serviceType => throw _privateConstructorUsedError;
+  String get fixes => throw _privateConstructorUsedError;
+  double get totalAmount => throw _privateConstructorUsedError;
+  double get amountPaid => throw _privateConstructorUsedError;
+  String get equipmentsUsed => throw _privateConstructorUsedError;
+  String get guaranteeDuration => throw _privateConstructorUsedError;
+  String get remarks => throw _privateConstructorUsedError;
+  DateTime get serviceDate => throw _privateConstructorUsedError;
 
   /// Serializes this ServiceActivity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,12 +49,15 @@ abstract class $ServiceActivityCopyWith<$Res> {
   ) = _$ServiceActivityCopyWithImpl<$Res, ServiceActivity>;
   @useResult
   $Res call({
-    String activityType,
-    String title,
-    String description,
-    String technicianName,
-    String dateText,
-    String statusBadge,
+    String id,
+    String serviceType,
+    String fixes,
+    double totalAmount,
+    double amountPaid,
+    String equipmentsUsed,
+    String guaranteeDuration,
+    String remarks,
+    DateTime serviceDate,
   });
 }
 
@@ -71,39 +76,54 @@ class _$ServiceActivityCopyWithImpl<$Res, $Val extends ServiceActivity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? activityType = null,
-    Object? title = null,
-    Object? description = null,
-    Object? technicianName = null,
-    Object? dateText = null,
-    Object? statusBadge = null,
+    Object? id = null,
+    Object? serviceType = null,
+    Object? fixes = null,
+    Object? totalAmount = null,
+    Object? amountPaid = null,
+    Object? equipmentsUsed = null,
+    Object? guaranteeDuration = null,
+    Object? remarks = null,
+    Object? serviceDate = null,
   }) {
     return _then(
       _value.copyWith(
-            activityType: null == activityType
-                ? _value.activityType
-                : activityType // ignore: cast_nullable_to_non_nullable
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
                       as String,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
+            serviceType: null == serviceType
+                ? _value.serviceType
+                : serviceType // ignore: cast_nullable_to_non_nullable
                       as String,
-            description: null == description
-                ? _value.description
-                : description // ignore: cast_nullable_to_non_nullable
+            fixes: null == fixes
+                ? _value.fixes
+                : fixes // ignore: cast_nullable_to_non_nullable
                       as String,
-            technicianName: null == technicianName
-                ? _value.technicianName
-                : technicianName // ignore: cast_nullable_to_non_nullable
+            totalAmount: null == totalAmount
+                ? _value.totalAmount
+                : totalAmount // ignore: cast_nullable_to_non_nullable
+                      as double,
+            amountPaid: null == amountPaid
+                ? _value.amountPaid
+                : amountPaid // ignore: cast_nullable_to_non_nullable
+                      as double,
+            equipmentsUsed: null == equipmentsUsed
+                ? _value.equipmentsUsed
+                : equipmentsUsed // ignore: cast_nullable_to_non_nullable
                       as String,
-            dateText: null == dateText
-                ? _value.dateText
-                : dateText // ignore: cast_nullable_to_non_nullable
+            guaranteeDuration: null == guaranteeDuration
+                ? _value.guaranteeDuration
+                : guaranteeDuration // ignore: cast_nullable_to_non_nullable
                       as String,
-            statusBadge: null == statusBadge
-                ? _value.statusBadge
-                : statusBadge // ignore: cast_nullable_to_non_nullable
+            remarks: null == remarks
+                ? _value.remarks
+                : remarks // ignore: cast_nullable_to_non_nullable
                       as String,
+            serviceDate: null == serviceDate
+                ? _value.serviceDate
+                : serviceDate // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
           )
           as $Val,
     );
@@ -120,12 +140,15 @@ abstract class _$$ServiceActivityImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String activityType,
-    String title,
-    String description,
-    String technicianName,
-    String dateText,
-    String statusBadge,
+    String id,
+    String serviceType,
+    String fixes,
+    double totalAmount,
+    double amountPaid,
+    String equipmentsUsed,
+    String guaranteeDuration,
+    String remarks,
+    DateTime serviceDate,
   });
 }
 
@@ -143,39 +166,54 @@ class __$$ServiceActivityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? activityType = null,
-    Object? title = null,
-    Object? description = null,
-    Object? technicianName = null,
-    Object? dateText = null,
-    Object? statusBadge = null,
+    Object? id = null,
+    Object? serviceType = null,
+    Object? fixes = null,
+    Object? totalAmount = null,
+    Object? amountPaid = null,
+    Object? equipmentsUsed = null,
+    Object? guaranteeDuration = null,
+    Object? remarks = null,
+    Object? serviceDate = null,
   }) {
     return _then(
       _$ServiceActivityImpl(
-        activityType: null == activityType
-            ? _value.activityType
-            : activityType // ignore: cast_nullable_to_non_nullable
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
                   as String,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
+        serviceType: null == serviceType
+            ? _value.serviceType
+            : serviceType // ignore: cast_nullable_to_non_nullable
                   as String,
-        description: null == description
-            ? _value.description
-            : description // ignore: cast_nullable_to_non_nullable
+        fixes: null == fixes
+            ? _value.fixes
+            : fixes // ignore: cast_nullable_to_non_nullable
                   as String,
-        technicianName: null == technicianName
-            ? _value.technicianName
-            : technicianName // ignore: cast_nullable_to_non_nullable
+        totalAmount: null == totalAmount
+            ? _value.totalAmount
+            : totalAmount // ignore: cast_nullable_to_non_nullable
+                  as double,
+        amountPaid: null == amountPaid
+            ? _value.amountPaid
+            : amountPaid // ignore: cast_nullable_to_non_nullable
+                  as double,
+        equipmentsUsed: null == equipmentsUsed
+            ? _value.equipmentsUsed
+            : equipmentsUsed // ignore: cast_nullable_to_non_nullable
                   as String,
-        dateText: null == dateText
-            ? _value.dateText
-            : dateText // ignore: cast_nullable_to_non_nullable
+        guaranteeDuration: null == guaranteeDuration
+            ? _value.guaranteeDuration
+            : guaranteeDuration // ignore: cast_nullable_to_non_nullable
                   as String,
-        statusBadge: null == statusBadge
-            ? _value.statusBadge
-            : statusBadge // ignore: cast_nullable_to_non_nullable
+        remarks: null == remarks
+            ? _value.remarks
+            : remarks // ignore: cast_nullable_to_non_nullable
                   as String,
+        serviceDate: null == serviceDate
+            ? _value.serviceDate
+            : serviceDate // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
@@ -185,34 +223,44 @@ class __$$ServiceActivityImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ServiceActivityImpl extends _ServiceActivity {
   const _$ServiceActivityImpl({
-    required this.activityType,
-    required this.title,
-    required this.description,
-    required this.technicianName,
-    required this.dateText,
-    required this.statusBadge,
+    required this.id,
+    required this.serviceType,
+    required this.fixes,
+    required this.totalAmount,
+    required this.amountPaid,
+    required this.equipmentsUsed,
+    this.guaranteeDuration = '',
+    this.remarks = '',
+    required this.serviceDate,
   }) : super._();
 
   factory _$ServiceActivityImpl.fromJson(Map<String, dynamic> json) =>
       _$$ServiceActivityImplFromJson(json);
 
   @override
-  final String activityType;
-  // 'complaint', 'maintenance', 'receipt', 'installation'
+  final String id;
   @override
-  final String title;
+  final String serviceType;
   @override
-  final String description;
+  final String fixes;
   @override
-  final String technicianName;
+  final double totalAmount;
   @override
-  final String dateText;
+  final double amountPaid;
   @override
-  final String statusBadge;
+  final String equipmentsUsed;
+  @override
+  @JsonKey()
+  final String guaranteeDuration;
+  @override
+  @JsonKey()
+  final String remarks;
+  @override
+  final DateTime serviceDate;
 
   @override
   String toString() {
-    return 'ServiceActivity(activityType: $activityType, title: $title, description: $description, technicianName: $technicianName, dateText: $dateText, statusBadge: $statusBadge)';
+    return 'ServiceActivity(id: $id, serviceType: $serviceType, fixes: $fixes, totalAmount: $totalAmount, amountPaid: $amountPaid, equipmentsUsed: $equipmentsUsed, guaranteeDuration: $guaranteeDuration, remarks: $remarks, serviceDate: $serviceDate)';
   }
 
   @override
@@ -220,29 +268,36 @@ class _$ServiceActivityImpl extends _ServiceActivity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ServiceActivityImpl &&
-            (identical(other.activityType, activityType) ||
-                other.activityType == activityType) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.technicianName, technicianName) ||
-                other.technicianName == technicianName) &&
-            (identical(other.dateText, dateText) ||
-                other.dateText == dateText) &&
-            (identical(other.statusBadge, statusBadge) ||
-                other.statusBadge == statusBadge));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.serviceType, serviceType) ||
+                other.serviceType == serviceType) &&
+            (identical(other.fixes, fixes) || other.fixes == fixes) &&
+            (identical(other.totalAmount, totalAmount) ||
+                other.totalAmount == totalAmount) &&
+            (identical(other.amountPaid, amountPaid) ||
+                other.amountPaid == amountPaid) &&
+            (identical(other.equipmentsUsed, equipmentsUsed) ||
+                other.equipmentsUsed == equipmentsUsed) &&
+            (identical(other.guaranteeDuration, guaranteeDuration) ||
+                other.guaranteeDuration == guaranteeDuration) &&
+            (identical(other.remarks, remarks) || other.remarks == remarks) &&
+            (identical(other.serviceDate, serviceDate) ||
+                other.serviceDate == serviceDate));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    activityType,
-    title,
-    description,
-    technicianName,
-    dateText,
-    statusBadge,
+    id,
+    serviceType,
+    fixes,
+    totalAmount,
+    amountPaid,
+    equipmentsUsed,
+    guaranteeDuration,
+    remarks,
+    serviceDate,
   );
 
   /// Create a copy of ServiceActivity
@@ -264,12 +319,15 @@ class _$ServiceActivityImpl extends _ServiceActivity {
 
 abstract class _ServiceActivity extends ServiceActivity {
   const factory _ServiceActivity({
-    required final String activityType,
-    required final String title,
-    required final String description,
-    required final String technicianName,
-    required final String dateText,
-    required final String statusBadge,
+    required final String id,
+    required final String serviceType,
+    required final String fixes,
+    required final double totalAmount,
+    required final double amountPaid,
+    required final String equipmentsUsed,
+    final String guaranteeDuration,
+    final String remarks,
+    required final DateTime serviceDate,
   }) = _$ServiceActivityImpl;
   const _ServiceActivity._() : super._();
 
@@ -277,17 +335,23 @@ abstract class _ServiceActivity extends ServiceActivity {
       _$ServiceActivityImpl.fromJson;
 
   @override
-  String get activityType; // 'complaint', 'maintenance', 'receipt', 'installation'
+  String get id;
   @override
-  String get title;
+  String get serviceType;
   @override
-  String get description;
+  String get fixes;
   @override
-  String get technicianName;
+  double get totalAmount;
   @override
-  String get dateText;
+  double get amountPaid;
   @override
-  String get statusBadge;
+  String get equipmentsUsed;
+  @override
+  String get guaranteeDuration;
+  @override
+  String get remarks;
+  @override
+  DateTime get serviceDate;
 
   /// Create a copy of ServiceActivity
   /// with the given fields replaced by the non-null parameter values.
@@ -313,23 +377,22 @@ mixin _$Customer {
   String get roType => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
-  String get status =>
-      throw _privateConstructorUsedError; // 'active', 'inactive'
-  String get customerType =>
-      throw _privateConstructorUsedError; // 'Active AMC', 'Rental Customer', 'Recent Purchase', 'Open Complaint'
+  String get status => throw _privateConstructorUsedError;
+  String get customerType => throw _privateConstructorUsedError;
   String get avatarUrl => throw _privateConstructorUsedError;
   String get deviceName => throw _privateConstructorUsedError;
   String get deviceInstalledOn => throw _privateConstructorUsedError;
   String get deviceLastService => throw _privateConstructorUsedError;
-  double get deviceFilterHealth =>
-      throw _privateConstructorUsedError; // between 0.0 and 1.0
+  double get deviceFilterHealth => throw _privateConstructorUsedError;
   int get totalVisits => throw _privateConstructorUsedError;
   bool get activeAmc => throw _privateConstructorUsedError;
-  String get customerValue =>
-      throw _privateConstructorUsedError; // e.g. '18.5k'
+  String get customerValue => throw _privateConstructorUsedError;
   int get openTickets => throw _privateConstructorUsedError;
   List<ServiceActivity> get serviceHistory =>
-      throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // Soft delete support
+  bool get isDeleted => throw _privateConstructorUsedError;
+  String? get deletedAt => throw _privateConstructorUsedError;
+  String? get deletedBy => throw _privateConstructorUsedError;
 
   /// Serializes this Customer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -369,6 +432,9 @@ abstract class $CustomerCopyWith<$Res> {
     String customerValue,
     int openTickets,
     List<ServiceActivity> serviceHistory,
+    bool isDeleted,
+    String? deletedAt,
+    String? deletedBy,
   });
 }
 
@@ -409,6 +475,9 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
     Object? customerValue = null,
     Object? openTickets = null,
     Object? serviceHistory = null,
+    Object? isDeleted = null,
+    Object? deletedAt = freezed,
+    Object? deletedBy = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -500,6 +569,18 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
                 ? _value.serviceHistory
                 : serviceHistory // ignore: cast_nullable_to_non_nullable
                       as List<ServiceActivity>,
+            isDeleted: null == isDeleted
+                ? _value.isDeleted
+                : isDeleted // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            deletedAt: freezed == deletedAt
+                ? _value.deletedAt
+                : deletedAt // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            deletedBy: freezed == deletedBy
+                ? _value.deletedBy
+                : deletedBy // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -538,6 +619,9 @@ abstract class _$$CustomerImplCopyWith<$Res>
     String customerValue,
     int openTickets,
     List<ServiceActivity> serviceHistory,
+    bool isDeleted,
+    String? deletedAt,
+    String? deletedBy,
   });
 }
 
@@ -577,6 +661,9 @@ class __$$CustomerImplCopyWithImpl<$Res>
     Object? customerValue = null,
     Object? openTickets = null,
     Object? serviceHistory = null,
+    Object? isDeleted = null,
+    Object? deletedAt = freezed,
+    Object? deletedBy = freezed,
   }) {
     return _then(
       _$CustomerImpl(
@@ -668,6 +755,18 @@ class __$$CustomerImplCopyWithImpl<$Res>
             ? _value._serviceHistory
             : serviceHistory // ignore: cast_nullable_to_non_nullable
                   as List<ServiceActivity>,
+        isDeleted: null == isDeleted
+            ? _value.isDeleted
+            : isDeleted // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        deletedAt: freezed == deletedAt
+            ? _value.deletedAt
+            : deletedAt // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        deletedBy: freezed == deletedBy
+            ? _value.deletedBy
+            : deletedBy // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -681,24 +780,27 @@ class _$CustomerImpl extends _Customer {
     required this.name,
     required this.customerId,
     required this.number,
-    required this.email,
-    required this.address,
-    required this.locality,
-    required this.roType,
-    required this.note,
-    required this.role,
-    required this.status,
-    required this.customerType,
-    required this.avatarUrl,
-    required this.deviceName,
-    required this.deviceInstalledOn,
-    required this.deviceLastService,
-    required this.deviceFilterHealth,
-    required this.totalVisits,
-    required this.activeAmc,
-    required this.customerValue,
-    required this.openTickets,
-    required final List<ServiceActivity> serviceHistory,
+    this.email = '',
+    this.address = '',
+    this.locality = '',
+    this.roType = '',
+    this.note = '',
+    this.role = '',
+    this.status = 'active',
+    this.customerType = '',
+    this.avatarUrl = '',
+    this.deviceName = '',
+    this.deviceInstalledOn = '',
+    this.deviceLastService = '',
+    this.deviceFilterHealth = 1.0,
+    this.totalVisits = 0,
+    this.activeAmc = false,
+    this.customerValue = '',
+    this.openTickets = 0,
+    final List<ServiceActivity> serviceHistory = const [],
+    this.isDeleted = false,
+    this.deletedAt,
+    this.deletedBy,
   }) : _serviceHistory = serviceHistory,
        super._();
 
@@ -714,54 +816,77 @@ class _$CustomerImpl extends _Customer {
   @override
   final String number;
   @override
+  @JsonKey()
   final String email;
   @override
+  @JsonKey()
   final String address;
   @override
+  @JsonKey()
   final String locality;
   @override
+  @JsonKey()
   final String roType;
   @override
+  @JsonKey()
   final String note;
   @override
+  @JsonKey()
   final String role;
   @override
+  @JsonKey()
   final String status;
-  // 'active', 'inactive'
   @override
+  @JsonKey()
   final String customerType;
-  // 'Active AMC', 'Rental Customer', 'Recent Purchase', 'Open Complaint'
   @override
+  @JsonKey()
   final String avatarUrl;
   @override
+  @JsonKey()
   final String deviceName;
   @override
+  @JsonKey()
   final String deviceInstalledOn;
   @override
+  @JsonKey()
   final String deviceLastService;
   @override
+  @JsonKey()
   final double deviceFilterHealth;
-  // between 0.0 and 1.0
   @override
+  @JsonKey()
   final int totalVisits;
   @override
+  @JsonKey()
   final bool activeAmc;
   @override
+  @JsonKey()
   final String customerValue;
-  // e.g. '18.5k'
   @override
+  @JsonKey()
   final int openTickets;
   final List<ServiceActivity> _serviceHistory;
   @override
+  @JsonKey()
   List<ServiceActivity> get serviceHistory {
     if (_serviceHistory is EqualUnmodifiableListView) return _serviceHistory;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_serviceHistory);
   }
 
+  // Soft delete support
+  @override
+  @JsonKey()
+  final bool isDeleted;
+  @override
+  final String? deletedAt;
+  @override
+  final String? deletedBy;
+
   @override
   String toString() {
-    return 'Customer(id: $id, name: $name, customerId: $customerId, number: $number, email: $email, address: $address, locality: $locality, roType: $roType, note: $note, role: $role, status: $status, customerType: $customerType, avatarUrl: $avatarUrl, deviceName: $deviceName, deviceInstalledOn: $deviceInstalledOn, deviceLastService: $deviceLastService, deviceFilterHealth: $deviceFilterHealth, totalVisits: $totalVisits, activeAmc: $activeAmc, customerValue: $customerValue, openTickets: $openTickets, serviceHistory: $serviceHistory)';
+    return 'Customer(id: $id, name: $name, customerId: $customerId, number: $number, email: $email, address: $address, locality: $locality, roType: $roType, note: $note, role: $role, status: $status, customerType: $customerType, avatarUrl: $avatarUrl, deviceName: $deviceName, deviceInstalledOn: $deviceInstalledOn, deviceLastService: $deviceLastService, deviceFilterHealth: $deviceFilterHealth, totalVisits: $totalVisits, activeAmc: $activeAmc, customerValue: $customerValue, openTickets: $openTickets, serviceHistory: $serviceHistory, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
   }
 
   @override
@@ -805,7 +930,13 @@ class _$CustomerImpl extends _Customer {
             const DeepCollectionEquality().equals(
               other._serviceHistory,
               _serviceHistory,
-            ));
+            ) &&
+            (identical(other.isDeleted, isDeleted) ||
+                other.isDeleted == isDeleted) &&
+            (identical(other.deletedAt, deletedAt) ||
+                other.deletedAt == deletedAt) &&
+            (identical(other.deletedBy, deletedBy) ||
+                other.deletedBy == deletedBy));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -834,6 +965,9 @@ class _$CustomerImpl extends _Customer {
     customerValue,
     openTickets,
     const DeepCollectionEquality().hash(_serviceHistory),
+    isDeleted,
+    deletedAt,
+    deletedBy,
   ]);
 
   /// Create a copy of Customer
@@ -856,24 +990,27 @@ abstract class _Customer extends Customer {
     required final String name,
     required final String customerId,
     required final String number,
-    required final String email,
-    required final String address,
-    required final String locality,
-    required final String roType,
-    required final String note,
-    required final String role,
-    required final String status,
-    required final String customerType,
-    required final String avatarUrl,
-    required final String deviceName,
-    required final String deviceInstalledOn,
-    required final String deviceLastService,
-    required final double deviceFilterHealth,
-    required final int totalVisits,
-    required final bool activeAmc,
-    required final String customerValue,
-    required final int openTickets,
-    required final List<ServiceActivity> serviceHistory,
+    final String email,
+    final String address,
+    final String locality,
+    final String roType,
+    final String note,
+    final String role,
+    final String status,
+    final String customerType,
+    final String avatarUrl,
+    final String deviceName,
+    final String deviceInstalledOn,
+    final String deviceLastService,
+    final double deviceFilterHealth,
+    final int totalVisits,
+    final bool activeAmc,
+    final String customerValue,
+    final int openTickets,
+    final List<ServiceActivity> serviceHistory,
+    final bool isDeleted,
+    final String? deletedAt,
+    final String? deletedBy,
   }) = _$CustomerImpl;
   const _Customer._() : super._();
 
@@ -901,9 +1038,9 @@ abstract class _Customer extends Customer {
   @override
   String get role;
   @override
-  String get status; // 'active', 'inactive'
+  String get status;
   @override
-  String get customerType; // 'Active AMC', 'Rental Customer', 'Recent Purchase', 'Open Complaint'
+  String get customerType;
   @override
   String get avatarUrl;
   @override
@@ -913,17 +1050,23 @@ abstract class _Customer extends Customer {
   @override
   String get deviceLastService;
   @override
-  double get deviceFilterHealth; // between 0.0 and 1.0
+  double get deviceFilterHealth;
   @override
   int get totalVisits;
   @override
   bool get activeAmc;
   @override
-  String get customerValue; // e.g. '18.5k'
+  String get customerValue;
   @override
   int get openTickets;
   @override
-  List<ServiceActivity> get serviceHistory;
+  List<ServiceActivity> get serviceHistory; // Soft delete support
+  @override
+  bool get isDeleted;
+  @override
+  String? get deletedAt;
+  @override
+  String? get deletedBy;
 
   /// Create a copy of Customer
   /// with the given fields replaced by the non-null parameter values.

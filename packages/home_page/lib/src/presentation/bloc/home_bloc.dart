@@ -10,6 +10,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       : _getHomeDataUseCase = getHomeDataUseCase,
         super(const HomeState.initial()) {
     on<LoadHomeData>(_onLoadHomeData);
+    on<FilterComplaints>(_onFilterComplaints);
   }
 
   Future<void> _onLoadHomeData(
@@ -20,11 +21,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       await emit.forEach(
         _getHomeDataUseCase(),
-        onData: (data) => HomeState.loaded(data: data),
+        onData: (data) {
+          final currentFilter = state is HomeLoaded ? (state as HomeLoaded).filter : 'All';
+          return HomeState.loaded(data: data, filter: currentFilter);
+        },
         onError: (error, stackTrace) => HomeState.error(message: error.toString()),
       );
     } catch (e) {
       emit(HomeState.error(message: e.toString()));
+    }
+  }
+
+  void _onFilterComplaints(
+    FilterComplaints event,
+    Emitter<HomeState> emit,
+  ) {
+    if (state is HomeLoaded) {
+      final currentState = state as HomeLoaded;
+      emit(currentState.copyWith(filter: event.filter));
     }
   }
 }

@@ -5,4 +5,5 @@ part 'home_event.freezed.dart';
 @freezed
 class HomeEvent with _$HomeEvent {
   const factory HomeEvent.loadHomeData() = LoadHomeData;
+  const factory HomeEvent.filterComplaints(String filter) = FilterComplaints;
 }

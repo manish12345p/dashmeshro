@@ -16,11 +16,462 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
+mixin _$ExpiryItem {
+  String get customerName => throw _privateConstructorUsedError;
+  String get customerId => throw _privateConstructorUsedError;
+  String get type =>
+      throw _privateConstructorUsedError; // 'Service' or 'Guarantee'
+  String get expiryDate => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+
+  /// Create a copy of ExpiryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ExpiryItemCopyWith<ExpiryItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ExpiryItemCopyWith<$Res> {
+  factory $ExpiryItemCopyWith(
+    ExpiryItem value,
+    $Res Function(ExpiryItem) then,
+  ) = _$ExpiryItemCopyWithImpl<$Res, ExpiryItem>;
+  @useResult
+  $Res call({
+    String customerName,
+    String customerId,
+    String type,
+    String expiryDate,
+    String phone,
+  });
+}
+
+/// @nodoc
+class _$ExpiryItemCopyWithImpl<$Res, $Val extends ExpiryItem>
+    implements $ExpiryItemCopyWith<$Res> {
+  _$ExpiryItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ExpiryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customerName = null,
+    Object? customerId = null,
+    Object? type = null,
+    Object? expiryDate = null,
+    Object? phone = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            customerName: null == customerName
+                ? _value.customerName
+                : customerName // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            type: null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                      as String,
+            expiryDate: null == expiryDate
+                ? _value.expiryDate
+                : expiryDate // ignore: cast_nullable_to_non_nullable
+                      as String,
+            phone: null == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$ExpiryItemImplCopyWith<$Res>
+    implements $ExpiryItemCopyWith<$Res> {
+  factory _$$ExpiryItemImplCopyWith(
+    _$ExpiryItemImpl value,
+    $Res Function(_$ExpiryItemImpl) then,
+  ) = __$$ExpiryItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String customerName,
+    String customerId,
+    String type,
+    String expiryDate,
+    String phone,
+  });
+}
+
+/// @nodoc
+class __$$ExpiryItemImplCopyWithImpl<$Res>
+    extends _$ExpiryItemCopyWithImpl<$Res, _$ExpiryItemImpl>
+    implements _$$ExpiryItemImplCopyWith<$Res> {
+  __$$ExpiryItemImplCopyWithImpl(
+    _$ExpiryItemImpl _value,
+    $Res Function(_$ExpiryItemImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of ExpiryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customerName = null,
+    Object? customerId = null,
+    Object? type = null,
+    Object? expiryDate = null,
+    Object? phone = null,
+  }) {
+    return _then(
+      _$ExpiryItemImpl(
+        customerName: null == customerName
+            ? _value.customerName
+            : customerName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        type: null == type
+            ? _value.type
+            : type // ignore: cast_nullable_to_non_nullable
+                  as String,
+        expiryDate: null == expiryDate
+            ? _value.expiryDate
+            : expiryDate // ignore: cast_nullable_to_non_nullable
+                  as String,
+        phone: null == phone
+            ? _value.phone
+            : phone // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ExpiryItemImpl extends _ExpiryItem {
+  const _$ExpiryItemImpl({
+    required this.customerName,
+    required this.customerId,
+    required this.type,
+    required this.expiryDate,
+    required this.phone,
+  }) : super._();
+
+  @override
+  final String customerName;
+  @override
+  final String customerId;
+  @override
+  final String type;
+  // 'Service' or 'Guarantee'
+  @override
+  final String expiryDate;
+  @override
+  final String phone;
+
+  @override
+  String toString() {
+    return 'ExpiryItem(customerName: $customerName, customerId: $customerId, type: $type, expiryDate: $expiryDate, phone: $phone)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExpiryItemImpl &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.expiryDate, expiryDate) ||
+                other.expiryDate == expiryDate) &&
+            (identical(other.phone, phone) || other.phone == phone));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    customerName,
+    customerId,
+    type,
+    expiryDate,
+    phone,
+  );
+
+  /// Create a copy of ExpiryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ExpiryItemImplCopyWith<_$ExpiryItemImpl> get copyWith =>
+      __$$ExpiryItemImplCopyWithImpl<_$ExpiryItemImpl>(this, _$identity);
+}
+
+abstract class _ExpiryItem extends ExpiryItem {
+  const factory _ExpiryItem({
+    required final String customerName,
+    required final String customerId,
+    required final String type,
+    required final String expiryDate,
+    required final String phone,
+  }) = _$ExpiryItemImpl;
+  const _ExpiryItem._() : super._();
+
+  @override
+  String get customerName;
+  @override
+  String get customerId;
+  @override
+  String get type; // 'Service' or 'Guarantee'
+  @override
+  String get expiryDate;
+  @override
+  String get phone;
+
+  /// Create a copy of ExpiryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ExpiryItemImplCopyWith<_$ExpiryItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$PendingPaymentItem {
+  String get customerName => throw _privateConstructorUsedError;
+  String get customerId => throw _privateConstructorUsedError;
+  double get amountPending => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+
+  /// Create a copy of PendingPaymentItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $PendingPaymentItemCopyWith<PendingPaymentItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PendingPaymentItemCopyWith<$Res> {
+  factory $PendingPaymentItemCopyWith(
+    PendingPaymentItem value,
+    $Res Function(PendingPaymentItem) then,
+  ) = _$PendingPaymentItemCopyWithImpl<$Res, PendingPaymentItem>;
+  @useResult
+  $Res call({
+    String customerName,
+    String customerId,
+    double amountPending,
+    String phone,
+  });
+}
+
+/// @nodoc
+class _$PendingPaymentItemCopyWithImpl<$Res, $Val extends PendingPaymentItem>
+    implements $PendingPaymentItemCopyWith<$Res> {
+  _$PendingPaymentItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of PendingPaymentItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customerName = null,
+    Object? customerId = null,
+    Object? amountPending = null,
+    Object? phone = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            customerName: null == customerName
+                ? _value.customerName
+                : customerName // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            amountPending: null == amountPending
+                ? _value.amountPending
+                : amountPending // ignore: cast_nullable_to_non_nullable
+                      as double,
+            phone: null == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$PendingPaymentItemImplCopyWith<$Res>
+    implements $PendingPaymentItemCopyWith<$Res> {
+  factory _$$PendingPaymentItemImplCopyWith(
+    _$PendingPaymentItemImpl value,
+    $Res Function(_$PendingPaymentItemImpl) then,
+  ) = __$$PendingPaymentItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String customerName,
+    String customerId,
+    double amountPending,
+    String phone,
+  });
+}
+
+/// @nodoc
+class __$$PendingPaymentItemImplCopyWithImpl<$Res>
+    extends _$PendingPaymentItemCopyWithImpl<$Res, _$PendingPaymentItemImpl>
+    implements _$$PendingPaymentItemImplCopyWith<$Res> {
+  __$$PendingPaymentItemImplCopyWithImpl(
+    _$PendingPaymentItemImpl _value,
+    $Res Function(_$PendingPaymentItemImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of PendingPaymentItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customerName = null,
+    Object? customerId = null,
+    Object? amountPending = null,
+    Object? phone = null,
+  }) {
+    return _then(
+      _$PendingPaymentItemImpl(
+        customerName: null == customerName
+            ? _value.customerName
+            : customerName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        amountPending: null == amountPending
+            ? _value.amountPending
+            : amountPending // ignore: cast_nullable_to_non_nullable
+                  as double,
+        phone: null == phone
+            ? _value.phone
+            : phone // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$PendingPaymentItemImpl extends _PendingPaymentItem {
+  const _$PendingPaymentItemImpl({
+    required this.customerName,
+    required this.customerId,
+    required this.amountPending,
+    required this.phone,
+  }) : super._();
+
+  @override
+  final String customerName;
+  @override
+  final String customerId;
+  @override
+  final double amountPending;
+  @override
+  final String phone;
+
+  @override
+  String toString() {
+    return 'PendingPaymentItem(customerName: $customerName, customerId: $customerId, amountPending: $amountPending, phone: $phone)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PendingPaymentItemImpl &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
+            (identical(other.amountPending, amountPending) ||
+                other.amountPending == amountPending) &&
+            (identical(other.phone, phone) || other.phone == phone));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, customerName, customerId, amountPending, phone);
+
+  /// Create a copy of PendingPaymentItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PendingPaymentItemImplCopyWith<_$PendingPaymentItemImpl> get copyWith =>
+      __$$PendingPaymentItemImplCopyWithImpl<_$PendingPaymentItemImpl>(
+        this,
+        _$identity,
+      );
+}
+
+abstract class _PendingPaymentItem extends PendingPaymentItem {
+  const factory _PendingPaymentItem({
+    required final String customerName,
+    required final String customerId,
+    required final double amountPending,
+    required final String phone,
+  }) = _$PendingPaymentItemImpl;
+  const _PendingPaymentItem._() : super._();
+
+  @override
+  String get customerName;
+  @override
+  String get customerId;
+  @override
+  double get amountPending;
+  @override
+  String get phone;
+
+  /// Create a copy of PendingPaymentItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PendingPaymentItemImplCopyWith<_$PendingPaymentItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$ScheduleItem {
   String get title => throw _privateConstructorUsedError;
   String get subtitle => throw _privateConstructorUsedError;
   String get time => throw _privateConstructorUsedError;
   bool get isUrgent => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+  String get customerId => throw _privateConstructorUsedError;
 
   /// Create a copy of ScheduleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -36,7 +487,14 @@ abstract class $ScheduleItemCopyWith<$Res> {
     $Res Function(ScheduleItem) then,
   ) = _$ScheduleItemCopyWithImpl<$Res, ScheduleItem>;
   @useResult
-  $Res call({String title, String subtitle, String time, bool isUrgent});
+  $Res call({
+    String title,
+    String subtitle,
+    String time,
+    bool isUrgent,
+    String phone,
+    String customerId,
+  });
 }
 
 /// @nodoc
@@ -58,6 +516,8 @@ class _$ScheduleItemCopyWithImpl<$Res, $Val extends ScheduleItem>
     Object? subtitle = null,
     Object? time = null,
     Object? isUrgent = null,
+    Object? phone = null,
+    Object? customerId = null,
   }) {
     return _then(
       _value.copyWith(
@@ -77,6 +537,14 @@ class _$ScheduleItemCopyWithImpl<$Res, $Val extends ScheduleItem>
                 ? _value.isUrgent
                 : isUrgent // ignore: cast_nullable_to_non_nullable
                       as bool,
+            phone: null == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -92,7 +560,14 @@ abstract class _$$ScheduleItemImplCopyWith<$Res>
   ) = __$$ScheduleItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, String subtitle, String time, bool isUrgent});
+  $Res call({
+    String title,
+    String subtitle,
+    String time,
+    bool isUrgent,
+    String phone,
+    String customerId,
+  });
 }
 
 /// @nodoc
@@ -113,6 +588,8 @@ class __$$ScheduleItemImplCopyWithImpl<$Res>
     Object? subtitle = null,
     Object? time = null,
     Object? isUrgent = null,
+    Object? phone = null,
+    Object? customerId = null,
   }) {
     return _then(
       _$ScheduleItemImpl(
@@ -132,6 +609,14 @@ class __$$ScheduleItemImplCopyWithImpl<$Res>
             ? _value.isUrgent
             : isUrgent // ignore: cast_nullable_to_non_nullable
                   as bool,
+        phone: null == phone
+            ? _value.phone
+            : phone // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -145,6 +630,8 @@ class _$ScheduleItemImpl extends _ScheduleItem {
     required this.subtitle,
     required this.time,
     this.isUrgent = false,
+    this.phone = '',
+    this.customerId = '',
   }) : super._();
 
   @override
@@ -156,10 +643,16 @@ class _$ScheduleItemImpl extends _ScheduleItem {
   @override
   @JsonKey()
   final bool isUrgent;
+  @override
+  @JsonKey()
+  final String phone;
+  @override
+  @JsonKey()
+  final String customerId;
 
   @override
   String toString() {
-    return 'ScheduleItem(title: $title, subtitle: $subtitle, time: $time, isUrgent: $isUrgent)';
+    return 'ScheduleItem(title: $title, subtitle: $subtitle, time: $time, isUrgent: $isUrgent, phone: $phone, customerId: $customerId)';
   }
 
   @override
@@ -172,11 +665,22 @@ class _$ScheduleItemImpl extends _ScheduleItem {
                 other.subtitle == subtitle) &&
             (identical(other.time, time) || other.time == time) &&
             (identical(other.isUrgent, isUrgent) ||
-                other.isUrgent == isUrgent));
+                other.isUrgent == isUrgent) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, subtitle, time, isUrgent);
+  int get hashCode => Object.hash(
+    runtimeType,
+    title,
+    subtitle,
+    time,
+    isUrgent,
+    phone,
+    customerId,
+  );
 
   /// Create a copy of ScheduleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -193,6 +697,8 @@ abstract class _ScheduleItem extends ScheduleItem {
     required final String subtitle,
     required final String time,
     final bool isUrgent,
+    final String phone,
+    final String customerId,
   }) = _$ScheduleItemImpl;
   const _ScheduleItem._() : super._();
 
@@ -204,6 +710,10 @@ abstract class _ScheduleItem extends ScheduleItem {
   String get time;
   @override
   bool get isUrgent;
+  @override
+  String get phone;
+  @override
+  String get customerId;
 
   /// Create a copy of ScheduleItem
   /// with the given fields replaced by the non-null parameter values.
@@ -634,16 +1144,332 @@ abstract class _AmcProgress extends AmcProgress {
 }
 
 /// @nodoc
+mixin _$NotificationItem {
+  String get customerName => throw _privateConstructorUsedError;
+  String get customerId => throw _privateConstructorUsedError;
+  String get address => throw _privateConstructorUsedError;
+  String get serviceType => throw _privateConstructorUsedError;
+  String get serviceId => throw _privateConstructorUsedError;
+  String get notificationDate => throw _privateConstructorUsedError;
+  bool get isDismissed => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+
+  /// Create a copy of NotificationItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $NotificationItemCopyWith<NotificationItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NotificationItemCopyWith<$Res> {
+  factory $NotificationItemCopyWith(
+    NotificationItem value,
+    $Res Function(NotificationItem) then,
+  ) = _$NotificationItemCopyWithImpl<$Res, NotificationItem>;
+  @useResult
+  $Res call({
+    String customerName,
+    String customerId,
+    String address,
+    String serviceType,
+    String serviceId,
+    String notificationDate,
+    bool isDismissed,
+    String phone,
+  });
+}
+
+/// @nodoc
+class _$NotificationItemCopyWithImpl<$Res, $Val extends NotificationItem>
+    implements $NotificationItemCopyWith<$Res> {
+  _$NotificationItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of NotificationItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customerName = null,
+    Object? customerId = null,
+    Object? address = null,
+    Object? serviceType = null,
+    Object? serviceId = null,
+    Object? notificationDate = null,
+    Object? isDismissed = null,
+    Object? phone = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            customerName: null == customerName
+                ? _value.customerName
+                : customerName // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            address: null == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                      as String,
+            serviceType: null == serviceType
+                ? _value.serviceType
+                : serviceType // ignore: cast_nullable_to_non_nullable
+                      as String,
+            serviceId: null == serviceId
+                ? _value.serviceId
+                : serviceId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            notificationDate: null == notificationDate
+                ? _value.notificationDate
+                : notificationDate // ignore: cast_nullable_to_non_nullable
+                      as String,
+            isDismissed: null == isDismissed
+                ? _value.isDismissed
+                : isDismissed // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            phone: null == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$NotificationItemImplCopyWith<$Res>
+    implements $NotificationItemCopyWith<$Res> {
+  factory _$$NotificationItemImplCopyWith(
+    _$NotificationItemImpl value,
+    $Res Function(_$NotificationItemImpl) then,
+  ) = __$$NotificationItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String customerName,
+    String customerId,
+    String address,
+    String serviceType,
+    String serviceId,
+    String notificationDate,
+    bool isDismissed,
+    String phone,
+  });
+}
+
+/// @nodoc
+class __$$NotificationItemImplCopyWithImpl<$Res>
+    extends _$NotificationItemCopyWithImpl<$Res, _$NotificationItemImpl>
+    implements _$$NotificationItemImplCopyWith<$Res> {
+  __$$NotificationItemImplCopyWithImpl(
+    _$NotificationItemImpl _value,
+    $Res Function(_$NotificationItemImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of NotificationItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customerName = null,
+    Object? customerId = null,
+    Object? address = null,
+    Object? serviceType = null,
+    Object? serviceId = null,
+    Object? notificationDate = null,
+    Object? isDismissed = null,
+    Object? phone = null,
+  }) {
+    return _then(
+      _$NotificationItemImpl(
+        customerName: null == customerName
+            ? _value.customerName
+            : customerName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        address: null == address
+            ? _value.address
+            : address // ignore: cast_nullable_to_non_nullable
+                  as String,
+        serviceType: null == serviceType
+            ? _value.serviceType
+            : serviceType // ignore: cast_nullable_to_non_nullable
+                  as String,
+        serviceId: null == serviceId
+            ? _value.serviceId
+            : serviceId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        notificationDate: null == notificationDate
+            ? _value.notificationDate
+            : notificationDate // ignore: cast_nullable_to_non_nullable
+                  as String,
+        isDismissed: null == isDismissed
+            ? _value.isDismissed
+            : isDismissed // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        phone: null == phone
+            ? _value.phone
+            : phone // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$NotificationItemImpl extends _NotificationItem {
+  const _$NotificationItemImpl({
+    required this.customerName,
+    required this.customerId,
+    required this.address,
+    required this.serviceType,
+    required this.serviceId,
+    required this.notificationDate,
+    this.isDismissed = false,
+    this.phone = '',
+  }) : super._();
+
+  @override
+  final String customerName;
+  @override
+  final String customerId;
+  @override
+  final String address;
+  @override
+  final String serviceType;
+  @override
+  final String serviceId;
+  @override
+  final String notificationDate;
+  @override
+  @JsonKey()
+  final bool isDismissed;
+  @override
+  @JsonKey()
+  final String phone;
+
+  @override
+  String toString() {
+    return 'NotificationItem(customerName: $customerName, customerId: $customerId, address: $address, serviceType: $serviceType, serviceId: $serviceId, notificationDate: $notificationDate, isDismissed: $isDismissed, phone: $phone)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationItemImpl &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.serviceType, serviceType) ||
+                other.serviceType == serviceType) &&
+            (identical(other.serviceId, serviceId) ||
+                other.serviceId == serviceId) &&
+            (identical(other.notificationDate, notificationDate) ||
+                other.notificationDate == notificationDate) &&
+            (identical(other.isDismissed, isDismissed) ||
+                other.isDismissed == isDismissed) &&
+            (identical(other.phone, phone) || other.phone == phone));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    customerName,
+    customerId,
+    address,
+    serviceType,
+    serviceId,
+    notificationDate,
+    isDismissed,
+    phone,
+  );
+
+  /// Create a copy of NotificationItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationItemImplCopyWith<_$NotificationItemImpl> get copyWith =>
+      __$$NotificationItemImplCopyWithImpl<_$NotificationItemImpl>(
+        this,
+        _$identity,
+      );
+}
+
+abstract class _NotificationItem extends NotificationItem {
+  const factory _NotificationItem({
+    required final String customerName,
+    required final String customerId,
+    required final String address,
+    required final String serviceType,
+    required final String serviceId,
+    required final String notificationDate,
+    final bool isDismissed,
+    final String phone,
+  }) = _$NotificationItemImpl;
+  const _NotificationItem._() : super._();
+
+  @override
+  String get customerName;
+  @override
+  String get customerId;
+  @override
+  String get address;
+  @override
+  String get serviceType;
+  @override
+  String get serviceId;
+  @override
+  String get notificationDate;
+  @override
+  bool get isDismissed;
+  @override
+  String get phone;
+
+  /// Create a copy of NotificationItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotificationItemImplCopyWith<_$NotificationItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$HomeData {
   int get newSells => throw _privateConstructorUsedError;
   int get activeRentals => throw _privateConstructorUsedError;
   int get activeAmcs => throw _privateConstructorUsedError;
+  int get totalServices => throw _privateConstructorUsedError;
+  double get totalCollectedThisMonth => throw _privateConstructorUsedError;
+  int get amcServices => throw _privateConstructorUsedError;
+  int get newRoServices => throw _privateConstructorUsedError;
+  int get repairServices => throw _privateConstructorUsedError;
   int get resolutionRatePercent => throw _privateConstructorUsedError;
   int get pendingComplaintsCount => throw _privateConstructorUsedError;
   List<ScheduleItem> get todaySchedules => throw _privateConstructorUsedError;
   List<ComplaintItem> get pendingComplaints =>
       throw _privateConstructorUsedError;
   List<AmcProgress> get amcProgresses => throw _privateConstructorUsedError;
+  List<NotificationItem> get todayNotifications =>
+      throw _privateConstructorUsedError;
+  List<ExpiryItem> get expiringItems => throw _privateConstructorUsedError;
+  List<PendingPaymentItem> get pendingPayments =>
+      throw _privateConstructorUsedError;
   int get todaySellsSummary => throw _privateConstructorUsedError;
   int get weekSellsSummary => throw _privateConstructorUsedError;
   String get projectedGrowth => throw _privateConstructorUsedError;
@@ -664,11 +1490,19 @@ abstract class $HomeDataCopyWith<$Res> {
     int newSells,
     int activeRentals,
     int activeAmcs,
+    int totalServices,
+    double totalCollectedThisMonth,
+    int amcServices,
+    int newRoServices,
+    int repairServices,
     int resolutionRatePercent,
     int pendingComplaintsCount,
     List<ScheduleItem> todaySchedules,
     List<ComplaintItem> pendingComplaints,
     List<AmcProgress> amcProgresses,
+    List<NotificationItem> todayNotifications,
+    List<ExpiryItem> expiringItems,
+    List<PendingPaymentItem> pendingPayments,
     int todaySellsSummary,
     int weekSellsSummary,
     String projectedGrowth,
@@ -693,11 +1527,19 @@ class _$HomeDataCopyWithImpl<$Res, $Val extends HomeData>
     Object? newSells = null,
     Object? activeRentals = null,
     Object? activeAmcs = null,
+    Object? totalServices = null,
+    Object? totalCollectedThisMonth = null,
+    Object? amcServices = null,
+    Object? newRoServices = null,
+    Object? repairServices = null,
     Object? resolutionRatePercent = null,
     Object? pendingComplaintsCount = null,
     Object? todaySchedules = null,
     Object? pendingComplaints = null,
     Object? amcProgresses = null,
+    Object? todayNotifications = null,
+    Object? expiringItems = null,
+    Object? pendingPayments = null,
     Object? todaySellsSummary = null,
     Object? weekSellsSummary = null,
     Object? projectedGrowth = null,
@@ -715,6 +1557,26 @@ class _$HomeDataCopyWithImpl<$Res, $Val extends HomeData>
             activeAmcs: null == activeAmcs
                 ? _value.activeAmcs
                 : activeAmcs // ignore: cast_nullable_to_non_nullable
+                      as int,
+            totalServices: null == totalServices
+                ? _value.totalServices
+                : totalServices // ignore: cast_nullable_to_non_nullable
+                      as int,
+            totalCollectedThisMonth: null == totalCollectedThisMonth
+                ? _value.totalCollectedThisMonth
+                : totalCollectedThisMonth // ignore: cast_nullable_to_non_nullable
+                      as double,
+            amcServices: null == amcServices
+                ? _value.amcServices
+                : amcServices // ignore: cast_nullable_to_non_nullable
+                      as int,
+            newRoServices: null == newRoServices
+                ? _value.newRoServices
+                : newRoServices // ignore: cast_nullable_to_non_nullable
+                      as int,
+            repairServices: null == repairServices
+                ? _value.repairServices
+                : repairServices // ignore: cast_nullable_to_non_nullable
                       as int,
             resolutionRatePercent: null == resolutionRatePercent
                 ? _value.resolutionRatePercent
@@ -736,6 +1598,18 @@ class _$HomeDataCopyWithImpl<$Res, $Val extends HomeData>
                 ? _value.amcProgresses
                 : amcProgresses // ignore: cast_nullable_to_non_nullable
                       as List<AmcProgress>,
+            todayNotifications: null == todayNotifications
+                ? _value.todayNotifications
+                : todayNotifications // ignore: cast_nullable_to_non_nullable
+                      as List<NotificationItem>,
+            expiringItems: null == expiringItems
+                ? _value.expiringItems
+                : expiringItems // ignore: cast_nullable_to_non_nullable
+                      as List<ExpiryItem>,
+            pendingPayments: null == pendingPayments
+                ? _value.pendingPayments
+                : pendingPayments // ignore: cast_nullable_to_non_nullable
+                      as List<PendingPaymentItem>,
             todaySellsSummary: null == todaySellsSummary
                 ? _value.todaySellsSummary
                 : todaySellsSummary // ignore: cast_nullable_to_non_nullable
@@ -767,11 +1641,19 @@ abstract class _$$HomeDataImplCopyWith<$Res>
     int newSells,
     int activeRentals,
     int activeAmcs,
+    int totalServices,
+    double totalCollectedThisMonth,
+    int amcServices,
+    int newRoServices,
+    int repairServices,
     int resolutionRatePercent,
     int pendingComplaintsCount,
     List<ScheduleItem> todaySchedules,
     List<ComplaintItem> pendingComplaints,
     List<AmcProgress> amcProgresses,
+    List<NotificationItem> todayNotifications,
+    List<ExpiryItem> expiringItems,
+    List<PendingPaymentItem> pendingPayments,
     int todaySellsSummary,
     int weekSellsSummary,
     String projectedGrowth,
@@ -795,11 +1677,19 @@ class __$$HomeDataImplCopyWithImpl<$Res>
     Object? newSells = null,
     Object? activeRentals = null,
     Object? activeAmcs = null,
+    Object? totalServices = null,
+    Object? totalCollectedThisMonth = null,
+    Object? amcServices = null,
+    Object? newRoServices = null,
+    Object? repairServices = null,
     Object? resolutionRatePercent = null,
     Object? pendingComplaintsCount = null,
     Object? todaySchedules = null,
     Object? pendingComplaints = null,
     Object? amcProgresses = null,
+    Object? todayNotifications = null,
+    Object? expiringItems = null,
+    Object? pendingPayments = null,
     Object? todaySellsSummary = null,
     Object? weekSellsSummary = null,
     Object? projectedGrowth = null,
@@ -817,6 +1707,26 @@ class __$$HomeDataImplCopyWithImpl<$Res>
         activeAmcs: null == activeAmcs
             ? _value.activeAmcs
             : activeAmcs // ignore: cast_nullable_to_non_nullable
+                  as int,
+        totalServices: null == totalServices
+            ? _value.totalServices
+            : totalServices // ignore: cast_nullable_to_non_nullable
+                  as int,
+        totalCollectedThisMonth: null == totalCollectedThisMonth
+            ? _value.totalCollectedThisMonth
+            : totalCollectedThisMonth // ignore: cast_nullable_to_non_nullable
+                  as double,
+        amcServices: null == amcServices
+            ? _value.amcServices
+            : amcServices // ignore: cast_nullable_to_non_nullable
+                  as int,
+        newRoServices: null == newRoServices
+            ? _value.newRoServices
+            : newRoServices // ignore: cast_nullable_to_non_nullable
+                  as int,
+        repairServices: null == repairServices
+            ? _value.repairServices
+            : repairServices // ignore: cast_nullable_to_non_nullable
                   as int,
         resolutionRatePercent: null == resolutionRatePercent
             ? _value.resolutionRatePercent
@@ -838,6 +1748,18 @@ class __$$HomeDataImplCopyWithImpl<$Res>
             ? _value._amcProgresses
             : amcProgresses // ignore: cast_nullable_to_non_nullable
                   as List<AmcProgress>,
+        todayNotifications: null == todayNotifications
+            ? _value._todayNotifications
+            : todayNotifications // ignore: cast_nullable_to_non_nullable
+                  as List<NotificationItem>,
+        expiringItems: null == expiringItems
+            ? _value._expiringItems
+            : expiringItems // ignore: cast_nullable_to_non_nullable
+                  as List<ExpiryItem>,
+        pendingPayments: null == pendingPayments
+            ? _value._pendingPayments
+            : pendingPayments // ignore: cast_nullable_to_non_nullable
+                  as List<PendingPaymentItem>,
         todaySellsSummary: null == todaySellsSummary
             ? _value.todaySellsSummary
             : todaySellsSummary // ignore: cast_nullable_to_non_nullable
@@ -862,17 +1784,28 @@ class _$HomeDataImpl extends _HomeData {
     required this.newSells,
     required this.activeRentals,
     required this.activeAmcs,
+    required this.totalServices,
+    required this.totalCollectedThisMonth,
+    required this.amcServices,
+    required this.newRoServices,
+    required this.repairServices,
     required this.resolutionRatePercent,
     required this.pendingComplaintsCount,
     required final List<ScheduleItem> todaySchedules,
     required final List<ComplaintItem> pendingComplaints,
     required final List<AmcProgress> amcProgresses,
+    required final List<NotificationItem> todayNotifications,
+    final List<ExpiryItem> expiringItems = const [],
+    final List<PendingPaymentItem> pendingPayments = const [],
     required this.todaySellsSummary,
     required this.weekSellsSummary,
     required this.projectedGrowth,
   }) : _todaySchedules = todaySchedules,
        _pendingComplaints = pendingComplaints,
        _amcProgresses = amcProgresses,
+       _todayNotifications = todayNotifications,
+       _expiringItems = expiringItems,
+       _pendingPayments = pendingPayments,
        super._();
 
   @override
@@ -881,6 +1814,16 @@ class _$HomeDataImpl extends _HomeData {
   final int activeRentals;
   @override
   final int activeAmcs;
+  @override
+  final int totalServices;
+  @override
+  final double totalCollectedThisMonth;
+  @override
+  final int amcServices;
+  @override
+  final int newRoServices;
+  @override
+  final int repairServices;
   @override
   final int resolutionRatePercent;
   @override
@@ -910,6 +1853,33 @@ class _$HomeDataImpl extends _HomeData {
     return EqualUnmodifiableListView(_amcProgresses);
   }
 
+  final List<NotificationItem> _todayNotifications;
+  @override
+  List<NotificationItem> get todayNotifications {
+    if (_todayNotifications is EqualUnmodifiableListView)
+      return _todayNotifications;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_todayNotifications);
+  }
+
+  final List<ExpiryItem> _expiringItems;
+  @override
+  @JsonKey()
+  List<ExpiryItem> get expiringItems {
+    if (_expiringItems is EqualUnmodifiableListView) return _expiringItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_expiringItems);
+  }
+
+  final List<PendingPaymentItem> _pendingPayments;
+  @override
+  @JsonKey()
+  List<PendingPaymentItem> get pendingPayments {
+    if (_pendingPayments is EqualUnmodifiableListView) return _pendingPayments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pendingPayments);
+  }
+
   @override
   final int todaySellsSummary;
   @override
@@ -919,7 +1889,7 @@ class _$HomeDataImpl extends _HomeData {
 
   @override
   String toString() {
-    return 'HomeData(newSells: $newSells, activeRentals: $activeRentals, activeAmcs: $activeAmcs, resolutionRatePercent: $resolutionRatePercent, pendingComplaintsCount: $pendingComplaintsCount, todaySchedules: $todaySchedules, pendingComplaints: $pendingComplaints, amcProgresses: $amcProgresses, todaySellsSummary: $todaySellsSummary, weekSellsSummary: $weekSellsSummary, projectedGrowth: $projectedGrowth)';
+    return 'HomeData(newSells: $newSells, activeRentals: $activeRentals, activeAmcs: $activeAmcs, totalServices: $totalServices, totalCollectedThisMonth: $totalCollectedThisMonth, amcServices: $amcServices, newRoServices: $newRoServices, repairServices: $repairServices, resolutionRatePercent: $resolutionRatePercent, pendingComplaintsCount: $pendingComplaintsCount, todaySchedules: $todaySchedules, pendingComplaints: $pendingComplaints, amcProgresses: $amcProgresses, todayNotifications: $todayNotifications, expiringItems: $expiringItems, pendingPayments: $pendingPayments, todaySellsSummary: $todaySellsSummary, weekSellsSummary: $weekSellsSummary, projectedGrowth: $projectedGrowth)';
   }
 
   @override
@@ -933,6 +1903,19 @@ class _$HomeDataImpl extends _HomeData {
                 other.activeRentals == activeRentals) &&
             (identical(other.activeAmcs, activeAmcs) ||
                 other.activeAmcs == activeAmcs) &&
+            (identical(other.totalServices, totalServices) ||
+                other.totalServices == totalServices) &&
+            (identical(
+                  other.totalCollectedThisMonth,
+                  totalCollectedThisMonth,
+                ) ||
+                other.totalCollectedThisMonth == totalCollectedThisMonth) &&
+            (identical(other.amcServices, amcServices) ||
+                other.amcServices == amcServices) &&
+            (identical(other.newRoServices, newRoServices) ||
+                other.newRoServices == newRoServices) &&
+            (identical(other.repairServices, repairServices) ||
+                other.repairServices == repairServices) &&
             (identical(other.resolutionRatePercent, resolutionRatePercent) ||
                 other.resolutionRatePercent == resolutionRatePercent) &&
             (identical(other.pendingComplaintsCount, pendingComplaintsCount) ||
@@ -949,6 +1932,18 @@ class _$HomeDataImpl extends _HomeData {
               other._amcProgresses,
               _amcProgresses,
             ) &&
+            const DeepCollectionEquality().equals(
+              other._todayNotifications,
+              _todayNotifications,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._expiringItems,
+              _expiringItems,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._pendingPayments,
+              _pendingPayments,
+            ) &&
             (identical(other.todaySellsSummary, todaySellsSummary) ||
                 other.todaySellsSummary == todaySellsSummary) &&
             (identical(other.weekSellsSummary, weekSellsSummary) ||
@@ -958,20 +1953,28 @@ class _$HomeDataImpl extends _HomeData {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     newSells,
     activeRentals,
     activeAmcs,
+    totalServices,
+    totalCollectedThisMonth,
+    amcServices,
+    newRoServices,
+    repairServices,
     resolutionRatePercent,
     pendingComplaintsCount,
     const DeepCollectionEquality().hash(_todaySchedules),
     const DeepCollectionEquality().hash(_pendingComplaints),
     const DeepCollectionEquality().hash(_amcProgresses),
+    const DeepCollectionEquality().hash(_todayNotifications),
+    const DeepCollectionEquality().hash(_expiringItems),
+    const DeepCollectionEquality().hash(_pendingPayments),
     todaySellsSummary,
     weekSellsSummary,
     projectedGrowth,
-  );
+  ]);
 
   /// Create a copy of HomeData
   /// with the given fields replaced by the non-null parameter values.
@@ -987,11 +1990,19 @@ abstract class _HomeData extends HomeData {
     required final int newSells,
     required final int activeRentals,
     required final int activeAmcs,
+    required final int totalServices,
+    required final double totalCollectedThisMonth,
+    required final int amcServices,
+    required final int newRoServices,
+    required final int repairServices,
     required final int resolutionRatePercent,
     required final int pendingComplaintsCount,
     required final List<ScheduleItem> todaySchedules,
     required final List<ComplaintItem> pendingComplaints,
     required final List<AmcProgress> amcProgresses,
+    required final List<NotificationItem> todayNotifications,
+    final List<ExpiryItem> expiringItems,
+    final List<PendingPaymentItem> pendingPayments,
     required final int todaySellsSummary,
     required final int weekSellsSummary,
     required final String projectedGrowth,
@@ -1005,6 +2016,16 @@ abstract class _HomeData extends HomeData {
   @override
   int get activeAmcs;
   @override
+  int get totalServices;
+  @override
+  double get totalCollectedThisMonth;
+  @override
+  int get amcServices;
+  @override
+  int get newRoServices;
+  @override
+  int get repairServices;
+  @override
   int get resolutionRatePercent;
   @override
   int get pendingComplaintsCount;
@@ -1014,6 +2035,12 @@ abstract class _HomeData extends HomeData {
   List<ComplaintItem> get pendingComplaints;
   @override
   List<AmcProgress> get amcProgresses;
+  @override
+  List<NotificationItem> get todayNotifications;
+  @override
+  List<ExpiryItem> get expiringItems;
+  @override
+  List<PendingPaymentItem> get pendingPayments;
   @override
   int get todaySellsSummary;
   @override

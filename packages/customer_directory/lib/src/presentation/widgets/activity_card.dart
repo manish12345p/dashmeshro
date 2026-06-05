@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:intl/intl.dart';
 import '../../domain/entities/customer.dart';
 
 class ActivityCard extends StatelessWidget {
@@ -14,49 +15,39 @@ class ActivityCard extends StatelessWidget {
     IconData leadingIcon;
     Color leadingIconColor;
 
-    switch (activity.activityType) {
-      case 'complaint':
-        badgeBg = const Color(0xFFFEE2E2);
-        badgeText = const Color(0xFFB91C1C);
-        leadingIcon = Icons.warning_rounded;
-        leadingIconColor = const Color(0xFFDC2626);
-        break;
-      case 'maintenance':
-        badgeBg = const Color(0xFFDCFCE7);
-        badgeText = const Color(0xFF15803D);
-        leadingIcon = Icons.verified;
-        leadingIconColor = const Color(0xFF10B981);
-        break;
-      case 'receipt':
-        badgeBg = const Color(0xFFEFF6FF);
-        badgeText = const Color(0xFF1E3A8A);
-        leadingIcon = Icons.receipt_long_rounded;
-        leadingIconColor = const Color(0xFF3B82F6);
-        break;
-      case 'installation':
-      default:
-        badgeBg = const Color(0xFFDBEAFE);
-        badgeText = const Color(0xFF1E40AF);
-        leadingIcon = Icons.shopping_cart_rounded;
-        leadingIconColor = const Color(0xFF2563EB);
-        break;
-    }
+    final colors = context.colors;
+    final serviceColors = context.serviceColors.config;
+    final typeLower = activity.serviceType.toLowerCase().trim();
+    
+    final config = serviceColors[typeLower] ?? {
+      'color': colors.textSecondary,
+      'bg': colors.surfaceSecondary,
+      'icon': Icons.build_circle_rounded,
+    };
+
+    badgeBg = config['bg'] as Color;
+    badgeText = config['color'] as Color;
+    leadingIconColor = config['color'] as Color;
+    leadingIcon = config['icon'] as IconData;
+
+    final dateStr = DateFormat('MMM dd, yyyy').format(activity.serviceDate);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: AppPadding.p16),
+      margin: EdgeInsets.only(bottom: AppPadding.p16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(20),
+        border: Border(left: BorderSide(color: leadingIconColor, width: 4)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.01),
+            color: context.colors.textSecondary.withOpacity(0.02),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p20),
+        padding: EdgeInsets.all(AppPadding.p20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,65 +58,133 @@ class ActivityCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(leadingIcon, color: leadingIconColor, size: 20),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     Text(
-                      activity.title,
-                      style: const TextStyle(
+                      activity.serviceType.toUpperCase(),
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF0F172A),
+                        color: context.colors.textPrimary,
                       ),
                     ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: badgeBg,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Text(
-                    activity.statusBadge.toUpperCase(),
-                    style: TextStyle(
-                      color: badgeText,
-                      fontSize: 8.5,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                    ),
+                Text(
+                  dateStr,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: context.colors.textSecondary,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 12),
 
-            // Description
-            Text(
-              activity.description,
-              style: const TextStyle(
-                fontSize: 12.5,
-                color: Color(0xFF475569),
-                height: 1.45,
+            // Work Done (fixes)
+            if (activity.fixes.isNotEmpty) ...[
+              Text(
+                'WORK DONE',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
               ),
-            ),
-            const SizedBox(height: 12),
+              SizedBox(height: 4),
+              Text(
+                activity.fixes,
+                style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+              ),
+              SizedBox(height: 12),
+            ],
 
-            // Bottom metadata (Technician name & Date)
-            Row(
-              children: [
-                const Icon(Icons.person, size: 14, color: Color(0xFF64748B)),
-                const SizedBox(width: 4),
-                Text(
-                  activity.technicianName,
-                  style: const TextStyle(fontSize: 11, color: Color(0xFF64748B), fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 16),
-                const Icon(Icons.access_time_filled, size: 14, color: Color(0xFF64748B)),
-                const SizedBox(width: 4),
-                Text(
-                  activity.dateText,
-                  style: const TextStyle(fontSize: 11, color: Color(0xFF64748B), fontWeight: FontWeight.bold),
-                ),
-              ],
+            // Equipment Used
+            if (activity.equipmentsUsed.isNotEmpty) ...[
+              Text(
+                'EQUIPMENT',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+              ),
+              SizedBox(height: 4),
+              Text(
+                activity.equipmentsUsed,
+                style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+              ),
+              SizedBox(height: 12),
+            ],
+
+            // Remarks (Notes)
+            if (activity.remarks.isNotEmpty) ...[
+              Text(
+                'NOTES',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+              ),
+              SizedBox(height: 4),
+              Text(
+                activity.remarks,
+                style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+              ),
+              SizedBox(height: 12),
+            ],
+
+
+            // Guarantee Duration
+            if (activity.guaranteeDuration.isNotEmpty) ...[
+              Text(
+                'GUARANTEE DURATION',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+              ),
+              SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(Icons.shield_rounded, size: 14, color: context.colors.primary),
+                  SizedBox(width: 4),
+                  Text(
+                    activity.guaranteeDuration,
+                    style: TextStyle(fontSize: 13, color: context.colors.textSecondary, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12),
+            ],
+
+            // Amounts
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: context.colors.background,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: context.colors.border),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'TOTAL AMOUNT',
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textSecondary),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        '₹${activity.totalAmount.toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: context.colors.textPrimary),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'PAID AMOUNT',
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textSecondary),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        '₹${activity.amountPaid.toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: context.colors.success),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

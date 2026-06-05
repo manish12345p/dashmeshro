@@ -1,0 +1,246 @@
+------
+DELETED CHUNK:
+"import 'package:flutter/material.dart';\nimport 'package:flutter_bloc/flutter_bloc.dart';\nimport 'package:core_ui/core_ui.dart';\n\nimport '../../data/repositories/home_repository.dart';\nimport '../../domain/use_cases/get_home_data_usecase.dart';\nimport '../bloc/home_bloc.dart';\nimport '../bloc/home_event.dart';\nimport '../bloc/home_state.dart';\nimport '../widgets/new_sells_summary_card.dart';"
+------
+DELETED CHUNK:
+"                  SectionHeader(\n                    title: AppStrings.todayServiceSchedule,\n                    trailing: CustomButton(\n                      label: AppStrings.viewCalendar,\n                      onPressed: () {},\n                    ),\n                  ),"
+------
+------
+DELETED CHUNK (multi):
+        ),
+      ),
+    );
+  }
+------
+DELETED CHUNK (multi):
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+------
+DELETED CHUNK (multi):
+                                child: const Text(AppStrings.badgeRenew, style: TextStyle(color: Colors.white, fontSize: 10)),
+DELETED CHUNK (multi):
+                                child: const Text(AppStrings.badgeOnTrack, style: TextStyle(color: Colors.black, fontSize: 10)),
+DELETED CHUNK (multi):
+                  const SizedBox(height: AppPadding.p32),
+DELETED CHUNK (multi):
+                  const SizedBox(height: AppPadding.p32),
+------
+------
+DELETED CHUNK (multi):
+                        ),
+                                child: const Text('RENEW', style: TextStyle(color: Colors.white, fontSize: 10)),
+                              )
+                            : Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Text('ON TRACK', style: TextStyle(color: Colors.black, fontSize: 10)),
+                              ),
+                        )),
+------
+------
+------
+------
+DELETED CHUNK (multi):
+import '../../data/repositories/home_repository.dart';
+DELETED CHUNK (multi):
+class HomePageView extends StatelessWidget {
+------
+DELETED CHUNK (multi):
+final sl = GetIt.instance;
+DELETED CHUNK (multi):
+        getHomeDataUseCase: sl<GetHomeDataUseCase>(),
+------
+------
+DELETED CHUNK (multi):
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(overlineText, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              const SizedBox(height: 4),
+              Text(valueText, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Text(subtitleText, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            ],
+          ),
+------
+DELETED CHUNK (multi):
+import '../widgets/new_sells_summary_card.dart';
+DELETED CHUNK (multi):
+          actions: [
+            IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.notifications_outlined), onPressed: () {}),
+------
+DELETED CHUNK (multi):
+import '../widgets/new_sells_summary_card.dart';
+import '../widgets/global_search_delegate.dart';
+DELETED CHUNK (multi):
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                showSearch(context: context, delegate: GlobalSearchDelegate());
+              },
+            ),
+            IconButton(icon: const Icon(Icons.notifications_outlined), onPressed: () {}),
+------
+DELETED CHUNK (multi):
+          title: const Row(
+            children: [
+              Icon(Icons.waves, color: Color(0xFF2563EB)),
+              SizedBox(width: 8),
+              Text('DashmeshRO', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+            ],
+          ),
+DELETED CHUNK (multi):
+          backgroundColor: const Color(0xFFF8FAFC),
+------
+------
+DELETED CHUNK (multi):
+                  SizedBox(height: 12),
+                  SummaryCard(
+                    overlineText: 'Resolution Rate',
+                    valueText: '${data.resolutionRatePercent}% Resolved',
+                    subtitleText: '${data.pendingComplaintsCount} complaints pending',
+                    trailingIcon: Icon(Icons.error_outline, color: Colors.red, size: 20),
+                    trailingBackgroundColor: Colors.red.withOpacity(0.1),
+                    borderColor: Colors.red.withOpacity(0.5),
+                  ),
+------
+------
+------
+------
+DELETED CHUNK:
+"                  SizedBox(height: 32),\n\n                  // Today's Notifications\n                  if (data.todayNotifications.isNotEmpty) ...[\n                    Row(\n                      children: [\n                        Icon(Icons.notifications_active, color: Colors.amber.shade700, size: 22),\n                        SizedBox(width: 8),\n                        Text(\n                          'Today\\'s Notifications',\n                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),\n                        ),\n                        SizedBox(width: 8),\n                        Container(\n                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),\n                          decoration: BoxDecoration(\n                            color: Colors.amber.shade100,\n                            borderRadius: BorderRadius.circular(12),\n                          ),\n                          child: Text(\n                            '${data.todayNotifications.length}',\n                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.amber.shade800),\n                          ),\n                        ),\n                      ],\n                    ),\n                    SizedBox(height: 12),\n                    ...data.todayNotifications.map((notif) {\n                      final isDismissed = _dismissedNotifications.contains(notif.serviceId);\n                      return Padding(\n                        padding: EdgeInsets.only(bottom: 10),\n                        child: Opacity(\n                          opacity: isDismissed ? 0.35 : 1.0,\n                          child: Container(\n                            padding: EdgeInsets.all(14),\n                            decoration: BoxDecoration(\n                              color: isDismissed ? Colors.grey.shade50 : Colors.amber.shade50,\n                              borderRadius: BorderRadius.circular(14),\n                              border: Border.
+<truncated 7436 bytes>
+------
+------
+------
+DELETED CHUNK (multi):
+import 'package:get_it/get_it.dart';
+import '../../data/repositories/home_repository.dart';
+------
+DELETED CHUNK (multi):
+                      return Card(
+                        elevation: 1,
+                        margin: EdgeInsets.only(bottom: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: isDismissed ? Colors.grey.shade300 : context.colors.primary.withOpacity(0.2),
+                          ),
+                        ),
+                        color: isDismissed ? Colors.grey.shade50 : context.colors.surface,
+                        child: Padding(
+------
+------
+DELETED CHUNK (multi):
+                  // New Sells Summary
+                  NewSellsSummaryCard(
+                    todaySells: data.todaySellsSummary,
+                    weekSells: data.weekSellsSummary,
+                    projectedGrowth: data.projectedGrowth,
+                  ),
+------
+DELETED CHUNK (multi):
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+------
+DELETED CHUNK (multi):
+                             ],
+                           ),
+                         ),
+                       ),
+                     );
+                   }).toList(),
+                   
+                   if (data.todaySchedules.isEmpty && data.todayNotifications.isEmpty)
+                     Center(
+                       child: Padding(
+                         padding: const EdgeInsets.all(16.0),
+                         child: Text('No services scheduled for today', style: TextStyle(color: Colors.grey)),
+                       )
+                     ),
+------
+------
+------
+DELETED CHUNK (multi):
+import 'package:url_launcher/url_launcher.dart';
+
+------
+------
+------
+DELETED CHUNK (multi):
+                    valueText: '${data.totalServices} Services',
+                    subtitleText: 'Total services performed',
+------
+DELETED CHUNK (multi):
+    );
+  }
+}
+------
+DELETED CHUNK (multi):
+        body: const _HomeContent(),
+      ),
+------
+------
+------
+DELETED CHUNK (multi):
+    );
+  }
+}
+------
+DELETED CHUNK (multi):
+    );
+  }
+}
+
+------
+DELETED CHUNK (multi):
+                    valueText: '${data.totalServices} Services',
+                    subtitleText: 'Total services performed',
+------
+DELETED CHUNK (multi):
+import 'package:go_router/go_router.dart';
+
+import '../../data/repositories/home_repository.dart';
+DELETED CHUNK (multi):
+      child: const Scaffold(
+        body: _HomeContent(),
+      ),
+------
+------
+DELETED CHUNK (multi):
+                  // New Sells Summary
+                  NewSellsSummaryCard(
+                    todaySells: data.todaySellsSummary,
+                    weekSells: data.weekSellsSummary,
+                    projectedGrowth: data.projectedGrowth,
+                  ),
+------
+DELETED CHUNK (multi):
+import '../../data/repositories/home_repository.dart';
+import '../../domain/use_cases/get_home_data_usecase.dart';
+------
+------
+DELETED CHUNK (multi):
+                  // Top Summary Cards
+------
+------
+DELETED CHUNK:
+"                  const SizedBox(height: AppPadding.p32),\n\n                  // Pending Complaints\n                  SectionHeader(\n                    title: AppStrings.pendingComplaints,\n                    subtitle: AppStrings.pendingComplaintsSubtitle,\n                  ),\n                  const SizedBox(height: AppPadding.p16),\n                  Row(\n                    children: [\n                      _buildFilterChip(AppStrings.filterAll, true),\n                      _buildFilterChip(AppStrings.filterUrgent, false),\n                      _buildFilterChip(AppStrings.filterHigh, false),\n                      _buildFilterChip(AppStrings.filterNormal, false),\n                    ],\n                  ),\n                  const SizedBox(height: AppPadding.p16),\n                  Container(\n                    padding: AppPadding.all16,\n                    decoration: BoxDecoration(\n                      color: Theme.of(context).colorScheme.surface,\n                      borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),\n                    ),\n                    child: Column(\n                      children: data.pendingComplaints.map((complaint) {\n                        Color statusColor;\n                        if (complaint.status == 'urgent') {\n                          statusColor = Colors.red;\n                        } else if (complaint.status == 'high') {\n                          statusColor = Colors.orange;\n                        } else {\n                          statusColor = Colors.green;\n                        }\n                        return Column(\n                          children: [\n                            ComplaintListItem(\n                              customerName: complaint.customerName,\n                              customerId: complaint.customerId,\n                              issueType: complaint.issueType,\n                              statusColor: statusColor,\n                            ),\n                        
+<truncated 3402 bytes>
+------
+DELETED CHUNK (multi):
+                  const SizedBox(height: AppPadding.p12),
+
+                  // Today's Service Schedule

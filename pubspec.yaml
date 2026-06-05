@@ -18,11 +18,16 @@ dependencies:
     path: packages/customer_directory
   router:
     path: packages/router
+  core:
+    path: packages/core
+  core_ui:
+    path: packages/core_ui
   google_fonts: ^8.0.2
   crystal_navigation_bar: ^1.1.0
   firebase_core: ^4.7.0
   cloud_firestore: ^6.3.0
   flutter_dotenv: ^6.0.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

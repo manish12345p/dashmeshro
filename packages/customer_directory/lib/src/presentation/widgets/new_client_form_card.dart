@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:core_ui/core_ui.dart';
 
 /// Form card with all input fields for creating a new client profile.
 class NewClientFormCard extends StatelessWidget {
@@ -20,55 +22,73 @@ class NewClientFormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: context.colors.surfaceSecondary,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLabel('FULL NAME'),
-          const SizedBox(height: 8),
+          _buildLabel(context, 'FULL NAME'),
+          SizedBox(height: 8),
           _buildTextField(
+            context: context,
             controller: nameController,
             hint: 'e.g. Ranbir Singh',
             icon: Icons.person_rounded,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
-          _buildLabel('PHONE NUMBER'),
-          const SizedBox(height: 8),
+          _buildLabel(context, 'PHONE NUMBER'),
+          SizedBox(height: 8),
           _buildTextField(
+            context: context,
             controller: phoneController,
-            hint: '+91 00000-00000',
+            hint: '9876543210',
             icon: Icons.phone_rounded,
             keyboardType: TextInputType.phone,
+            maxLength: 50,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9,\s]'))],
+            suffixIcon: IconButton(
+              icon: Icon(Icons.add_circle_outline, color: context.colors.primary),
+              tooltip: 'Add another number',
+              onPressed: () {
+                final currentText = phoneController.text;
+                if (currentText.isNotEmpty && !currentText.trim().endsWith(',')) {
+                  phoneController.text = '$currentText, ';
+                  phoneController.selection = TextSelection.fromPosition(TextPosition(offset: phoneController.text.length));
+                }
+              },
+            ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
-          _buildLabel('LOCALITY / LANDMARK'),
-          const SizedBox(height: 8),
+          _buildLabel(context, 'LOCALITY / LANDMARK'),
+          SizedBox(height: 8),
           _buildTextField(
+            context: context,
             controller: localityController,
             hint: 'e.g. West Patel Nagar, Near...',
             icon: Icons.location_on_rounded,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
-          _buildLabel('COMPLETE ADDRESS'),
-          const SizedBox(height: 8),
+          _buildLabel(context, 'COMPLETE ADDRESS'),
+          SizedBox(height: 8),
           _buildTextField(
+            context: context,
             controller: addressController,
             hint: 'House number, Street, Floor...',
             maxLines: 3,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
-          _buildLabel('INTERNAL NOTES'),
-          const SizedBox(height: 8),
+          _buildLabel(context, 'INTERNAL NOTES'),
+          SizedBox(height: 8),
           _buildTextField(
+            context: context,
             controller: notesController,
             hint: 'Preferred visit time, vehicle preferences, etc.',
             maxLines: 3,
@@ -78,48 +98,55 @@ class NewClientFormCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLabel(String text) {
+  Widget _buildLabel(BuildContext context, String text) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w700,
-        color: Color(0xFF64748B),
+        color: context.colors.textSecondary,
         letterSpacing: 1.2,
       ),
     );
   }
 
   Widget _buildTextField({
+    required BuildContext context,
     required TextEditingController controller,
     required String hint,
     IconData? icon,
+    Widget? suffixIcon,
     int maxLines = 1,
+    int? maxLength,
     TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return TextField(
       controller: controller,
       maxLines: maxLines,
+      maxLength: maxLength,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: Color(0xFFAFB9C5), fontSize: 14),
+        hintStyle: TextStyle(color: context.colors.textTertiary, fontSize: 14),
         prefixIcon: icon != null
-            ? Icon(icon, color: const Color(0xFF94A3B8), size: 20)
+            ? Icon(icon, color: context.colors.textTertiary, size: 20)
             : null,
+        suffixIcon: suffixIcon,
         filled: true,
-        fillColor: Colors.white,
+        fillColor: context.colors.surface,
         contentPadding: EdgeInsets.symmetric(
           vertical: maxLines > 1 ? 14 : 0,
           horizontal: icon != null ? 0 : 16,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+          borderSide: BorderSide(color: context.colors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF2F80ED), width: 1.5),
+          borderSide: BorderSide(color: context.colors.primary, width: 1.5),
         ),
       ),
     );

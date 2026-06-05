@@ -13,15 +13,15 @@ class AppPadding {
   static const double p48 = 48.0;
 
   // EdgeInsets specific shortcuts
-  static const EdgeInsets all8 = EdgeInsets.all(p8);
-  static const EdgeInsets all12 = EdgeInsets.all(p12);
-  static const EdgeInsets all16 = EdgeInsets.all(p16);
-  static const EdgeInsets all24 = EdgeInsets.all(p24);
+  static EdgeInsets all8 = EdgeInsets.all(p8);
+  static EdgeInsets all12 = EdgeInsets.all(p12);
+  static EdgeInsets all16 = EdgeInsets.all(p16);
+  static EdgeInsets all24 = EdgeInsets.all(p24);
 
-  static const EdgeInsets horizontal16 = EdgeInsets.symmetric(horizontal: p16);
-  static const EdgeInsets horizontal24 = EdgeInsets.symmetric(horizontal: p24);
+  static EdgeInsets horizontal16 = EdgeInsets.symmetric(horizontal: p16);
+  static EdgeInsets horizontal24 = EdgeInsets.symmetric(horizontal: p24);
   
-  static const EdgeInsets vertical8 = EdgeInsets.symmetric(vertical: p8);
-  static const EdgeInsets vertical16 = EdgeInsets.symmetric(vertical: p16);
-  static const EdgeInsets vertical24 = EdgeInsets.symmetric(vertical: p24);
+  static EdgeInsets vertical8 = EdgeInsets.symmetric(vertical: p8);
+  static EdgeInsets vertical16 = EdgeInsets.symmetric(vertical: p16);
+  static EdgeInsets vertical24 = EdgeInsets.symmetric(vertical: p24);
 }

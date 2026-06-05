@@ -28,12 +28,13 @@ void main() {
         'open_tickets': 1,
         'service_history': [
           {
-            'activityType': 'maintenance',
-            'title': 'Regular Check',
-            'description': 'Filter checked',
-            'technicianName': 'John',
-            'dateText': '20 Feb 2024',
-            'statusBadge': 'healthy',
+            'id': 'test_service',
+            'serviceType': 'Maintenance',
+            'fixes': 'Filter checked',
+            'totalAmount': 500.0,
+            'amountPaid': 500.0,
+            'equipmentsUsed': 'Wrench',
+            'serviceDate': '2024-02-20T00:00:00.000',
           }
         ]
       };
@@ -47,11 +48,11 @@ void main() {
       expect(customer.email, 'test@customer.com');
       expect(customer.deviceFilterHealth, 0.85);
       expect(customer.serviceHistory.length, 1);
-      expect(customer.serviceHistory.first.title, 'Regular Check');
+      expect(customer.serviceHistory.first.fixes, 'Filter checked');
     });
 
     test('should correctly serialize to map', () {
-      const customer = Customer(
+      final customer = Customer(
         id: 'test_id',
         name: 'Test Customer',
         customerId: 'MCP-999',
@@ -75,12 +76,13 @@ void main() {
         openTickets: 1,
         serviceHistory: [
           ServiceActivity(
-            activityType: 'maintenance',
-            title: 'Regular Check',
-            description: 'Filter checked',
-            technicianName: 'John',
-            dateText: '20 Feb 2024',
-            statusBadge: 'healthy',
+            id: 'test_service',
+            serviceType: 'Maintenance',
+            fixes: 'Filter checked',
+            totalAmount: 500.0,
+            amountPaid: 500.0,
+            equipmentsUsed: 'Wrench',
+            serviceDate: DateTime.parse('2024-02-20T00:00:00.000'),
           )
         ],
       );
@@ -92,7 +94,7 @@ void main() {
       expect(map['customer_id'], 'MCP-999');
       expect(map['device_filter_health'], 0.85);
       expect(map['service_history'].length, 1);
-      expect(map['service_history'][0]['title'], 'Regular Check');
+      expect(map['service_history'][0]['fixes'], 'Filter checked');
     });
   });
 

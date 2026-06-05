@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:core_ui/core_ui.dart';
 
 /// Security and Cloud Sync info cards shown at the bottom.
 class NewClientInfoCards extends StatelessWidget {
@@ -11,10 +12,10 @@ class NewClientInfoCards extends StatelessWidget {
         // Security card
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF0D2137), Color(0xFF1A3A5C)],
+              gradient: LinearGradient(
+                colors: [context.colors.primaryDark, context.colors.primary],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -26,19 +27,19 @@ class NewClientInfoCards extends StatelessWidget {
                 Text(
                   'SECURITY',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: const Color(0xFF94A3B8),
+                        color: context.colors.textTertiary,
                         letterSpacing: 1.2,
                         fontWeight: FontWeight.w700,
                         fontSize: 10,
                       ),
                 ),
-                const SizedBox(height: 8),
-                const Icon(Icons.shield_rounded, color: Colors.white, size: 24),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
+                Icon(Icons.shield_rounded, color: Colors.white, size: 24),
+                SizedBox(height: 8),
                 Text(
                   'Data encrypted\nand stored\nsecurely.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: const Color(0xFFCBD5E1),
+                        color: Colors.white70,
                         height: 1.4,
                       ),
                 ),
@@ -46,15 +47,15 @@ class NewClientInfoCards extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 14),
+        SizedBox(width: 14),
         // Cloud Sync card
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFFEFF6FF),
+              color: context.colors.infoBg,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFFDBEAFE)),
+              border: Border.all(color: context.colors.info),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,19 +63,19 @@ class NewClientInfoCards extends StatelessWidget {
                 Text(
                   'CLOUD SYNC',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: const Color(0xFF2F80ED),
+                        color: context.colors.primary,
                         letterSpacing: 1.2,
                         fontWeight: FontWeight.w700,
                         fontSize: 10,
                       ),
                 ),
-                const SizedBox(height: 8),
-                const Icon(Icons.cloud_sync_rounded, color: Color(0xFF2F80ED), size: 24),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
+                Icon(Icons.cloud_sync_rounded, color: context.colors.primary, size: 24),
+                SizedBox(height: 8),
                 Text(
                   'Auto-synced\nacross all your\ndevices.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: const Color(0xFF475569),
+                        color: context.colors.textSecondary,
                         height: 1.4,
                       ),
                 ),

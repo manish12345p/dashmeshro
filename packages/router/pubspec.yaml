@@ -19,8 +19,8 @@ dependencies:
   go_router: ^17.2.1
   home_page:
     path: ../home_page
-  service_entry:
-    path: ../service_entry
+  visit_entry:
+    path: ../visit_entry
 
 dev_dependencies:
   flutter_test:

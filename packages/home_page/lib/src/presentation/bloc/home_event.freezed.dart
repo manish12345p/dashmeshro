@@ -20,27 +20,33 @@ mixin _$HomeEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadHomeData,
+    required TResult Function(String filter) filterComplaints,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHomeData,
+    TResult? Function(String filter)? filterComplaints,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHomeData,
+    TResult Function(String filter)? filterComplaints,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(LoadHomeData value) loadHomeData,
+    required TResult Function(FilterComplaints value) filterComplaints,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoadHomeData value)? loadHomeData,
+    TResult? Function(FilterComplaints value)? filterComplaints,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoadHomeData value)? loadHomeData,
+    TResult Function(FilterComplaints value)? filterComplaints,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -109,6 +115,7 @@ class _$LoadHomeDataImpl implements LoadHomeData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadHomeData,
+    required TResult Function(String filter) filterComplaints,
   }) {
     return loadHomeData();
   }
@@ -117,6 +124,7 @@ class _$LoadHomeDataImpl implements LoadHomeData {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHomeData,
+    TResult? Function(String filter)? filterComplaints,
   }) {
     return loadHomeData?.call();
   }
@@ -125,6 +133,7 @@ class _$LoadHomeDataImpl implements LoadHomeData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHomeData,
+    TResult Function(String filter)? filterComplaints,
     required TResult orElse(),
   }) {
     if (loadHomeData != null) {
@@ -137,6 +146,7 @@ class _$LoadHomeDataImpl implements LoadHomeData {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(LoadHomeData value) loadHomeData,
+    required TResult Function(FilterComplaints value) filterComplaints,
   }) {
     return loadHomeData(this);
   }
@@ -145,6 +155,7 @@ class _$LoadHomeDataImpl implements LoadHomeData {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoadHomeData value)? loadHomeData,
+    TResult? Function(FilterComplaints value)? filterComplaints,
   }) {
     return loadHomeData?.call(this);
   }
@@ -153,6 +164,7 @@ class _$LoadHomeDataImpl implements LoadHomeData {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoadHomeData value)? loadHomeData,
+    TResult Function(FilterComplaints value)? filterComplaints,
     required TResult orElse(),
   }) {
     if (loadHomeData != null) {
@@ -164,4 +176,149 @@ class _$LoadHomeDataImpl implements LoadHomeData {
 
 abstract class LoadHomeData implements HomeEvent {
   const factory LoadHomeData() = _$LoadHomeDataImpl;
+}
+
+/// @nodoc
+abstract class _$$FilterComplaintsImplCopyWith<$Res> {
+  factory _$$FilterComplaintsImplCopyWith(
+    _$FilterComplaintsImpl value,
+    $Res Function(_$FilterComplaintsImpl) then,
+  ) = __$$FilterComplaintsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String filter});
+}
+
+/// @nodoc
+class __$$FilterComplaintsImplCopyWithImpl<$Res>
+    extends _$HomeEventCopyWithImpl<$Res, _$FilterComplaintsImpl>
+    implements _$$FilterComplaintsImplCopyWith<$Res> {
+  __$$FilterComplaintsImplCopyWithImpl(
+    _$FilterComplaintsImpl _value,
+    $Res Function(_$FilterComplaintsImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? filter = null}) {
+    return _then(
+      _$FilterComplaintsImpl(
+        null == filter
+            ? _value.filter
+            : filter // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$FilterComplaintsImpl implements FilterComplaints {
+  const _$FilterComplaintsImpl(this.filter);
+
+  @override
+  final String filter;
+
+  @override
+  String toString() {
+    return 'HomeEvent.filterComplaints(filter: $filter)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FilterComplaintsImpl &&
+            (identical(other.filter, filter) || other.filter == filter));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, filter);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FilterComplaintsImplCopyWith<_$FilterComplaintsImpl> get copyWith =>
+      __$$FilterComplaintsImplCopyWithImpl<_$FilterComplaintsImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadHomeData,
+    required TResult Function(String filter) filterComplaints,
+  }) {
+    return filterComplaints(filter);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHomeData,
+    TResult? Function(String filter)? filterComplaints,
+  }) {
+    return filterComplaints?.call(filter);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHomeData,
+    TResult Function(String filter)? filterComplaints,
+    required TResult orElse(),
+  }) {
+    if (filterComplaints != null) {
+      return filterComplaints(filter);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadHomeData value) loadHomeData,
+    required TResult Function(FilterComplaints value) filterComplaints,
+  }) {
+    return filterComplaints(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadHomeData value)? loadHomeData,
+    TResult? Function(FilterComplaints value)? filterComplaints,
+  }) {
+    return filterComplaints?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadHomeData value)? loadHomeData,
+    TResult Function(FilterComplaints value)? filterComplaints,
+    required TResult orElse(),
+  }) {
+    if (filterComplaints != null) {
+      return filterComplaints(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FilterComplaints implements HomeEvent {
+  const factory FilterComplaints(final String filter) = _$FilterComplaintsImpl;
+
+  String get filter;
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FilterComplaintsImplCopyWith<_$FilterComplaintsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
