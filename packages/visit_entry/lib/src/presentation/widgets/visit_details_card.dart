@@ -509,7 +509,7 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                     value: state.serviceDuration.isEmpty
                         ? null
                         : state.serviceDuration,
-                    hint: Text('Select duration'),
+                    hint: const Text(AppStrings.selectDuration),
                     items: _buildDurationItems(),
                     onChanged: (val) {
                       if (val != null) {
@@ -547,7 +547,7 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                     value: state.guaranteeDuration.isEmpty
                         ? null
                         : state.guaranteeDuration,
-                    hint: Text('Select duration'),
+                    hint: const Text(AppStrings.selectDuration),
                     items: _buildDurationItems(),
                     onChanged: (val) {
                       if (val != null) {

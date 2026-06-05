@@ -78,8 +78,20 @@ class AppStrings {
   static const String overdueCustomers = 'Overdue Customers';
   static const String pendingCustomers = 'Pending Customers';
   static const String none = '(None)';
+  static const String none = '(None)';
   static const String confirmPartialPayment = 'Confirm Partial Payment';
   static const String confirm = 'Confirm';
+
+  // Visit Entry
+  static const String validationError = 'Validation Error';
+  static const String errorOccurred = 'An error occurred';
+  static const String ok = 'OK';
+  static const String serviceEntrySaved = 'Service Entry saved successfully!';
+  static const String selectedCustomer = 'SELECTED CUSTOMER';
+  static const String autoFilled = 'Auto-filled';
+  static const String selectDuration = 'Select duration';
+  static const String selectServiceType = 'Select Service Type';
+  static const String commitEntry = 'Commit Entry';
 
   // Common Errors
   static const String genericError = 'Something went wrong';

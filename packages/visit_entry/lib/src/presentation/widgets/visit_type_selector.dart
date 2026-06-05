@@ -104,7 +104,7 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               isExpanded: true,
-              hint: Text('Select Service Type'),
+              hint: const Text(AppStrings.selectServiceType),
               value: selectedValue,
               borderRadius: BorderRadius.circular(20),
               icon: Icon(

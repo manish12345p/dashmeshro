@@ -77,7 +77,7 @@ class VisitEntryView extends StatelessWidget {
                     child: Text(
                       message,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -107,18 +107,18 @@ class VisitEntryView extends StatelessWidget {
       child: BlocListener<VisitEntryBloc, VisitEntryState>(
         listener: (context, state) {
           if (state.status == VisitEntryStatus.success) {
-            _showSuccessPopup(context, 'Service Entry saved successfully!');
+            _showSuccessPopup(context, AppStrings.serviceEntrySaved);
             context.go('/customers');
           } else if (state.status == VisitEntryStatus.failure) {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: Text('Validation Error'),
-                content: Text(state.errorMessage ?? 'An error occurred'),
+                title: const Text(AppStrings.validationError),
+                content: Text(state.errorMessage ?? AppStrings.errorOccurred),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(ctx).pop(),
-                    child: Text('OK'),
+                    child: const Text(AppStrings.ok),
                   ),
                 ],
               ),
@@ -202,11 +202,11 @@ class VisitEntryView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'SELECTED CUSTOMER',
+                    AppStrings.selectedCustomer,
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
-                      color: Colors.grey,
+                      color: context.colors.textSecondary,
                       letterSpacing: 1.2,
                     ),
                   ),
@@ -229,7 +229,7 @@ class VisitEntryView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                'Auto-filled',
+                AppStrings.autoFilled,
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -274,7 +274,7 @@ class VisitEntryView extends StatelessWidget {
                       onTap: () => context.go('/'),
                       child: Icon(
                         Icons.arrow_back_ios_rounded,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         size: 20,
                       ),
                     )
@@ -286,9 +286,9 @@ class VisitEntryView extends StatelessWidget {
                 ],
               ),
               Text(
-                'Dashmesh Mechanix',
+                AppStrings.emiAppTitle,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,

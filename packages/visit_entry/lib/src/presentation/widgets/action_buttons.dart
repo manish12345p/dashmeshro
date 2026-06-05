@@ -40,7 +40,7 @@ class ActionButtonsWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Commit Entry',
+                    AppStrings.commitEntry,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
