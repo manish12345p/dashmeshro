@@ -36,11 +36,13 @@ class NewCustomerBloc extends Bloc<NewCustomerEvent, NewCustomerState> {
     emit(const NewCustomerState.submitting());
     try {
       final docId = await _repository.createCustomer(event.customer);
-      emit(NewCustomerState.success(
-        docId: docId,
-        customerName: event.customer.name,
-        navigateToService: event.navigateToService,
-      ));
+      emit(
+        NewCustomerState.success(
+          docId: docId,
+          customerName: event.customer.name,
+          navigateToService: event.navigateToService,
+        ),
+      );
     } catch (e) {
       emit(NewCustomerState.failure(e.toString()));
     }

@@ -30,12 +30,14 @@ class NewClientHeaderBar extends StatelessWidget {
         Text(
           'Dashmesh Mechanix',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.1,
-                color: context.colors.textPrimary,
-              ),
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.1,
+            color: context.colors.textPrimary,
+          ),
         ),
-        SizedBox(width: 36), // Placeholder to maintain center alignment of title
+        SizedBox(
+          width: 36,
+        ), // Placeholder to maintain center alignment of title
       ],
     );
   }

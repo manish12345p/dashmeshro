@@ -4,20 +4,23 @@ import '../../domain/use_cases/get_customer_by_id_usecase.dart';
 import 'customer_details_event.dart';
 import 'customer_details_state.dart';
 
-class CustomerDetailsBloc extends Bloc<CustomerDetailsEvent, CustomerDetailsState> {
+class CustomerDetailsBloc
+    extends Bloc<CustomerDetailsEvent, CustomerDetailsState> {
   final GetCustomerByIdUseCase _getCustomerByIdUseCase;
   StreamSubscription? _subscription;
 
-  CustomerDetailsBloc({
-    required GetCustomerByIdUseCase getCustomerByIdUseCase,
-  })  : _getCustomerByIdUseCase = getCustomerByIdUseCase,
-        super(const CustomerDetailsInitial()) {
+  CustomerDetailsBloc({required GetCustomerByIdUseCase getCustomerByIdUseCase})
+    : _getCustomerByIdUseCase = getCustomerByIdUseCase,
+      super(const CustomerDetailsInitial()) {
     on<LoadCustomerDetails>(_onLoadCustomerDetails);
     on<UpdateCustomerDetails>(_onUpdateCustomerDetails);
     on<LoadCustomerDetailsError>(_onLoadCustomerDetailsError);
   }
 
-  void _onLoadCustomerDetails(LoadCustomerDetails event, Emitter<CustomerDetailsState> emit) {
+  void _onLoadCustomerDetails(
+    LoadCustomerDetails event,
+    Emitter<CustomerDetailsState> emit,
+  ) {
     emit(const CustomerDetailsLoading());
     _subscription?.cancel();
     _subscription = _getCustomerByIdUseCase(event.id).listen(
@@ -26,11 +29,17 @@ class CustomerDetailsBloc extends Bloc<CustomerDetailsEvent, CustomerDetailsStat
     );
   }
 
-  void _onLoadCustomerDetailsError(LoadCustomerDetailsError event, Emitter<CustomerDetailsState> emit) {
+  void _onLoadCustomerDetailsError(
+    LoadCustomerDetailsError event,
+    Emitter<CustomerDetailsState> emit,
+  ) {
     emit(CustomerDetailsError(event.error));
   }
 
-  void _onUpdateCustomerDetails(UpdateCustomerDetails event, Emitter<CustomerDetailsState> emit) {
+  void _onUpdateCustomerDetails(
+    UpdateCustomerDetails event,
+    Emitter<CustomerDetailsState> emit,
+  ) {
     emit(CustomerDetailsLoaded(event.customer));
   }
 

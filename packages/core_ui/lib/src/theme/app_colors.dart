@@ -110,7 +110,11 @@ class AppColors extends ThemeExtension<AppColors> {
       primaryLight: Color.lerp(primaryLight, other.primaryLight, t)!,
       background: Color.lerp(background, other.background, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
-      surfaceSecondary: Color.lerp(surfaceSecondary, other.surfaceSecondary, t)!,
+      surfaceSecondary: Color.lerp(
+        surfaceSecondary,
+        other.surfaceSecondary,
+        t,
+      )!,
       surfaceTertiary: Color.lerp(surfaceTertiary, other.surfaceTertiary, t)!,
       border: Color.lerp(border, other.border, t)!,
       textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
@@ -136,7 +140,7 @@ class AppColors extends ThemeExtension<AppColors> {
     background: Color(0xFFF4F6F9),
     surface: Color(0xFFFFFFFF),
     surfaceSecondary: Color(0xFFF4F6F9), // Fallback for 3rd shade in light mode
-    surfaceTertiary: Color(0xFFF4F6F9),  // Fallback for 4th shade in light mode
+    surfaceTertiary: Color(0xFFF4F6F9), // Fallback for 4th shade in light mode
     border: Color(0xFFE5E9F2),
     textPrimary: Color(0xFF111827),
     textSecondary: Color(0xFF1F2937),
@@ -185,7 +189,8 @@ extension AppThemeColorsX on ThemeData {
 /// Extension on BuildContext for an even shorter syntax: `context.colors.primary`
 extension BuildContextColorsX on BuildContext {
   AppColors get colors => Theme.of(this).colors;
-  ServiceColors get serviceColors => Theme.of(this).extension<ServiceColors>() ?? ServiceColors.light;
+  ServiceColors get serviceColors =>
+      Theme.of(this).extension<ServiceColors>() ?? ServiceColors.light;
 }
 
 class ServiceColors extends ThemeExtension<ServiceColors> {
@@ -206,45 +211,181 @@ class ServiceColors extends ThemeExtension<ServiceColors> {
 
   static const light = ServiceColors(
     config: {
-      'amc': { 'color': Color(0xFF10B981), 'bg': Color(0xFFDCFCE7), 'icon': Icons.verified_user_rounded },
-      'new ro': { 'color': Color(0xFF3B82F6), 'bg': Color(0xFFDBEAFE), 'icon': Icons.new_releases_rounded },
-      'repair': { 'color': Color(0xFFF59E0B), 'bg': Color(0xFFFEF3C7), 'icon': Icons.build_rounded },
-      'service': { 'color': Color(0xFF8B5CF6), 'bg': Color(0xFFEDE9FE), 'icon': Icons.miscellaneous_services_rounded },
-      'pump': { 'color': Color(0xFF06B6D4), 'bg': Color(0xFFCFFAFE), 'icon': Icons.water_drop_rounded },
-      'set pump': { 'color': Color(0xFF0EA5E9), 'bg': Color(0xFFE0F2FE), 'icon': Icons.water_damage_rounded },
-      'new ro set change': { 'color': Color(0xFF6366F1), 'bg': Color(0xFFE0E7FF), 'icon': Icons.change_circle_rounded },
-      'set sv': { 'color': Color(0xFFEC4899), 'bg': Color(0xFFFCE7F3), 'icon': Icons.settings_input_component_rounded },
-      'install and set change': { 'color': Color(0xFF14B8A6), 'bg': Color(0xFFCCFBF1), 'icon': Icons.install_desktop_rounded },
-      'set & pump': { 'color': Color(0xFFF43F5E), 'bg': Color(0xFFFFE4E6), 'icon': Icons.published_with_changes_rounded },
-      'inline': { 'color': Color(0xFF84CC16), 'bg': Color(0xFFECFCCB), 'icon': Icons.line_style_rounded },
-      'copper set': { 'color': Color(0xFFD97706), 'bg': Color(0xFFFEF3C7), 'icon': Icons.album_rounded },
-      'alkaline': { 'color': Color(0xFF10B981), 'bg': Color(0xFFD1FAE5), 'icon': Icons.science_rounded },
-      'alkaline set': { 'color': Color(0xFF059669), 'bg': Color(0xFFA7F3D0), 'icon': Icons.science_rounded },
-      'set smps': { 'color': Color(0xFF6B7280), 'bg': Color(0xFFE5E7EB), 'icon': Icons.electrical_services_rounded },
-      'set change': { 'color': Color(0xFF9333EA), 'bg': Color(0xFFF3E8FF), 'icon': Icons.swap_horiz_rounded },
-      'not applicable': { 'color': Color(0xFF4B5563), 'bg': Color(0xFFF3F4F6), 'icon': Icons.do_not_disturb_alt_rounded },
+      'amc': {
+        'color': Color(0xFF10B981),
+        'bg': Color(0xFFDCFCE7),
+        'icon': Icons.verified_user_rounded,
+      },
+      'new ro': {
+        'color': Color(0xFF3B82F6),
+        'bg': Color(0xFFDBEAFE),
+        'icon': Icons.new_releases_rounded,
+      },
+      'repair': {
+        'color': Color(0xFFF59E0B),
+        'bg': Color(0xFFFEF3C7),
+        'icon': Icons.build_rounded,
+      },
+      'service': {
+        'color': Color(0xFF8B5CF6),
+        'bg': Color(0xFFEDE9FE),
+        'icon': Icons.miscellaneous_services_rounded,
+      },
+      'pump': {
+        'color': Color(0xFF06B6D4),
+        'bg': Color(0xFFCFFAFE),
+        'icon': Icons.water_drop_rounded,
+      },
+      'set pump': {
+        'color': Color(0xFF0EA5E9),
+        'bg': Color(0xFFE0F2FE),
+        'icon': Icons.water_damage_rounded,
+      },
+      'new ro set change': {
+        'color': Color(0xFF6366F1),
+        'bg': Color(0xFFE0E7FF),
+        'icon': Icons.change_circle_rounded,
+      },
+      'set sv': {
+        'color': Color(0xFFEC4899),
+        'bg': Color(0xFFFCE7F3),
+        'icon': Icons.settings_input_component_rounded,
+      },
+      'install and set change': {
+        'color': Color(0xFF14B8A6),
+        'bg': Color(0xFFCCFBF1),
+        'icon': Icons.install_desktop_rounded,
+      },
+      'set & pump': {
+        'color': Color(0xFFF43F5E),
+        'bg': Color(0xFFFFE4E6),
+        'icon': Icons.published_with_changes_rounded,
+      },
+      'inline': {
+        'color': Color(0xFF84CC16),
+        'bg': Color(0xFFECFCCB),
+        'icon': Icons.line_style_rounded,
+      },
+      'copper set': {
+        'color': Color(0xFFD97706),
+        'bg': Color(0xFFFEF3C7),
+        'icon': Icons.album_rounded,
+      },
+      'alkaline': {
+        'color': Color(0xFF10B981),
+        'bg': Color(0xFFD1FAE5),
+        'icon': Icons.science_rounded,
+      },
+      'alkaline set': {
+        'color': Color(0xFF059669),
+        'bg': Color(0xFFA7F3D0),
+        'icon': Icons.science_rounded,
+      },
+      'set smps': {
+        'color': Color(0xFF6B7280),
+        'bg': Color(0xFFE5E7EB),
+        'icon': Icons.electrical_services_rounded,
+      },
+      'set change': {
+        'color': Color(0xFF9333EA),
+        'bg': Color(0xFFF3E8FF),
+        'icon': Icons.swap_horiz_rounded,
+      },
+      'not applicable': {
+        'color': Color(0xFF4B5563),
+        'bg': Color(0xFFF3F4F6),
+        'icon': Icons.do_not_disturb_alt_rounded,
+      },
     },
   );
 
   static const dark = ServiceColors(
     config: {
-      'amc': { 'color': Color(0xFF34D399), 'bg': Color(0xFF064E3B), 'icon': Icons.verified_user_rounded },
-      'new ro': { 'color': Color(0xFF60A5FA), 'bg': Color(0xFF1E3A8A), 'icon': Icons.new_releases_rounded },
-      'repair': { 'color': Color(0xFFFBBF24), 'bg': Color(0xFF78350F), 'icon': Icons.build_rounded },
-      'service': { 'color': Color(0xFFA78BFA), 'bg': Color(0xFF4C1D95), 'icon': Icons.miscellaneous_services_rounded },
-      'pump': { 'color': Color(0xFF22D3EE), 'bg': Color(0xFF164E63), 'icon': Icons.water_drop_rounded },
-      'set pump': { 'color': Color(0xFF38BDF8), 'bg': Color(0xFF0C4A6E), 'icon': Icons.water_damage_rounded },
-      'new ro set change': { 'color': Color(0xFF818CF8), 'bg': Color(0xFF3730A3), 'icon': Icons.change_circle_rounded },
-      'set sv': { 'color': Color(0xFFF472B6), 'bg': Color(0xFF831843), 'icon': Icons.settings_input_component_rounded },
-      'install and set change': { 'color': Color(0xFF2DD4BF), 'bg': Color(0xFF134E4A), 'icon': Icons.install_desktop_rounded },
-      'set & pump': { 'color': Color(0xFFFB7185), 'bg': Color(0xFF881337), 'icon': Icons.published_with_changes_rounded },
-      'inline': { 'color': Color(0xFFA3E635), 'bg': Color(0xFF3F6212), 'icon': Icons.line_style_rounded },
-      'copper set': { 'color': Color(0xFFF59E0B), 'bg': Color(0xFF78350F), 'icon': Icons.album_rounded },
-      'alkaline': { 'color': Color(0xFF34D399), 'bg': Color(0xFF064E3B), 'icon': Icons.science_rounded },
-      'alkaline set': { 'color': Color(0xFF10B981), 'bg': Color(0xFF064E3B), 'icon': Icons.science_rounded },
-      'set smps': { 'color': Color(0xFF9CA3AF), 'bg': Color(0xFF1F2937), 'icon': Icons.electrical_services_rounded },
-      'set change': { 'color': Color(0xFFC084FC), 'bg': Color(0xFF581C87), 'icon': Icons.swap_horiz_rounded },
-      'not applicable': { 'color': Color(0xFF9CA3AF), 'bg': Color(0xFF1F2937), 'icon': Icons.do_not_disturb_alt_rounded },
+      'amc': {
+        'color': Color(0xFF34D399),
+        'bg': Color(0xFF064E3B),
+        'icon': Icons.verified_user_rounded,
+      },
+      'new ro': {
+        'color': Color(0xFF60A5FA),
+        'bg': Color(0xFF1E3A8A),
+        'icon': Icons.new_releases_rounded,
+      },
+      'repair': {
+        'color': Color(0xFFFBBF24),
+        'bg': Color(0xFF78350F),
+        'icon': Icons.build_rounded,
+      },
+      'service': {
+        'color': Color(0xFFA78BFA),
+        'bg': Color(0xFF4C1D95),
+        'icon': Icons.miscellaneous_services_rounded,
+      },
+      'pump': {
+        'color': Color(0xFF22D3EE),
+        'bg': Color(0xFF164E63),
+        'icon': Icons.water_drop_rounded,
+      },
+      'set pump': {
+        'color': Color(0xFF38BDF8),
+        'bg': Color(0xFF0C4A6E),
+        'icon': Icons.water_damage_rounded,
+      },
+      'new ro set change': {
+        'color': Color(0xFF818CF8),
+        'bg': Color(0xFF3730A3),
+        'icon': Icons.change_circle_rounded,
+      },
+      'set sv': {
+        'color': Color(0xFFF472B6),
+        'bg': Color(0xFF831843),
+        'icon': Icons.settings_input_component_rounded,
+      },
+      'install and set change': {
+        'color': Color(0xFF2DD4BF),
+        'bg': Color(0xFF134E4A),
+        'icon': Icons.install_desktop_rounded,
+      },
+      'set & pump': {
+        'color': Color(0xFFFB7185),
+        'bg': Color(0xFF881337),
+        'icon': Icons.published_with_changes_rounded,
+      },
+      'inline': {
+        'color': Color(0xFFA3E635),
+        'bg': Color(0xFF3F6212),
+        'icon': Icons.line_style_rounded,
+      },
+      'copper set': {
+        'color': Color(0xFFF59E0B),
+        'bg': Color(0xFF78350F),
+        'icon': Icons.album_rounded,
+      },
+      'alkaline': {
+        'color': Color(0xFF34D399),
+        'bg': Color(0xFF064E3B),
+        'icon': Icons.science_rounded,
+      },
+      'alkaline set': {
+        'color': Color(0xFF10B981),
+        'bg': Color(0xFF064E3B),
+        'icon': Icons.science_rounded,
+      },
+      'set smps': {
+        'color': Color(0xFF9CA3AF),
+        'bg': Color(0xFF1F2937),
+        'icon': Icons.electrical_services_rounded,
+      },
+      'set change': {
+        'color': Color(0xFFC084FC),
+        'bg': Color(0xFF581C87),
+        'icon': Icons.swap_horiz_rounded,
+      },
+      'not applicable': {
+        'color': Color(0xFF9CA3AF),
+        'bg': Color(0xFF1F2937),
+        'icon': Icons.do_not_disturb_alt_rounded,
+      },
     },
   );
 }

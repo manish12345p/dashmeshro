@@ -22,13 +22,18 @@ class EmiBloc extends Bloc<EmiEvent, EmiState> {
     on<AddPayment>(_onAddPayment);
   }
 
-  Future<void> _onLoadDashboard(LoadDashboard event, Emitter<EmiState> emit) async {
+  Future<void> _onLoadDashboard(
+    LoadDashboard event,
+    Emitter<EmiState> emit,
+  ) async {
     emit(state.copyWith(status: EmiStatus.loading));
     try {
       final data = await _getEmiDashboardDataUseCase();
       emit(state.copyWith(status: EmiStatus.success, data: data));
     } catch (e) {
-      emit(state.copyWith(status: EmiStatus.failure, errorMessage: e.toString()));
+      emit(
+        state.copyWith(status: EmiStatus.failure, errorMessage: e.toString()),
+      );
     }
   }
 
@@ -46,10 +51,12 @@ class EmiBloc extends Bloc<EmiEvent, EmiState> {
       // Reload to get fresh data after payment
       add(const LoadDashboard());
     } catch (e) {
-      emit(state.copyWith(
-        status: EmiStatus.failure,
-        errorMessage: 'Failed to mark as paid: ${e.toString()}',
-      ));
+      emit(
+        state.copyWith(
+          status: EmiStatus.failure,
+          errorMessage: 'Failed to mark as paid: ${e.toString()}',
+        ),
+      );
     }
   }
 
@@ -59,10 +66,12 @@ class EmiBloc extends Bloc<EmiEvent, EmiState> {
       // Reload dashboard to reflect the payment
       add(const LoadDashboard());
     } catch (e) {
-      emit(state.copyWith(
-        status: EmiStatus.failure,
-        errorMessage: 'Failed to add payment: ${e.toString()}',
-      ));
+      emit(
+        state.copyWith(
+          status: EmiStatus.failure,
+          errorMessage: 'Failed to add payment: ${e.toString()}',
+        ),
+      );
     }
   }
 }

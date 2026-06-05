@@ -46,7 +46,10 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
     // Generate a short unique suffix
     final random = Random();
     final chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    final suffix = List.generate(4, (_) => chars[random.nextInt(chars.length)]).join();
+    final suffix = List.generate(
+      4,
+      (_) => chars[random.nextInt(chars.length)],
+    ).join();
     return '$firstName-$localityPart-$suffix';
   }
 
@@ -131,15 +134,21 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
         listener: (context, state) {
           state.maybeWhen(
             success: (docId, customerName, navigateToService) {
-              _showSuccessPopup(context, 'Customer "$customerName" saved successfully!');
+              _showSuccessPopup(
+                context,
+                'Customer "$customerName" saved successfully!',
+              );
               if (navigateToService) {
                 Future.delayed(const Duration(seconds: 2), () {
                   if (context.mounted) {
-                    context.go('/service', extra: {
-                      'showBackButton': true,
-                      'customerId': docId,
-                      'customerName': customerName,
-                    });
+                    context.go(
+                      '/service',
+                      extra: {
+                        'showBackButton': true,
+                        'customerId': docId,
+                        'customerName': customerName,
+                      },
+                    );
                   }
                 });
               } else {
@@ -151,9 +160,9 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
               }
             },
             failure: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: $message')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Error: $message')));
             },
             orElse: () {},
           );
@@ -174,16 +183,16 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
                   Text(
                     'New Client Profile',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: context.colors.textPrimary,
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: context.colors.textPrimary,
+                    ),
                   ),
                   SizedBox(height: 6),
                   Text(
                     'Initialize a new relationship with premium detail.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: context.colors.textSecondary,
-                        ),
+                      color: context.colors.textSecondary,
+                    ),
                   ),
                   SizedBox(height: 28),
 
@@ -264,9 +273,11 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
       note: _notesController.text,
     );
 
-    context.read<NewCustomerBloc>().add(NewCustomerEvent.submit(
-      customer: newCustomer,
-      navigateToService: navigateToService,
-    ));
+    context.read<NewCustomerBloc>().add(
+      NewCustomerEvent.submit(
+        customer: newCustomer,
+        navigateToService: navigateToService,
+      ),
+    );
   }
 }

@@ -8,32 +8,52 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   final GetCalendarSchedulesUseCase _getCalendarSchedulesUseCase;
   StreamSubscription? _schedulesSubscription;
 
-  CalendarBloc({required GetCalendarSchedulesUseCase getCalendarSchedulesUseCase})
-      : _getCalendarSchedulesUseCase = getCalendarSchedulesUseCase,
-        super(CalendarState.initial()) {
+  CalendarBloc({
+    required GetCalendarSchedulesUseCase getCalendarSchedulesUseCase,
+  }) : _getCalendarSchedulesUseCase = getCalendarSchedulesUseCase,
+       super(CalendarState.initial()) {
     on<LoadMonth>(_onLoadMonth);
     on<SelectDate>(_onSelectDate);
     on<SelectCategory>(_onSelectCategory);
     on<SearchQueryChanged>(_onSearchQueryChanged);
   }
 
-  Future<void> _onLoadMonth(LoadMonth event, Emitter<CalendarState> emit) async {
-    emit(state.copyWith(isLoading: true, currentYear: event.year, currentMonth: event.month));
-    
-    await _schedulesSubscription?.cancel();
-    
-    final completer = Completer<void>();
-    _schedulesSubscription = _getCalendarSchedulesUseCase.execute(event.year, event.month).listen(
-      (schedules) {
-        emit(state.copyWith(isLoading: false, currentMonthSchedules: schedules, errorMessage: null));
-        if (!completer.isCompleted) completer.complete();
-      },
-      onError: (error) {
-        emit(state.copyWith(isLoading: false, errorMessage: error.toString()));
-        if (!completer.isCompleted) completer.completeError(error);
-      },
+  Future<void> _onLoadMonth(
+    LoadMonth event,
+    Emitter<CalendarState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        currentYear: event.year,
+        currentMonth: event.month,
+      ),
     );
-    
+
+    await _schedulesSubscription?.cancel();
+
+    final completer = Completer<void>();
+    _schedulesSubscription = _getCalendarSchedulesUseCase
+        .execute(event.year, event.month)
+        .listen(
+          (schedules) {
+            emit(
+              state.copyWith(
+                isLoading: false,
+                currentMonthSchedules: schedules,
+                errorMessage: null,
+              ),
+            );
+            if (!completer.isCompleted) completer.complete();
+          },
+          onError: (error) {
+            emit(
+              state.copyWith(isLoading: false, errorMessage: error.toString()),
+            );
+            if (!completer.isCompleted) completer.completeError(error);
+          },
+        );
+
     // We await completer to ensure the event doesn't finish immediately,
     // though for stream listeners in Bloc, returning Future.value() is also common.
     try {
@@ -49,7 +69,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     emit(state.copyWith(selectedCategory: event.category));
   }
 
-  void _onSearchQueryChanged(SearchQueryChanged event, Emitter<CalendarState> emit) {
+  void _onSearchQueryChanged(
+    SearchQueryChanged event,
+    Emitter<CalendarState> emit,
+  ) {
     emit(state.copyWith(searchQuery: event.query));
   }
 

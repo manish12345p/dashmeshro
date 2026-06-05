@@ -22,8 +22,12 @@ class ScheduleItem with _$ScheduleItem {
 
 extension ScheduleItemColor on ScheduleItem {
   Color get statusColor {
-    if (status.toLowerCase() == 'confirmed' || status.toLowerCase() == 'resolved') return Colors.green;
-    if (status.toLowerCase() == 'in progress' || status.toLowerCase() == 'in_progress') return Colors.blue;
+    if (status.toLowerCase() == 'confirmed' ||
+        status.toLowerCase() == 'resolved')
+      return Colors.green;
+    if (status.toLowerCase() == 'in progress' ||
+        status.toLowerCase() == 'in_progress')
+      return Colors.blue;
     return Colors.orange;
   }
 }

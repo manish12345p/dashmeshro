@@ -18,12 +18,14 @@ class ActivityCard extends StatelessWidget {
     final colors = context.colors;
     final serviceColors = context.serviceColors.config;
     final typeLower = activity.serviceType.toLowerCase().trim();
-    
-    final config = serviceColors[typeLower] ?? {
-      'color': colors.textSecondary,
-      'bg': colors.surfaceSecondary,
-      'icon': Icons.build_circle_rounded,
-    };
+
+    final config =
+        serviceColors[typeLower] ??
+        {
+          'color': colors.textSecondary,
+          'bg': colors.surfaceSecondary,
+          'icon': Icons.build_circle_rounded,
+        };
 
     badgeBg = config['bg'] as Color;
     badgeText = config['color'] as Color;
@@ -85,12 +87,21 @@ class ActivityCard extends StatelessWidget {
             if (activity.fixes.isNotEmpty) ...[
               Text(
                 'WORK DONE',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: context.colors.textTertiary,
+                  letterSpacing: 1.1,
+                ),
               ),
               SizedBox(height: 4),
               Text(
                 activity.fixes,
-                style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.colors.textSecondary,
+                  height: 1.4,
+                ),
               ),
               SizedBox(height: 12),
             ],
@@ -99,12 +110,21 @@ class ActivityCard extends StatelessWidget {
             if (activity.equipmentsUsed.isNotEmpty) ...[
               Text(
                 'EQUIPMENT',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: context.colors.textTertiary,
+                  letterSpacing: 1.1,
+                ),
               ),
               SizedBox(height: 4),
               Text(
                 activity.equipmentsUsed,
-                style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.colors.textSecondary,
+                  height: 1.4,
+                ),
               ),
               SizedBox(height: 12),
             ],
@@ -113,31 +133,52 @@ class ActivityCard extends StatelessWidget {
             if (activity.remarks.isNotEmpty) ...[
               Text(
                 'NOTES',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: context.colors.textTertiary,
+                  letterSpacing: 1.1,
+                ),
               ),
               SizedBox(height: 4),
               Text(
                 activity.remarks,
-                style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.colors.textSecondary,
+                  height: 1.4,
+                ),
               ),
               SizedBox(height: 12),
             ],
-
 
             // Guarantee Duration
             if (activity.guaranteeDuration.isNotEmpty) ...[
               Text(
                 'GUARANTEE DURATION',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textTertiary, letterSpacing: 1.1),
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: context.colors.textTertiary,
+                  letterSpacing: 1.1,
+                ),
               ),
               SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.shield_rounded, size: 14, color: context.colors.primary),
+                  Icon(
+                    Icons.shield_rounded,
+                    size: 14,
+                    color: context.colors.primary,
+                  ),
                   SizedBox(width: 4),
                   Text(
                     activity.guaranteeDuration,
-                    style: TextStyle(fontSize: 13, color: context.colors.textSecondary, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: context.colors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -160,12 +201,20 @@ class ActivityCard extends StatelessWidget {
                     children: [
                       Text(
                         'TOTAL AMOUNT',
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textSecondary),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: context.colors.textSecondary,
+                        ),
                       ),
                       SizedBox(height: 2),
                       Text(
                         '₹${activity.totalAmount.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: context.colors.textPrimary),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: context.colors.textPrimary,
+                        ),
                       ),
                     ],
                   ),
@@ -174,12 +223,20 @@ class ActivityCard extends StatelessWidget {
                     children: [
                       Text(
                         'PAID AMOUNT',
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: context.colors.textSecondary),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: context.colors.textSecondary,
+                        ),
                       ),
                       SizedBox(height: 2),
                       Text(
                         '₹${activity.amountPaid.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: context.colors.success),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: context.colors.success,
+                        ),
                       ),
                     ],
                   ),

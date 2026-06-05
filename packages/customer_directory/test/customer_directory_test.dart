@@ -35,8 +35,8 @@ void main() {
             'amountPaid': 500.0,
             'equipmentsUsed': 'Wrench',
             'serviceDate': '2024-02-20T00:00:00.000',
-          }
-        ]
+          },
+        ],
       };
 
       final customer = Customer.fromMap(map, documentId: 'test_id');
@@ -83,7 +83,7 @@ void main() {
             amountPaid: 500.0,
             equipmentsUsed: 'Wrench',
             serviceDate: DateTime.parse('2024-02-20T00:00:00.000'),
-          )
+          ),
         ],
       );
 
@@ -107,12 +107,17 @@ void main() {
       expect(customers.any((c) => c.name == 'Vikram Rathore'), true);
     });
 
-    test('should stream mock customer details when Firebase is uninitialized', () async {
-      final repository = CustomerRepository();
-      final customer = await repository.getCustomerById('vikram_rathore').first;
+    test(
+      'should stream mock customer details when Firebase is uninitialized',
+      () async {
+        final repository = CustomerRepository();
+        final customer = await repository
+            .getCustomerById('vikram_rathore')
+            .first;
 
-      expect(customer.id, 'vikram_rathore');
-      expect(customer.name, 'Vikram Rathore');
-    });
+        expect(customer.id, 'vikram_rathore');
+        expect(customer.name, 'Vikram Rathore');
+      },
+    );
   });
 }

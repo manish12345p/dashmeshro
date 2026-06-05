@@ -7,50 +7,26 @@ import 'package:home_page/home_page.dart';
 
 Future<void> init() async {
   // Feature: Customer Directory
-  sl.registerLazySingleton<ICustomerRepository>(
-    () => CustomerRepository(),
-  );
+  sl.registerLazySingleton<ICustomerRepository>(() => CustomerRepository());
 
   // Feature: Service Entry
-  sl.registerLazySingleton<IVisitEntryRepository>(
-    () => VisitEntryRepository(),
-  );
-  sl.registerLazySingleton(
-    () => SaveServiceUseCase(sl()),
-  );
+  sl.registerLazySingleton<IVisitEntryRepository>(() => VisitEntryRepository());
+  sl.registerLazySingleton(() => SaveServiceUseCase(sl()));
 
   // Feature: EMI Page
-  sl.registerLazySingleton<EmiRepositoryInterface>(
-    () => EmiRepository(),
-  );
-  sl.registerLazySingleton(
-    () => GetEmiDashboardDataUseCase(sl()),
-  );
-  sl.registerLazySingleton(
-    () => MarkEmiPaidUseCase(sl()),
-  );
-  sl.registerLazySingleton(
-    () => AddEmiPaymentUseCase(sl()),
-  );
+  sl.registerLazySingleton<EmiRepositoryInterface>(() => EmiRepository());
+  sl.registerLazySingleton(() => GetEmiDashboardDataUseCase(sl()));
+  sl.registerLazySingleton(() => MarkEmiPaidUseCase(sl()));
+  sl.registerLazySingleton(() => AddEmiPaymentUseCase(sl()));
 
   // Feature: Home Page
-  sl.registerLazySingleton<IHomeRepository>(
-    () => HomeRepository(),
-  );
-  sl.registerLazySingleton(
-    () => GetHomeDataUseCase(sl()),
-  );
+  sl.registerLazySingleton<IHomeRepository>(() => HomeRepository());
+  sl.registerLazySingleton(() => GetHomeDataUseCase(sl()));
 
-    // Feature: Calendar
-  sl.registerLazySingleton<ICalendarRepository>(
-    () => CalendarRepository(),
-  );
-  sl.registerLazySingleton(
-    () => GetCalendarSchedulesUseCase(sl()),
-  );
-  sl.registerFactory(
-    () => CalendarBloc(getCalendarSchedulesUseCase: sl()),
-  );
+  // Feature: Calendar
+  sl.registerLazySingleton<ICalendarRepository>(() => CalendarRepository());
+  sl.registerLazySingleton(() => GetCalendarSchedulesUseCase(sl()));
+  sl.registerFactory(() => CalendarBloc(getCalendarSchedulesUseCase: sl()));
 
   // Other features...
 }

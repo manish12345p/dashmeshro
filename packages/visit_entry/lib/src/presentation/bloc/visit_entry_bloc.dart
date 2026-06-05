@@ -8,7 +8,7 @@ enum VisitEntryStatus { initial, submitting, success, failure }
 class VisitEntryState {
   final VisitEntryStatus status;
   final String? errorMessage;
-  
+
   // Form fields
   final String? customerId;
   final String? customerName;
@@ -24,6 +24,7 @@ class VisitEntryState {
   final String serviceDuration;
   final String guaranteeDuration;
   final String? serviceDate;
+  final int? rentDueDay;
 
   const VisitEntryState({
     this.status = VisitEntryStatus.initial,
@@ -42,10 +43,12 @@ class VisitEntryState {
     this.serviceDuration = '',
     this.guaranteeDuration = '',
     this.serviceDate,
+    this.rentDueDay = 1,
   });
 
   // Helper to ensure serviceDate defaults to today if not provided
-  String get effectiveServiceDate => serviceDate ?? DateTime.now().toIso8601String().split('T')[0];
+  String get effectiveServiceDate =>
+      serviceDate ?? DateTime.now().toIso8601String().split('T')[0];
 
   VisitEntryState copyWith({
     VisitEntryStatus? status,
@@ -64,6 +67,7 @@ class VisitEntryState {
     String? serviceDuration,
     String? guaranteeDuration,
     String? serviceDate,
+    int? rentDueDay,
   }) {
     return VisitEntryState(
       status: status ?? this.status,
@@ -77,11 +81,14 @@ class VisitEntryState {
       amountPaid: amountPaid ?? this.amountPaid,
       amountPending: amountPending ?? this.amountPending,
       totalAmount: totalAmount ?? this.totalAmount,
-      emiAmountPerMonth: emiAmountPerMonth == null ? this.emiAmountPerMonth : (emiAmountPerMonth == 0 ? null : emiAmountPerMonth),
+      emiAmountPerMonth: emiAmountPerMonth == null
+          ? this.emiAmountPerMonth
+          : (emiAmountPerMonth == 0 ? null : emiAmountPerMonth),
       equipmentsUsed: equipmentsUsed ?? this.equipmentsUsed,
       serviceDuration: serviceDuration ?? this.serviceDuration,
       guaranteeDuration: guaranteeDuration ?? this.guaranteeDuration,
       serviceDate: serviceDate ?? this.serviceDate,
+      rentDueDay: rentDueDay ?? this.rentDueDay,
     );
   }
 }
@@ -89,11 +96,16 @@ class VisitEntryState {
 class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
   final SaveServiceUseCase _saveServiceUseCase;
 
-  VisitEntryBloc(this._saveServiceUseCase, {String? initialCustomerId, String? initialCustomerName})
-      : super(VisitEntryState(
-          customerId: initialCustomerId,
-          customerName: initialCustomerName,
-        )) {
+  VisitEntryBloc(
+    this._saveServiceUseCase, {
+    String? initialCustomerId,
+    String? initialCustomerName,
+  }) : super(
+         VisitEntryState(
+           customerId: initialCustomerId,
+           customerName: initialCustomerName,
+         ),
+       ) {
     on<SelectCustomer>(_onSelectCustomer);
     on<SelectServiceType>(_onSelectServiceType);
     on<ToggleUrgency>(_onToggleUrgency);
@@ -106,6 +118,7 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     on<UpdateServiceDuration>(_onUpdateServiceDuration);
     on<UpdateGuaranteeDuration>(_onUpdateGuaranteeDuration);
     on<UpdateEmiAmountPerMonth>(_onUpdateEmiAmountPerMonth);
+    on<UpdateRentDueDay>(_onUpdateRentDueDay);
     on<SetDate>(_onSetDate);
     on<SubmitVisitEntry>(_onSubmit);
   }
@@ -114,7 +127,10 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     emit(state.copyWith(customerId: event.id, customerName: event.name));
   }
 
-  void _onSelectServiceType(SelectServiceType event, Emitter<VisitEntryState> emit) {
+  void _onSelectServiceType(
+    SelectServiceType event,
+    Emitter<VisitEntryState> emit,
+  ) {
     emit(state.copyWith(serviceType: event.type));
   }
 
@@ -130,81 +146,121 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     emit(state.copyWith(fixes: event.fixes));
   }
 
-  void _onUpdateAmountPaid(UpdateAmountPaid event, Emitter<VisitEntryState> emit) {
+  void _onUpdateAmountPaid(
+    UpdateAmountPaid event,
+    Emitter<VisitEntryState> emit,
+  ) {
     double pending = state.totalAmount - event.amount;
     if (pending < 0) pending = 0;
     emit(state.copyWith(amountPaid: event.amount, amountPending: pending));
   }
 
-  void _onUpdateAmountPending(UpdateAmountPending event, Emitter<VisitEntryState> emit) {
+  void _onUpdateAmountPending(
+    UpdateAmountPending event,
+    Emitter<VisitEntryState> emit,
+  ) {
     double paid = state.totalAmount - event.amount;
     if (paid < 0) paid = 0;
     emit(state.copyWith(amountPending: event.amount, amountPaid: paid));
   }
 
-  void _onUpdateTotalAmount(UpdateTotalAmount event, Emitter<VisitEntryState> emit) {
+  void _onUpdateTotalAmount(
+    UpdateTotalAmount event,
+    Emitter<VisitEntryState> emit,
+  ) {
     double pending = event.amount - state.amountPaid;
     if (pending < 0) pending = 0;
     emit(state.copyWith(totalAmount: event.amount, amountPending: pending));
   }
 
-  void _onUpdateEquipmentsUsed(UpdateEquipmentsUsed event, Emitter<VisitEntryState> emit) {
+  void _onUpdateEquipmentsUsed(
+    UpdateEquipmentsUsed event,
+    Emitter<VisitEntryState> emit,
+  ) {
     emit(state.copyWith(equipmentsUsed: event.equipments));
   }
 
-  void _onUpdateServiceDuration(UpdateServiceDuration event, Emitter<VisitEntryState> emit) {
+  void _onUpdateServiceDuration(
+    UpdateServiceDuration event,
+    Emitter<VisitEntryState> emit,
+  ) {
     emit(state.copyWith(serviceDuration: event.duration));
   }
 
-  void _onUpdateGuaranteeDuration(UpdateGuaranteeDuration event, Emitter<VisitEntryState> emit) {
+  void _onUpdateGuaranteeDuration(
+    UpdateGuaranteeDuration event,
+    Emitter<VisitEntryState> emit,
+  ) {
     emit(state.copyWith(guaranteeDuration: event.duration));
   }
 
-  void _onUpdateEmiAmountPerMonth(UpdateEmiAmountPerMonth event, Emitter<VisitEntryState> emit) {
+  void _onUpdateEmiAmountPerMonth(
+    UpdateEmiAmountPerMonth event,
+    Emitter<VisitEntryState> emit,
+  ) {
     emit(state.copyWith(emiAmountPerMonth: event.amount ?? 0.0));
+  }
+
+  void _onUpdateRentDueDay(
+    UpdateRentDueDay event,
+    Emitter<VisitEntryState> emit,
+  ) {
+    emit(state.copyWith(rentDueDay: event.day));
   }
 
   void _onSetDate(SetDate event, Emitter<VisitEntryState> emit) {
     emit(state.copyWith(serviceDate: event.date));
   }
 
-  Future<void> _onSubmit(SubmitVisitEntry event, Emitter<VisitEntryState> emit) async {
+  Future<void> _onSubmit(
+    SubmitVisitEntry event,
+    Emitter<VisitEntryState> emit,
+  ) async {
     if (state.customerId == null || state.customerId!.isEmpty) {
-      emit(state.copyWith(
-        status: VisitEntryStatus.failure,
-        errorMessage: 'Please select a customer',
-      ));
+      emit(
+        state.copyWith(
+          status: VisitEntryStatus.failure,
+          errorMessage: 'Please select a customer',
+        ),
+      );
       emit(state.copyWith(status: VisitEntryStatus.initial));
       return;
     }
 
     if (state.serviceType.isEmpty || state.serviceType == 'Sell') {
-      emit(state.copyWith(
-        status: VisitEntryStatus.failure,
-        errorMessage: 'Please select a Service Type',
-      ));
+      emit(
+        state.copyWith(
+          status: VisitEntryStatus.failure,
+          errorMessage: 'Please select a Service Type',
+        ),
+      );
       emit(state.copyWith(status: VisitEntryStatus.initial));
       return;
     }
 
-    if (state.amountPaid + state.amountPending > state.totalAmount) {
-      emit(state.copyWith(
-        status: VisitEntryStatus.failure,
-        errorMessage: 'Paid Amount + Pending Amount cannot exceed Total Amount. Please check your entries.',
-      ));
+    if (state.serviceType != 'Rent' &&
+        state.amountPaid + state.amountPending > state.totalAmount) {
+      emit(
+        state.copyWith(
+          status: VisitEntryStatus.failure,
+          errorMessage:
+              'Paid Amount + Pending Amount cannot exceed Total Amount. Please check your entries.',
+        ),
+      );
       emit(state.copyWith(status: VisitEntryStatus.initial));
       return;
     }
 
     emit(state.copyWith(status: VisitEntryStatus.submitting));
-    
+
     try {
       final entry = VisitRecord(
         id: 'SE-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}',
         customerId: state.customerId!,
         serviceType: state.serviceType,
         isUrgent: state.isUrgent,
-        serviceDate: DateTime.tryParse(state.effectiveServiceDate) ?? DateTime.now(),
+        serviceDate:
+            DateTime.tryParse(state.effectiveServiceDate) ?? DateTime.now(),
         remarks: state.remarks,
         fixes: state.fixes,
         amountPaid: state.amountPaid,
@@ -214,14 +270,21 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
         serviceDuration: state.serviceDuration,
         guaranteeDuration: state.guaranteeDuration,
       );
-      
-      await _saveServiceUseCase(entry, emiAmountPerMonth: state.emiAmountPerMonth);
+
+      await _saveServiceUseCase(
+        entry,
+        emiAmountPerMonth: state.emiAmountPerMonth,
+        isRent: state.serviceType == 'Rent',
+        rentDueDay: state.rentDueDay,
+      );
       emit(const VisitEntryState(status: VisitEntryStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: VisitEntryStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: VisitEntryStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

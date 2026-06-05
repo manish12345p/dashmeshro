@@ -37,15 +37,15 @@ class InstallmentListItem extends StatelessWidget {
         color: isOverdue
             ? context.colors.infoBg
             : (isFullyPaid || isPaidThisMonth)
-                ? context.colors.successBg
-                : context.colors.surface,
+            ? context.colors.successBg
+            : context.colors.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isOverdue
               ? context.colors.info
               : (isFullyPaid || isPaidThisMonth)
-                  ? context.colors.success
-                  : context.colors.border,
+              ? context.colors.success
+              : context.colors.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -64,7 +64,9 @@ class InstallmentListItem extends StatelessWidget {
                 radius: 20,
                 backgroundColor: context.colors.surfaceSecondary,
                 child: Text(
-                  installment.customerName.isNotEmpty ? installment.customerName[0].toUpperCase() : '?',
+                  installment.customerName.isNotEmpty
+                      ? installment.customerName[0].toUpperCase()
+                      : '?',
                   style: TextStyle(
                     color: context.colors.textTertiary,
                     fontWeight: FontWeight.bold,
@@ -88,7 +90,10 @@ class InstallmentListItem extends StatelessWidget {
                     if (installment.serviceName.isNotEmpty) ...[
                       SizedBox(height: 2),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: context.colors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4),
@@ -128,7 +133,9 @@ class InstallmentListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isFullyPaid ? 'PAID AMOUNT' : 'EMI AMOUNT',
+                      installment.isRent
+                          ? 'RENT AMOUNT'
+                          : (isFullyPaid ? 'PAID AMOUNT' : 'EMI AMOUNT'),
                       style: TextStyle(
                         color: context.colors.textTertiary,
                         fontSize: 8,
@@ -137,18 +144,22 @@ class InstallmentListItem extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      currencyFormatter.format(isFullyPaid 
-                          ? (installment.lastPaymentAmount > 0 
-                              ? installment.lastPaymentAmount 
-                              : installment.amount) 
-                          : installment.amount),
+                      currencyFormatter.format(
+                        isFullyPaid
+                            ? (installment.lastPaymentAmount > 0
+                                  ? installment.lastPaymentAmount
+                                  : installment.amount)
+                            : installment.amount,
+                      ),
                       style: TextStyle(
                         color: context.colors.textPrimary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    if (installment.totalAmount > 0 && !isFullyPaid) ...[
+                    if (!installment.isRent &&
+                        installment.totalAmount > 0 &&
+                        !isFullyPaid) ...[
                       SizedBox(height: 2),
                       Text(
                         'Remaining: ${currencyFormatter.format(installment.totalAmount)}',
@@ -159,7 +170,8 @@ class InstallmentListItem extends StatelessWidget {
                         ),
                       ),
                     ],
-                    if (installment.lastPaymentDateStr.isNotEmpty && installment.lastPaymentAmount > 0)
+                    if (installment.lastPaymentDateStr.isNotEmpty &&
+                        installment.lastPaymentAmount > 0)
                       Padding(
                         padding: EdgeInsets.only(top: AppPadding.p4),
                         child: Text(
@@ -214,7 +226,11 @@ class InstallmentListItem extends StatelessWidget {
                       SizedBox(height: 2),
                       Row(
                         children: [
-                          Icon(Icons.check_circle, color: context.colors.success, size: 10),
+                          Icon(
+                            Icons.check_circle,
+                            color: context.colors.success,
+                            size: 10,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             '✓ Paid',
@@ -227,7 +243,6 @@ class InstallmentListItem extends StatelessWidget {
                         ],
                       ),
                     ]
-
                     // Paid this month (but more EMIs remain)
                     else if (isPaidThisMonth) ...[
                       Text(
@@ -241,7 +256,11 @@ class InstallmentListItem extends StatelessWidget {
                       SizedBox(height: 2),
                       Row(
                         children: [
-                          Icon(Icons.check_circle, color: context.colors.success, size: 10),
+                          Icon(
+                            Icons.check_circle,
+                            color: context.colors.success,
+                            size: 10,
+                          ),
                           SizedBox(width: 4),
                           Flexible(
                             child: Text(
@@ -256,7 +275,6 @@ class InstallmentListItem extends StatelessWidget {
                         ],
                       ),
                     ]
-
                     // Overdue
                     else if (isOverdue) ...[
                       Text(
@@ -270,7 +288,11 @@ class InstallmentListItem extends StatelessWidget {
                       SizedBox(height: 2),
                       Row(
                         children: [
-                          Icon(Icons.warning_amber_rounded, color: context.colors.error, size: 12),
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            color: context.colors.error,
+                            size: 12,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             '⚠ OVERDUE',
@@ -291,7 +313,6 @@ class InstallmentListItem extends StatelessWidget {
                         ),
                       ),
                     ]
-
                     // Pending
                     else ...[
                       Text(
@@ -341,10 +362,17 @@ class InstallmentListItem extends StatelessWidget {
                     onPressed: () {
                       _showAddPaymentDialog(context);
                     },
-                    icon: Icon(Icons.payment, size: 14, color: context.colors.surface),
+                    icon: Icon(
+                      Icons.payment,
+                      size: 14,
+                      color: context.colors.surface,
+                    ),
                     label: Text(
                       'Pay Installment',
-                      style: TextStyle(color: context.colors.surface, fontSize: 12),
+                      style: TextStyle(
+                        color: context.colors.surface,
+                        fontSize: 12,
+                      ),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: context.colors.success,
@@ -386,8 +414,11 @@ class InstallmentListItem extends StatelessWidget {
     try {
       final date = DateTime.parse(dateStr);
       final today = DateTime.now();
-      final diff = DateTime(today.year, today.month, today.day)
-          .difference(DateTime(date.year, date.month, date.day));
+      final diff = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      ).difference(DateTime(date.year, date.month, date.day));
       return diff.inDays > 0 ? diff.inDays : 0;
     } catch (_) {
       return 0;
@@ -395,8 +426,14 @@ class InstallmentListItem extends StatelessWidget {
   }
 
   void _showAddPaymentDialog(BuildContext context) {
-    final controller = TextEditingController(text: installment.amount.toStringAsFixed(0));
-    final currencyFormatter = NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 0);
+    final controller = TextEditingController(
+      text: installment.amount.toStringAsFixed(0),
+    );
+    final currencyFormatter = NumberFormat.currency(
+      locale: 'en_IN',
+      symbol: '₹',
+      decimalDigits: 0,
+    );
 
     showModalBottomSheet(
       context: context,
@@ -416,9 +453,16 @@ class InstallmentListItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Pay Installment', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.colors.textPrimary)),
+            Text(
+              'Pay Installment',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: context.colors.textPrimary,
+              ),
+            ),
             const SizedBox(height: 16),
-            
+
             // Show EMI and Total amount context
             Container(
               padding: const EdgeInsets.all(12),
@@ -432,18 +476,44 @@ class InstallmentListItem extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('EMI Amount', style: TextStyle(fontSize: 12, color: context.colors.textSecondary)),
+                      Text(
+                        installment.isRent ? 'Rent Amount' : 'EMI Amount',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: context.colors.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      Text(currencyFormatter.format(installment.amount), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: context.colors.textPrimary)),
+                      Text(
+                        currencyFormatter.format(installment.amount),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: context.colors.textPrimary,
+                        ),
+                      ),
                     ],
                   ),
-                  if (installment.totalAmount > 0)
+                  if (!installment.isRent && installment.totalAmount > 0)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('Total Pending', style: TextStyle(fontSize: 12, color: context.colors.textSecondary)),
+                        Text(
+                          'Total Pending',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: context.colors.textSecondary,
+                          ),
+                        ),
                         const SizedBox(height: 4),
-                        Text(currencyFormatter.format(installment.totalAmount), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: context.colors.error)),
+                        Text(
+                          currencyFormatter.format(installment.totalAmount),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: context.colors.error,
+                          ),
+                        ),
                       ],
                     ),
                 ],
@@ -457,11 +527,13 @@ class InstallmentListItem extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Amount to Pay',
                 prefixText: '₹ ',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
             const SizedBox(height: 24),
-            
+
             Row(
               children: [
                 Expanded(
@@ -469,9 +541,14 @@ class InstallmentListItem extends StatelessWidget {
                     onPressed: () => Navigator.pop(sheetContext),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    child: Text('Cancel', style: TextStyle(color: context.colors.textSecondary)),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: context.colors.textSecondary),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -480,13 +557,15 @@ class InstallmentListItem extends StatelessWidget {
                     onPressed: () {
                       final amount = double.tryParse(controller.text) ?? 0.0;
                       if (amount <= 0) return;
-                      
+
                       if (amount < installment.amount) {
                         showDialog(
                           context: sheetContext,
                           builder: (confirmCtx) => AlertDialog(
                             title: const Text('Confirm Partial Payment'),
-                            content: Text('The EMI amount is ₹${installment.amount.toStringAsFixed(0)}, but you entered ₹${amount.toStringAsFixed(0)}. Are you sure you want to pay less?'),
+                            content: Text(
+                              'The amount is ₹${installment.amount.toStringAsFixed(0)}, but you entered ₹${amount.toStringAsFixed(0)}. Are you sure you want to pay less?',
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(confirmCtx),
@@ -511,9 +590,17 @@ class InstallmentListItem extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: context.colors.primaryDark,
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    child: const Text('Pay Now', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'Pay Now',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],

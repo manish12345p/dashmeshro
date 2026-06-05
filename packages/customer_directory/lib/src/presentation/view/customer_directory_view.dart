@@ -12,6 +12,7 @@ import '../bloc/customer_directory_event.dart';
 import '../bloc/customer_directory_state.dart';
 import '../../domain/entities/customer.dart';
 import '../widgets/customer_card.dart';
+
 class CustomerDirectoryView extends StatelessWidget {
   final CustomerDirectoryBloc? bloc;
   final ICustomerRepository? repository;
@@ -23,9 +24,12 @@ class CustomerDirectoryView extends StatelessWidget {
     final repo = repository ?? GetIt.instance<ICustomerRepository>();
 
     return BlocProvider(
-      create: (context) => bloc ?? CustomerDirectoryBloc(
-        getCustomersUseCase: GetCustomersUseCase(repo),
-      )..add(const LoadCustomers()),
+      create: (context) =>
+          bloc ??
+                CustomerDirectoryBloc(
+                  getCustomersUseCase: GetCustomersUseCase(repo),
+                )
+            ..add(const LoadCustomers()),
       child: Scaffold(
         backgroundColor: context.colors.background,
         appBar: AppBar(
@@ -57,13 +61,12 @@ class _CustomerDirectoryContent extends StatefulWidget {
   const _CustomerDirectoryContent();
 
   @override
-  State<_CustomerDirectoryContent> createState() => _CustomerDirectoryContentState();
+  State<_CustomerDirectoryContent> createState() =>
+      _CustomerDirectoryContentState();
 }
 
 class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
   String _selectedFilter = 'All';
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +74,8 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
       bottom: false,
       child: BlocBuilder<CustomerDirectoryBloc, CustomerDirectoryState>(
         builder: (context, state) {
-          if (state is CustomerDirectoryLoading || state is CustomerDirectoryInitial) {
+          if (state is CustomerDirectoryLoading ||
+              state is CustomerDirectoryInitial) {
             return Center(child: CircularProgressIndicator());
           }
           if (state is CustomerDirectoryError) {
@@ -97,7 +101,8 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                       Expanded(
                         child: Text(
                           'Customer\nDirectory',
-                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          style: Theme.of(context).textTheme.headlineLarge
+                              ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: context.colors.textPrimary,
                                 height: 1.15,
@@ -107,14 +112,19 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [context.colors.primaryDark, context.colors.primary],
+                            colors: [
+                              context.colors.primaryDark,
+                              context.colors.primary,
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: context.colors.primaryDark.withOpacity(0.35),
+                              color: context.colors.primaryDark.withOpacity(
+                                0.35,
+                              ),
                               blurRadius: 12,
                               offset: const Offset(0, 4),
                             ),
@@ -144,19 +154,24 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                   Text(
                     'Manage your client relationships with mechanical precision and fluid clarity.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: context.colors.textSecondary,
-                        ),
+                      color: context.colors.textSecondary,
+                    ),
                   ),
                   SizedBox(height: AppPadding.p24),
 
                   // Search Bar
                   TextField(
                     onChanged: (val) {
-                      context.read<CustomerDirectoryBloc>().add(SearchCustomers(val));
+                      context.read<CustomerDirectoryBloc>().add(
+                        SearchCustomers(val),
+                      );
                     },
                     decoration: InputDecoration(
                       hintText: 'Search by name, status or company',
-                      prefixIcon: Icon(Icons.search, color: context.colors.textSecondary),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: context.colors.textSecondary,
+                      ),
                       filled: true,
                       fillColor: context.colors.surface,
                       contentPadding: EdgeInsets.symmetric(
@@ -169,12 +184,13 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(height: AppPadding.p16),
-
 
                   // Customer List
                   if (customers.isEmpty)
@@ -192,7 +208,9 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                       ),
                     )
                   else
-                    ...customers.map((customer) => CustomerCard(customer: customer)),
+                    ...customers.map(
+                      (customer) => CustomerCard(customer: customer),
+                    ),
                   SizedBox(height: AppPadding.p24),
                 ],
               ),

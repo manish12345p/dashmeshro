@@ -768,6 +768,8 @@ mixin _$ActiveInstallment {
   String get dueDate => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   String get avatarUrl => throw _privateConstructorUsedError;
+  bool get isRent => throw _privateConstructorUsedError;
+  int? get rentDueDay => throw _privateConstructorUsedError;
 
   /// Serializes this ActiveInstallment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -800,6 +802,8 @@ abstract class $ActiveInstallmentCopyWith<$Res> {
     String dueDate,
     String status,
     String avatarUrl,
+    bool isRent,
+    int? rentDueDay,
   });
 }
 
@@ -831,6 +835,8 @@ class _$ActiveInstallmentCopyWithImpl<$Res, $Val extends ActiveInstallment>
     Object? dueDate = null,
     Object? status = null,
     Object? avatarUrl = null,
+    Object? isRent = null,
+    Object? rentDueDay = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -886,6 +892,14 @@ class _$ActiveInstallmentCopyWithImpl<$Res, $Val extends ActiveInstallment>
                 ? _value.avatarUrl
                 : avatarUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            isRent: null == isRent
+                ? _value.isRent
+                : isRent // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            rentDueDay: freezed == rentDueDay
+                ? _value.rentDueDay
+                : rentDueDay // ignore: cast_nullable_to_non_nullable
+                      as int?,
           )
           as $Val,
     );
@@ -915,6 +929,8 @@ abstract class _$$ActiveInstallmentImplCopyWith<$Res>
     String dueDate,
     String status,
     String avatarUrl,
+    bool isRent,
+    int? rentDueDay,
   });
 }
 
@@ -945,6 +961,8 @@ class __$$ActiveInstallmentImplCopyWithImpl<$Res>
     Object? dueDate = null,
     Object? status = null,
     Object? avatarUrl = null,
+    Object? isRent = null,
+    Object? rentDueDay = freezed,
   }) {
     return _then(
       _$ActiveInstallmentImpl(
@@ -1000,6 +1018,14 @@ class __$$ActiveInstallmentImplCopyWithImpl<$Res>
             ? _value.avatarUrl
             : avatarUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        isRent: null == isRent
+            ? _value.isRent
+            : isRent // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        rentDueDay: freezed == rentDueDay
+            ? _value.rentDueDay
+            : rentDueDay // ignore: cast_nullable_to_non_nullable
+                  as int?,
       ),
     );
   }
@@ -1022,6 +1048,8 @@ class _$ActiveInstallmentImpl implements _ActiveInstallment {
     required this.dueDate,
     required this.status,
     required this.avatarUrl,
+    this.isRent = false,
+    this.rentDueDay,
   });
 
   factory _$ActiveInstallmentImpl.fromJson(Map<String, dynamic> json) =>
@@ -1057,10 +1085,15 @@ class _$ActiveInstallmentImpl implements _ActiveInstallment {
   final String status;
   @override
   final String avatarUrl;
+  @override
+  @JsonKey()
+  final bool isRent;
+  @override
+  final int? rentDueDay;
 
   @override
   String toString() {
-    return 'ActiveInstallment(id: $id, customerId: $customerId, customerName: $customerName, vehicleDetails: $vehicleDetails, amount: $amount, totalAmount: $totalAmount, originalLoanAmount: $originalLoanAmount, serviceName: $serviceName, lastPaymentAmount: $lastPaymentAmount, lastPaymentDateStr: $lastPaymentDateStr, dueDate: $dueDate, status: $status, avatarUrl: $avatarUrl)';
+    return 'ActiveInstallment(id: $id, customerId: $customerId, customerName: $customerName, vehicleDetails: $vehicleDetails, amount: $amount, totalAmount: $totalAmount, originalLoanAmount: $originalLoanAmount, serviceName: $serviceName, lastPaymentAmount: $lastPaymentAmount, lastPaymentDateStr: $lastPaymentDateStr, dueDate: $dueDate, status: $status, avatarUrl: $avatarUrl, isRent: $isRent, rentDueDay: $rentDueDay)';
   }
 
   @override
@@ -1089,7 +1122,10 @@ class _$ActiveInstallmentImpl implements _ActiveInstallment {
             (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.avatarUrl, avatarUrl) ||
-                other.avatarUrl == avatarUrl));
+                other.avatarUrl == avatarUrl) &&
+            (identical(other.isRent, isRent) || other.isRent == isRent) &&
+            (identical(other.rentDueDay, rentDueDay) ||
+                other.rentDueDay == rentDueDay));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1109,6 +1145,8 @@ class _$ActiveInstallmentImpl implements _ActiveInstallment {
     dueDate,
     status,
     avatarUrl,
+    isRent,
+    rentDueDay,
   );
 
   /// Create a copy of ActiveInstallment
@@ -1143,6 +1181,8 @@ abstract class _ActiveInstallment implements ActiveInstallment {
     required final String dueDate,
     required final String status,
     required final String avatarUrl,
+    final bool isRent,
+    final int? rentDueDay,
   }) = _$ActiveInstallmentImpl;
 
   factory _ActiveInstallment.fromJson(Map<String, dynamic> json) =
@@ -1174,6 +1214,10 @@ abstract class _ActiveInstallment implements ActiveInstallment {
   String get status;
   @override
   String get avatarUrl;
+  @override
+  bool get isRent;
+  @override
+  int? get rentDueDay;
 
   /// Create a copy of ActiveInstallment
   /// with the given fields replaced by the non-null parameter values.

@@ -32,7 +32,9 @@ class CalendarDayCell extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF00569E) : Colors.transparent,
+                color: isSelected
+                    ? const Color(0xFF00569E)
+                    : Colors.transparent,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -40,12 +42,14 @@ class CalendarDayCell extends StatelessWidget {
                   '$dayNumber',
                   style: TextStyle(
                     fontSize: 13,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     color: isGreyedOut
                         ? Colors.black26
                         : isSelected
-                            ? Colors.white
-                            : Colors.black87,
+                        ? Colors.white
+                        : Colors.black87,
                   ),
                 ),
               ),
@@ -85,9 +89,9 @@ class CalendarDayCell extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                ]
+                ],
               ],
-            )
+            ),
           ],
         ),
       ),

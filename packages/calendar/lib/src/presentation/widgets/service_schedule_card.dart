@@ -5,10 +5,7 @@ import '../../domain/entities/mock_schedule_item.dart';
 class ServiceScheduleCard extends StatelessWidget {
   final MockScheduleItem item;
 
-  const ServiceScheduleCard({
-    super.key,
-    required this.item,
-  });
+  const ServiceScheduleCard({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,7 @@ class ServiceScheduleCard extends StatelessWidget {
             color: Colors.black.withOpacity(0.015),
             blurRadius: 10,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -48,7 +45,10 @@ class ServiceScheduleCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: badgeColor,
                   borderRadius: BorderRadius.circular(8),
@@ -91,10 +91,7 @@ class ServiceScheduleCard extends StatelessWidget {
           // Machine ID
           Text(
             'Machine ID: ${item.machineId}',
-            style: const TextStyle(
-              fontSize: 11,
-              color: Colors.black38,
-            ),
+            style: const TextStyle(fontSize: 11, color: Colors.black38),
           ),
 
           const SizedBox(height: AppPadding.p16),
@@ -138,7 +135,7 @@ class ServiceScheduleCard extends StatelessWidget {
                   size: 14,
                   color: Color(0xFF003366),
                 ),
-              )
+              ),
             ],
           ),
         ],

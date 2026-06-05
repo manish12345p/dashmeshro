@@ -36,19 +36,21 @@ class _ScheduleItemCardState extends State<ScheduleItemCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
         color: isChecked ? Colors.grey.shade50 : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),
-        boxShadow: isChecked ? [] : [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: isChecked
+            ? []
+            : [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
       clipBehavior: Clip.antiAlias,
       child: IntrinsicHeight(
@@ -60,7 +62,7 @@ class _ScheduleItemCardState extends State<ScheduleItemCard> {
               width: 4,
               color: isChecked ? Colors.grey : widget.accentColor,
             ),
-            
+
             // Checkbox
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
@@ -79,7 +81,10 @@ class _ScheduleItemCardState extends State<ScheduleItemCard> {
 
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 8.0,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -97,7 +102,9 @@ class _ScheduleItemCardState extends State<ScheduleItemCard> {
                             widget.title,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              decoration: isChecked ? TextDecoration.lineThrough : null,
+                              decoration: isChecked
+                                  ? TextDecoration.lineThrough
+                                  : null,
                               color: isChecked ? Colors.grey : null,
                             ),
                           ),
@@ -105,7 +112,10 @@ class _ScheduleItemCardState extends State<ScheduleItemCard> {
                           Text(
                             widget.subtitle,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: isChecked ? Colors.grey : theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                              color: isChecked
+                                  ? Colors.grey
+                                  : theme.textTheme.bodySmall?.color
+                                        ?.withOpacity(0.7),
                             ),
                           ),
                         ],
@@ -141,20 +151,30 @@ class _ScheduleItemCardState extends State<ScheduleItemCard> {
                               IconButton(
                                 icon: Icon(
                                   Icons.chat_bubble_outline,
-                                  color: isChecked ? Colors.grey : Colors.green.shade600,
+                                  color: isChecked
+                                      ? Colors.grey
+                                      : Colors.green.shade600,
                                   size: 20,
                                 ),
-                                onPressed: isChecked ? null : widget.onWhatsAppPressed,
+                                onPressed: isChecked
+                                    ? null
+                                    : widget.onWhatsAppPressed,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                               ),
                             if (widget.hasView)
                               TextButton(
-                                onPressed: isChecked ? null : widget.onViewPressed,
+                                onPressed: isChecked
+                                    ? null
+                                    : widget.onViewPressed,
                                 style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
                                   minimumSize: Size.zero,
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 child: Text(
                                   'View',

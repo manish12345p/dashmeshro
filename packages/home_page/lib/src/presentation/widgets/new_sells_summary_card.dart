@@ -4,15 +4,12 @@ import 'package:core_ui/core_ui.dart';
 class NewSellsSummaryCard extends StatelessWidget {
   final int todaySells;
 
-  const NewSellsSummaryCard({
-    super.key,
-    required this.todaySells,
-  });
+  const NewSellsSummaryCard({super.key, required this.todaySells});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(24),
@@ -33,10 +30,7 @@ class NewSellsSummaryCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Icon(
-                Icons.account_balance_wallet_outlined,
-                color: Colors.white,
-              ),
+              Icon(Icons.account_balance_wallet_outlined, color: Colors.white),
             ],
           ),
           SizedBox(height: 24),

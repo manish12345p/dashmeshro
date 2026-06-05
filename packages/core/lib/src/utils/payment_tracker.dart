@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PaymentTracker {
-  static Future<void> recordPayment(String customerId, double amount, String source, String referenceId) async {
+  static Future<void> recordPayment(String customerId, double amount,
+      String source, String referenceId) async {
     if (amount <= 0) return;
     try {
       await FirebaseFirestore.instance.collection('payments').add({

@@ -18,7 +18,7 @@ class ComplaintListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: AppPadding.vertical8,
       child: Row(

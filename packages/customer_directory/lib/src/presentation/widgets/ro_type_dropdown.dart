@@ -92,10 +92,7 @@ class _RoTypeDropdownWidgetState extends State<RoTypeDropdownWidget> {
       borderRadius: BorderRadius.circular(20),
       hint: Text('Select RO Type'),
       items: _roTypes.map((type) {
-        return DropdownMenuItem<String>(
-          value: type,
-          child: Text(type),
-        );
+        return DropdownMenuItem<String>(value: type, child: Text(type));
       }).toList(),
       onChanged: (val) {
         if (val != null) {
@@ -107,8 +104,14 @@ class _RoTypeDropdownWidgetState extends State<RoTypeDropdownWidget> {
       },
       decoration: InputDecoration(
         labelText: 'RO Type',
-        labelStyle: TextStyle(color: context.colors.textSecondary, fontSize: 14),
-        prefixIcon: Icon(Icons.water_drop_rounded, color: context.colors.primary),
+        labelStyle: TextStyle(
+          color: context.colors.textSecondary,
+          fontSize: 14,
+        ),
+        prefixIcon: Icon(
+          Icons.water_drop_rounded,
+          color: context.colors.primary,
+        ),
         filled: true,
         fillColor: context.colors.surface,
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),

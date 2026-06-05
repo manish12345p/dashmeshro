@@ -11,7 +11,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dashmeshro/main.dart';
 
 void main() {
-  testWidgets('App should render without crashing', (WidgetTester tester) async {
+  testWidgets('App should render without crashing', (
+    WidgetTester tester,
+  ) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
     await tester.pumpAndSettle();

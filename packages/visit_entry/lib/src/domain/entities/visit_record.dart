@@ -69,7 +69,8 @@ class VisitRecord with _$VisitRecord {
     if (totalAmount > 0) map['totalAmount'] = totalAmount;
     if (equipmentsUsed.isNotEmpty) map['equipmentsUsed'] = equipmentsUsed;
     if (serviceDuration.isNotEmpty) map['serviceDuration'] = serviceDuration;
-    if (guaranteeDuration.isNotEmpty) map['guaranteeDuration'] = guaranteeDuration;
+    if (guaranteeDuration.isNotEmpty)
+      map['guaranteeDuration'] = guaranteeDuration;
     if (roType != null && roType!.isNotEmpty) map['roType'] = roType;
     map['isDeleted'] = isDeleted;
     if (deletedAt != null) map['deletedAt'] = deletedAt;

@@ -50,9 +50,9 @@ class EmptyStateWidget extends StatelessWidget {
             Text(
               title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: context.colors.textPrimary,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: context.colors.textPrimary,
+              ),
             ),
             SizedBox(height: 8),
             Text(
@@ -70,7 +70,7 @@ class EmptyStateWidget extends StatelessWidget {
                 ),
                 child: Text(actionLabel!),
               ),
-            ]
+            ],
           ],
         ),
       ),
@@ -96,14 +96,18 @@ class ErrorStateWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline_rounded, size: 64, color: context.colors.error),
+            Icon(
+              Icons.error_outline_rounded,
+              size: 64,
+              color: context.colors.error,
+            ),
             SizedBox(height: 16),
             Text(
               'Oops! Something went wrong.',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: context.colors.textPrimary,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: context.colors.textPrimary,
+              ),
             ),
             SizedBox(height: 8),
             Text(

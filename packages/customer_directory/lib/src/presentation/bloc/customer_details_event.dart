@@ -18,4 +18,3 @@ class LoadCustomerDetailsError extends CustomerDetailsEvent {
   final String error;
   const LoadCustomerDetailsError(this.error);
 }
-

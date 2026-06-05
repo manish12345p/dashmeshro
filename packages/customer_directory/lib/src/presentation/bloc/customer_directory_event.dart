@@ -22,4 +22,3 @@ class LoadCustomersError extends CustomerDirectoryEvent {
   final String error;
   const LoadCustomersError(this.error);
 }
-

@@ -5,10 +5,7 @@ import 'package:core_ui/core_ui.dart';
 class PaymentHealthCard extends StatelessWidget {
   final EmiDashboardData data;
 
-  const PaymentHealthCard({
-    super.key,
-    required this.data,
-  });
+  const PaymentHealthCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,9 @@ class PaymentHealthCard extends StatelessWidget {
                     value: data.onTimePaymentPercentage / 100,
                     strokeWidth: 12,
                     backgroundColor: Colors.white.withValues(alpha: 0.5),
-                    valueColor: AlwaysStoppedAnimation<Color>(context.colors.primaryDark),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      context.colors.primaryDark,
+                    ),
                   ),
                   Center(
                     child: Column(
@@ -72,31 +71,50 @@ class PaymentHealthCard extends StatelessWidget {
               ),
             ),
           ),
-          _buildStatRow(context, 'Early Payments', data.earlyPayments.toString(), false),
+          _buildStatRow(
+            context,
+            'Early Payments',
+            data.earlyPayments.toString(),
+            false,
+          ),
           SizedBox(height: 12),
-          _buildStatRow(context, 'Grace Period', data.gracePeriod.toString().padLeft(2, '0'), false),
+          _buildStatRow(
+            context,
+            'Grace Period',
+            data.gracePeriod.toString().padLeft(2, '0'),
+            false,
+          ),
           SizedBox(height: 12),
-          _buildStatRow(context, 'Defaulters', data.defaulters.toString().padLeft(2, '0'), true),
+          _buildStatRow(
+            context,
+            'Defaulters',
+            data.defaulters.toString().padLeft(2, '0'),
+            true,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStatRow(BuildContext context, String label, String value, bool isNegative) {
+  Widget _buildStatRow(
+    BuildContext context,
+    String label,
+    String value,
+    bool isNegative,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: TextStyle(
-            color: context.colors.textPrimary,
-            fontSize: 12,
-          ),
+          style: TextStyle(color: context.colors.textPrimary, fontSize: 12),
         ),
         Text(
           value,
           style: TextStyle(
-            color: isNegative ? context.colors.error : context.colors.textPrimary,
+            color: isNegative
+                ? context.colors.error
+                : context.colors.textPrimary,
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),

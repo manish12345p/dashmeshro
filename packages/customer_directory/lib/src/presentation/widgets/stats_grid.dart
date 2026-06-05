@@ -21,7 +21,13 @@ class StatsGrid extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(BuildContext context, String label, String value, Color bg, Color textClr) {
+  Widget _buildStatCard(
+    BuildContext context,
+    String label,
+    String value,
+    Color bg,
+    Color textClr,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: bg,

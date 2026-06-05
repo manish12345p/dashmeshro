@@ -85,6 +85,8 @@ _$ActiveInstallmentImpl _$$ActiveInstallmentImplFromJson(
   dueDate: json['dueDate'] as String,
   status: json['status'] as String,
   avatarUrl: json['avatarUrl'] as String,
+  isRent: json['isRent'] as bool? ?? false,
+  rentDueDay: (json['rentDueDay'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$$ActiveInstallmentImplToJson(
@@ -103,4 +105,6 @@ Map<String, dynamic> _$$ActiveInstallmentImplToJson(
   'dueDate': instance.dueDate,
   'status': instance.status,
   'avatarUrl': instance.avatarUrl,
+  'isRent': instance.isRent,
+  'rentDueDay': instance.rentDueDay,
 };

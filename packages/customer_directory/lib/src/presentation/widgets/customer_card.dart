@@ -36,9 +36,7 @@ class CustomerCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colors.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border(
-          left: BorderSide(color: accentColor, width: 5),
-        ),
+        border: Border(left: BorderSide(color: accentColor, width: 5)),
         boxShadow: [
           BoxShadow(
             color: context.colors.textSecondary.withOpacity(0.03),
@@ -92,15 +90,23 @@ class CustomerCard extends StatelessWidget {
             if (customer.number.isNotEmpty)
               Row(
                 children: [
-                  Icon(Icons.phone, size: 16, color: context.colors.textSecondary),
+                  Icon(
+                    Icons.phone,
+                    size: 16,
+                    color: context.colors.textSecondary,
+                  ),
                   SizedBox(width: 8),
                   Text(
                     customer.number,
-                    style: TextStyle(fontSize: 14, color: context.colors.textSecondary, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
-            
+
             if (customer.number.isNotEmpty && customer.address.isNotEmpty)
               SizedBox(height: 8),
 
@@ -109,17 +115,25 @@ class CustomerCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.location_on, size: 16, color: context.colors.textSecondary),
+                  Icon(
+                    Icons.location_on,
+                    size: 16,
+                    color: context.colors.textSecondary,
+                  ),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       customer.address,
-                      style: TextStyle(fontSize: 13, color: context.colors.textSecondary, height: 1.4),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: context.colors.textSecondary,
+                        height: 1.4,
+                      ),
                     ),
                   ),
                 ],
               ),
-            
+
             SizedBox(height: 16),
 
             // View Details Button Row
@@ -141,7 +155,10 @@ class CustomerCard extends StatelessWidget {
                     ),
                     child: Text(
                       'View Details',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

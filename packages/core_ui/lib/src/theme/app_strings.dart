@@ -22,7 +22,8 @@ class AppStrings {
 
   // Home Page - Pending Complaints Section
   static const String pendingComplaints = 'Pending Complaints';
-  static const String pendingComplaintsSubtitle = 'Monitoring ongoing maintenance requests';
+  static const String pendingComplaintsSubtitle =
+      'Monitoring ongoing maintenance requests';
   static const String filterAll = 'All';
   static const String filterUrgent = 'Urgent';
   static const String filterHigh = 'High';
@@ -39,7 +40,7 @@ class AppStrings {
   static const String thisWeek = 'This Week';
   static const String units = 'Units';
   static const String projectedGrowth = 'Projected Growth';
-  
+
   // Home Page - Banner
   static const String bannerText = 'Advanced Service\nMonitoring Active';
 

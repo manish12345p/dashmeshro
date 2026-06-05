@@ -50,7 +50,8 @@ class EmiPageView extends StatelessWidget {
           bottom: false,
           child: BlocBuilder<EmiBloc, EmiState>(
             builder: (context, state) {
-              if (state.status == EmiStatus.initial || state.status == EmiStatus.loading) {
+              if (state.status == EmiStatus.initial ||
+                  state.status == EmiStatus.loading) {
                 return const Center(child: CircularProgressIndicator());
               }
 
@@ -65,10 +66,13 @@ class EmiPageView extends StatelessWidget {
 
               final today = DateTime.now();
               // Filter active installments based on selected filter
-              final filteredInstallments = data.activeInstallments.where((inst) {
+              final filteredInstallments = data.activeInstallments.where((
+                inst,
+              ) {
                 bool isRelevantThisMonth = false;
-                
-                if (inst.status == 'overdue' || inst.status == 'paid_this_month') {
+
+                if (inst.status == 'overdue' ||
+                    inst.status == 'paid_this_month') {
                   isRelevantThisMonth = true;
                 } else {
                   try {
@@ -81,7 +85,7 @@ class EmiPageView extends StatelessWidget {
                       }
                     }
                   } catch (_) {}
-                  
+
                   try {
                     if (inst.lastPaymentDateStr.isNotEmpty) {
                       final pd = DateTime.parse(inst.lastPaymentDateStr);
@@ -96,8 +100,11 @@ class EmiPageView extends StatelessWidget {
                 if (!isRelevantThisMonth) return false;
 
                 if (state.selectedFilter == 'All') return true;
-                if (state.selectedFilter == 'Overdue') return inst.status == 'overdue';
-                if (state.selectedFilter == 'Pending') return inst.status == 'pending';
+                if (state.selectedFilter == 'Rent') return inst.isRent;
+                if (state.selectedFilter == 'Overdue')
+                  return inst.status == 'overdue';
+                if (state.selectedFilter == 'Pending')
+                  return inst.status == 'pending';
                 if (state.selectedFilter == 'Paid') {
                   if (inst.status == 'paid_this_month') return true;
                   try {
@@ -116,22 +123,23 @@ class EmiPageView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const EmiHeader(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          'Total Paid This Month: ₹',
-                          style: TextStyle(
-                            color: context.colors.textPrimary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Total Paid This Month: ₹',
+                        style: TextStyle(
+                          color: context.colors.textPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
                     const SizedBox(height: 24),
                     PendingMonthCard(
                       pendingAmount: data.pendingThisMonth,
                       clientsCount: data.pendingClientsCount,
-                      collectionPercentage: data.monthlyTargetCollectionPercentage,
+                      collectionPercentage:
+                          data.monthlyTargetCollectionPercentage,
                     ),
                     const SizedBox(height: 16),
                     Padding(
@@ -181,14 +189,17 @@ class EmiPageView extends StatelessWidget {
                           if (i.dueDate.isNotEmpty) {
                             final dd = DateTime.parse(i.dueDate);
                             final today = DateTime.now();
-                            return dd.month == today.month && dd.year == today.year;
+                            return dd.month == today.month &&
+                                dd.year == today.year;
                           }
                         } catch (_) {}
                         return false;
                       }).toList(),
                       color: Colors.orange,
                     ),
-                    const SizedBox(height: 120), // Extra space to scroll past the bottom navbar
+                    const SizedBox(
+                      height: 120,
+                    ), // Extra space to scroll past the bottom navbar
                   ],
                 ),
               );
@@ -206,8 +217,10 @@ class EmiPageView extends StatelessWidget {
     required Color color,
   }) {
     final seen = <String>{};
-    final uniqueInstallments = installments.where((inst) => seen.add(inst.customerName)).toList();
-    
+    final uniqueInstallments = installments
+        .where((inst) => seen.add(inst.customerName))
+        .toList();
+
     if (uniqueInstallments.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -223,7 +236,13 @@ class EmiPageView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text('(None)', style: TextStyle(color: context.colors.textTertiary, fontSize: 14)),
+            Text(
+              '(None)',
+              style: TextStyle(
+                color: context.colors.textTertiary,
+                fontSize: 14,
+              ),
+            ),
           ],
         ),
       );
@@ -255,7 +274,7 @@ class EmiPageView extends StatelessWidget {
                 final index = entry.key;
                 final installment = entry.value;
                 final isLast = index == displayInstallments.length - 1;
-                
+
                 return InkWell(
                   onTap: () {
                     if (installment.customerId.isNotEmpty) {
@@ -268,13 +287,22 @@ class EmiPageView extends StatelessWidget {
                       color: color,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      decoration: installment.customerId.isNotEmpty ? TextDecoration.underline : TextDecoration.none,
+                      decoration: installment.customerId.isNotEmpty
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
                     ),
                   ),
                 );
               }),
               if (hasMore)
-                Text('.......', style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold)),
+                Text(
+                  '.......',
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
             ],
           ),
         ],

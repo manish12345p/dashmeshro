@@ -13,17 +13,13 @@ class ActionButtonsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-
         // Commit Entry - full-width gradient button
         SizedBox(
           width: double.infinity,
           child: DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  context.colors.primaryDark,
-                  context.colors.primary,
-                ],
+                colors: [context.colors.primaryDark, context.colors.primary],
               ),
               borderRadius: BorderRadius.circular(30),
             ),

@@ -21,7 +21,10 @@ class ReusableDialogs {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(false),
-              child: Text(cancelText, style: TextStyle(color: colors.textSecondary)),
+              child: Text(
+                cancelText,
+                style: TextStyle(color: colors.textSecondary),
+              ),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(ctx).pop(true),

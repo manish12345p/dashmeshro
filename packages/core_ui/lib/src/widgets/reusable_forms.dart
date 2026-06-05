@@ -64,37 +64,22 @@ class CustomTextField extends StatelessWidget {
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: colors.surfaceSecondary,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: colors.border,
-                width: 1.2,
-              ),
+              borderSide: BorderSide(color: colors.border, width: 1.2),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: colors.primary,
-                width: 1.6,
-              ),
+              borderSide: BorderSide(color: colors.primary, width: 1.6),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: colors.error,
-                width: 1.2,
-              ),
+              borderSide: BorderSide(color: colors.error, width: 1.2),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: colors.error,
-                width: 1.6,
-              ),
+              borderSide: BorderSide(color: colors.error, width: 1.6),
             ),
           ),
         ),
@@ -124,7 +109,10 @@ class AmountField extends StatelessWidget {
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       prefixIcon: Padding(
         padding: EdgeInsets.all(14.0),
-        child: Text('₹', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        child: Text(
+          '₹',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
       ),
       validator: validator,
     );

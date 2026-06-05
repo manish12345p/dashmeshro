@@ -7,10 +7,7 @@ import '../../domain/entities/home_data.dart';
 class VisitScheduleCard extends StatefulWidget {
   final NotificationItem item;
 
-  const VisitScheduleCard({
-    super.key,
-    required this.item,
-  });
+  const VisitScheduleCard({super.key, required this.item});
 
   @override
   State<VisitScheduleCard> createState() => _VisitScheduleCardState();
@@ -20,7 +17,6 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
   bool isDismissed = false;
 
   @override
-  
   @override
   void didUpdateWidget(covariant VisitScheduleCard oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -35,7 +31,6 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
     isDismissed = widget.item.isDismissed;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -43,9 +38,7 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
       margin: const EdgeInsets.only(bottom: 0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: Colors.grey.shade300,
-        ),
+        side: BorderSide(color: Colors.grey.shade300),
       ),
       color: isDismissed ? Colors.grey.shade200 : Colors.grey.shade50,
       child: Padding(
@@ -66,7 +59,12 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                   });
                   // Update Firestore
                   try {
-                    FirebaseFirestore.instance.collection('Customer').doc(widget.item.customerId).collection('services').doc(widget.item.serviceId).update({'isDismissed': val ?? false});
+                    FirebaseFirestore.instance
+                        .collection('Customer')
+                        .doc(widget.item.customerId)
+                        .collection('services')
+                        .doc(widget.item.serviceId)
+                        .update({'isDismissed': val ?? false});
                   } catch (_) {}
                 },
               ),
@@ -82,19 +80,34 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      decoration: isDismissed ? TextDecoration.lineThrough : null,
-                      color: isDismissed ? Colors.grey.shade500 : Colors.black87,
+                      decoration: isDismissed
+                          ? TextDecoration.lineThrough
+                          : null,
+                      color: isDismissed
+                          ? Colors.grey.shade500
+                          : Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.build_circle_outlined, size: 14, color: isDismissed ? Colors.grey.shade400 : Colors.grey.shade600),
+                      Icon(
+                        Icons.build_circle_outlined,
+                        size: 14,
+                        color: isDismissed
+                            ? Colors.grey.shade400
+                            : Colors.grey.shade600,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           widget.item.serviceType,
-                          style: TextStyle(fontSize: 12, color: isDismissed ? Colors.grey.shade400 : Colors.grey.shade700),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDismissed
+                                ? Colors.grey.shade400
+                                : Colors.grey.shade700,
+                          ),
                         ),
                       ),
                     ],
@@ -103,12 +116,23 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                     const SizedBox(height: 3),
                     Row(
                       children: [
-                        Icon(Icons.location_on_outlined, size: 14, color: isDismissed ? Colors.grey.shade400 : Colors.grey.shade600),
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 14,
+                          color: isDismissed
+                              ? Colors.grey.shade400
+                              : Colors.grey.shade600,
+                        ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             widget.item.address,
-                            style: TextStyle(fontSize: 12, color: isDismissed ? Colors.grey.shade400 : Colors.grey.shade600),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDismissed
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -120,12 +144,23 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                     const SizedBox(height: 3),
                     Row(
                       children: [
-                        Icon(Icons.phone_outlined, size: 14, color: isDismissed ? Colors.grey.shade400 : Colors.grey.shade600),
+                        Icon(
+                          Icons.phone_outlined,
+                          size: 14,
+                          color: isDismissed
+                              ? Colors.grey.shade400
+                              : Colors.grey.shade600,
+                        ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             widget.item.phone,
-                            style: TextStyle(fontSize: 12, color: isDismissed ? Colors.grey.shade400 : Colors.grey.shade600),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDismissed
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -141,27 +176,48 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
               children: [
                 if (widget.item.phone.isNotEmpty)
                   IconButton(
-                    icon: Icon(Icons.chat_bubble_outline, color: isDismissed ? Colors.grey.shade400 : Colors.green.shade600, size: 20),
-                    onPressed: isDismissed ? null : () async {
-                      final rawNumber = widget.item.phone.split(',').first.trim();
-                      final cleanNum = rawNumber.replaceAll(RegExp(r'[^0-9]'), '');
-                      final finalNum = cleanNum.length == 10 ? '91$cleanNum' : cleanNum;
-                      final url = Uri.parse('https://wa.me/$finalNum');
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(url);
-                      }
-                    },
+                    icon: Icon(
+                      Icons.chat_bubble_outline,
+                      color: isDismissed
+                          ? Colors.grey.shade400
+                          : Colors.green.shade600,
+                      size: 20,
+                    ),
+                    onPressed: isDismissed
+                        ? null
+                        : () async {
+                            final rawNumber = widget.item.phone
+                                .split(',')
+                                .first
+                                .trim();
+                            final cleanNum = rawNumber.replaceAll(
+                              RegExp(r'[^0-9]'),
+                              '',
+                            );
+                            final finalNum = cleanNum.length == 10
+                                ? '91$cleanNum'
+                                : cleanNum;
+                            final url = Uri.parse('https://wa.me/$finalNum');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            }
+                          },
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
                 TextButton(
-                  onPressed: isDismissed ? null : () {
-                    if (widget.item.customerId.isNotEmpty) {
-                      context.go('/customers/${widget.item.customerId}');
-                    }
-                  },
+                  onPressed: isDismissed
+                      ? null
+                      : () {
+                          if (widget.item.customerId.isNotEmpty) {
+                            context.go('/customers/${widget.item.customerId}');
+                          }
+                        },
                   style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -170,7 +226,9 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: isDismissed ? Colors.grey.shade400 : Colors.blue.shade600,
+                      color: isDismissed
+                          ? Colors.grey.shade400
+                          : Colors.blue.shade600,
                     ),
                   ),
                 ),

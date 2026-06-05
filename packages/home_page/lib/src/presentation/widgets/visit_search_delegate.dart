@@ -69,13 +69,17 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
     );
   }
 
-  Future<List<DocumentSnapshot>> _filterWithServices(List<QueryDocumentSnapshot> docs) async {
+  Future<List<DocumentSnapshot>> _filterWithServices(
+    List<QueryDocumentSnapshot> docs,
+  ) async {
     // Build services cache if not exists
     if (_servicesCache == null) {
       _servicesCache = {};
       for (var doc in docs) {
         final servicesSnap = await doc.reference.collection('services').get();
-        _servicesCache![doc.id] = servicesSnap.docs.map((s) => s.data()).toList();
+        _servicesCache![doc.id] = servicesSnap.docs
+            .map((s) => s.data())
+            .toList();
       }
     }
 
@@ -86,24 +90,42 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
       // Search customer-level fields: name, address, phone, customer_type
       final name = (data['name'] as String? ?? '').toLowerCase();
       final address = (data['address'] as String? ?? '').toLowerCase();
-      final phone = (data['number'] as String? ?? data['phone'] as String? ?? '').toLowerCase();
-      final customerType = (data['customer_type'] as String? ?? '').toLowerCase();
+      final phone =
+          (data['number'] as String? ?? data['phone'] as String? ?? '')
+              .toLowerCase();
+      final customerType = (data['customer_type'] as String? ?? '')
+          .toLowerCase();
 
-      if (name.contains(q) || address.contains(q) || phone.contains(q) || customerType.contains(q)) {
+      if (name.contains(q) ||
+          address.contains(q) ||
+          phone.contains(q) ||
+          customerType.contains(q)) {
         return true;
       }
 
       // Search service-level fields (except amount, duration, equipment)
       final services = _servicesCache?[doc.id] ?? [];
       for (var svc in services) {
-        final serviceType = (svc['serviceType'] as String? ?? svc['service_type'] as String? ?? '').toLowerCase();
+        final serviceType =
+            (svc['serviceType'] as String? ??
+                    svc['service_type'] as String? ??
+                    '')
+                .toLowerCase();
         final status = (svc['status'] as String? ?? '').toLowerCase();
         final remarks = (svc['remarks'] as String? ?? '').toLowerCase();
-        final serviceDate = (svc['serviceDate'] as String? ?? svc['service_date'] as String? ?? '').toLowerCase();
-        final notifDate = (svc['notificationDate'] as String? ?? '').toLowerCase();
+        final serviceDate =
+            (svc['serviceDate'] as String? ??
+                    svc['service_date'] as String? ??
+                    '')
+                .toLowerCase();
+        final notifDate = (svc['notificationDate'] as String? ?? '')
+            .toLowerCase();
 
-        if (serviceType.contains(q) || status.contains(q) || remarks.contains(q) ||
-            serviceDate.contains(q) || notifDate.contains(q)) {
+        if (serviceType.contains(q) ||
+            status.contains(q) ||
+            remarks.contains(q) ||
+            serviceDate.contains(q) ||
+            notifDate.contains(q)) {
           return true;
         }
       }
@@ -112,7 +134,10 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
     }).toList();
   }
 
-  Widget _buildCustomerList(BuildContext context, List<DocumentSnapshot> filtered) {
+  Widget _buildCustomerList(
+    BuildContext context,
+    List<DocumentSnapshot> filtered,
+  ) {
     if (filtered.isEmpty) {
       return Center(
         child: Column(
@@ -120,7 +145,10 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
           children: [
             Icon(Icons.search_off, size: 48, color: Colors.grey.shade300),
             const SizedBox(height: 8),
-            Text('No customers found.', style: TextStyle(color: Colors.grey.shade500)),
+            Text(
+              'No customers found.',
+              style: TextStyle(color: Colors.grey.shade500),
+            ),
           ],
         ),
       );
@@ -133,7 +161,8 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
         final doc = filtered[index];
         final data = doc.data() as Map<String, dynamic>;
         final name = data['name'] as String? ?? 'Unknown';
-        final phone = data['number'] as String? ?? data['phone'] as String? ?? 'N/A';
+        final phone =
+            data['number'] as String? ?? data['phone'] as String? ?? 'N/A';
         final address = data['address'] as String? ?? 'No address';
         final customerType = data['customer_type'] as String? ?? '';
 
@@ -149,7 +178,10 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
             onTap: () {
               context.push('/customers/${doc.id}');
             },
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
             title: Text(
               name,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -160,20 +192,37 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.phone_outlined, size: 14, color: Colors.grey),
+                    const Icon(
+                      Icons.phone_outlined,
+                      size: 14,
+                      color: Colors.grey,
+                    ),
                     const SizedBox(width: 4),
-                    Text(phone, style: const TextStyle(color: Colors.black87, fontSize: 13)),
+                    Text(
+                      phone,
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 13,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+                    const Icon(
+                      Icons.location_on_outlined,
+                      size: 14,
+                      color: Colors.grey,
+                    ),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         address,
-                        style: const TextStyle(color: Colors.black87, fontSize: 13),
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 13,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -184,9 +233,19 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.person_outline, size: 14, color: Colors.grey),
+                      const Icon(
+                        Icons.person_outline,
+                        size: 14,
+                        color: Colors.grey,
+                      ),
                       const SizedBox(width: 4),
-                      Text(customerType, style: const TextStyle(color: Colors.black54, fontSize: 12)),
+                      Text(
+                        customerType,
+                        style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ],

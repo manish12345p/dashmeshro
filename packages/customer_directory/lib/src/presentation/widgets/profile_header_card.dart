@@ -69,7 +69,10 @@ class ProfileHeaderCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.add_circle_outline, color: context.colors.primary),
+                  icon: Icon(
+                    Icons.add_circle_outline,
+                    color: context.colors.primary,
+                  ),
                   tooltip: 'Add another number',
                   onPressed: () {
                     final controller = TextEditingController();
@@ -94,8 +97,13 @@ class ProfileHeaderCard extends StatelessWidget {
                             onPressed: () {
                               final newNumber = controller.text.trim();
                               if (newNumber.isNotEmpty) {
-                                final updatedNumber = customer.number.isEmpty ? newNumber : '${customer.number}, $newNumber';
-                                FirebaseFirestore.instance.collection('Customer').doc(customer.id).update({'number': updatedNumber});
+                                final updatedNumber = customer.number.isEmpty
+                                    ? newNumber
+                                    : '${customer.number}, $newNumber';
+                                FirebaseFirestore.instance
+                                    .collection('Customer')
+                                    .doc(customer.id)
+                                    .update({'number': updatedNumber});
                                 Navigator.pop(dialogContext);
                               }
                             },
@@ -110,11 +118,19 @@ class ProfileHeaderCard extends StatelessWidget {
                   icon: Icon(Icons.chat, color: context.colors.success),
                   onPressed: () async {
                     final rawNumber = customer.number.split(',').first.trim();
-                    final cleanNum = rawNumber.replaceAll(RegExp(r'[^0-9]'), '');
-                    final finalNum = cleanNum.length == 10 ? '91$cleanNum' : cleanNum;
+                    final cleanNum = rawNumber.replaceAll(
+                      RegExp(r'[^0-9]'),
+                      '',
+                    );
+                    final finalNum = cleanNum.length == 10
+                        ? '91$cleanNum'
+                        : cleanNum;
                     final url = Uri.parse('https://wa.me/$finalNum');
                     try {
-                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                      await launchUrl(
+                        url,
+                        mode: LaunchMode.externalApplication,
+                      );
                     } catch (e) {
                       debugPrint('Could not launch WhatsApp: $e');
                     }
@@ -123,12 +139,26 @@ class ProfileHeaderCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12),
-            _buildContactRow(context, Icons.location_on_outlined, customer.address, isMultiline: true),
+            _buildContactRow(
+              context,
+              Icons.location_on_outlined,
+              customer.address,
+              isMultiline: true,
+            ),
             SizedBox(height: 12),
-            _buildContactRow(context, Icons.water_drop_outlined, customer.roType.isNotEmpty ? customer.roType : 'N/A'),
+            _buildContactRow(
+              context,
+              Icons.water_drop_outlined,
+              customer.roType.isNotEmpty ? customer.roType : 'N/A',
+            ),
             if (customer.note.isNotEmpty) ...[
               SizedBox(height: 12),
-              _buildContactRow(context, Icons.note_alt_outlined, customer.note, isMultiline: true),
+              _buildContactRow(
+                context,
+                Icons.note_alt_outlined,
+                customer.note,
+                isMultiline: true,
+              ),
             ],
           ],
         ),
@@ -136,9 +166,16 @@ class ProfileHeaderCard extends StatelessWidget {
     );
   }
 
-  Widget _buildContactRow(BuildContext context, IconData icon, String text, {bool isMultiline = false}) {
+  Widget _buildContactRow(
+    BuildContext context,
+    IconData icon,
+    String text, {
+    bool isMultiline = false,
+  }) {
     return Row(
-      crossAxisAlignment: isMultiline ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: isMultiline
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.center,
       children: [
         Icon(icon, size: 18, color: context.colors.primaryDark),
         SizedBox(width: 12),

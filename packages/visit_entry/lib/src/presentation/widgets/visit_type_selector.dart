@@ -30,7 +30,8 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
     'Alkaline',
     'Alkaline Set',
     'Set SMPS',
-    'Not Applicable'
+    'Rent',
+    'Not Applicable',
   ];
 
   @override
@@ -38,9 +39,7 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
     return Card(
       elevation: 2,
       shadowColor: context.colors.textSecondary.withValues(alpha: 0.08),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: context.colors.surface,
       child: Padding(
         padding: EdgeInsets.all(20),
@@ -87,10 +86,12 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
 
   Widget _buildCustomerTypeGrid() {
     return BlocBuilder<VisitEntryBloc, VisitEntryState>(
-      buildWhen: (previous, current) => previous.serviceType != current.serviceType,
+      buildWhen: (previous, current) =>
+          previous.serviceType != current.serviceType,
       builder: (context, state) {
         String? selectedValue;
-        if (state.serviceType.isNotEmpty && _serviceTypes.contains(state.serviceType)) {
+        if (state.serviceType.isNotEmpty &&
+            _serviceTypes.contains(state.serviceType)) {
           selectedValue = state.serviceType;
         }
 
@@ -107,7 +108,10 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
               hint: Text('Select Service Type'),
               value: selectedValue,
               borderRadius: BorderRadius.circular(20),
-              icon: Icon(Icons.arrow_drop_down_rounded, color: context.colors.primary),
+              icon: Icon(
+                Icons.arrow_drop_down_rounded,
+                color: context.colors.primary,
+              ),
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -115,10 +119,14 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
               ),
               onChanged: (String? newValue) {
                 if (newValue != null) {
-                  context.read<VisitEntryBloc>().add(SelectServiceType(newValue));
+                  context.read<VisitEntryBloc>().add(
+                    SelectServiceType(newValue),
+                  );
                 }
               },
-              items: _serviceTypes.map<DropdownMenuItem<String>>((String value) {
+              items: _serviceTypes.map<DropdownMenuItem<String>>((
+                String value,
+              ) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),

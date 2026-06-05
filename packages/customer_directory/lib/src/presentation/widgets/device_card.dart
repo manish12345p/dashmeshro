@@ -69,7 +69,11 @@ class DeviceCard extends StatelessWidget {
                 ),
                 Text(
                   '${(customer.deviceFilterHealth * 100).toInt()}%',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -93,14 +97,15 @@ class DeviceCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(fontSize: 11, color: Colors.white60),
-        ),
+        Text(label, style: TextStyle(fontSize: 11, color: Colors.white60)),
         SizedBox(height: 2),
         Text(
           value,
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
       ],
     );

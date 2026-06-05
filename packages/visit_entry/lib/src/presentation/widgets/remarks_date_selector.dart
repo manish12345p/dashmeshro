@@ -15,8 +15,6 @@ class RemarksDateSelectorWidget extends StatefulWidget {
 class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
   final TextEditingController _remarksController = TextEditingController();
 
-
-
   @override
   void dispose() {
     _remarksController.dispose();
@@ -25,8 +23,10 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
 
   Future<void> _pickDate(BuildContext context, String currentDate) async {
     final today = DateTime.now();
-    final initialDate = currentDate.isEmpty ? today : DateTime.tryParse(currentDate) ?? today;
-    
+    final initialDate = currentDate.isEmpty
+        ? today
+        : DateTime.tryParse(currentDate) ?? today;
+
     final picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -48,7 +48,9 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
     );
     if (picked != null) {
       if (context.mounted) {
-        context.read<VisitEntryBloc>().add(SetDate(picked.toIso8601String().split('T')[0]));
+        context.read<VisitEntryBloc>().add(
+          SetDate(picked.toIso8601String().split('T')[0]),
+        );
       }
     }
   }
@@ -112,7 +114,8 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
 
   Widget _buildDateField() {
     return BlocBuilder<VisitEntryBloc, VisitEntryState>(
-      buildWhen: (previous, current) => previous.serviceDate != current.serviceDate,
+      buildWhen: (previous, current) =>
+          previous.serviceDate != current.serviceDate,
       builder: (context, state) {
         final formatted = _formattedDate(state.effectiveServiceDate);
         return GestureDetector(
@@ -129,7 +132,9 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
                   size: 20,
                 ),
               ),
-              controller: TextEditingController(text: formatted == 'dd/mm/yyyy' ? '' : formatted),
+              controller: TextEditingController(
+                text: formatted == 'dd/mm/yyyy' ? '' : formatted,
+              ),
               style: TextStyle(fontSize: 14, color: context.colors.textPrimary),
             ),
           ),
@@ -174,46 +179,46 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            // ── header ──
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: context.colors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
+              // ── header ──
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: context.colors.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      Icons.edit_note_rounded,
+                      color: context.colors.primary,
+                      size: 22,
+                    ),
                   ),
-                  child: Icon(
-                    Icons.edit_note_rounded,
-                    color: context.colors.primary,
-                    size: 22,
+                  SizedBox(width: 12),
+                  Text(
+                    '3. Remarks & Date',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
-                ),
-                SizedBox(width: 12),
-                Text(
-                  '3. Remarks & Date',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
+                ],
+              ),
 
-            SizedBox(height: 24),
+              SizedBox(height: 24),
 
-            // ── service date ──
-            _buildSectionLabel('SERVICE DATE'),
-            _buildDateField(),
+              // ── service date ──
+              _buildSectionLabel('SERVICE DATE'),
+              _buildDateField(),
 
-            SizedBox(height: 20),
+              SizedBox(height: 20),
 
-            // ── internal remarks ──
-            _buildSectionLabel('INTERNAL REMARKS'),
-            _buildRemarksField(),
-          ],
-        ),
+              // ── internal remarks ──
+              _buildSectionLabel('INTERNAL REMARKS'),
+              _buildRemarksField(),
+            ],
+          ),
         ),
       ),
     );

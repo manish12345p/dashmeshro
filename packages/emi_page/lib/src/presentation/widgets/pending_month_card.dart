@@ -50,11 +50,7 @@ class PendingMonthCard extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              Icons.assignment_late,
-              color: Colors.white,
-              size: 20,
-            ),
+            child: Icon(Icons.assignment_late, color: Colors.white, size: 20),
           ),
           SizedBox(height: 16),
           Text(

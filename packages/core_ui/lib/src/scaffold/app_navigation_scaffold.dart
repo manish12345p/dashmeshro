@@ -6,10 +6,7 @@ import '../theme/app_colors.dart';
 class AppNavigationScaffold extends StatelessWidget {
   final Widget child;
 
-  const AppNavigationScaffold({
-    super.key,
-    required this.child,
-  });
+  const AppNavigationScaffold({super.key, required this.child});
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();

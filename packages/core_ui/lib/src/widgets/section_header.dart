@@ -15,10 +15,12 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: subtitle != null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: subtitle != null
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.center,
       children: [
         Expanded(
           child: Column(
@@ -38,7 +40,7 @@ class SectionHeader extends StatelessWidget {
                     color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
                   ),
                 ),
-              ]
+              ],
             ],
           ),
         ),

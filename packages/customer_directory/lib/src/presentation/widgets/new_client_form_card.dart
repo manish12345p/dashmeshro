@@ -50,15 +50,23 @@ class NewClientFormCard extends StatelessWidget {
             icon: Icons.phone_rounded,
             keyboardType: TextInputType.phone,
             maxLength: 50,
-            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9,\s]'))],
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9,\s]')),
+            ],
             suffixIcon: IconButton(
-              icon: Icon(Icons.add_circle_outline, color: context.colors.primary),
+              icon: Icon(
+                Icons.add_circle_outline,
+                color: context.colors.primary,
+              ),
               tooltip: 'Add another number',
               onPressed: () {
                 final currentText = phoneController.text;
-                if (currentText.isNotEmpty && !currentText.trim().endsWith(',')) {
+                if (currentText.isNotEmpty &&
+                    !currentText.trim().endsWith(',')) {
                   phoneController.text = '$currentText, ';
-                  phoneController.selection = TextSelection.fromPosition(TextPosition(offset: phoneController.text.length));
+                  phoneController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: phoneController.text.length),
+                  );
                 }
               },
             ),

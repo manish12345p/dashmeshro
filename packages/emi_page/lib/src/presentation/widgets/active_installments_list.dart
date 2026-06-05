@@ -28,27 +28,27 @@ class ActiveInstallmentsList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(
-                  'Active\nInstallments',
-                  style: TextStyle(
-                    color: context.colors.textPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    height: 1.1,
-                  ),
+              Text(
+                'Active Installments',
+                style: TextStyle(
+                  color: context.colors.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
                   color: context.colors.surface,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: context.colors.textSecondary.withValues(alpha: 0.02),
+                      color: context.colors.textSecondary.withValues(
+                        alpha: 0.02,
+                      ),
                       blurRadius: 5,
                       offset: const Offset(0, 2),
                     ),
@@ -61,6 +61,7 @@ class ActiveInstallmentsList extends StatelessWidget {
                       _buildFilterChip(context, 'All'),
                       _buildFilterChip(context, 'Pending'),
                       _buildFilterChip(context, 'Overdue'),
+                      _buildFilterChip(context, 'Rent'),
                       _buildFilterChip(context, 'Paid'),
                     ],
                   ),
@@ -75,7 +76,11 @@ class ActiveInstallmentsList extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    Icon(Icons.check_circle, color: context.colors.success, size: 48),
+                    Icon(
+                      Icons.check_circle,
+                      color: context.colors.success,
+                      size: 48,
+                    ),
                     SizedBox(height: 16),
                     Text(
                       'No overdue payments 🎉',
@@ -117,14 +122,16 @@ class ActiveInstallmentsList extends StatelessWidget {
                   BoxShadow(
                     color: context.colors.textSecondary.withValues(alpha: 0.05),
                     blurRadius: 4,
-                  )
+                  ),
                 ]
               : null,
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? context.colors.textPrimary : context.colors.textSecondary,
+            color: isSelected
+                ? context.colors.textPrimary
+                : context.colors.textSecondary,
             fontSize: 10,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

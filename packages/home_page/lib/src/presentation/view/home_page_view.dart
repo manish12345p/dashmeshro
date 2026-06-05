@@ -13,18 +13,18 @@ import '../widgets/visit_search_delegate.dart';
 import '../widgets/notification_dialog.dart';
 import '../widgets/expense_dialogs.dart';
 
-
 class HomePageView extends StatelessWidget {
   final HomeBloc? bloc;
-  
+
   const HomePageView({super.key, this.bloc});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: bloc ?? (HomeBloc(
-        getHomeDataUseCase: GetHomeDataUseCase(HomeRepository()),
-      )..add(const HomeEvent.loadHomeData())),
+      value:
+          bloc ??
+          (HomeBloc(getHomeDataUseCase: GetHomeDataUseCase(HomeRepository()))
+            ..add(const HomeEvent.loadHomeData())),
       child: const Scaffold(
         body: _HomeContent(),
         floatingActionButton: _ExpenseFab(),
@@ -81,16 +81,20 @@ class _HomeContent extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () => ViewExpensesDialog.show(context),
-                            child: Icon(Icons.waves, color: Theme.of(context).primaryColor),
+                            child: Icon(
+                              Icons.waves,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                           const SizedBox(width: AppPadding.p8),
                           Text(
                             AppStrings.appTitle,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 1.1,
-                              height: 1.1,
-                            ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1.1,
+                                  height: 1.1,
+                                ),
                           ),
                         ],
                       ),
@@ -120,7 +124,11 @@ class _HomeContent extends StatelessWidget {
                     overlineText: 'Total Visits',
                     valueText: '${data.totalServices}',
                     subtitleText: 'Overall visits',
-                    trailingIcon: const Icon(Icons.trending_up, color: Colors.green, size: 20),
+                    trailingIcon: const Icon(
+                      Icons.trending_up,
+                      color: Colors.green,
+                      size: 20,
+                    ),
                     trailingBackgroundColor: Colors.green.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p12),
@@ -128,7 +136,11 @@ class _HomeContent extends StatelessWidget {
                     overlineText: 'New RO',
                     valueText: '${data.newRoServices}',
                     subtitleText: 'Newly installed ROs',
-                    trailingIcon: const Icon(Icons.water_drop, color: Colors.blue, size: 20),
+                    trailingIcon: const Icon(
+                      Icons.water_drop,
+                      color: Colors.blue,
+                      size: 20,
+                    ),
                     trailingBackgroundColor: Colors.blue.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p12),
@@ -136,7 +148,11 @@ class _HomeContent extends StatelessWidget {
                     overlineText: 'Total AMC',
                     valueText: '${data.amcServices}',
                     subtitleText: 'AMC visits performed',
-                    trailingIcon: const Icon(Icons.verified_user, color: Colors.green, size: 20),
+                    trailingIcon: const Icon(
+                      Icons.verified_user,
+                      color: Colors.green,
+                      size: 20,
+                    ),
                     trailingBackgroundColor: Colors.green.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p12),
@@ -144,7 +160,11 @@ class _HomeContent extends StatelessWidget {
                     overlineText: 'Service & Repair',
                     valueText: '${data.repairServices}',
                     subtitleText: 'Combined service and repair',
-                    trailingIcon: const Icon(Icons.build, color: Colors.orange, size: 20),
+                    trailingIcon: const Icon(
+                      Icons.build,
+                      color: Colors.orange,
+                      size: 20,
+                    ),
                     trailingBackgroundColor: Colors.orange.withOpacity(0.1),
                   ),
                   const SizedBox(height: AppPadding.p32),
@@ -154,23 +174,39 @@ class _HomeContent extends StatelessWidget {
                     title: 'Total Visit Schedule',
                     trailing: TextButton(
                       onPressed: () => context.go('/calendar'),
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                      child: const Text('View Calendar', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 12)),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text(
+                        'View Calendar',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppPadding.p16),
-                  
+
                   // List of today's visit schedules
                   if (data.todayNotifications.isNotEmpty)
-                    ...data.todayNotifications.map((item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      child: VisitScheduleCard(item: item),
-                    )),
+                    ...data.todayNotifications.map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: VisitScheduleCard(item: item),
+                      ),
+                    ),
                   if (data.todayNotifications.isEmpty)
                     const Center(
                       child: Padding(
                         padding: EdgeInsets.all(24.0),
-                        child: Text('No visits scheduled for today', style: TextStyle(color: Colors.grey)),
+                        child: Text(
+                          'No visits scheduled for today',
+                          style: TextStyle(color: Colors.grey),
+                        ),
                       ),
                     ),
                   const SizedBox(height: AppPadding.p32),
@@ -194,13 +230,15 @@ class _HomeContent extends StatelessWidget {
         border: Border.all(
           color: isSelected ? Colors.transparent : Colors.grey.withOpacity(0.3),
         ),
-        boxShadow: isSelected ? [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ] : null,
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : null,
       ),
       child: Text(
         label,

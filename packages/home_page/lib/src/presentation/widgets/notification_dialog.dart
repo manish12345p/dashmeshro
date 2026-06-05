@@ -6,10 +6,7 @@ class NotificationDialog extends StatelessWidget {
   const NotificationDialog({super.key});
 
   static void show(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => const NotificationDialog(),
-    );
+    showDialog(context: context, builder: (_) => const NotificationDialog());
   }
 
   @override
@@ -28,9 +25,20 @@ class NotificationDialog extends StatelessWidget {
               backgroundColor: const Color(0xFF003366),
               title: const Row(
                 children: [
-                  Icon(Icons.notifications_active, color: Colors.white, size: 22),
+                  Icon(
+                    Icons.notifications_active,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                   SizedBox(width: 8),
-                  Text('Notifications', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                    'Notifications',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
               leading: IconButton(
@@ -73,11 +81,19 @@ class _NotificationBody extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.notifications_off_outlined, size: 64, color: Colors.grey.shade300),
+                    Icon(
+                      Icons.notifications_off_outlined,
+                      size: 64,
+                      color: Colors.grey.shade300,
+                    ),
                     const SizedBox(height: 16),
                     const Text(
                       'No notifications for today',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF003366)),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF003366),
+                      ),
                     ),
                   ],
                 ),
@@ -96,7 +112,9 @@ class _NotificationBody extends StatelessWidget {
                     color: Colors.orange,
                   ),
                   const SizedBox(height: 12),
-                  ...data.expiringItems.map((item) => _buildExpiryCard(context, item)),
+                  ...data.expiringItems.map(
+                    (item) => _buildExpiryCard(context, item),
+                  ),
                   const SizedBox(height: 24),
                 ],
 
@@ -109,7 +127,9 @@ class _NotificationBody extends StatelessWidget {
                     color: Colors.red,
                   ),
                   const SizedBox(height: 12),
-                  ...data.overduePayments.map((item) => _buildOverdueCard(context, item)),
+                  ...data.overduePayments.map(
+                    (item) => _buildOverdueCard(context, item),
+                  ),
                 ],
               ],
             );
@@ -132,12 +152,20 @@ class _NotificationBody extends StatelessWidget {
       final phone = customerData['number'] as String? ?? '';
       customerPhones[customerDoc.id] = phone;
 
-      final servicesSnap = await customerDoc.reference.collection('services').get();
+      final servicesSnap = await customerDoc.reference
+          .collection('services')
+          .get();
 
       for (var serviceDoc in servicesSnap.docs) {
         final data = serviceDoc.data();
-        final serviceType = data['serviceType'] as String? ?? data['service_type'] as String? ?? 'Service';
-        final dateStr = data['serviceDate'] as String? ?? data['service_date'] as String? ?? '';
+        final serviceType =
+            data['serviceType'] as String? ??
+            data['service_type'] as String? ??
+            'Service';
+        final dateStr =
+            data['serviceDate'] as String? ??
+            data['service_date'] as String? ??
+            '';
         final serviceDuration = data['serviceDuration'] as String? ?? '';
         final guaranteeDuration = data['guaranteeDuration'] as String? ?? '';
 
@@ -153,16 +181,18 @@ class _NotificationBody extends StatelessWidget {
             final daysLeft = expiry.difference(today).inDays;
             // Show if expiring within 2 days or already expired (up to 30 days ago)
             if (daysLeft <= 2 && daysLeft >= -30) {
-              expiringItems.add(_ExpiryInfo(
-                customerName: customerName,
-                customerId: customerDoc.id,
-                phone: phone,
-                type: 'Service Duration',
-                serviceType: serviceType,
-                expiryDate: expiry,
-                daysLeft: daysLeft,
-                duration: serviceDuration,
-              ));
+              expiringItems.add(
+                _ExpiryInfo(
+                  customerName: customerName,
+                  customerId: customerDoc.id,
+                  phone: phone,
+                  type: 'Service Duration',
+                  serviceType: serviceType,
+                  expiryDate: expiry,
+                  daysLeft: daysLeft,
+                  duration: serviceDuration,
+                ),
+              );
             }
           }
         }
@@ -173,16 +203,18 @@ class _NotificationBody extends StatelessWidget {
           if (expiry != null) {
             final daysLeft = expiry.difference(today).inDays;
             if (daysLeft <= 2 && daysLeft >= -30) {
-              expiringItems.add(_ExpiryInfo(
-                customerName: customerName,
-                customerId: customerDoc.id,
-                phone: phone,
-                type: 'Client Duration',
-                serviceType: serviceType,
-                expiryDate: expiry,
-                daysLeft: daysLeft,
-                duration: guaranteeDuration,
-              ));
+              expiringItems.add(
+                _ExpiryInfo(
+                  customerName: customerName,
+                  customerId: customerDoc.id,
+                  phone: phone,
+                  type: 'Client Duration',
+                  serviceType: serviceType,
+                  expiryDate: expiry,
+                  daysLeft: daysLeft,
+                  duration: guaranteeDuration,
+                ),
+              );
             }
           }
         }
@@ -190,13 +222,15 @@ class _NotificationBody extends StatelessWidget {
     }
 
     // Now fetch overdue payments from installments
-    final installmentsSnap = await FirebaseFirestore.instance.collection('installments').get();
-    
+    final installmentsSnap = await FirebaseFirestore.instance
+        .collection('installments')
+        .get();
+
     for (var doc in installmentsSnap.docs) {
       final data = doc.data();
       final status = data['status'] as String? ?? 'pending';
       if (status == 'paid') continue;
-      
+
       final amountPending = (data['amount'] as num?)?.toDouble() ?? 0.0;
       if (amountPending <= 0) continue;
 
@@ -207,21 +241,24 @@ class _NotificationBody extends StatelessWidget {
       } catch (_) {}
 
       // Show if due date is today or in the past
-      if (dueDate != null && dueDate.isBefore(today.add(const Duration(days: 1)))) {
+      if (dueDate != null &&
+          dueDate.isBefore(today.add(const Duration(days: 1)))) {
         final customerName = data['customer_name'] as String? ?? 'Unknown';
         final customerId = data['customer_id'] as String? ?? '';
         final phone = customerPhones[customerId] ?? '';
         final serviceType = data['service_name'] as String? ?? 'EMI';
 
-        overduePayments.add(_OverdueInfo(
-          customerName: customerName,
-          customerId: customerId,
-          phone: phone,
-          amountPending: amountPending,
-          dueDate: dueDate,
-          serviceType: serviceType,
-          daysOverdue: today.difference(dueDate).inDays,
-        ));
+        overduePayments.add(
+          _OverdueInfo(
+            customerName: customerName,
+            customerId: customerId,
+            phone: phone,
+            amountPending: amountPending,
+            dueDate: dueDate,
+            serviceType: serviceType,
+            daysOverdue: today.difference(dueDate).inDays,
+          ),
+        );
       }
     }
 
@@ -229,7 +266,10 @@ class _NotificationBody extends StatelessWidget {
     expiringItems.sort((a, b) => a.daysLeft.compareTo(b.daysLeft));
     overduePayments.sort((a, b) => b.daysOverdue.compareTo(a.daysOverdue));
 
-    return _NotificationData(expiringItems: expiringItems, overduePayments: overduePayments);
+    return _NotificationData(
+      expiringItems: expiringItems,
+      overduePayments: overduePayments,
+    );
   }
 
   DateTime? _calculateExpiry(DateTime startDate, String durationStr) {
@@ -267,7 +307,14 @@ class _NotificationBody extends StatelessWidget {
           child: Icon(icon, color: color, size: 20),
         ),
         const SizedBox(width: 12),
-        Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF003366))),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF003366),
+          ),
+        ),
         const Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -275,7 +322,14 @@ class _NotificationBody extends StatelessWidget {
             color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text('$count', style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 13)),
+          child: Text(
+            '$count',
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
+          ),
         ),
       ],
     );
@@ -287,8 +341,8 @@ class _NotificationBody extends StatelessWidget {
     final statusText = isExpired
         ? '${item.daysLeft.abs()} days ago expired'
         : item.daysLeft == 0
-            ? 'Expires today!'
-            : '${item.daysLeft} day(s) remaining';
+        ? 'Expires today!'
+        : '${item.daysLeft} day(s) remaining';
 
     return Card(
       elevation: 0,
@@ -313,18 +367,28 @@ class _NotificationBody extends StatelessWidget {
                   Expanded(
                     child: Text(
                       item.customerName,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: statusColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       statusText,
-                      style: TextStyle(fontSize: 11, color: statusColor, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: statusColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -332,15 +396,26 @@ class _NotificationBody extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.build_circle_outlined, size: 14, color: Colors.grey.shade600),
+                  Icon(
+                    Icons.build_circle_outlined,
+                    size: 14,
+                    color: Colors.grey.shade600,
+                  ),
                   const SizedBox(width: 4),
-                  Text('${item.type} (${item.serviceType})', style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                  Text(
+                    '${item.type} (${item.serviceType})',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
                 ],
               ),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.calendar_today_outlined, size: 14, color: Colors.grey.shade600),
+                  Icon(
+                    Icons.calendar_today_outlined,
+                    size: 14,
+                    color: Colors.grey.shade600,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     'Duration: ${item.duration} | Expiry: ${item.expiryDate.toIso8601String().split('T')[0]}',
@@ -379,18 +454,28 @@ class _NotificationBody extends StatelessWidget {
                   Expanded(
                     child: Text(
                       item.customerName,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       '₹${item.amountPending.toStringAsFixed(0)}',
-                      style: const TextStyle(fontSize: 13, color: Colors.red, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -398,15 +483,26 @@ class _NotificationBody extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.category_outlined, size: 14, color: Colors.grey.shade600),
+                  Icon(
+                    Icons.category_outlined,
+                    size: 14,
+                    color: Colors.grey.shade600,
+                  ),
                   const SizedBox(width: 4),
-                  Text(item.serviceType, style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                  Text(
+                    item.serviceType,
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
                 ],
               ),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.warning_amber_outlined, size: 14, color: Colors.red.shade400),
+                  Icon(
+                    Icons.warning_amber_outlined,
+                    size: 14,
+                    color: Colors.red.shade400,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     item.dueDate != null
@@ -427,7 +523,10 @@ class _NotificationBody extends StatelessWidget {
 class _NotificationData {
   final List<_ExpiryInfo> expiringItems;
   final List<_OverdueInfo> overduePayments;
-  _NotificationData({required this.expiringItems, required this.overduePayments});
+  _NotificationData({
+    required this.expiringItems,
+    required this.overduePayments,
+  });
 }
 
 class _ExpiryInfo {
@@ -435,9 +534,14 @@ class _ExpiryInfo {
   final DateTime expiryDate;
   final int daysLeft;
   _ExpiryInfo({
-    required this.customerName, required this.customerId, required this.phone,
-    required this.type, required this.serviceType, required this.expiryDate,
-    required this.daysLeft, required this.duration,
+    required this.customerName,
+    required this.customerId,
+    required this.phone,
+    required this.type,
+    required this.serviceType,
+    required this.expiryDate,
+    required this.daysLeft,
+    required this.duration,
   });
 }
 
@@ -447,8 +551,12 @@ class _OverdueInfo {
   final DateTime? dueDate;
   final int daysOverdue;
   _OverdueInfo({
-    required this.customerName, required this.customerId, required this.phone,
-    required this.amountPending, required this.dueDate, required this.serviceType,
+    required this.customerName,
+    required this.customerId,
+    required this.phone,
+    required this.amountPending,
+    required this.dueDate,
+    required this.serviceType,
     required this.daysOverdue,
   });
 }

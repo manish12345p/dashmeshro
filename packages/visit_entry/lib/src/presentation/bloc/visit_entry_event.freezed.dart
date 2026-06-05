@@ -31,6 +31,7 @@ mixin _$VisitEntryEvent {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ mixin _$VisitEntryEvent {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) => throw _privateConstructorUsedError;
@@ -65,6 +67,7 @@ mixin _$VisitEntryEvent {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -86,6 +89,7 @@ mixin _$VisitEntryEvent {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) => throw _privateConstructorUsedError;
@@ -103,6 +107,7 @@ mixin _$VisitEntryEvent {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) => throw _privateConstructorUsedError;
@@ -120,6 +125,7 @@ mixin _$VisitEntryEvent {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -240,6 +246,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -261,6 +268,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -282,6 +290,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -310,6 +319,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -331,6 +341,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -352,6 +363,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -462,6 +474,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -483,6 +496,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -504,6 +518,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -532,6 +547,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -553,6 +569,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -574,6 +591,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -680,6 +698,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -701,6 +720,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -722,6 +742,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -750,6 +771,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -771,6 +793,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -792,6 +815,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -897,6 +921,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -918,6 +943,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -939,6 +965,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -967,6 +994,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -988,6 +1016,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -1009,6 +1038,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -1114,6 +1144,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -1135,6 +1166,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -1156,6 +1188,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -1184,6 +1217,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -1205,6 +1239,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -1226,6 +1261,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -1334,6 +1370,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -1355,6 +1392,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -1376,6 +1414,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -1404,6 +1443,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -1425,6 +1465,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -1446,6 +1487,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -1554,6 +1596,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -1575,6 +1618,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -1596,6 +1640,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -1624,6 +1669,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -1645,6 +1691,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -1666,6 +1713,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -1775,6 +1823,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -1796,6 +1845,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -1817,6 +1867,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -1845,6 +1896,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -1866,6 +1918,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -1887,6 +1940,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -1998,6 +2052,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -2019,6 +2074,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -2040,6 +2096,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -2068,6 +2125,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -2089,6 +2147,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -2110,6 +2169,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -2221,6 +2281,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -2242,6 +2303,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -2263,6 +2325,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -2291,6 +2354,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -2312,6 +2376,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -2333,6 +2398,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -2443,6 +2509,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -2464,6 +2531,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -2485,6 +2553,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -2513,6 +2582,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -2534,6 +2604,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -2555,6 +2626,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -2664,6 +2736,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -2685,6 +2758,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -2706,6 +2780,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -2734,6 +2809,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -2755,6 +2831,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -2776,6 +2853,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -2798,6 +2876,232 @@ abstract class UpdateEmiAmountPerMonth implements VisitEntryEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateEmiAmountPerMonthImplCopyWith<_$UpdateEmiAmountPerMonthImpl>
   get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateRentDueDayImplCopyWith<$Res> {
+  factory _$$UpdateRentDueDayImplCopyWith(
+    _$UpdateRentDueDayImpl value,
+    $Res Function(_$UpdateRentDueDayImpl) then,
+  ) = __$$UpdateRentDueDayImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int day});
+}
+
+/// @nodoc
+class __$$UpdateRentDueDayImplCopyWithImpl<$Res>
+    extends _$VisitEntryEventCopyWithImpl<$Res, _$UpdateRentDueDayImpl>
+    implements _$$UpdateRentDueDayImplCopyWith<$Res> {
+  __$$UpdateRentDueDayImplCopyWithImpl(
+    _$UpdateRentDueDayImpl _value,
+    $Res Function(_$UpdateRentDueDayImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? day = null}) {
+    return _then(
+      _$UpdateRentDueDayImpl(
+        null == day
+            ? _value.day
+            : day // ignore: cast_nullable_to_non_nullable
+                  as int,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$UpdateRentDueDayImpl implements UpdateRentDueDay {
+  const _$UpdateRentDueDayImpl(this.day);
+
+  @override
+  final int day;
+
+  @override
+  String toString() {
+    return 'VisitEntryEvent.updateRentDueDay(day: $day)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateRentDueDayImpl &&
+            (identical(other.day, day) || other.day == day));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, day);
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateRentDueDayImplCopyWith<_$UpdateRentDueDayImpl> get copyWith =>
+      __$$UpdateRentDueDayImplCopyWithImpl<_$UpdateRentDueDayImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String id, String name) selectCustomer,
+    required TResult Function(String type) selectServiceType,
+    required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(String remarks) updateRemarks,
+    required TResult Function(String fixes) updateFixes,
+    required TResult Function(double amount) updateAmountPaid,
+    required TResult Function(double amount) updateAmountPending,
+    required TResult Function(double amount) updateTotalAmount,
+    required TResult Function(String equipments) updateEquipmentsUsed,
+    required TResult Function(String duration) updateServiceDuration,
+    required TResult Function(String duration) updateGuaranteeDuration,
+    required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
+    required TResult Function(String date) setDate,
+    required TResult Function() submit,
+  }) {
+    return updateRentDueDay(day);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String id, String name)? selectCustomer,
+    TResult? Function(String type)? selectServiceType,
+    TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(String remarks)? updateRemarks,
+    TResult? Function(String fixes)? updateFixes,
+    TResult? Function(double amount)? updateAmountPaid,
+    TResult? Function(double amount)? updateAmountPending,
+    TResult? Function(double amount)? updateTotalAmount,
+    TResult? Function(String equipments)? updateEquipmentsUsed,
+    TResult? Function(String duration)? updateServiceDuration,
+    TResult? Function(String duration)? updateGuaranteeDuration,
+    TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
+    TResult? Function(String date)? setDate,
+    TResult? Function()? submit,
+  }) {
+    return updateRentDueDay?.call(day);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String id, String name)? selectCustomer,
+    TResult Function(String type)? selectServiceType,
+    TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(String remarks)? updateRemarks,
+    TResult Function(String fixes)? updateFixes,
+    TResult Function(double amount)? updateAmountPaid,
+    TResult Function(double amount)? updateAmountPending,
+    TResult Function(double amount)? updateTotalAmount,
+    TResult Function(String equipments)? updateEquipmentsUsed,
+    TResult Function(String duration)? updateServiceDuration,
+    TResult Function(String duration)? updateGuaranteeDuration,
+    TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
+    TResult Function(String date)? setDate,
+    TResult Function()? submit,
+    required TResult orElse(),
+  }) {
+    if (updateRentDueDay != null) {
+      return updateRentDueDay(day);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(SelectServiceType value) selectServiceType,
+    required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(UpdateRemarks value) updateRemarks,
+    required TResult Function(UpdateFixes value) updateFixes,
+    required TResult Function(UpdateAmountPaid value) updateAmountPaid,
+    required TResult Function(UpdateAmountPending value) updateAmountPending,
+    required TResult Function(UpdateTotalAmount value) updateTotalAmount,
+    required TResult Function(UpdateEquipmentsUsed value) updateEquipmentsUsed,
+    required TResult Function(UpdateServiceDuration value)
+    updateServiceDuration,
+    required TResult Function(UpdateGuaranteeDuration value)
+    updateGuaranteeDuration,
+    required TResult Function(UpdateEmiAmountPerMonth value)
+    updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
+    required TResult Function(SetDate value) setDate,
+    required TResult Function(SubmitVisitEntry value) submit,
+  }) {
+    return updateRentDueDay(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(SelectServiceType value)? selectServiceType,
+    TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(UpdateRemarks value)? updateRemarks,
+    TResult? Function(UpdateFixes value)? updateFixes,
+    TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
+    TResult? Function(UpdateAmountPending value)? updateAmountPending,
+    TResult? Function(UpdateTotalAmount value)? updateTotalAmount,
+    TResult? Function(UpdateEquipmentsUsed value)? updateEquipmentsUsed,
+    TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
+    TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
+    TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
+    TResult? Function(SetDate value)? setDate,
+    TResult? Function(SubmitVisitEntry value)? submit,
+  }) {
+    return updateRentDueDay?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(SelectServiceType value)? selectServiceType,
+    TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(UpdateRemarks value)? updateRemarks,
+    TResult Function(UpdateFixes value)? updateFixes,
+    TResult Function(UpdateAmountPaid value)? updateAmountPaid,
+    TResult Function(UpdateAmountPending value)? updateAmountPending,
+    TResult Function(UpdateTotalAmount value)? updateTotalAmount,
+    TResult Function(UpdateEquipmentsUsed value)? updateEquipmentsUsed,
+    TResult Function(UpdateServiceDuration value)? updateServiceDuration,
+    TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
+    TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
+    TResult Function(SetDate value)? setDate,
+    TResult Function(SubmitVisitEntry value)? submit,
+    required TResult orElse(),
+  }) {
+    if (updateRentDueDay != null) {
+      return updateRentDueDay(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdateRentDueDay implements VisitEntryEvent {
+  const factory UpdateRentDueDay(final int day) = _$UpdateRentDueDayImpl;
+
+  int get day;
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UpdateRentDueDayImplCopyWith<_$UpdateRentDueDayImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2882,6 +3186,7 @@ class _$SetDateImpl implements SetDate {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -2903,6 +3208,7 @@ class _$SetDateImpl implements SetDate {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -2924,6 +3230,7 @@ class _$SetDateImpl implements SetDate {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -2952,6 +3259,7 @@ class _$SetDateImpl implements SetDate {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -2973,6 +3281,7 @@ class _$SetDateImpl implements SetDate {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -2994,6 +3303,7 @@ class _$SetDateImpl implements SetDate {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),
@@ -3072,6 +3382,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     required TResult Function(String duration) updateServiceDuration,
     required TResult Function(String duration) updateGuaranteeDuration,
     required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(int day) updateRentDueDay,
     required TResult Function(String date) setDate,
     required TResult Function() submit,
   }) {
@@ -3093,6 +3404,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult? Function(String duration)? updateServiceDuration,
     TResult? Function(String duration)? updateGuaranteeDuration,
     TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(int day)? updateRentDueDay,
     TResult? Function(String date)? setDate,
     TResult? Function()? submit,
   }) {
@@ -3114,6 +3426,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult Function(String duration)? updateServiceDuration,
     TResult Function(String duration)? updateGuaranteeDuration,
     TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(int day)? updateRentDueDay,
     TResult Function(String date)? setDate,
     TResult Function()? submit,
     required TResult orElse(),
@@ -3142,6 +3455,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     updateGuaranteeDuration,
     required TResult Function(UpdateEmiAmountPerMonth value)
     updateEmiAmountPerMonth,
+    required TResult Function(UpdateRentDueDay value) updateRentDueDay,
     required TResult Function(SetDate value) setDate,
     required TResult Function(SubmitVisitEntry value) submit,
   }) {
@@ -3163,6 +3477,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult? Function(SetDate value)? setDate,
     TResult? Function(SubmitVisitEntry value)? submit,
   }) {
@@ -3184,6 +3499,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult Function(UpdateServiceDuration value)? updateServiceDuration,
     TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
     TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(UpdateRentDueDay value)? updateRentDueDay,
     TResult Function(SetDate value)? setDate,
     TResult Function(SubmitVisitEntry value)? submit,
     required TResult orElse(),

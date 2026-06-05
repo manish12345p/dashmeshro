@@ -6,10 +6,15 @@ class VisitEntryRepository implements IVisitEntryRepository {
   final FirebaseFirestore _firestore;
 
   VisitEntryRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> createVisitEntry(VisitRecord entry, {double? emiAmountPerMonth}) async {
+  Future<void> createVisitEntry(
+    VisitRecord entry, {
+    double? emiAmountPerMonth,
+    bool isRent = false,
+    int? rentDueDay,
+  }) async {
     final collectionRef = _firestore
         .collection('Customer')
         .doc(entry.customerId)
@@ -43,37 +48,51 @@ class VisitEntryRepository implements IVisitEntryRepository {
       }
     }
 
-    // Auto-create EMI if pending amount exists
-    if (entry.amountPending > 0) {
+    // Create EMI / Rent installment if needed
+    if (entry.amountPending > 0 || isRent) {
       try {
-        final customerSnap = await _firestore.collection('Customer').doc(entry.customerId).get();
+        final customerSnap = await _firestore
+            .collection('Customer')
+            .doc(entry.customerId)
+            .get();
         if (customerSnap.exists) {
           final custData = customerSnap.data()!;
           final name = custData['name'] ?? 'Unknown';
           final address = custData['address'] ?? '';
           final phone = custData['number'] ?? '';
-          
+
           final contactInfo = [
             if (address.toString().isNotEmpty) address,
-            if (phone.toString().isNotEmpty) phone
+            if (phone.toString().isNotEmpty) phone,
           ].join(' | ');
 
           final emiCollection = _firestore.collection('installments');
           final emiId = 'emi_$docId';
-          
+
           double monthlyAmount = entry.amountPending;
-          if (emiAmountPerMonth != null && emiAmountPerMonth > 0 && emiAmountPerMonth < entry.amountPending) {
+          if (isRent) {
+            monthlyAmount = emiAmountPerMonth ?? 0.0;
+          } else if (emiAmountPerMonth != null &&
+              emiAmountPerMonth > 0 &&
+              emiAmountPerMonth < entry.amountPending) {
             monthlyAmount = emiAmountPerMonth;
           }
 
           // Calendar-month advancement for initial due date (not +30 days)
           final now = DateTime.now();
-          final initialDueDate = DateTime(now.year, now.month + 1, now.day);
+          DateTime initialDueDate;
+
+          if (isRent && rentDueDay != null) {
+            initialDueDate = DateTime(now.year, now.month, rentDueDay);
+          } else {
+            initialDueDate = DateTime(now.year, now.month + 1, now.day);
+          }
 
           // Create a meaningful service identifier
           final String svcName = [
             if (entry.serviceType.isNotEmpty) entry.serviceType,
-            if (entry.roType != null && entry.roType!.isNotEmpty) '(${entry.roType})'
+            if (entry.roType != null && entry.roType!.isNotEmpty)
+              '(${entry.roType})',
           ].join(' ');
 
           await emiCollection.doc(emiId).set({
@@ -81,20 +100,23 @@ class VisitEntryRepository implements IVisitEntryRepository {
             'customer_name': name,
             'customer_id': entry.customerId,
             'vehicle_details': contactInfo,
-            'service_name': svcName.isEmpty ? 'Service #${docId.substring(0, 5)}' : svcName,
-            'amount': monthlyAmount,
+            'service_name': svcName.isEmpty
+                ? 'Service #${docId.substring(0, 5)}'
+                : svcName,
+            'amount': isRent ? 999999.0 : monthlyAmount,
             'emi_monthly_amount': monthlyAmount,
-            'total_amount': entry.amountPending,
-            'original_loan_amount': entry.amountPending,
+            'total_amount': isRent ? 999999.0 : entry.amountPending,
+            'original_loan_amount': isRent ? 999999.0 : entry.amountPending,
             'status': 'pending',
             'due_date': initialDueDate.toIso8601String(),
             'created_at': now.toIso8601String(),
             'service_id': docId,
+            'is_rent': isRent,
+            'rent_due_day': rentDueDay,
           });
         }
       } catch (e) {
-        // Log but don't fail the service entry creation
-        throw Exception('Service saved but EMI creation failed: $e');
+        throw Exception('Service saved but EMI/Rent creation failed: $e');
       }
     }
   }
@@ -121,19 +143,23 @@ class VisitEntryRepository implements IVisitEntryRepository {
   Future<List<Map<String, dynamic>>> searchCustomers(String query) async {
     try {
       if (query.isEmpty) return [];
-      
+
       final queryLower = query.toLowerCase();
       final snapshot = await _firestore.collection('Customer').limit(100).get();
-      
-      final results = snapshot.docs.map((doc) {
-        final data = doc.data();
-        data['id'] = doc.id;
-        return data;
-      }).where((data) {
-        final name = (data['name'] as String?)?.toLowerCase() ?? '';
-        final phone = (data['number'] as String?)?.toLowerCase() ?? '';
-        return name.contains(queryLower) || phone.contains(queryLower);
-      }).take(10).toList();
+
+      final results = snapshot.docs
+          .map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            return data;
+          })
+          .where((data) {
+            final name = (data['name'] as String?)?.toLowerCase() ?? '';
+            final phone = (data['number'] as String?)?.toLowerCase() ?? '';
+            return name.contains(queryLower) || phone.contains(queryLower);
+          })
+          .take(10)
+          .toList();
 
       return results;
     } catch (_) {

@@ -21,7 +21,8 @@ class EmiDashboardData with _$EmiDashboardData {
     required int defaulters,
   }) = _EmiDashboardData;
 
-  factory EmiDashboardData.fromJson(Map<String, dynamic> json) => _$EmiDashboardDataFromJson(json);
+  factory EmiDashboardData.fromJson(Map<String, dynamic> json) =>
+      _$EmiDashboardDataFromJson(json);
 }
 
 @freezed
@@ -34,7 +35,8 @@ class RecentlyPaidInstallment with _$RecentlyPaidInstallment {
     required String paidDateStr,
   }) = _RecentlyPaidInstallment;
 
-  factory RecentlyPaidInstallment.fromJson(Map<String, dynamic> json) => _$RecentlyPaidInstallmentFromJson(json);
+  factory RecentlyPaidInstallment.fromJson(Map<String, dynamic> json) =>
+      _$RecentlyPaidInstallmentFromJson(json);
 }
 
 @freezed
@@ -53,7 +55,10 @@ class ActiveInstallment with _$ActiveInstallment {
     required String dueDate,
     required String status,
     required String avatarUrl,
+    @Default(false) bool isRent,
+    int? rentDueDay,
   }) = _ActiveInstallment;
 
-  factory ActiveInstallment.fromJson(Map<String, dynamic> json) => _$ActiveInstallmentFromJson(json);
+  factory ActiveInstallment.fromJson(Map<String, dynamic> json) =>
+      _$ActiveInstallmentFromJson(json);
 }

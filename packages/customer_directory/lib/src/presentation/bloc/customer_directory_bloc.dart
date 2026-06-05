@@ -5,21 +5,24 @@ import '../../domain/use_cases/get_customers_usecase.dart';
 import 'customer_directory_event.dart';
 import 'customer_directory_state.dart';
 
-class CustomerDirectoryBloc extends Bloc<CustomerDirectoryEvent, CustomerDirectoryState> {
+class CustomerDirectoryBloc
+    extends Bloc<CustomerDirectoryEvent, CustomerDirectoryState> {
   final GetCustomersUseCase _getCustomersUseCase;
   StreamSubscription? _subscription;
 
-  CustomerDirectoryBloc({
-    required GetCustomersUseCase getCustomersUseCase,
-  })  : _getCustomersUseCase = getCustomersUseCase,
-        super(const CustomerDirectoryInitial()) {
+  CustomerDirectoryBloc({required GetCustomersUseCase getCustomersUseCase})
+    : _getCustomersUseCase = getCustomersUseCase,
+      super(const CustomerDirectoryInitial()) {
     on<LoadCustomers>(_onLoadCustomers);
     on<UpdateCustomersList>(_onUpdateCustomersList);
     on<SearchCustomers>(_onSearchCustomers);
     on<LoadCustomersError>(_onLoadCustomersError);
   }
 
-  void _onLoadCustomers(LoadCustomers event, Emitter<CustomerDirectoryState> emit) {
+  void _onLoadCustomers(
+    LoadCustomers event,
+    Emitter<CustomerDirectoryState> emit,
+  ) {
     emit(const CustomerDirectoryLoading());
     _subscription?.cancel();
     _subscription = _getCustomersUseCase().listen(
@@ -28,32 +31,42 @@ class CustomerDirectoryBloc extends Bloc<CustomerDirectoryEvent, CustomerDirecto
     );
   }
 
-  void _onLoadCustomersError(LoadCustomersError event, Emitter<CustomerDirectoryState> emit) {
+  void _onLoadCustomersError(
+    LoadCustomersError event,
+    Emitter<CustomerDirectoryState> emit,
+  ) {
     emit(CustomerDirectoryError(event.error));
   }
 
-  void _onUpdateCustomersList(UpdateCustomersList event, Emitter<CustomerDirectoryState> emit) {
+  void _onUpdateCustomersList(
+    UpdateCustomersList event,
+    Emitter<CustomerDirectoryState> emit,
+  ) {
     String currentQuery = '';
     if (state is CustomerDirectoryLoaded) {
       currentQuery = (state as CustomerDirectoryLoaded).searchQuery;
     }
-    
+
     final filtered = _filterCustomers(event.customers, currentQuery);
-    emit(CustomerDirectoryLoaded(
-      allCustomers: event.customers,
-      filteredCustomers: filtered,
-      searchQuery: currentQuery,
-    ));
+    emit(
+      CustomerDirectoryLoaded(
+        allCustomers: event.customers,
+        filteredCustomers: filtered,
+        searchQuery: currentQuery,
+      ),
+    );
   }
 
-  void _onSearchCustomers(SearchCustomers event, Emitter<CustomerDirectoryState> emit) {
+  void _onSearchCustomers(
+    SearchCustomers event,
+    Emitter<CustomerDirectoryState> emit,
+  ) {
     if (state is CustomerDirectoryLoaded) {
       final loaded = state as CustomerDirectoryLoaded;
       final filtered = _filterCustomers(loaded.allCustomers, event.query);
-      emit(loaded.copyWith(
-        filteredCustomers: filtered,
-        searchQuery: event.query,
-      ));
+      emit(
+        loaded.copyWith(filteredCustomers: filtered, searchQuery: event.query),
+      );
     }
   }
 

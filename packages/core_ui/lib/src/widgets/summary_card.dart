@@ -23,7 +23,7 @@ class SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       width: double.infinity,
       padding: AppPadding.all16,
@@ -57,14 +57,18 @@ class SummaryCard extends StatelessWidget {
                 valueText,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: borderColor != null ? borderColor : null, // Inherit border color if exists (like red for errors)
+                  color: borderColor != null
+                      ? borderColor
+                      : null, // Inherit border color if exists (like red for errors)
                 ),
               ),
               SizedBox(height: AppPadding.p4),
               Text(
                 subtitleText,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: borderColor != null ? borderColor : null, // Apply red text for pending complaints if needed
+                  color: borderColor != null
+                      ? borderColor
+                      : null, // Apply red text for pending complaints if needed
                 ),
               ),
             ],
@@ -76,7 +80,9 @@ class SummaryCard extends StatelessWidget {
               padding: AppPadding.all8,
               decoration: BoxDecoration(
                 color: trailingBackgroundColor,
-                borderRadius: BorderRadius.circular(AppConstants.borderRadiusSmall),
+                borderRadius: BorderRadius.circular(
+                  AppConstants.borderRadiusSmall,
+                ),
               ),
               child: trailingIcon,
             ),

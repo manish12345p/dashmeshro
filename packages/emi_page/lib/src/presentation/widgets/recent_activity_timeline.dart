@@ -50,7 +50,12 @@ class RecentActivityTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildTimelineItem(BuildContext context, String title, String time, Color lineColor) {
+  Widget _buildTimelineItem(
+    BuildContext context,
+    String title,
+    String time,
+    Color lineColor,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

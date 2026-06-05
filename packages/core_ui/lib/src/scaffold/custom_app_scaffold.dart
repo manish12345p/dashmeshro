@@ -22,7 +22,7 @@ class CustomAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    
+
     return Stack(
       children: [
         Scaffold(
@@ -51,9 +51,7 @@ class CustomAppScaffold extends StatelessWidget {
           Container(
             color: Colors.black.withValues(alpha: 0.3),
             child: Center(
-              child: CircularProgressIndicator(
-                color: colors.primary,
-              ),
+              child: CircularProgressIndicator(color: colors.primary),
             ),
           ),
       ],

@@ -8,5 +8,6 @@ class EmiEvent with _$EmiEvent {
   const factory EmiEvent.filterInstallments(String status) = FilterInstallments;
   const factory EmiEvent.remindCustomer(String customerId) = RemindCustomer;
   const factory EmiEvent.markAsPaid(String installmentId) = MarkAsPaid;
-  const factory EmiEvent.addPayment(String installmentId, double amount) = AddPayment;
+  const factory EmiEvent.addPayment(String installmentId, double amount) =
+      AddPayment;
 }

@@ -91,16 +91,24 @@ class CustomerSelectorWidget extends StatelessWidget {
                   return const Iterable<Map<String, dynamic>>.empty();
                 }
                 // Update bloc with arbitrary text in case user doesn't select from list
-                context.read<VisitEntryBloc>().add(SelectCustomer(textEditingValue.text, textEditingValue.text));
-                
+                context.read<VisitEntryBloc>().add(
+                  SelectCustomer(textEditingValue.text, textEditingValue.text),
+                );
+
                 final repo = sl<IVisitEntryRepository>();
-                final results = await repo.searchCustomers(textEditingValue.text);
+                final results = await repo.searchCustomers(
+                  textEditingValue.text,
+                );
                 return results;
               },
-              displayStringForOption: (Map<String, dynamic> option) => option['name'] ?? '',
+              displayStringForOption: (Map<String, dynamic> option) =>
+                  option['name'] ?? '',
               onSelected: (Map<String, dynamic> selection) {
                 context.read<VisitEntryBloc>().add(
-                  SelectCustomer(selection['id'] as String, selection['name'] as String? ?? ''),
+                  SelectCustomer(
+                    selection['id'] as String,
+                    selection['name'] as String? ?? '',
+                  ),
                 );
               },
               optionsViewBuilder: (context, onSelected, options) {
@@ -110,7 +118,10 @@ class CustomerSelectorWidget extends StatelessWidget {
                     elevation: 4,
                     borderRadius: BorderRadius.circular(12),
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 250, maxWidth: 300),
+                      constraints: const BoxConstraints(
+                        maxHeight: 250,
+                        maxWidth: 300,
+                      ),
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
@@ -120,11 +131,17 @@ class CustomerSelectorWidget extends StatelessWidget {
                           return ListTile(
                             title: Text(
                               option['name'] ?? 'Unknown',
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
                             ),
                             subtitle: Text(
                               '${option['number'] ?? 'No Phone'} • ${option['address'] ?? option['locality'] ?? 'No Address'}',
-                              style: TextStyle(color: context.colors.textSecondary, fontSize: 12),
+                              style: TextStyle(
+                                color: context.colors.textSecondary,
+                                fontSize: 12,
+                              ),
                             ),
                             onTap: () {
                               onSelected(option);
@@ -136,60 +153,66 @@ class CustomerSelectorWidget extends StatelessWidget {
                   ),
                 );
               },
-              fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
-                return TextField(
-                  controller: textEditingController,
-                  focusNode: focusNode,
-                  onSubmitted: (String value) {
-                    onFieldSubmitted();
+              fieldViewBuilder:
+                  (
+                    context,
+                    textEditingController,
+                    focusNode,
+                    onFieldSubmitted,
+                  ) {
+                    return TextField(
+                      controller: textEditingController,
+                      focusNode: focusNode,
+                      onSubmitted: (String value) {
+                        onFieldSubmitted();
+                      },
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: darkPrimary,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Enter customer details..',
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: context.colors.textTertiary,
+                        ),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(left: 14, right: 10),
+                          child: Icon(
+                            Icons.search_rounded,
+                            color: primaryColor.withOpacity(0.7),
+                            size: 22,
+                          ),
+                        ),
+                        prefixIconConstraints: const BoxConstraints(
+                          minWidth: 0,
+                          minHeight: 0,
+                        ),
+                        filled: true,
+                        fillColor: context.colors.background,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: context.colors.border,
+                            width: 1.2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: primaryColor,
+                            width: 1.6,
+                          ),
+                        ),
+                      ),
+                    );
                   },
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: darkPrimary,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: 'Enter customer details..',
-                    hintStyle: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: context.colors.textTertiary,
-                    ),
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 14, right: 10),
-                      child: Icon(
-                        Icons.search_rounded,
-                        color: primaryColor.withOpacity(0.7),
-                        size: 22,
-                      ),
-                    ),
-                    prefixIconConstraints: const BoxConstraints(
-                      minWidth: 0,
-                      minHeight: 0,
-                    ),
-                    filled: true,
-                    fillColor: context.colors.background,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: context.colors.border,
-                        width: 1.2,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: primaryColor,
-                        width: 1.6,
-                      ),
-                    ),
-                  ),
-                );
-              },
             ),
           ],
         ),

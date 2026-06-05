@@ -47,21 +47,16 @@ class ExpenseDatabase {
   static Future<List<Map<String, dynamic>>> getExpenses() async {
     final db = await database;
     await _deleteOldEntries();
-    return await db.query(
-      _tableName,
-      orderBy: 'created_at DESC',
-    );
+    return await db.query(_tableName, orderBy: 'created_at DESC');
   }
 
   /// Delete entries older than 15 days
   static Future<void> _deleteOldEntries() async {
     final db = await database;
-    final cutoff = DateTime.now().subtract(const Duration(days: 15)).toIso8601String();
-    await db.delete(
-      _tableName,
-      where: 'created_at < ?',
-      whereArgs: [cutoff],
-    );
+    final cutoff = DateTime.now()
+        .subtract(const Duration(days: 15))
+        .toIso8601String();
+    await db.delete(_tableName, where: 'created_at < ?', whereArgs: [cutoff]);
   }
 
   /// Delete a single expense

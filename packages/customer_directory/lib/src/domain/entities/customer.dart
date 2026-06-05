@@ -78,7 +78,7 @@ class Customer with _$Customer {
     @Default('') String customerValue,
     @Default(0) int openTickets,
     @Default([]) List<ServiceActivity> serviceHistory,
-    
+
     // Soft delete support
     @Default(false) bool isDeleted,
     String? deletedAt,
@@ -94,7 +94,8 @@ class Customer with _$Customer {
     return Customer(
       id: documentId ?? map['id'] as String? ?? '',
       name: map['name'] as String? ?? '',
-      customerId: map['customer_id'] as String? ?? map['customerId'] as String? ?? '',
+      customerId:
+          map['customer_id'] as String? ?? map['customerId'] as String? ?? '',
       number: map['number'] as String? ?? '',
       email: map['email'] as String? ?? '',
       address: map['address'] as String? ?? '',
@@ -103,19 +104,42 @@ class Customer with _$Customer {
       note: map['note'] as String? ?? '',
       role: map['role'] as String? ?? '',
       status: map['status'] as String? ?? 'active',
-      customerType: map['customer_type'] as String? ?? map['customerType'] as String? ?? 'Active AMC',
-      avatarUrl: map['avatar_url'] as String? ?? map['avatarUrl'] as String? ?? '',
-      deviceName: map['device_name'] as String? ?? map['deviceName'] as String? ?? '',
-      deviceInstalledOn: map['device_installed_on'] as String? ?? map['deviceInstalledOn'] as String? ?? '',
-      deviceLastService: map['device_last_service'] as String? ?? map['deviceLastService'] as String? ?? '',
-      deviceFilterHealth: (map['device_filter_health'] ?? map['deviceFilterHealth'] ?? 1.0) as double,
+      customerType:
+          map['customer_type'] as String? ??
+          map['customerType'] as String? ??
+          'Active AMC',
+      avatarUrl:
+          map['avatar_url'] as String? ?? map['avatarUrl'] as String? ?? '',
+      deviceName:
+          map['device_name'] as String? ?? map['deviceName'] as String? ?? '',
+      deviceInstalledOn:
+          map['device_installed_on'] as String? ??
+          map['deviceInstalledOn'] as String? ??
+          '',
+      deviceLastService:
+          map['device_last_service'] as String? ??
+          map['deviceLastService'] as String? ??
+          '',
+      deviceFilterHealth:
+          (map['device_filter_health'] ?? map['deviceFilterHealth'] ?? 1.0)
+              as double,
       totalVisits: (map['total_visits'] ?? map['totalVisits'] ?? 0) as int,
       activeAmc: (map['active_amc'] ?? map['activeAmc'] ?? false) as bool,
-      customerValue: map['customer_value'] as String? ?? map['customerValue'] as String? ?? '0',
+      customerValue:
+          map['customer_value'] as String? ??
+          map['customerValue'] as String? ??
+          '0',
       openTickets: (map['open_tickets'] ?? map['openTickets'] ?? 0) as int,
-      serviceHistory: (map['service_history'] as List? ?? map['serviceHistory'] as List? ?? [])
-          .map((item) => ServiceActivity.fromMap(Map<String, dynamic>.from(item as Map)))
-          .toList(),
+      serviceHistory:
+          (map['service_history'] as List? ??
+                  map['serviceHistory'] as List? ??
+                  [])
+              .map(
+                (item) => ServiceActivity.fromMap(
+                  Map<String, dynamic>.from(item as Map),
+                ),
+              )
+              .toList(),
       isDeleted: map['isDeleted'] as bool? ?? false,
       deletedAt: map['deletedAt'] as String?,
       deletedBy: map['deletedBy'] as String?,
@@ -140,14 +164,20 @@ class Customer with _$Customer {
     if (customerType.isNotEmpty) map['customer_type'] = customerType;
     if (avatarUrl.isNotEmpty) map['avatar_url'] = avatarUrl;
     if (deviceName.isNotEmpty) map['device_name'] = deviceName;
-    if (deviceInstalledOn.isNotEmpty) map['device_installed_on'] = deviceInstalledOn;
-    if (deviceLastService.isNotEmpty) map['device_last_service'] = deviceLastService;
-    if (deviceFilterHealth != 1.0) map['device_filter_health'] = deviceFilterHealth;
+    if (deviceInstalledOn.isNotEmpty)
+      map['device_installed_on'] = deviceInstalledOn;
+    if (deviceLastService.isNotEmpty)
+      map['device_last_service'] = deviceLastService;
+    if (deviceFilterHealth != 1.0)
+      map['device_filter_health'] = deviceFilterHealth;
     if (totalVisits > 0) map['total_visits'] = totalVisits;
     if (activeAmc) map['active_amc'] = activeAmc;
     if (customerValue.isNotEmpty) map['customer_value'] = customerValue;
     if (openTickets > 0) map['open_tickets'] = openTickets;
-    if (serviceHistory.isNotEmpty) map['service_history'] = serviceHistory.map((item) => item.toMap()).toList();
+    if (serviceHistory.isNotEmpty)
+      map['service_history'] = serviceHistory
+          .map((item) => item.toMap())
+          .toList();
     map['isDeleted'] = isDeleted;
     if (deletedAt != null) map['deletedAt'] = deletedAt;
     if (deletedBy != null) map['deletedBy'] = deletedBy;

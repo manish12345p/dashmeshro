@@ -9,7 +9,8 @@ import 'package:emi_page/emi_page.dart';
 import 'package:visit_entry/visit_entry.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 GoRouter createAppRouter({
   required Widget Function(Widget child) shellBuilder,
@@ -20,16 +21,21 @@ GoRouter createAppRouter({
     routes: [
       GoRoute(
         path: '/',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: shellBuilder(const HomePageView()),
-        ),
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: shellBuilder(const HomePageView())),
       ),
       GoRoute(
         path: '/calendar',
-          builder: (context, state) => BlocProvider(
-            create: (_) => sl<CalendarBloc>()..add(CalendarEvent.loadMonth(DateTime.now().year, DateTime.now().month)),
-            child: const CalendarView(),
-          ),
+        builder: (context, state) => BlocProvider(
+          create: (_) => sl<CalendarBloc>()
+            ..add(
+              CalendarEvent.loadMonth(
+                DateTime.now().year,
+                DateTime.now().month,
+              ),
+            ),
+          child: const CalendarView(),
+        ),
       ),
       GoRoute(
         path: '/customers',
@@ -52,9 +58,8 @@ GoRouter createAppRouter({
       ),
       GoRoute(
         path: '/emi',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: shellBuilder(const EmiPageView()),
-        ),
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: shellBuilder(const EmiPageView())),
       ),
       GoRoute(
         path: '/service',
@@ -77,4 +82,3 @@ GoRouter createAppRouter({
     ],
   );
 }
-

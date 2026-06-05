@@ -44,7 +44,11 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                 SizedBox(width: 8),
                 Text(
                   'Add Expense',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF003366)),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF003366),
+                  ),
                 ),
               ],
             ),
@@ -54,7 +58,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
               decoration: InputDecoration(
                 labelText: 'Reason',
                 hintText: 'Enter expense reason...',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 prefixIcon: const Icon(Icons.note_alt_outlined),
               ),
               textCapitalization: TextCapitalization.sentences,
@@ -66,7 +72,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
               decoration: InputDecoration(
                 labelText: 'Amount',
                 hintText: 'Enter amount...',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 prefixIcon: const Icon(Icons.currency_rupee),
               ),
               keyboardType: TextInputType.number,
@@ -79,7 +87,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                     onPressed: () => Navigator.of(context).pop(),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                     child: const Text('Cancel'),
                   ),
@@ -92,10 +102,19 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                       backgroundColor: const Color(0xFF003366),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                     child: _saving
-                        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
                         : const Text('Save'),
                   ),
                 ),
@@ -130,9 +149,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
     await ExpenseDatabase.addExpense(reason, amount);
     if (mounted) {
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Expense saved!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Expense saved!')));
     }
   }
 }
@@ -162,9 +181,7 @@ class ViewExpensesDialog extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              decoration: const BoxDecoration(
-                color: Color(0xFF003366),
-              ),
+              decoration: const BoxDecoration(color: Color(0xFF003366)),
               child: Row(
                 children: [
                   const Icon(Icons.receipt_long, color: Colors.white, size: 22),
@@ -172,11 +189,19 @@ class ViewExpensesDialog extends StatelessWidget {
                   const Expanded(
                     child: Text(
                       'Recent Expenses',
-                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white, size: 20),
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     onPressed: () => Navigator.of(context).pop(),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -203,11 +228,24 @@ class ViewExpensesDialog extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.receipt_long, size: 48, color: Colors.grey.shade300),
+                          Icon(
+                            Icons.receipt_long,
+                            size: 48,
+                            color: Colors.grey.shade300,
+                          ),
                           const SizedBox(height: 12),
-                          Text('No expenses recorded', style: TextStyle(color: Colors.grey.shade500)),
+                          Text(
+                            'No expenses recorded',
+                            style: TextStyle(color: Colors.grey.shade500),
+                          ),
                           const SizedBox(height: 4),
-                          Text('Expenses auto-delete after 15 days', style: TextStyle(color: Colors.grey.shade400, fontSize: 12)),
+                          Text(
+                            'Expenses auto-delete after 15 days',
+                            style: TextStyle(
+                              color: Colors.grey.shade400,
+                              fontSize: 12,
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -225,13 +263,29 @@ class ViewExpensesDialog extends StatelessWidget {
                       // Total
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
                         color: const Color(0xFFF0F4FF),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Total (${expenses.length} entries)', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
-                            Text('₹${total.toStringAsFixed(0)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF003366))),
+                            Text(
+                              'Total (${expenses.length} entries)',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              '₹${total.toStringAsFixed(0)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Color(0xFF003366),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -241,12 +295,19 @@ class ViewExpensesDialog extends StatelessWidget {
                           shrinkWrap: true,
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           itemCount: expenses.length,
-                          separatorBuilder: (_, __) => const Divider(height: 1, indent: 16, endIndent: 16),
+                          separatorBuilder: (_, __) => const Divider(
+                            height: 1,
+                            indent: 16,
+                            endIndent: 16,
+                          ),
                           itemBuilder: (context, index) {
                             final expense = expenses[index];
                             final reason = expense['reason'] as String;
-                            final amount = (expense['amount'] as num).toDouble();
-                            final createdAt = DateTime.tryParse(expense['created_at'] as String);
+                            final amount = (expense['amount'] as num)
+                                .toDouble();
+                            final createdAt = DateTime.tryParse(
+                              expense['created_at'] as String,
+                            );
                             final dateStr = createdAt != null
                                 ? '${createdAt.day}/${createdAt.month}/${createdAt.year}'
                                 : '';
@@ -256,14 +317,31 @@ class ViewExpensesDialog extends StatelessWidget {
 
                             return ListTile(
                               dense: true,
-                              title: Text(reason, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                              title: Text(
+                                reason,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                ),
+                              ),
                               subtitle: Text(
-                                daysAgo == 0 ? 'Today' : daysAgo == 1 ? 'Yesterday' : '$daysAgo days ago · $dateStr',
-                                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                                daysAgo == 0
+                                    ? 'Today'
+                                    : daysAgo == 1
+                                    ? 'Yesterday'
+                                    : '$daysAgo days ago · $dateStr',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
                               trailing: Text(
                                 '₹${amount.toStringAsFixed(0)}',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF003366)),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Color(0xFF003366),
+                                ),
                               ),
                             );
                           },

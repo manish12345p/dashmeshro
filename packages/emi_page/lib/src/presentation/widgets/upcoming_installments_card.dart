@@ -6,10 +6,7 @@ import '../../domain/entities/emi_dashboard_data.dart';
 class UpcomingInstallmentsCard extends StatelessWidget {
   final List<RecentlyPaidInstallment> installments;
 
-  const UpcomingInstallmentsCard({
-    super.key,
-    required this.installments,
-  });
+  const UpcomingInstallmentsCard({super.key, required this.installments});
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +80,7 @@ class UpcomingInstallmentsCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.greenAccent,
-                      ),
+                      Icon(Icons.check_circle, color: Colors.greenAccent),
                     ],
                   ),
                 );

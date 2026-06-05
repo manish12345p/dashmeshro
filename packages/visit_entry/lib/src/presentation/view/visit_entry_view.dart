@@ -141,7 +141,8 @@ class VisitEntryView extends StatelessWidget {
                     delegate: SliverChildListDelegate([
                       SizedBox(height: 8),
                       // Show pre-filled customer info OR customer selector
-                      if (initialCustomerId != null && initialCustomerName != null)
+                      if (initialCustomerId != null &&
+                          initialCustomerName != null)
                         _buildPrefilledCustomerCard(context)
                       else
                         const CustomerSelectorWidget(),
@@ -189,7 +190,11 @@ class VisitEntryView extends StatelessWidget {
                 color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(Icons.person_rounded, color: context.colors.primary, size: 24),
+              child: Icon(
+                Icons.person_rounded,
+                color: context.colors.primary,
+                size: 24,
+              ),
             ),
             SizedBox(width: 14),
             Expanded(
@@ -241,15 +246,17 @@ class VisitEntryView extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 20, 20),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        MediaQuery.of(context).padding.top + 12,
+        20,
+        20,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            context.colors.primaryDark,
-            context.colors.primary,
-          ],
+          colors: [context.colors.primaryDark, context.colors.primary],
         ),
       ),
       child: Column(
@@ -273,7 +280,7 @@ class VisitEntryView extends StatelessWidget {
                     )
                   else
                     SizedBox(width: 20),
-                  
+
                   // Profile avatar removed as requested
                   SizedBox(width: 32),
                 ],

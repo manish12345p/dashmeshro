@@ -7,59 +7,78 @@ class CalendarRepository implements ICalendarRepository {
   final FirebaseFirestore _firestore;
 
   CalendarRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Stream<List<ScheduleItem>> getSchedulesForMonth(int year, int month) {
-    return _firestore.collection('Customer').snapshots().asyncMap((customersSnap) async {
-      final items = <ScheduleItem>[];
-      
-      for (var customerDoc in customersSnap.docs) {
-        final customerData = customerDoc.data();
-        final customerName = customerData['name'] as String? ?? 'Unknown';
-        final customerAddress = customerData['address'] as String? ?? '';
-        
-        final servicesSnap = await customerDoc.reference.collection('services').get();
-        
-        for (var doc in servicesSnap.docs) {
-          final data = doc.data();
-          final dateStr = data['serviceDate'] as String? ?? data['service_date'] as String? ?? '';
-          final notifDateStr = data['notificationDate'] as String? ?? '';
-          final serviceType = data['serviceType'] as String? ?? data['service_type'] as String? ?? 'General';
-          
-          DateTime? serviceDate;
-          try {
-            if (dateStr.isNotEmpty) serviceDate = DateTime.parse(dateStr);
-          } catch (_) {}
-          
-          DateTime? notifDate;
-          try {
-            if (notifDateStr.isNotEmpty) notifDate = DateTime.parse(notifDateStr);
-          } catch (_) {}
+    return _firestore
+        .collection('Customer')
+        .snapshots()
+        .asyncMap((customersSnap) async {
+          final items = <ScheduleItem>[];
 
-          // Only show card on notification date (2 months after service)
-          // Service date is when the work was done, notification date is the follow-up date
-          if (notifDate != null && notifDate.year == year && notifDate.month == month) {
-            items.add(ScheduleItem(
-              id: doc.id,
-              name: customerName,
-              machineId: customerAddress.isNotEmpty ? customerAddress : (data['machine_id'] as String? ?? 'N/A'),
-              time: 'Upcoming',
-              category: serviceType,
-              badgeLabel: serviceType.toUpperCase(),
-              status: data['status'] as String? ?? 'pending',
-              date: notifDate,
-              phone: customerData['number'] as String? ?? '',
-              customerId: customerDoc.id,
-              isDismissed: data['isDismissed'] as bool? ?? false,
-            ));
+          for (var customerDoc in customersSnap.docs) {
+            final customerData = customerDoc.data();
+            final customerName = customerData['name'] as String? ?? 'Unknown';
+            final customerAddress = customerData['address'] as String? ?? '';
+
+            final servicesSnap = await customerDoc.reference
+                .collection('services')
+                .get();
+
+            for (var doc in servicesSnap.docs) {
+              final data = doc.data();
+              final dateStr =
+                  data['serviceDate'] as String? ??
+                  data['service_date'] as String? ??
+                  '';
+              final notifDateStr = data['notificationDate'] as String? ?? '';
+              final serviceType =
+                  data['serviceType'] as String? ??
+                  data['service_type'] as String? ??
+                  'General';
+
+              DateTime? serviceDate;
+              try {
+                if (dateStr.isNotEmpty) serviceDate = DateTime.parse(dateStr);
+              } catch (_) {}
+
+              DateTime? notifDate;
+              try {
+                if (notifDateStr.isNotEmpty)
+                  notifDate = DateTime.parse(notifDateStr);
+              } catch (_) {}
+
+              // Only show card on notification date (2 months after service)
+              // Service date is when the work was done, notification date is the follow-up date
+              if (notifDate != null &&
+                  notifDate.year == year &&
+                  notifDate.month == month) {
+                items.add(
+                  ScheduleItem(
+                    id: doc.id,
+                    name: customerName,
+                    machineId: customerAddress.isNotEmpty
+                        ? customerAddress
+                        : (data['machine_id'] as String? ?? 'N/A'),
+                    time: 'Upcoming',
+                    category: serviceType,
+                    badgeLabel: serviceType.toUpperCase(),
+                    status: data['status'] as String? ?? 'pending',
+                    date: notifDate,
+                    phone: customerData['number'] as String? ?? '',
+                    customerId: customerDoc.id,
+                    isDismissed: data['isDismissed'] as bool? ?? false,
+                  ),
+                );
+              }
+            }
           }
-        }
-      }
-      return items;
-    }).handleError((error) {
-      print('Firestore error in getSchedulesForMonth: $error');
-      return <ScheduleItem>[];
-    });
+          return items;
+        })
+        .handleError((error) {
+          print('Firestore error in getSchedulesForMonth: $error');
+          return <ScheduleItem>[];
+        });
   }
 }

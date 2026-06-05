@@ -235,33 +235,61 @@ class HomeData with _$HomeData {
       activeRentals: map['activeRentals'] as int? ?? 0,
       activeAmcs: map['activeAmcs'] as int? ?? 0,
       totalServices: map['totalServices'] as int? ?? 0,
-      totalCollectedThisMonth: (map['totalCollectedThisMonth'] as num?)?.toDouble() ?? 0.0,
+      totalCollectedThisMonth:
+          (map['totalCollectedThisMonth'] as num?)?.toDouble() ?? 0.0,
       amcServices: map['amcServices'] as int? ?? 0,
       newRoServices: map['newRoServices'] as int? ?? 0,
       repairServices: map['repairServices'] as int? ?? 0,
       resolutionRatePercent: map['resolutionRatePercent'] as int? ?? 0,
       pendingComplaintsCount: map['pendingComplaintsCount'] as int? ?? 0,
-      todaySchedules: (map['todaySchedules'] as List<dynamic>?)
-              ?.map((e) => ScheduleItem.fromMap(Map<String, dynamic>.from(e as Map)))
+      todaySchedules:
+          (map['todaySchedules'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    ScheduleItem.fromMap(Map<String, dynamic>.from(e as Map)),
+              )
               .toList() ??
           const [],
-      pendingComplaints: (map['pendingComplaints'] as List<dynamic>?)
-              ?.map((e) => ComplaintItem.fromMap(Map<String, dynamic>.from(e as Map)))
+      pendingComplaints:
+          (map['pendingComplaints'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    ComplaintItem.fromMap(Map<String, dynamic>.from(e as Map)),
+              )
               .toList() ??
           const [],
-      amcProgresses: (map['amcProgresses'] as List<dynamic>?)
-              ?.map((e) => AmcProgress.fromMap(Map<String, dynamic>.from(e as Map)))
+      amcProgresses:
+          (map['amcProgresses'] as List<dynamic>?)
+              ?.map(
+                (e) => AmcProgress.fromMap(Map<String, dynamic>.from(e as Map)),
+              )
               .toList() ??
           const [],
-      todayNotifications: (map['todayNotifications'] as List?)
-          ?.map((e) => NotificationItem.fromMap(Map<String, dynamic>.from(e as Map)))
-          .toList() ?? [],
-      expiringItems: (map['expiringItems'] as List?)
-          ?.map((e) => ExpiryItem.fromMap(Map<String, dynamic>.from(e as Map)))
-          .toList() ?? [],
-      pendingPayments: (map['pendingPayments'] as List?)
-          ?.map((e) => PendingPaymentItem.fromMap(Map<String, dynamic>.from(e as Map)))
-          .toList() ?? [],
+      todayNotifications:
+          (map['todayNotifications'] as List?)
+              ?.map(
+                (e) => NotificationItem.fromMap(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              )
+              .toList() ??
+          [],
+      expiringItems:
+          (map['expiringItems'] as List?)
+              ?.map(
+                (e) => ExpiryItem.fromMap(Map<String, dynamic>.from(e as Map)),
+              )
+              .toList() ??
+          [],
+      pendingPayments:
+          (map['pendingPayments'] as List?)
+              ?.map(
+                (e) => PendingPaymentItem.fromMap(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              )
+              .toList() ??
+          [],
       todaySellsSummary: map['todaySellsSummary'] as int? ?? 0,
       weekSellsSummary: map['weekSellsSummary'] as int? ?? 0,
       projectedGrowth: map['projectedGrowth'] as String? ?? '',

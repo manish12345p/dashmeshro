@@ -9,7 +9,6 @@ class EmiHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         // EMI Title Area
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
