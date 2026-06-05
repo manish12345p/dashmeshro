@@ -389,6 +389,10 @@ mixin _$Customer {
   String get customerValue => throw _privateConstructorUsedError;
   int get openTickets => throw _privateConstructorUsedError;
   List<ServiceActivity> get serviceHistory =>
+      throw _privateConstructorUsedError; // Rent support
+  bool get isRentCustomer => throw _privateConstructorUsedError;
+  double get rentAmount => throw _privateConstructorUsedError;
+  int get rentDueDay =>
       throw _privateConstructorUsedError; // Soft delete support
   bool get isDeleted => throw _privateConstructorUsedError;
   String? get deletedAt => throw _privateConstructorUsedError;
@@ -432,6 +436,9 @@ abstract class $CustomerCopyWith<$Res> {
     String customerValue,
     int openTickets,
     List<ServiceActivity> serviceHistory,
+    bool isRentCustomer,
+    double rentAmount,
+    int rentDueDay,
     bool isDeleted,
     String? deletedAt,
     String? deletedBy,
@@ -475,6 +482,9 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
     Object? customerValue = null,
     Object? openTickets = null,
     Object? serviceHistory = null,
+    Object? isRentCustomer = null,
+    Object? rentAmount = null,
+    Object? rentDueDay = null,
     Object? isDeleted = null,
     Object? deletedAt = freezed,
     Object? deletedBy = freezed,
@@ -569,6 +579,18 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
                 ? _value.serviceHistory
                 : serviceHistory // ignore: cast_nullable_to_non_nullable
                       as List<ServiceActivity>,
+            isRentCustomer: null == isRentCustomer
+                ? _value.isRentCustomer
+                : isRentCustomer // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            rentAmount: null == rentAmount
+                ? _value.rentAmount
+                : rentAmount // ignore: cast_nullable_to_non_nullable
+                      as double,
+            rentDueDay: null == rentDueDay
+                ? _value.rentDueDay
+                : rentDueDay // ignore: cast_nullable_to_non_nullable
+                      as int,
             isDeleted: null == isDeleted
                 ? _value.isDeleted
                 : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -619,6 +641,9 @@ abstract class _$$CustomerImplCopyWith<$Res>
     String customerValue,
     int openTickets,
     List<ServiceActivity> serviceHistory,
+    bool isRentCustomer,
+    double rentAmount,
+    int rentDueDay,
     bool isDeleted,
     String? deletedAt,
     String? deletedBy,
@@ -661,6 +686,9 @@ class __$$CustomerImplCopyWithImpl<$Res>
     Object? customerValue = null,
     Object? openTickets = null,
     Object? serviceHistory = null,
+    Object? isRentCustomer = null,
+    Object? rentAmount = null,
+    Object? rentDueDay = null,
     Object? isDeleted = null,
     Object? deletedAt = freezed,
     Object? deletedBy = freezed,
@@ -755,6 +783,18 @@ class __$$CustomerImplCopyWithImpl<$Res>
             ? _value._serviceHistory
             : serviceHistory // ignore: cast_nullable_to_non_nullable
                   as List<ServiceActivity>,
+        isRentCustomer: null == isRentCustomer
+            ? _value.isRentCustomer
+            : isRentCustomer // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        rentAmount: null == rentAmount
+            ? _value.rentAmount
+            : rentAmount // ignore: cast_nullable_to_non_nullable
+                  as double,
+        rentDueDay: null == rentDueDay
+            ? _value.rentDueDay
+            : rentDueDay // ignore: cast_nullable_to_non_nullable
+                  as int,
         isDeleted: null == isDeleted
             ? _value.isDeleted
             : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -798,6 +838,9 @@ class _$CustomerImpl extends _Customer {
     this.customerValue = '',
     this.openTickets = 0,
     final List<ServiceActivity> serviceHistory = const [],
+    this.isRentCustomer = false,
+    this.rentAmount = 0.0,
+    this.rentDueDay = 1,
     this.isDeleted = false,
     this.deletedAt,
     this.deletedBy,
@@ -875,6 +918,16 @@ class _$CustomerImpl extends _Customer {
     return EqualUnmodifiableListView(_serviceHistory);
   }
 
+  // Rent support
+  @override
+  @JsonKey()
+  final bool isRentCustomer;
+  @override
+  @JsonKey()
+  final double rentAmount;
+  @override
+  @JsonKey()
+  final int rentDueDay;
   // Soft delete support
   @override
   @JsonKey()
@@ -886,7 +939,7 @@ class _$CustomerImpl extends _Customer {
 
   @override
   String toString() {
-    return 'Customer(id: $id, name: $name, customerId: $customerId, number: $number, email: $email, address: $address, locality: $locality, roType: $roType, note: $note, role: $role, status: $status, customerType: $customerType, avatarUrl: $avatarUrl, deviceName: $deviceName, deviceInstalledOn: $deviceInstalledOn, deviceLastService: $deviceLastService, deviceFilterHealth: $deviceFilterHealth, totalVisits: $totalVisits, activeAmc: $activeAmc, customerValue: $customerValue, openTickets: $openTickets, serviceHistory: $serviceHistory, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
+    return 'Customer(id: $id, name: $name, customerId: $customerId, number: $number, email: $email, address: $address, locality: $locality, roType: $roType, note: $note, role: $role, status: $status, customerType: $customerType, avatarUrl: $avatarUrl, deviceName: $deviceName, deviceInstalledOn: $deviceInstalledOn, deviceLastService: $deviceLastService, deviceFilterHealth: $deviceFilterHealth, totalVisits: $totalVisits, activeAmc: $activeAmc, customerValue: $customerValue, openTickets: $openTickets, serviceHistory: $serviceHistory, isRentCustomer: $isRentCustomer, rentAmount: $rentAmount, rentDueDay: $rentDueDay, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
   }
 
   @override
@@ -931,6 +984,12 @@ class _$CustomerImpl extends _Customer {
               other._serviceHistory,
               _serviceHistory,
             ) &&
+            (identical(other.isRentCustomer, isRentCustomer) ||
+                other.isRentCustomer == isRentCustomer) &&
+            (identical(other.rentAmount, rentAmount) ||
+                other.rentAmount == rentAmount) &&
+            (identical(other.rentDueDay, rentDueDay) ||
+                other.rentDueDay == rentDueDay) &&
             (identical(other.isDeleted, isDeleted) ||
                 other.isDeleted == isDeleted) &&
             (identical(other.deletedAt, deletedAt) ||
@@ -965,6 +1024,9 @@ class _$CustomerImpl extends _Customer {
     customerValue,
     openTickets,
     const DeepCollectionEquality().hash(_serviceHistory),
+    isRentCustomer,
+    rentAmount,
+    rentDueDay,
     isDeleted,
     deletedAt,
     deletedBy,
@@ -1008,6 +1070,9 @@ abstract class _Customer extends Customer {
     final String customerValue,
     final int openTickets,
     final List<ServiceActivity> serviceHistory,
+    final bool isRentCustomer,
+    final double rentAmount,
+    final int rentDueDay,
     final bool isDeleted,
     final String? deletedAt,
     final String? deletedBy,
@@ -1060,7 +1125,13 @@ abstract class _Customer extends Customer {
   @override
   int get openTickets;
   @override
-  List<ServiceActivity> get serviceHistory; // Soft delete support
+  List<ServiceActivity> get serviceHistory; // Rent support
+  @override
+  bool get isRentCustomer;
+  @override
+  double get rentAmount;
+  @override
+  int get rentDueDay; // Soft delete support
   @override
   bool get isDeleted;
   @override

@@ -92,7 +92,7 @@ class NewClientActionButtons extends StatelessWidget {
                 SizedBox(width: 14),
                 Expanded(
                   child: Text(
-                    'Create Visit Entry',
+                    'Save and Create Visit Entry',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: context.colors.textPrimary,
@@ -105,18 +105,6 @@ class NewClientActionButtons extends StatelessWidget {
                   size: 20,
                 ),
               ],
-            ),
-          ),
-        ),
-        SizedBox(height: 8),
-        Center(
-          child: Text(
-            'QUICK SHORTCUT FOR RECURRING CLIENTS',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: context.colors.textTertiary,
-              letterSpacing: 1.2,
-              fontWeight: FontWeight.w600,
-              fontSize: 10,
             ),
           ),
         ),

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../widgets/new_client_header_bar.dart';
 import '../widgets/new_client_form_card.dart';
 import '../widgets/new_client_action_buttons.dart';
-import '../widgets/new_client_info_cards.dart';
 import '../widgets/ro_type_dropdown.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/customer.dart';
@@ -402,10 +401,6 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
                       );
                     },
                   ),
-                  SizedBox(height: 28),
-
-                  // Info Cards
-                  const NewClientInfoCards(),
                 ],
               ),
             ),

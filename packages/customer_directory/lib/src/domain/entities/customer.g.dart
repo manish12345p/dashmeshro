@@ -63,6 +63,9 @@ _$CustomerImpl _$$CustomerImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => ServiceActivity.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isRentCustomer: json['isRentCustomer'] as bool? ?? false,
+      rentAmount: (json['rentAmount'] as num?)?.toDouble() ?? 0.0,
+      rentDueDay: (json['rentDueDay'] as num?)?.toInt() ?? 1,
       isDeleted: json['isDeleted'] as bool? ?? false,
       deletedAt: json['deletedAt'] as String?,
       deletedBy: json['deletedBy'] as String?,
@@ -92,6 +95,9 @@ Map<String, dynamic> _$$CustomerImplToJson(_$CustomerImpl instance) =>
       'customerValue': instance.customerValue,
       'openTickets': instance.openTickets,
       'serviceHistory': instance.serviceHistory,
+      'isRentCustomer': instance.isRentCustomer,
+      'rentAmount': instance.rentAmount,
+      'rentDueDay': instance.rentDueDay,
       'isDeleted': instance.isDeleted,
       'deletedAt': instance.deletedAt,
       'deletedBy': instance.deletedBy,
