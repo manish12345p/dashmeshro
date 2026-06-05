@@ -82,7 +82,7 @@ class _HomeContent extends StatelessWidget {
                           GestureDetector(
                             onTap: () => ViewExpensesDialog.show(context),
                             child: Icon(
-                              Icons.waves,
+                              Icons.edit_document,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
