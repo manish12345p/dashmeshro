@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../domain/entities/schedule_item.dart';
@@ -38,9 +39,11 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
       margin: const EdgeInsets.only(bottom: 0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade300),
+        side: BorderSide(color: context.colors.border),
       ),
-      color: isDismissed ? Colors.grey.shade200 : Colors.grey.shade50,
+      color: isDismissed
+          ? context.colors.surfaceSecondary
+          : context.colors.surface,
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Row(
@@ -52,7 +55,7 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
               height: 24,
               child: Checkbox(
                 value: isDismissed,
-                activeColor: Colors.grey,
+                activeColor: context.colors.textSecondary,
                 onChanged: (val) {
                   setState(() {
                     isDismissed = val ?? false;
@@ -85,8 +88,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                           ? TextDecoration.lineThrough
                           : null,
                       color: isDismissed
-                          ? Colors.grey.shade500
-                          : Colors.black87,
+                          ? context.colors.textSecondary
+                          : context.colors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -96,8 +99,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                         Icons.build_circle_outlined,
                         size: 14,
                         color: isDismissed
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade600,
+                            ? context.colors.textTertiary
+                            : context.colors.textSecondary,
                       ),
                       const SizedBox(width: 4),
                       Expanded(
@@ -106,8 +109,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                           style: TextStyle(
                             fontSize: 12,
                             color: isDismissed
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade700,
+                                ? context.colors.textTertiary
+                                : context.colors.textSecondary,
                           ),
                         ),
                       ),
@@ -122,8 +125,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                           Icons.location_on_outlined,
                           size: 14,
                           color: isDismissed
-                              ? Colors.grey.shade400
-                              : Colors.grey.shade600,
+                              ? context.colors.textTertiary
+                              : context.colors.textSecondary,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -132,8 +135,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                             style: TextStyle(
                               fontSize: 12,
                               color: isDismissed
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600,
+                                  ? context.colors.textTertiary
+                                  : context.colors.textSecondary,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -150,8 +153,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                           Icons.phone_outlined,
                           size: 14,
                           color: isDismissed
-                              ? Colors.grey.shade400
-                              : Colors.grey.shade600,
+                              ? context.colors.textTertiary
+                              : context.colors.textSecondary,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -160,8 +163,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                             style: TextStyle(
                               fontSize: 12,
                               color: isDismissed
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600,
+                                  ? context.colors.textTertiary
+                                  : context.colors.textSecondary,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -181,8 +184,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                     icon: Icon(
                       Icons.chat_bubble_outline,
                       color: isDismissed
-                          ? Colors.grey.shade400
-                          : Colors.green.shade600,
+                          ? context.colors.textTertiary
+                          : context.colors.success,
                       size: 20,
                     ),
                     onPressed: isDismissed
@@ -229,8 +232,8 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: isDismissed
-                          ? Colors.grey.shade400
-                          : Colors.blue.shade600,
+                          ? context.colors.textTertiary
+                          : context.colors.primary,
                     ),
                   ),
                 ),

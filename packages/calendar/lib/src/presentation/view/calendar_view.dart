@@ -39,7 +39,7 @@ class _CalendarViewState extends State<CalendarView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: context.colors.background,
 
       body: SafeArea(
         child: BlocBuilder<CalendarBloc, CalendarState>(
@@ -80,9 +80,9 @@ class _CalendarViewState extends State<CalendarView> {
                         Row(
                           children: [
                             IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back,
-                                color: Colors.black87,
+                                color: context.colors.textPrimary,
                               ),
                               onPressed: () {
                                 if (context.canPop()) {
@@ -93,12 +93,12 @@ class _CalendarViewState extends State<CalendarView> {
                               },
                             ),
                             const SizedBox(width: AppPadding.p4),
-                            const Text(
+                            Text(
                               'Dashmesh Mechanix',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black87,
+                                color: context.colors.textPrimary,
                               ),
                             ),
                           ],
@@ -112,12 +112,12 @@ class _CalendarViewState extends State<CalendarView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Service\nSchedule',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF003366),
+                            color: context.colors.primaryDark,
                             height: 1.15,
                           ),
                         ),
@@ -127,11 +127,13 @@ class _CalendarViewState extends State<CalendarView> {
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: context.colors.surface,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
+                                color: context.colors.textSecondary.withValues(
+                                  alpha: 0.05,
+                                ),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -141,25 +143,25 @@ class _CalendarViewState extends State<CalendarView> {
                             children: [
                               GestureDetector(
                                 onTap: () => _changeMonth(-1, context),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.chevron_left,
-                                  color: Color(0xFF00569E),
+                                  color: context.colors.primary,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 '${_getMonthName(_selectedDate.month)} ${_selectedDate.year}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF003366),
+                                  color: context.colors.primaryDark,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               GestureDetector(
                                 onTap: () => _changeMonth(1, context),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.chevron_right,
-                                  color: Color(0xFF00569E),
+                                  color: context.colors.primary,
                                 ),
                               ),
                             ],
@@ -186,13 +188,15 @@ class _CalendarViewState extends State<CalendarView> {
                       child: Container(
                         padding: const EdgeInsets.all(AppPadding.p16),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: context.colors.surface,
                           borderRadius: BorderRadius.circular(
                             AppConstants.borderRadiusLarge,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
+                              color: context.colors.textSecondary.withValues(
+                                alpha: 0.03,
+                              ),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -214,7 +218,7 @@ class _CalendarViewState extends State<CalendarView> {
                               ],
                             ),
                             const SizedBox(height: AppPadding.p12),
-                            const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                            Divider(height: 1, color: context.colors.border),
                             const SizedBox(height: AppPadding.p12),
 
                             // Grid Builder
@@ -227,12 +231,12 @@ class _CalendarViewState extends State<CalendarView> {
                     const SizedBox(height: AppPadding.p24),
 
                     // Scheduled Services Title Area
-                    const Text(
+                    Text(
                       'Scheduled Visits',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF003366),
+                        color: context.colors.primaryDark,
                       ),
                     ),
 
@@ -258,13 +262,13 @@ class _CalendarViewState extends State<CalendarView> {
                               Icon(
                                 Icons.event_busy,
                                 size: 48,
-                                color: Colors.grey.shade300,
+                                color: context.colors.textTertiary,
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'No visits scheduled for this day.',
+                                AppStrings.noVisitsScheduled,
                                 style: TextStyle(
-                                  color: Colors.grey.shade500,
+                                  color: context.colors.textSecondary,
                                   fontSize: 13,
                                 ),
                               ),

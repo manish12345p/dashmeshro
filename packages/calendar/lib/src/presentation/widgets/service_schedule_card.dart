@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:core_ui/core_ui.dart';
 import '../../domain/entities/mock_schedule_item.dart';
 
 class ServiceScheduleCard extends StatelessWidget {
@@ -27,11 +28,11 @@ class ServiceScheduleCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppPadding.p12),
       padding: const EdgeInsets.all(AppPadding.p16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.015),
+            color: context.colors.textSecondary.withValues(alpha: 0.015),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -65,8 +66,8 @@ class ServiceScheduleCard extends StatelessWidget {
               ),
               Text(
                 item.time,
-                style: const TextStyle(
-                  color: Color(0xFF003366),
+                style: TextStyle(
+                  color: context.colors.primaryDark,
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                 ),
@@ -79,10 +80,10 @@ class ServiceScheduleCard extends StatelessWidget {
           // Middle Row: Title (Name)
           Text(
             item.name,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: context.colors.textPrimary,
             ),
           ),
 
@@ -91,11 +92,14 @@ class ServiceScheduleCard extends StatelessWidget {
           // Machine ID
           Text(
             'Machine ID: ${item.machineId}',
-            style: const TextStyle(fontSize: 11, color: Colors.black38),
+            style: TextStyle(
+              fontSize: 11,
+              color: context.colors.textTertiary,
+            ),
           ),
 
           const SizedBox(height: AppPadding.p16),
-          const Divider(height: 1, color: Color(0xFFF1F5F9)),
+          Divider(height: 1, color: context.colors.border),
           const SizedBox(height: AppPadding.p12),
 
           // Bottom Row: Status and Chevron Button
@@ -115,10 +119,10 @@ class ServiceScheduleCard extends StatelessWidget {
                   const SizedBox(width: 6),
                   Text(
                     item.status,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black54,
+                      color: context.colors.textSecondary,
                     ),
                   ),
                 ],
@@ -126,14 +130,14 @@ class ServiceScheduleCard extends StatelessWidget {
               Container(
                 width: 32,
                 height: 32,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF1F5F9),
+                decoration: BoxDecoration(
+                  color: context.colors.border,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_forward,
                   size: 14,
-                  color: Color(0xFF003366),
+                  color: context.colors.primaryDark,
                 ),
               ),
             ],
@@ -143,3 +147,5 @@ class ServiceScheduleCard extends StatelessWidget {
     );
   }
 }
+
+

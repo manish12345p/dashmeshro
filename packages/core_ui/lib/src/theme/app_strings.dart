@@ -93,6 +93,9 @@ class AppStrings {
   static const String selectServiceType = 'Select Service Type';
   static const String commitEntry = 'Commit Entry';
 
+  // Calendar
+  static const String noVisitsScheduled = 'No visits scheduled for this day.';
+
   // Common Errors
   static const String genericError = 'Something went wrong';
 }

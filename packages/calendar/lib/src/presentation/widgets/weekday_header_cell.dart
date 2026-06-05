@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:core_ui/core_ui.dart';
 
 class WeekdayHeaderCell extends StatelessWidget {
   final String text;
@@ -11,10 +12,10 @@ class WeekdayHeaderCell extends StatelessWidget {
       child: Center(
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.bold,
-            color: Colors.black26,
+            color: context.colors.textTertiary,
             letterSpacing: 0.5,
           ),
         ),

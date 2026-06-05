@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:core_ui/core_ui.dart';
 
 class CalendarDayCell extends StatelessWidget {
   final int dayNumber;
@@ -32,9 +33,7 @@ class CalendarDayCell extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: isSelected
-                    ? const Color(0xFF00569E)
-                    : Colors.transparent,
+                color: isSelected ? context.colors.primary : Colors.transparent,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -46,10 +45,10 @@ class CalendarDayCell extends StatelessWidget {
                         ? FontWeight.bold
                         : FontWeight.normal,
                     color: isGreyedOut
-                        ? Colors.black26
+                        ? context.colors.textTertiary
                         : isSelected
                         ? Colors.white
-                        : Colors.black87,
+                        : context.colors.textPrimary,
                   ),
                 ),
               ),
@@ -74,8 +73,8 @@ class CalendarDayCell extends StatelessWidget {
                       width: 3,
                       height: 3,
                       margin: const EdgeInsets.symmetric(horizontal: 1),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF00569E),
+                      decoration: BoxDecoration(
+                        color: context.colors.primary,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -84,8 +83,8 @@ class CalendarDayCell extends StatelessWidget {
                       width: 3,
                       height: 3,
                       margin: const EdgeInsets.symmetric(horizontal: 1),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF27AE60),
+                      decoration: BoxDecoration(
+                        color: context.colors.success,
                         shape: BoxShape.circle,
                       ),
                     ),
