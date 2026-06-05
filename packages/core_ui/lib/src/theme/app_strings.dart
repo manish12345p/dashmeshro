@@ -78,7 +78,6 @@ class AppStrings {
   static const String overdueCustomers = 'Overdue Customers';
   static const String pendingCustomers = 'Pending Customers';
   static const String none = '(None)';
-  static const String none = '(None)';
   static const String confirmPartialPayment = 'Confirm Partial Payment';
   static const String confirm = 'Confirm';
 

@@ -760,6 +760,8 @@ abstract class _$$DismissScheduleImplCopyWith<$Res> {
   ) = __$$DismissScheduleImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ScheduleItem item, bool isDismissed});
+
+  $ScheduleItemCopyWith<$Res> get item;
 }
 
 /// @nodoc
@@ -775,10 +777,10 @@ class __$$DismissScheduleImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? item = freezed, Object? isDismissed = null}) {
+  $Res call({Object? item = null, Object? isDismissed = null}) {
     return _then(
       _$DismissScheduleImpl(
-        freezed == item
+        null == item
             ? _value.item
             : item // ignore: cast_nullable_to_non_nullable
                   as ScheduleItem,
@@ -788,6 +790,16 @@ class __$$DismissScheduleImplCopyWithImpl<$Res>
                   as bool,
       ),
     );
+  }
+
+  /// Create a copy of CalendarEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ScheduleItemCopyWith<$Res> get item {
+    return $ScheduleItemCopyWith<$Res>(_value.item, (value) {
+      return _then(_value.copyWith(item: value));
+    });
   }
 }
 
@@ -811,17 +823,13 @@ class _$DismissScheduleImpl implements DismissSchedule {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DismissScheduleImpl &&
-            const DeepCollectionEquality().equals(other.item, item) &&
+            (identical(other.item, item) || other.item == item) &&
             (identical(other.isDismissed, isDismissed) ||
                 other.isDismissed == isDismissed));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(item),
-    isDismissed,
-  );
+  int get hashCode => Object.hash(runtimeType, item, isDismissed);
 
   /// Create a copy of CalendarEvent
   /// with the given fields replaced by the non-null parameter values.

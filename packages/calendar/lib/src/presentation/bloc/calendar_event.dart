@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../domain/entities/schedule_item.dart';
 
 part 'calendar_event.freezed.dart';
 

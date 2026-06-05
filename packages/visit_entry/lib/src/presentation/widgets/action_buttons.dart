@@ -42,7 +42,9 @@ class ActionButtonsWidget extends StatelessWidget {
                   Text(
                     AppStrings.commitEntry,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black87
+                          : Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -50,7 +52,9 @@ class ActionButtonsWidget extends StatelessWidget {
                   SizedBox(width: 8),
                   Icon(
                     Icons.check_circle,
-                    color: Colors.greenAccent.shade400,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black87
+                        : Colors.greenAccent.shade400,
                     size: 20,
                   ),
                 ],

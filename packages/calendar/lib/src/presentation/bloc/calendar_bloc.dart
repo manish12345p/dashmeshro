@@ -12,7 +12,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   CalendarBloc({
     required GetCalendarSchedulesUseCase getCalendarSchedulesUseCase,
+    required DismissScheduleUseCase dismissScheduleUseCase,
   }) : _getCalendarSchedulesUseCase = getCalendarSchedulesUseCase,
+       _dismissScheduleUseCase = dismissScheduleUseCase,
        super(CalendarState.initial()) {
     on<LoadMonth>(_onLoadMonth);
     on<SelectDate>(_onSelectDate);
@@ -57,8 +59,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           },
         );
 
-    // We await completer to ensure the event doesn't finish immediately,
-    // though for stream listeners in Bloc, returning Future.value() is also common.
     try {
       await completer.future;
     } catch (_) {}
@@ -79,13 +79,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     emit(state.copyWith(searchQuery: event.query));
   }
 
-  @override
-  Future<void> close() {
-    _schedulesSubscription?.cancel();
-    return super.close();
-  }
-}
-
   Future<void> _onDismissSchedule(
     DismissSchedule event,
     Emitter<CalendarState> emit,
@@ -99,3 +92,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     } catch (_) {}
   }
 
+  @override
+  Future<void> close() {
+    _schedulesSubscription?.cancel();
+    return super.close();
+  }
+}

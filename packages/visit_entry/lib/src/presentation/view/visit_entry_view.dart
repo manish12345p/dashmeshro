@@ -253,11 +253,7 @@ class VisitEntryView extends StatelessWidget {
         20,
       ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [context.colors.primaryDark, context.colors.primary],
-        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +270,7 @@ class VisitEntryView extends StatelessWidget {
                       onTap: () => context.go('/'),
                       child: Icon(
                         Icons.arrow_back_ios_rounded,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).iconTheme.color ?? Theme.of(context).textTheme.bodyLarge?.color,
                         size: 20,
                       ),
                     )
@@ -288,7 +284,7 @@ class VisitEntryView extends StatelessWidget {
               Text(
                 AppStrings.emiAppTitle,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,
@@ -301,7 +297,7 @@ class VisitEntryView extends StatelessWidget {
           Text(
             'SERVICE PORTAL',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: Theme.of(context).primaryColor,
               fontSize: 11,
               fontWeight: FontWeight.w600,
               letterSpacing: 2,
@@ -311,7 +307,7 @@ class VisitEntryView extends StatelessWidget {
           Text(
             'New Visit Entry',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 26,
               fontWeight: FontWeight.bold,
               letterSpacing: -0.5,

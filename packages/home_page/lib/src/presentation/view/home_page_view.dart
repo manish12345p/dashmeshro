@@ -88,7 +88,9 @@ class _HomeContent extends StatelessWidget {
                             onTap: () => ViewExpensesDialog.show(context),
                             child: Icon(
                               Icons.edit_document,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Theme.of(context).primaryColor,
                             ),
                           ),
                           const SizedBox(width: AppPadding.p8),
@@ -114,7 +116,7 @@ class _HomeContent extends StatelessWidget {
                                     context.read<ThemeCubit>().toggleTheme(),
                                 child: Icon(
                                   isDark ? Icons.light_mode : Icons.dark_mode,
-                                  color: Theme.of(context).primaryColor,
+                                  color: isDark ? Colors.white : Theme.of(context).primaryColor,
                                   size: 20,
                                 ),
                               );
