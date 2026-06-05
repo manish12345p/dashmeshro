@@ -10,4 +10,5 @@ class EmiEvent with _$EmiEvent {
   const factory EmiEvent.markAsPaid(String installmentId) = MarkAsPaid;
   const factory EmiEvent.addPayment(String installmentId, double amount) =
       AddPayment;
+  const factory EmiEvent.searchInstallments(String query) = SearchInstallments;
 }

@@ -21,6 +21,7 @@ mixin _$EmiState {
   EmiDashboardData? get data => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   String get selectedFilter => throw _privateConstructorUsedError;
+  String get searchQuery => throw _privateConstructorUsedError;
 
   /// Create a copy of EmiState
   /// with the given fields replaced by the non-null parameter values.
@@ -39,6 +40,7 @@ abstract class $EmiStateCopyWith<$Res> {
     EmiDashboardData? data,
     String? errorMessage,
     String selectedFilter,
+    String searchQuery,
   });
 
   $EmiDashboardDataCopyWith<$Res>? get data;
@@ -63,6 +65,7 @@ class _$EmiStateCopyWithImpl<$Res, $Val extends EmiState>
     Object? data = freezed,
     Object? errorMessage = freezed,
     Object? selectedFilter = null,
+    Object? searchQuery = null,
   }) {
     return _then(
       _value.copyWith(
@@ -81,6 +84,10 @@ class _$EmiStateCopyWithImpl<$Res, $Val extends EmiState>
             selectedFilter: null == selectedFilter
                 ? _value.selectedFilter
                 : selectedFilter // ignore: cast_nullable_to_non_nullable
+                      as String,
+            searchQuery: null == searchQuery
+                ? _value.searchQuery
+                : searchQuery // ignore: cast_nullable_to_non_nullable
                       as String,
           )
           as $Val,
@@ -116,6 +123,7 @@ abstract class _$$EmiStateImplCopyWith<$Res>
     EmiDashboardData? data,
     String? errorMessage,
     String selectedFilter,
+    String searchQuery,
   });
 
   @override
@@ -140,6 +148,7 @@ class __$$EmiStateImplCopyWithImpl<$Res>
     Object? data = freezed,
     Object? errorMessage = freezed,
     Object? selectedFilter = null,
+    Object? searchQuery = null,
   }) {
     return _then(
       _$EmiStateImpl(
@@ -159,6 +168,10 @@ class __$$EmiStateImplCopyWithImpl<$Res>
             ? _value.selectedFilter
             : selectedFilter // ignore: cast_nullable_to_non_nullable
                   as String,
+        searchQuery: null == searchQuery
+            ? _value.searchQuery
+            : searchQuery // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -172,6 +185,7 @@ class _$EmiStateImpl implements _EmiState {
     this.data,
     this.errorMessage,
     this.selectedFilter = 'All',
+    this.searchQuery = '',
   });
 
   @override
@@ -184,10 +198,13 @@ class _$EmiStateImpl implements _EmiState {
   @override
   @JsonKey()
   final String selectedFilter;
+  @override
+  @JsonKey()
+  final String searchQuery;
 
   @override
   String toString() {
-    return 'EmiState(status: $status, data: $data, errorMessage: $errorMessage, selectedFilter: $selectedFilter)';
+    return 'EmiState(status: $status, data: $data, errorMessage: $errorMessage, selectedFilter: $selectedFilter, searchQuery: $searchQuery)';
   }
 
   @override
@@ -200,12 +217,20 @@ class _$EmiStateImpl implements _EmiState {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.selectedFilter, selectedFilter) ||
-                other.selectedFilter == selectedFilter));
+                other.selectedFilter == selectedFilter) &&
+            (identical(other.searchQuery, searchQuery) ||
+                other.searchQuery == searchQuery));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, data, errorMessage, selectedFilter);
+  int get hashCode => Object.hash(
+    runtimeType,
+    status,
+    data,
+    errorMessage,
+    selectedFilter,
+    searchQuery,
+  );
 
   /// Create a copy of EmiState
   /// with the given fields replaced by the non-null parameter values.
@@ -222,6 +247,7 @@ abstract class _EmiState implements EmiState {
     final EmiDashboardData? data,
     final String? errorMessage,
     final String selectedFilter,
+    final String searchQuery,
   }) = _$EmiStateImpl;
 
   @override
@@ -232,6 +258,8 @@ abstract class _EmiState implements EmiState {
   String? get errorMessage;
   @override
   String get selectedFilter;
+  @override
+  String get searchQuery;
 
   /// Create a copy of EmiState
   /// with the given fields replaced by the non-null parameter values.

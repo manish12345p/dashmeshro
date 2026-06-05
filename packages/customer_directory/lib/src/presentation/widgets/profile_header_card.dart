@@ -200,7 +200,11 @@ class ProfileHeaderCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.water_drop_outlined, size: 18, color: context.colors.primaryDark),
+        Icon(
+          Icons.water_drop_outlined,
+          size: 18,
+          color: context.colors.primaryDark,
+        ),
         SizedBox(width: 12),
         Expanded(
           child: Wrap(
@@ -216,27 +220,35 @@ class ProfileHeaderCard extends StatelessWidget {
                     height: 1.4,
                   ),
                 ),
-              ...roTypes.map((ro) => Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: context.colors.primaryLight.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: context.colors.primaryLight.withValues(alpha: 0.3)),
+              ...roTypes.map(
+                (ro) => Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: context.colors.primaryLight.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: context.colors.primaryLight.withValues(alpha: 0.3),
                     ),
-                    child: Text(
-                      ro,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: context.colors.primaryDark,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  ),
+                  child: Text(
+                    ro,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: context.colors.primaryDark,
+                      fontWeight: FontWeight.w600,
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
         IconButton(
-          icon: Icon(Icons.add_circle_outline, color: context.colors.primary, size: 20),
+          icon: Icon(
+            Icons.add_circle_outline,
+            color: context.colors.primary,
+            size: 20,
+          ),
           constraints: BoxConstraints(),
           padding: EdgeInsets.zero,
           onPressed: () => _showRoTypeUpdateDialog(context, roTypes),
@@ -245,14 +257,20 @@ class ProfileHeaderCard extends StatelessWidget {
     );
   }
 
-  void _showRoTypeUpdateDialog(BuildContext context, List<String> currentRoTypes) {
+  void _showRoTypeUpdateDialog(
+    BuildContext context,
+    List<String> currentRoTypes,
+  ) {
     String selectedRoType = '';
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text('Update RO Type', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          title: Text(
+            'Update RO Type',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -265,7 +283,10 @@ class ProfileHeaderCard extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 'Do you want to add this to the existing devices, or replace them entirely?',
-                style: TextStyle(fontSize: 12, color: context.colors.textSecondary),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: context.colors.textSecondary,
+                ),
               ),
             ],
           ),
@@ -287,13 +308,19 @@ class ProfileHeaderCard extends StatelessWidget {
                   }
                 }
               },
-              style: ElevatedButton.styleFrom(backgroundColor: context.colors.warning),
-              child: const Text('Replace', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.colors.warning,
+              ),
+              child: const Text(
+                'Replace',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
                 if (selectedRoType.isNotEmpty) {
-                  final newRoTypes = List<String>.from(currentRoTypes)..add(selectedRoType);
+                  final newRoTypes = List<String>.from(currentRoTypes)
+                    ..add(selectedRoType);
                   final newRoTypeString = newRoTypes.join(', ');
                   await FirebaseFirestore.instance
                       .collection('Customer')
@@ -304,8 +331,13 @@ class ProfileHeaderCard extends StatelessWidget {
                   }
                 }
               },
-              style: ElevatedButton.styleFrom(backgroundColor: context.colors.primary),
-              child: const Text('Add Extra', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.colors.primary,
+              ),
+              child: const Text(
+                'Add Extra',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );

@@ -41,7 +41,10 @@ class InstallmentListItem extends StatelessWidget {
             : context.colors.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isOverdue
+          width: installment.isRent ? 1.5 : 1.0,
+          color: installment.isRent
+              ? Colors.deepPurple.shade300
+              : isOverdue
               ? context.colors.info
               : (isFullyPaid || isPaidThisMonth)
               ? context.colors.success

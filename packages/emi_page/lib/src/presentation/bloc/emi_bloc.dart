@@ -17,6 +17,7 @@ class EmiBloc extends Bloc<EmiEvent, EmiState> {
   ) : super(EmiState.initial()) {
     on<LoadDashboard>(_onLoadDashboard);
     on<FilterInstallments>(_onFilterInstallments);
+    on<SearchInstallments>(_onSearchInstallments);
     on<RemindCustomer>(_onRemindCustomer);
     on<MarkAsPaid>(_onMarkAsPaid);
     on<AddPayment>(_onAddPayment);
@@ -39,6 +40,10 @@ class EmiBloc extends Bloc<EmiEvent, EmiState> {
 
   void _onFilterInstallments(FilterInstallments event, Emitter<EmiState> emit) {
     emit(state.copyWith(selectedFilter: event.status));
+  }
+
+  void _onSearchInstallments(SearchInstallments event, Emitter<EmiState> emit) {
+    emit(state.copyWith(searchQuery: event.query));
   }
 
   void _onRemindCustomer(RemindCustomer event, Emitter<EmiState> emit) {

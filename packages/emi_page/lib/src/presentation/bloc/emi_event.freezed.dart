@@ -24,6 +24,7 @@ mixin _$EmiEvent {
     required TResult Function(String customerId) remindCustomer,
     required TResult Function(String installmentId) markAsPaid,
     required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -32,6 +33,7 @@ mixin _$EmiEvent {
     TResult? Function(String customerId)? remindCustomer,
     TResult? Function(String installmentId)? markAsPaid,
     TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -40,6 +42,7 @@ mixin _$EmiEvent {
     TResult Function(String customerId)? remindCustomer,
     TResult Function(String installmentId)? markAsPaid,
     TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -49,6 +52,7 @@ mixin _$EmiEvent {
     required TResult Function(RemindCustomer value) remindCustomer,
     required TResult Function(MarkAsPaid value) markAsPaid,
     required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -57,6 +61,7 @@ mixin _$EmiEvent {
     TResult? Function(RemindCustomer value)? remindCustomer,
     TResult? Function(MarkAsPaid value)? markAsPaid,
     TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -65,6 +70,7 @@ mixin _$EmiEvent {
     TResult Function(RemindCustomer value)? remindCustomer,
     TResult Function(MarkAsPaid value)? markAsPaid,
     TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -137,6 +143,7 @@ class _$LoadDashboardImpl implements LoadDashboard {
     required TResult Function(String customerId) remindCustomer,
     required TResult Function(String installmentId) markAsPaid,
     required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
   }) {
     return loadDashboard();
   }
@@ -149,6 +156,7 @@ class _$LoadDashboardImpl implements LoadDashboard {
     TResult? Function(String customerId)? remindCustomer,
     TResult? Function(String installmentId)? markAsPaid,
     TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
   }) {
     return loadDashboard?.call();
   }
@@ -161,6 +169,7 @@ class _$LoadDashboardImpl implements LoadDashboard {
     TResult Function(String customerId)? remindCustomer,
     TResult Function(String installmentId)? markAsPaid,
     TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
     required TResult orElse(),
   }) {
     if (loadDashboard != null) {
@@ -177,6 +186,7 @@ class _$LoadDashboardImpl implements LoadDashboard {
     required TResult Function(RemindCustomer value) remindCustomer,
     required TResult Function(MarkAsPaid value) markAsPaid,
     required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
   }) {
     return loadDashboard(this);
   }
@@ -189,6 +199,7 @@ class _$LoadDashboardImpl implements LoadDashboard {
     TResult? Function(RemindCustomer value)? remindCustomer,
     TResult? Function(MarkAsPaid value)? markAsPaid,
     TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
   }) {
     return loadDashboard?.call(this);
   }
@@ -201,6 +212,7 @@ class _$LoadDashboardImpl implements LoadDashboard {
     TResult Function(RemindCustomer value)? remindCustomer,
     TResult Function(MarkAsPaid value)? markAsPaid,
     TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
     required TResult orElse(),
   }) {
     if (loadDashboard != null) {
@@ -292,6 +304,7 @@ class _$FilterInstallmentsImpl implements FilterInstallments {
     required TResult Function(String customerId) remindCustomer,
     required TResult Function(String installmentId) markAsPaid,
     required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
   }) {
     return filterInstallments(status);
   }
@@ -304,6 +317,7 @@ class _$FilterInstallmentsImpl implements FilterInstallments {
     TResult? Function(String customerId)? remindCustomer,
     TResult? Function(String installmentId)? markAsPaid,
     TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
   }) {
     return filterInstallments?.call(status);
   }
@@ -316,6 +330,7 @@ class _$FilterInstallmentsImpl implements FilterInstallments {
     TResult Function(String customerId)? remindCustomer,
     TResult Function(String installmentId)? markAsPaid,
     TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
     required TResult orElse(),
   }) {
     if (filterInstallments != null) {
@@ -332,6 +347,7 @@ class _$FilterInstallmentsImpl implements FilterInstallments {
     required TResult Function(RemindCustomer value) remindCustomer,
     required TResult Function(MarkAsPaid value) markAsPaid,
     required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
   }) {
     return filterInstallments(this);
   }
@@ -344,6 +360,7 @@ class _$FilterInstallmentsImpl implements FilterInstallments {
     TResult? Function(RemindCustomer value)? remindCustomer,
     TResult? Function(MarkAsPaid value)? markAsPaid,
     TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
   }) {
     return filterInstallments?.call(this);
   }
@@ -356,6 +373,7 @@ class _$FilterInstallmentsImpl implements FilterInstallments {
     TResult Function(RemindCustomer value)? remindCustomer,
     TResult Function(MarkAsPaid value)? markAsPaid,
     TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
     required TResult orElse(),
   }) {
     if (filterInstallments != null) {
@@ -457,6 +475,7 @@ class _$RemindCustomerImpl implements RemindCustomer {
     required TResult Function(String customerId) remindCustomer,
     required TResult Function(String installmentId) markAsPaid,
     required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
   }) {
     return remindCustomer(customerId);
   }
@@ -469,6 +488,7 @@ class _$RemindCustomerImpl implements RemindCustomer {
     TResult? Function(String customerId)? remindCustomer,
     TResult? Function(String installmentId)? markAsPaid,
     TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
   }) {
     return remindCustomer?.call(customerId);
   }
@@ -481,6 +501,7 @@ class _$RemindCustomerImpl implements RemindCustomer {
     TResult Function(String customerId)? remindCustomer,
     TResult Function(String installmentId)? markAsPaid,
     TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
     required TResult orElse(),
   }) {
     if (remindCustomer != null) {
@@ -497,6 +518,7 @@ class _$RemindCustomerImpl implements RemindCustomer {
     required TResult Function(RemindCustomer value) remindCustomer,
     required TResult Function(MarkAsPaid value) markAsPaid,
     required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
   }) {
     return remindCustomer(this);
   }
@@ -509,6 +531,7 @@ class _$RemindCustomerImpl implements RemindCustomer {
     TResult? Function(RemindCustomer value)? remindCustomer,
     TResult? Function(MarkAsPaid value)? markAsPaid,
     TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
   }) {
     return remindCustomer?.call(this);
   }
@@ -521,6 +544,7 @@ class _$RemindCustomerImpl implements RemindCustomer {
     TResult Function(RemindCustomer value)? remindCustomer,
     TResult Function(MarkAsPaid value)? markAsPaid,
     TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
     required TResult orElse(),
   }) {
     if (remindCustomer != null) {
@@ -618,6 +642,7 @@ class _$MarkAsPaidImpl implements MarkAsPaid {
     required TResult Function(String customerId) remindCustomer,
     required TResult Function(String installmentId) markAsPaid,
     required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
   }) {
     return markAsPaid(installmentId);
   }
@@ -630,6 +655,7 @@ class _$MarkAsPaidImpl implements MarkAsPaid {
     TResult? Function(String customerId)? remindCustomer,
     TResult? Function(String installmentId)? markAsPaid,
     TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
   }) {
     return markAsPaid?.call(installmentId);
   }
@@ -642,6 +668,7 @@ class _$MarkAsPaidImpl implements MarkAsPaid {
     TResult Function(String customerId)? remindCustomer,
     TResult Function(String installmentId)? markAsPaid,
     TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
     required TResult orElse(),
   }) {
     if (markAsPaid != null) {
@@ -658,6 +685,7 @@ class _$MarkAsPaidImpl implements MarkAsPaid {
     required TResult Function(RemindCustomer value) remindCustomer,
     required TResult Function(MarkAsPaid value) markAsPaid,
     required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
   }) {
     return markAsPaid(this);
   }
@@ -670,6 +698,7 @@ class _$MarkAsPaidImpl implements MarkAsPaid {
     TResult? Function(RemindCustomer value)? remindCustomer,
     TResult? Function(MarkAsPaid value)? markAsPaid,
     TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
   }) {
     return markAsPaid?.call(this);
   }
@@ -682,6 +711,7 @@ class _$MarkAsPaidImpl implements MarkAsPaid {
     TResult Function(RemindCustomer value)? remindCustomer,
     TResult Function(MarkAsPaid value)? markAsPaid,
     TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
     required TResult orElse(),
   }) {
     if (markAsPaid != null) {
@@ -786,6 +816,7 @@ class _$AddPaymentImpl implements AddPayment {
     required TResult Function(String customerId) remindCustomer,
     required TResult Function(String installmentId) markAsPaid,
     required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
   }) {
     return addPayment(installmentId, amount);
   }
@@ -798,6 +829,7 @@ class _$AddPaymentImpl implements AddPayment {
     TResult? Function(String customerId)? remindCustomer,
     TResult? Function(String installmentId)? markAsPaid,
     TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
   }) {
     return addPayment?.call(installmentId, amount);
   }
@@ -810,6 +842,7 @@ class _$AddPaymentImpl implements AddPayment {
     TResult Function(String customerId)? remindCustomer,
     TResult Function(String installmentId)? markAsPaid,
     TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
     required TResult orElse(),
   }) {
     if (addPayment != null) {
@@ -826,6 +859,7 @@ class _$AddPaymentImpl implements AddPayment {
     required TResult Function(RemindCustomer value) remindCustomer,
     required TResult Function(MarkAsPaid value) markAsPaid,
     required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
   }) {
     return addPayment(this);
   }
@@ -838,6 +872,7 @@ class _$AddPaymentImpl implements AddPayment {
     TResult? Function(RemindCustomer value)? remindCustomer,
     TResult? Function(MarkAsPaid value)? markAsPaid,
     TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
   }) {
     return addPayment?.call(this);
   }
@@ -850,6 +885,7 @@ class _$AddPaymentImpl implements AddPayment {
     TResult Function(RemindCustomer value)? remindCustomer,
     TResult Function(MarkAsPaid value)? markAsPaid,
     TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
     required TResult orElse(),
   }) {
     if (addPayment != null) {
@@ -870,5 +906,175 @@ abstract class AddPayment implements EmiEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddPaymentImplCopyWith<_$AddPaymentImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SearchInstallmentsImplCopyWith<$Res> {
+  factory _$$SearchInstallmentsImplCopyWith(
+    _$SearchInstallmentsImpl value,
+    $Res Function(_$SearchInstallmentsImpl) then,
+  ) = __$$SearchInstallmentsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String query});
+}
+
+/// @nodoc
+class __$$SearchInstallmentsImplCopyWithImpl<$Res>
+    extends _$EmiEventCopyWithImpl<$Res, _$SearchInstallmentsImpl>
+    implements _$$SearchInstallmentsImplCopyWith<$Res> {
+  __$$SearchInstallmentsImplCopyWithImpl(
+    _$SearchInstallmentsImpl _value,
+    $Res Function(_$SearchInstallmentsImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of EmiEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? query = null}) {
+    return _then(
+      _$SearchInstallmentsImpl(
+        null == query
+            ? _value.query
+            : query // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$SearchInstallmentsImpl implements SearchInstallments {
+  const _$SearchInstallmentsImpl(this.query);
+
+  @override
+  final String query;
+
+  @override
+  String toString() {
+    return 'EmiEvent.searchInstallments(query: $query)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SearchInstallmentsImpl &&
+            (identical(other.query, query) || other.query == query));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, query);
+
+  /// Create a copy of EmiEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SearchInstallmentsImplCopyWith<_$SearchInstallmentsImpl> get copyWith =>
+      __$$SearchInstallmentsImplCopyWithImpl<_$SearchInstallmentsImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadDashboard,
+    required TResult Function(String status) filterInstallments,
+    required TResult Function(String customerId) remindCustomer,
+    required TResult Function(String installmentId) markAsPaid,
+    required TResult Function(String installmentId, double amount) addPayment,
+    required TResult Function(String query) searchInstallments,
+  }) {
+    return searchInstallments(query);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadDashboard,
+    TResult? Function(String status)? filterInstallments,
+    TResult? Function(String customerId)? remindCustomer,
+    TResult? Function(String installmentId)? markAsPaid,
+    TResult? Function(String installmentId, double amount)? addPayment,
+    TResult? Function(String query)? searchInstallments,
+  }) {
+    return searchInstallments?.call(query);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadDashboard,
+    TResult Function(String status)? filterInstallments,
+    TResult Function(String customerId)? remindCustomer,
+    TResult Function(String installmentId)? markAsPaid,
+    TResult Function(String installmentId, double amount)? addPayment,
+    TResult Function(String query)? searchInstallments,
+    required TResult orElse(),
+  }) {
+    if (searchInstallments != null) {
+      return searchInstallments(query);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadDashboard value) loadDashboard,
+    required TResult Function(FilterInstallments value) filterInstallments,
+    required TResult Function(RemindCustomer value) remindCustomer,
+    required TResult Function(MarkAsPaid value) markAsPaid,
+    required TResult Function(AddPayment value) addPayment,
+    required TResult Function(SearchInstallments value) searchInstallments,
+  }) {
+    return searchInstallments(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadDashboard value)? loadDashboard,
+    TResult? Function(FilterInstallments value)? filterInstallments,
+    TResult? Function(RemindCustomer value)? remindCustomer,
+    TResult? Function(MarkAsPaid value)? markAsPaid,
+    TResult? Function(AddPayment value)? addPayment,
+    TResult? Function(SearchInstallments value)? searchInstallments,
+  }) {
+    return searchInstallments?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadDashboard value)? loadDashboard,
+    TResult Function(FilterInstallments value)? filterInstallments,
+    TResult Function(RemindCustomer value)? remindCustomer,
+    TResult Function(MarkAsPaid value)? markAsPaid,
+    TResult Function(AddPayment value)? addPayment,
+    TResult Function(SearchInstallments value)? searchInstallments,
+    required TResult orElse(),
+  }) {
+    if (searchInstallments != null) {
+      return searchInstallments(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SearchInstallments implements EmiEvent {
+  const factory SearchInstallments(final String query) =
+      _$SearchInstallmentsImpl;
+
+  String get query;
+
+  /// Create a copy of EmiEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SearchInstallmentsImplCopyWith<_$SearchInstallmentsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

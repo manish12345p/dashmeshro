@@ -94,8 +94,9 @@ class HomeRepository implements IHomeRepository {
 
           double totalCollectedThisMonth = 0.0;
 
-          // Fetch services for each customer
+          // Fetch services and installments for each customer
           List<Map<String, dynamic>> allServices = [];
+          List<Map<String, dynamic>> allInstallments = [];
           Map<String, Map<String, dynamic>> customerDataById = {};
           for (var doc in customersSnap.docs) {
             customerDataById[doc.id] = doc.data() as Map<String, dynamic>;
@@ -108,11 +109,58 @@ class HomeRepository implements IHomeRepository {
               sdata['_serviceDocId'] = sdoc.id;
               allServices.add(sdata);
             }
+
+            final installmentsSnap = await doc.reference
+                .collection('installments')
+                .get();
+            for (var idoc in installmentsSnap.docs) {
+              final idata = idoc.data();
+              idata['_customerId'] = doc.id;
+              idata['_installmentDocId'] = idoc.id;
+              allInstallments.add(idata);
+            }
           }
 
           List<NotificationItem> todayNotifications = [];
           List<ExpiryItem> expiringItems = [];
           List<PendingPaymentItem> pendingPayments = [];
+
+          // Process Rent installments for notifications
+          for (var idata in allInstallments) {
+            final isRent = idata['isRent'] as bool? ?? false;
+            final status = idata['status'] as String? ?? 'pending';
+            final dueDateStr = idata['dueDate'] as String? ?? '';
+            final custId = idata['_customerId'] as String? ?? '';
+            final custData = customerDataById[custId];
+            final customerName = custData?['name'] as String? ?? 'Unknown';
+            final phone = custData?['number'] as String? ?? '';
+
+            if (isRent && (status == 'pending' || status == 'overdue')) {
+              if (dueDateStr.isNotEmpty) {
+                try {
+                  final dueDate = DateTime.parse(dueDateStr);
+                  // If due date is today or earlier in the current month, show notification
+                  if (dueDate.year == now.year &&
+                      dueDate.month == now.month &&
+                      (dueDate.isBefore(now) ||
+                          dueDateStr.startsWith(todayStr))) {
+                    todayNotifications.add(
+                      NotificationItem(
+                        customerName: customerName,
+                        customerId: custId,
+                        address: custData?['address'] as String? ?? '',
+                        serviceType: 'Rent Due',
+                        serviceId: idata['_installmentDocId'] as String? ?? '',
+                        notificationDate: dueDateStr,
+                        isDismissed: false,
+                        phone: phone,
+                      ),
+                    );
+                  }
+                } catch (_) {}
+              }
+            }
+          }
 
           for (var data in allServices) {
             final type =

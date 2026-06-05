@@ -12,6 +12,7 @@ class EmiState with _$EmiState {
     EmiDashboardData? data,
     String? errorMessage,
     @Default('All') String selectedFilter,
+    @Default('') String searchQuery,
   }) = _EmiState;
 
   factory EmiState.initial() => const EmiState();

@@ -96,6 +96,29 @@ class EmiPageView extends StatelessWidget {
                 // If it's not relevant for this month, don't show it at all unless Overdue
                 if (!isRelevantThisMonth) return false;
 
+                if (state.searchQuery.isNotEmpty) {
+                  if (inst.status != 'pending' && inst.status != 'overdue')
+                    return false;
+
+                  final q = state.searchQuery.toLowerCase();
+                  final mapData = inst.toJson();
+                  bool match = false;
+                  for (var entry in mapData.entries) {
+                    final keyLower = entry.key.toLowerCase();
+                    if (keyLower.contains('amount') ||
+                        keyLower.contains('date') ||
+                        keyLower.contains('time')) {
+                      continue;
+                    }
+                    if (entry.value?.toString().toLowerCase().contains(q) ==
+                        true) {
+                      match = true;
+                      break;
+                    }
+                  }
+                  if (!match) return false;
+                }
+
                 if (state.selectedFilter == 'All') return true;
                 if (state.selectedFilter == 'Rent') return inst.isRent;
                 if (state.selectedFilter == 'Overdue')
@@ -147,6 +170,44 @@ class EmiPageView extends StatelessWidget {
                           color: Colors.blue.shade700,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: TextField(
+                        onChanged: (val) {
+                          context.read<EmiBloc>().add(SearchInstallments(val));
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Search pending or overdue...',
+                          prefixIcon: const Icon(Icons.search),
+                          filled: true,
+                          fillColor: context.colors.surface,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(
+                              color: context.colors.border,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(
+                              color: context.colors.border,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(
+                              color: context.colors.primary,
+                              width: 2,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
                         ),
                       ),
                     ),
