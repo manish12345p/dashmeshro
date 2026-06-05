@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -21,6 +22,9 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
   await di.init();
+  
+  final prefs = await SharedPreferences.getInstance();
+
   final useFirebase = dotenv.env['USE_FIREBASE']?.toLowerCase() == 'true';
   if (useFirebase) {
     await Firebase.initializeApp(
@@ -31,11 +35,12 @@ void main() async {
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
   }
-  runApp(MyApp());
+  runApp(MyApp(prefs: prefs));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final SharedPreferences prefs;
+  MyApp({super.key, required this.prefs});
 
   final _appRouter = createAppRouter(
     shellBuilder: (child) => AppNavigationScaffold(child: child),
@@ -44,7 +49,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ThemeCubit(),
+      create: (_) => ThemeCubit(prefs),
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           return MaterialApp.router(

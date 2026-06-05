@@ -4,26 +4,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeMode> {
   static const _themeKey = 'app_theme_mode';
+  final SharedPreferences _prefs;
 
-  ThemeCubit() : super(ThemeMode.system) {
-    _loadTheme();
-  }
+  ThemeCubit(this._prefs) : super(_getInitialMode(_prefs));
 
-  Future<void> _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
+  static ThemeMode _getInitialMode(SharedPreferences prefs) {
     final themeString = prefs.getString(_themeKey);
     if (themeString == 'ThemeMode.light') {
-      emit(ThemeMode.light);
+      return ThemeMode.light;
     } else if (themeString == 'ThemeMode.dark') {
-      emit(ThemeMode.dark);
+      return ThemeMode.dark;
     } else {
-      emit(ThemeMode.system);
+      return ThemeMode.system;
     }
   }
 
   Future<void> _saveTheme(ThemeMode mode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_themeKey, mode.toString());
+    await _prefs.setString(_themeKey, mode.toString());
   }
 
   void toggleTheme() {
