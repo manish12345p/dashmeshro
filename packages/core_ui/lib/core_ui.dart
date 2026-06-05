@@ -7,6 +7,7 @@ export 'src/theme/app_text_theme.dart';
 export 'src/theme/app_constants.dart';
 export 'src/theme/app_padding.dart';
 export 'src/theme/app_strings.dart';
+export 'src/theme/theme_cubit.dart';
 
 // Scaffold
 export 'src/scaffold/app_navigation_scaffold.dart';

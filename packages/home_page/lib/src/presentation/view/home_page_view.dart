@@ -39,7 +39,9 @@ class _ExpenseFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 80.0), // Offset to avoid overlapping with bottom nav bar
+      padding: const EdgeInsets.only(
+        bottom: 80.0,
+      ), // Offset to avoid overlapping with bottom nav bar
       child: FloatingActionButton(
         onPressed: () => AddExpenseDialog.show(context),
         backgroundColor: const Color(0xFF003366),
@@ -98,6 +100,25 @@ class _HomeContent extends StatelessWidget {
                                   letterSpacing: 1.1,
                                   height: 1.1,
                                 ),
+                          ),
+                          const SizedBox(width: AppPadding.p4),
+                          BlocBuilder<ThemeCubit, ThemeMode>(
+                            builder: (context, themeMode) {
+                              final isDark =
+                                  themeMode == ThemeMode.dark ||
+                                  (themeMode == ThemeMode.system &&
+                                      Theme.of(context).brightness ==
+                                          Brightness.dark);
+                              return GestureDetector(
+                                onTap: () =>
+                                    context.read<ThemeCubit>().toggleTheme(),
+                                child: Icon(
+                                  isDark ? Icons.light_mode : Icons.dark_mode,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
