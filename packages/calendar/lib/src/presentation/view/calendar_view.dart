@@ -365,11 +365,20 @@ class _CalendarViewState extends State<CalendarView> {
 
   void _changeMonth(int increment, BuildContext context) {
     setState(() {
-      _selectedDate = DateTime(
+      DateTime nextMonth = DateTime(
         _selectedDate.year,
         _selectedDate.month + increment,
         1,
       );
+      final today = DateTime.now();
+      
+      // If we swiped to the current real-world month and year, auto-select today's date
+      if (nextMonth.year == today.year && nextMonth.month == today.month) {
+        _selectedDate = DateTime(today.year, today.month, today.day);
+      } else {
+        // Otherwise default to the 1st of that month
+        _selectedDate = nextMonth;
+      }
     });
     context.read<CalendarBloc>().add(
       CalendarEvent.loadMonth(_selectedDate.year, _selectedDate.month),
