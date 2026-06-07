@@ -61,10 +61,65 @@ class CustomerDetailsView extends StatelessWidget {
               letterSpacing: 1.1,
             ),
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.delete_outline, color: context.colors.error),
+              onPressed: () => _showDeleteConfirmation(context, customerId, repo),
+            ),
+          ],
         ),
         body: const _CustomerDetailsContent(),
       ),
     );
+  }
+
+  Future<void> _showDeleteConfirmation(
+    BuildContext context,
+    String customerId,
+    ICustomerRepository repo,
+  ) async {
+    final colors = context.colors;
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Delete Customer?', style: TextStyle(color: colors.error)),
+        content: const Text(
+          'Are you sure you want to delete this customer? This action cannot be undone and will remove all their history.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text('Cancel', style: TextStyle(color: colors.textSecondary)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.error,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        await repo.deleteCustomer(customerId);
+        if (context.mounted) {
+          context.pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Customer deleted successfully')),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to delete customer')),
+          );
+        }
+      }
+    }
   }
 }
 

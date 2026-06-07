@@ -12,7 +12,7 @@ import '../bloc/emi_state.dart';
 import 'package:core_ui/core_ui.dart';
 import '../widgets/active_installments_list.dart';
 import '../widgets/emi_header.dart';
-import '../widgets/pending_month_card.dart';
+// import '../widgets/pending_month_card.dart';
 
 class EmiPageView extends StatelessWidget {
   const EmiPageView({super.key});
@@ -147,25 +147,25 @@ class EmiPageView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const EmiHeader(),
-                    const SizedBox(height: 8),
-                    PendingMonthCard(
-                      pendingAmount: data.pendingThisMonth,
-                      clientsCount: data.pendingClientsCount,
-                      collectionPercentage:
-                          data.monthlyTargetCollectionPercentage,
-                    ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        '${AppStrings.totalPaidThisMonth}: ₹${data.collectedThisMonth.toStringAsFixed(0)}',
-                        style: TextStyle(
-                          color: context.colors.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    // const SizedBox(height: 8),
+                    // PendingMonthCard(
+                    //   pendingAmount: data.pendingThisMonth,
+                    //   clientsCount: data.pendingClientsCount,
+                    //   collectionPercentage:
+                    //       data.monthlyTargetCollectionPercentage,
+                    // ),
+                    // const SizedBox(height: 16),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    //   child: Text(
+                    //     '${AppStrings.totalPaidThisMonth}: ₹${data.collectedThisMonth.toStringAsFixed(0)}',
+                    //     style: TextStyle(
+                    //       color: context.colors.primary,
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),

@@ -15,9 +15,8 @@ class CalendarRepository implements ICalendarRepository {
         .collection('Customer')
         .snapshots()
         .asyncMap((customersSnap) async {
-          final items = <ScheduleItem>[];
-
-          for (var customerDoc in customersSnap.docs) {
+          final futures = customersSnap.docs.map((customerDoc) async {
+            final customerItems = <ScheduleItem>[];
             final customerData = customerDoc.data();
             final customerName = customerData['name'] as String? ?? 'Unknown';
             final customerAddress = customerData['address'] as String? ?? '';
@@ -45,16 +44,15 @@ class CalendarRepository implements ICalendarRepository {
 
               DateTime? notifDate;
               try {
-                if (notifDateStr.isNotEmpty)
+                if (notifDateStr.isNotEmpty) {
                   notifDate = DateTime.parse(notifDateStr);
+                }
               } catch (_) {}
 
-              // Only show card on notification date (2 months after service)
-              // Service date is when the work was done, notification date is the follow-up date
               if (notifDate != null &&
                   notifDate.year == year &&
                   notifDate.month == month) {
-                items.add(
+                customerItems.add(
                   ScheduleItem(
                     id: doc.id,
                     name: customerName,
@@ -73,8 +71,11 @@ class CalendarRepository implements ICalendarRepository {
                 );
               }
             }
-          }
-          return items;
+            return customerItems;
+          });
+
+          final nestedItems = await Future.wait(futures);
+          return nestedItems.expand((i) => i).toList();
         })
         .handleError((error) {
           print('Firestore error in getSchedulesForMonth: $error');
