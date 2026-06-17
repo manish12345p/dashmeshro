@@ -15,8 +15,11 @@ _$ServiceActivityImpl _$$ServiceActivityImplFromJson(
   totalAmount: (json['totalAmount'] as num).toDouble(),
   amountPaid: (json['amountPaid'] as num).toDouble(),
   equipmentsUsed: json['equipmentsUsed'] as String,
+  serviceDuration: json['serviceDuration'] as String? ?? '',
   guaranteeDuration: json['guaranteeDuration'] as String? ?? '',
   remarks: json['remarks'] as String? ?? '',
+  status: json['status'] as String? ?? 'pending',
+  isComplaint: json['isComplaint'] as bool? ?? false,
   serviceDate: DateTime.parse(json['serviceDate'] as String),
 );
 
@@ -29,8 +32,11 @@ Map<String, dynamic> _$$ServiceActivityImplToJson(
   'totalAmount': instance.totalAmount,
   'amountPaid': instance.amountPaid,
   'equipmentsUsed': instance.equipmentsUsed,
+  'serviceDuration': instance.serviceDuration,
   'guaranteeDuration': instance.guaranteeDuration,
   'remarks': instance.remarks,
+  'status': instance.status,
+  'isComplaint': instance.isComplaint,
   'serviceDate': instance.serviceDate.toIso8601String(),
 };
 
@@ -51,9 +57,6 @@ _$CustomerImpl _$$CustomerImplFromJson(Map<String, dynamic> json) =>
           const [],
       totalAmcVisits: (json['total_amc_visits'] as num?)?.toInt() ?? 0,
       remainingAmcVisits: (json['remaining_amc_visits'] as num?)?.toInt() ?? 0,
-      isDeleted: json['is_deleted'] as bool? ?? false,
-      deletedAt: json['deleted_at'] as String?,
-      deletedBy: json['deleted_by'] as String?,
     );
 
 Map<String, dynamic> _$$CustomerImplToJson(
@@ -70,7 +73,4 @@ Map<String, dynamic> _$$CustomerImplToJson(
   'service_history': instance.serviceHistory.map((e) => e.toJson()).toList(),
   'total_amc_visits': instance.totalAmcVisits,
   'remaining_amc_visits': instance.remainingAmcVisits,
-  'is_deleted': instance.isDeleted,
-  'deleted_at': instance.deletedAt,
-  'deleted_by': instance.deletedBy,
 };

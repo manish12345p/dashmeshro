@@ -13,7 +13,6 @@ void main() {
         'locality': 'Test Locality',
         'ro_type': 'Kent',
         'note': 'Test Note',
-        'is_deleted': false,
         'service_history': [
           {
             'id': 'test_service',

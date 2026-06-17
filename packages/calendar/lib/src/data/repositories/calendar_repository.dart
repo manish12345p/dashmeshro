@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/schedule_item.dart';
 import '../../domain/repositories/calendar_repository_interface.dart';
@@ -8,6 +9,25 @@ class CalendarRepository implements ICalendarRepository {
 
   CalendarRepository({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  /// Calculates (dateStr + durationStr) → DateTime.
+  /// durationStr format: "3 months" or "1 year"
+  DateTime? _calculateDueDate(String dateStr, String durationStr) {
+    if (dateStr.isEmpty || durationStr.isEmpty) return null;
+    try {
+      final date = DateTime.parse(dateStr);
+      final parts = durationStr.trim().split(' ');
+      if (parts.length != 2) return null;
+      final value = int.tryParse(parts[0]) ?? 0;
+      final unit = parts[1].toLowerCase();
+      if (unit.contains('month')) {
+        return DateTime(date.year, date.month + value, date.day);
+      } else if (unit.contains('year')) {
+        return DateTime(date.year + value, date.month, date.day);
+      }
+    } catch (_) {}
+    return null;
+  }
 
   @override
   Stream<List<ScheduleItem>> getSchedulesForMonth(int year, int month) {
@@ -31,39 +51,34 @@ class CalendarRepository implements ICalendarRepository {
                   data['serviceDate'] as String? ??
                   data['service_date'] as String? ??
                   '';
-              final notifDateStr = data['notificationDate'] as String? ?? '';
+              final serviceDuration =
+                  data['serviceDuration'] as String? ?? '';
               final serviceType =
                   data['serviceType'] as String? ??
                   data['service_type'] as String? ??
                   'General';
 
-              DateTime? serviceDate;
-              try {
-                if (dateStr.isNotEmpty) serviceDate = DateTime.parse(dateStr);
-              } catch (_) {}
+              final serviceDate = DateTime.tryParse(dateStr);
+              
+              // Compute exact due date from serviceDate + serviceDuration
+              final dueDate = _calculateDueDate(dateStr, serviceDuration);
 
-              DateTime? notifDate;
-              try {
-                if (notifDateStr.isNotEmpty) {
-                  notifDate = DateTime.parse(notifDateStr);
-                }
-              } catch (_) {}
-
-              if (notifDate != null &&
-                  notifDate.year == year &&
-                  notifDate.month == month) {
+              if (dueDate != null &&
+                  dueDate.year == year &&
+                  dueDate.month == month) {
                 customerItems.add(
                   ScheduleItem(
-                    id: doc.id,
+                    id: doc.id + '_due',
                     name: customerName,
                     machineId: customerAddress.isNotEmpty
                         ? customerAddress
                         : (data['machine_id'] as String? ?? 'N/A'),
-                    time: 'Upcoming',
+                    time: 'Due ${dueDate.day}/${dueDate.month}/${dueDate.year}',
                     category: serviceType,
-                    badgeLabel: serviceType.toUpperCase(),
+                    badgeLabel:
+                        '$serviceType${serviceDuration.isNotEmpty ? ' · $serviceDuration' : ''}',
                     status: data['status'] as String? ?? 'pending',
-                    date: notifDate,
+                    date: dueDate,
                     phone: customerData['number'] as String? ?? '',
                     customerId: customerDoc.id,
                     isDismissed: data['isDismissed'] as bool? ?? false,
@@ -78,7 +93,7 @@ class CalendarRepository implements ICalendarRepository {
           return nestedItems.expand((i) => i).toList();
         })
         .handleError((error) {
-          print('Firestore error in getSchedulesForMonth: $error');
+          debugPrint('Firestore error in getSchedulesForMonth: $error');
           return <ScheduleItem>[];
         });
   }

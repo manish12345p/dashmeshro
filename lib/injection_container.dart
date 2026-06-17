@@ -4,6 +4,7 @@ import 'package:visit_entry/visit_entry.dart';
 import 'package:emi_page/emi_page.dart';
 import 'package:calendar/calendar.dart';
 import 'package:home_page/home_page.dart';
+import 'package:history_page/history_page.dart';
 
 Future<void> init() async {
   // Feature: Customer Directory
@@ -31,6 +32,13 @@ Future<void> init() async {
   sl.registerFactory(() => CalendarBloc(
     getCalendarSchedulesUseCase: sl(),
     dismissScheduleUseCase: sl(),
+  ));
+
+  // Feature: History Page
+  sl.registerLazySingleton<IHistoryRepository>(() => HistoryRepository());
+  sl.registerLazySingleton(() => GetAllServicesUseCase(sl()));
+  sl.registerFactory(() => HistoryBloc(
+    getAllServicesUseCase: sl(),
   ));
 
   // Other features...

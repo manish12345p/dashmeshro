@@ -93,7 +93,7 @@ class NewClientFormCard extends StatelessWidget {
           ),
           SizedBox(height: 20),
 
-          _buildLabel(context, 'INTERNAL NOTES'),
+          _buildLabel(context, 'INTERNAL NOTE'),
           SizedBox(height: 8),
           _buildTextField(
             context: context,

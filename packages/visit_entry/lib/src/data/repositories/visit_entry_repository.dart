@@ -20,15 +20,21 @@ class VisitEntryRepository implements IVisitEntryRepository {
         .collection('services');
     final docId = entry.id.isEmpty ? collectionRef.doc().id : entry.id;
 
-    // Add notificationDate (2 months after service date) directly to the service doc
-    final notificationDate = DateTime(
-      entry.serviceDate.year,
-      entry.serviceDate.month + 2,
-      entry.serviceDate.day,
-    );
+    // Fetch customer data to store name and phone directly in the service document
+    final customerSnap = await _firestore.collection('Customer').doc(entry.customerId).get();
+    String? customerName;
+    String? customerPhone;
+    if (customerSnap.exists) {
+       final cData = customerSnap.data()!;
+       customerName = cData['name'];
+       customerPhone = cData['number'];
+    }
+
     final data = entry.toJson()
-      ..['id'] = docId
-      ..['notificationDate'] = notificationDate.toIso8601String();
+      ..['id'] = docId;
+      
+    if (customerName != null) data['customer_name'] = customerName;
+    if (customerPhone != null) data['customer_phone'] = customerPhone;
 
     await collectionRef.doc(docId).set(data);
 

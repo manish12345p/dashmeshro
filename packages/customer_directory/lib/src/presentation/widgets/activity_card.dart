@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:intl/intl.dart';
+import 'package:visit_entry/visit_entry.dart';
 import '../../domain/entities/customer.dart';
 
 class ActivityCard extends StatelessWidget {
   final ServiceActivity activity;
+  final String customerId;
 
-  const ActivityCard({super.key, required this.activity});
+  const ActivityCard({
+    super.key, 
+    required this.activity,
+    required this.customerId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +40,33 @@ class ActivityCard extends StatelessWidget {
 
     final dateStr = DateFormat('MMM dd, yyyy').format(activity.serviceDate);
 
-    return Container(
-      margin: EdgeInsets.only(bottom: AppPadding.p16),
+    // Override colors if it's a complaint
+    if (activity.isComplaint) {
+      badgeBg = context.colors.error.withValues(alpha: 0.1);
+      badgeText = context.colors.error;
+      leadingIconColor = context.colors.error;
+      leadingIcon = Icons.warning_amber_rounded;
+    }
+
+    final bool isEmptyService = activity.serviceType.trim().isEmpty;
+
+    Widget cardContent = Container(
       decoration: BoxDecoration(
-        color: context.colors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border(left: BorderSide(color: leadingIconColor, width: 4)),
+        color: activity.isComplaint 
+            ? context.colors.error.withValues(alpha: 0.03) 
+            : context.colors.surface,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(isEmptyService && !activity.isComplaint ? 16 : 20),
+          bottomLeft: Radius.circular(isEmptyService && !activity.isComplaint ? 16 : 20),
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        border: activity.isComplaint
+            ? Border.all(color: context.colors.error.withValues(alpha: 0.5), width: 1.5)
+            : (isEmptyService ? null : Border(left: BorderSide(color: leadingIconColor, width: 4))),
         boxShadow: [
           BoxShadow(
-            color: context.colors.textSecondary.withOpacity(0.02),
+            color: context.colors.textSecondary.withValues(alpha: 0.02),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -71,22 +95,45 @@ class ActivityCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(
-                  dateStr,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: context.colors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      dateStr,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: context.colors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    if (DateTime.now().difference(activity.serviceDate).inDays <= 5) ...[
+                      SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {
+                          EditVisitDialog.show(
+                            context,
+                            customerId: customerId,
+                            serviceId: activity.id,
+                          );
+                        },
+                        child: Icon(
+                          Icons.edit,
+                          size: 16,
+                          color: context.colors.primary,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),
             SizedBox(height: 12),
 
-            // Work Done (fixes)
+            // Equipment Used
+
+            // Equipment Used
             if (activity.fixes.isNotEmpty) ...[
               Text(
-                'WORK DONE',
+                'FAULT',
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -106,33 +153,10 @@ class ActivityCard extends StatelessWidget {
               SizedBox(height: 12),
             ],
 
-            // Equipment Used
-            if (activity.equipmentsUsed.isNotEmpty) ...[
-              Text(
-                'EQUIPMENT',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: context.colors.textTertiary,
-                  letterSpacing: 1.1,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                activity.equipmentsUsed,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: context.colors.textSecondary,
-                  height: 1.4,
-                ),
-              ),
-              SizedBox(height: 12),
-            ],
-
             // Remarks (Notes)
             if (activity.remarks.isNotEmpty) ...[
               Text(
-                'NOTES',
+                'INTERNAL NOTE',
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -148,6 +172,39 @@ class ActivityCard extends StatelessWidget {
                   color: context.colors.textSecondary,
                   height: 1.4,
                 ),
+              ),
+              SizedBox(height: 12),
+            ],
+
+            // Service Duration
+            if (activity.serviceDuration.isNotEmpty) ...[
+              Text(
+                'SERVICE DURATION',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: context.colors.textTertiary,
+                  letterSpacing: 1.1,
+                ),
+              ),
+              SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(
+                    Icons.timer_outlined,
+                    size: 14,
+                    color: context.colors.primary,
+                  ),
+                  SizedBox(width: 4),
+                  Text(
+                    activity.serviceDuration,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: context.colors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 12),
             ],
@@ -246,6 +303,27 @@ class ActivityCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+    if (isEmptyService && !activity.isComplaint) {
+      cardContent = Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.black, Colors.grey.shade400],
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: 4),
+          child: cardContent,
+        ),
+      );
+    }
+
+    return Container(
+      margin: EdgeInsets.only(bottom: AppPadding.p16),
+      child: cardContent,
     );
   }
 }

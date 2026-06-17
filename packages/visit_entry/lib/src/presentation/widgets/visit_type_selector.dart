@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:core_ui/core_ui.dart';
 import '../bloc/visit_entry_bloc.dart';
 import '../bloc/visit_entry_event.dart';
@@ -13,25 +14,58 @@ class ServiceTypeSelectorWidget extends StatefulWidget {
 }
 
 class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
-  static const List<String> _serviceTypes = [
-    'Set Change',
-    'AMC',
-    'New RO',
-    'Repair',
-    'Service',
-    'Pump',
-    'Set Pump',
-    'New RO Set Change',
-    'Set SV',
-    'Install and Set Change',
-    'Set & Pump',
-    'Inline',
-    'Copper Set',
-    'Alkaline',
-    'Alkaline Set',
-    'Set SMPS',
-    'Not Applicable',
-  ];
+  List<String> _serviceTypes = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchServiceTypes();
+  }
+
+  Future<void> _fetchServiceTypes() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('ServiceType')
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final data = snapshot.docs.first.data();
+        for (final value in data.values) {
+          if (value is Iterable) {
+            _serviceTypes = List<String>.from(value);
+            break;
+          }
+        }
+      }
+
+      if (_serviceTypes.isEmpty) {
+        _serviceTypes = [
+          'Set Change', 'AMC', 'New RO', 'Repair', 'Service', 'Pump',
+          'Set Pump', 'New RO Set Change', 'Set SV', 'Install and Set Change',
+          'Set & Pump', 'Inline', 'Copper Set', 'Alkaline', 'Alkaline Set',
+          'Set SMPS', 'Not Applicable',
+        ];
+      }
+
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _serviceTypes = [
+            'Set Change', 'AMC', 'New RO', 'Repair', 'Service', 'Pump',
+            'Set Pump', 'New RO Set Change', 'Set SV', 'Install and Set Change',
+            'Set & Pump', 'Inline', 'Copper Set', 'Alkaline', 'Alkaline Set',
+            'Set SMPS', 'Not Applicable',
+          ];
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,121 +118,125 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
   }
 
   Widget _buildCustomerTypeGrid() {
+    if (_isLoading) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return BlocBuilder<VisitEntryBloc, VisitEntryState>(
       buildWhen: (previous, current) =>
           previous.serviceType != current.serviceType ||
           previous.remainingAmcVisits != current.remainingAmcVisits ||
           previous.totalAmcVisitsToPurchase != current.totalAmcVisitsToPurchase,
       builder: (context, state) {
-        String? selectedValue;
-        if (state.serviceType.isNotEmpty &&
-            _serviceTypes.contains(state.serviceType)) {
-          selectedValue = state.serviceType;
-        }
+        final selectedList = state.serviceType
+            .split(',')
+            .map((s) => s.trim())
+            .where((s) => s.isNotEmpty)
+            .toList();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(
-                color: context.colors.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: context.colors.border),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  hint: const Text(AppStrings.selectServiceType),
-                  value: selectedValue,
-                  borderRadius: BorderRadius.circular(20),
-                  icon: Icon(
-                    Icons.arrow_drop_down_rounded,
-                    color: context.colors.primary,
-                  ),
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: context.colors.textPrimary,
-                  ),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      context.read<VisitEntryBloc>().add(
-                        SelectServiceType(newValue),
-                      );
+            Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: _serviceTypes.map((type) {
+                final isSelected = selectedList.contains(type);
+                return FilterChip(
+                  label: Text(type),
+                  selected: isSelected,
+                  onSelected: (selected) {
+                    if (selected) {
+                      selectedList.add(type);
+                    } else {
+                      selectedList.remove(type);
                     }
-                  },
-                  items: _serviceTypes.map<DropdownMenuItem<String>>((
-                    String value,
-                  ) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            if (state.serviceType == 'AMC') ...[
-              SizedBox(height: 16),
-              if (state.remainingAmcVisits > 0)
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: context.colors.warning.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: context.colors.warning),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.info_outline, color: context.colors.warning, size: 20),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Remaining AMC visits: ${state.remainingAmcVisits}. This visit will consume 1.',
-                          style: TextStyle(
-                            color: context.colors.warning,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'This customer has 0 AMC visits remaining. If they are purchasing a new AMC, enter the number of visits:',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: context.colors.textSecondary,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    TextField(
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        context.read<VisitEntryBloc>().add(
-                          UpdateTotalAmcVisitsToPurchase(int.tryParse(value) ?? 0),
+                    context.read<VisitEntryBloc>().add(
+                          SelectServiceType(selectedList.join(', ')),
                         );
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'e.g. 3 or 4',
-                        filled: true,
-                        fillColor: context.colors.background,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-            ],
+                  },
+                  selectedColor: context.colors.primary.withValues(alpha: 0.2),
+                  checkmarkColor: context.colors.primary,
+                  labelStyle: TextStyle(
+                    color: isSelected
+                        ? context.colors.primaryDark
+                        : context.colors.textSecondary,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                  ),
+                  backgroundColor: context.colors.surfaceSecondary,
+                  side: BorderSide(
+                    color: isSelected
+                        ? context.colors.primary
+                        : context.colors.border,
+                  ),
+                );
+              }).toList(),
+            ),
+            // ...[
+            //   SizedBox(height: 16),
+            //   if (state.remainingAmcVisits > 0)
+            //     Container(
+            //       padding: EdgeInsets.all(12),
+            //       decoration: BoxDecoration(
+            //         color: context.colors.warning.withValues(alpha: 0.1),
+            //         borderRadius: BorderRadius.circular(12),
+            //         border: Border.all(color: context.colors.warning),
+            //       ),
+            //       child: Row(
+            //         children: [
+            //           Icon(Icons.info_outline, color: context.colors.warning, size: 20),
+            //           SizedBox(width: 8),
+            //           Expanded(
+            //             child: Text(
+            //               'Remaining AMC visits: ${state.remainingAmcVisits}. This visit will consume 1.',
+            //               style: TextStyle(
+            //                 color: context.colors.warning,
+            //                 fontSize: 13,
+            //                 fontWeight: FontWeight.w600,
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     )
+            //   else
+            //     Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text(
+            //           'This customer has 0 ${state.serviceType} visits remaining. If they are purchasing a new ${state.serviceType}, enter the number of visits:',
+            //           style: TextStyle(
+            //             fontSize: 13,
+            //             color: context.colors.textSecondary,
+            //           ),
+            //         ),
+            //         SizedBox(height: 8),
+            //         TextField(
+            //           keyboardType: TextInputType.number,
+            //           onChanged: (value) {
+            //             context.read<VisitEntryBloc>().add(
+            //               UpdateTotalAmcVisitsToPurchase(int.tryParse(value) ?? 0),
+            //             );
+            //           },
+            //           decoration: InputDecoration(
+            //             hintText: 'e.g. 3 or 4',
+            //             filled: true,
+            //             fillColor: context.colors.background,
+            //             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            //             border: OutlineInputBorder(
+            //               borderRadius: BorderRadius.circular(12),
+            //               borderSide: BorderSide.none,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            // ],
           ],
         );
       },

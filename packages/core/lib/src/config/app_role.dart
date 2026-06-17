@@ -18,7 +18,7 @@ class RoleCubit extends Cubit<AppRole> {
     if (storedRole == AppRole.admin.name) {
       return AppRole.admin;
     }
-    return AppRole.technician;
+    return AppRole.admin;
   }
 
   bool unlockAdmin(String password) {

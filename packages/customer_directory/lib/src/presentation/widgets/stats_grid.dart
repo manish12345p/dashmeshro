@@ -20,16 +20,16 @@ class StatsGrid extends StatelessWidget {
             context.colors.primaryDark,
           ),
         ),
-        SizedBox(width: 12),
-        Expanded(
-          child: _buildStatCard(
-            context,
-            'REMAINING AMC',
-            customer.remainingAmcVisits.toString(),
-            context.colors.warning.withValues(alpha: 0.1),
-            context.colors.warning,
-          ),
-        ),
+        // SizedBox(width: 12),
+        // Expanded(
+        //   child: _buildStatCard(
+        //     context,
+        //     'REMAINING AMC',
+        //     customer.remainingAmcVisits.toString(),
+        //     context.colors.warning.withValues(alpha: 0.1),
+        //     context.colors.warning,
+        //   ),
+        // ),
       ],
     );
   }

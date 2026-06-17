@@ -4,6 +4,7 @@ import '../widgets/visit_type_selector.dart';
 import '../widgets/visit_details_card.dart';
 import '../widgets/remarks_date_selector.dart';
 import '../widgets/action_buttons.dart';
+import '../widgets/complaint_toggle_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/visit_entry_bloc.dart';
 import '../../domain/use_cases/save_visit_usecase.dart';
@@ -111,7 +112,7 @@ class VisitEntryView extends StatelessWidget {
         listener: (context, state) {
           if (state.status == VisitEntryStatus.success) {
             _showSuccessPopup(context, AppStrings.serviceEntrySaved);
-            context.go('/customers');
+            context.go('/');
           } else if (state.status == VisitEntryStatus.failure) {
             showDialog(
               context: context,
@@ -150,9 +151,11 @@ class VisitEntryView extends StatelessWidget {
                       else
                         const CustomerSelectorWidget(),
                       SizedBox(height: 16),
-                      const ServiceTypeSelectorWidget(),
-                      SizedBox(height: 16),
                       const ServiceDetailsCard(),
+                      SizedBox(height: 16),
+                      const ComplaintToggleWidget(),
+                      SizedBox(height: 16),
+                      const ServiceTypeSelectorWidget(),
                       SizedBox(height: 16),
                       const RemarksDateSelectorWidget(),
                       SizedBox(height: 24),
@@ -270,7 +273,9 @@ class VisitEntryView extends StatelessWidget {
                 children: [
                   if (showBackButton)
                     GestureDetector(
-                      onTap: () => context.go('/'),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Icon(
                         Icons.arrow_back_ios_rounded,
                         color: Theme.of(context).iconTheme.color ?? Theme.of(context).textTheme.bodyLarge?.color,

@@ -15,6 +15,7 @@ class AppNavigationScaffold extends StatelessWidget {
     if (location.startsWith('/customers')) return 1;
     if (isAdmin && location.startsWith('/emi')) return 2;
     if (location.startsWith('/service')) return isAdmin ? 3 : 2;
+    if (location.startsWith('/history')) return isAdmin ? 4 : 3;
     return 0; // Default to Home ('/')
   }
 
@@ -27,6 +28,8 @@ class AppNavigationScaffold extends StatelessWidget {
       context.go('/emi');
     } else if ((isAdmin && index == 3) || (!isAdmin && index == 2)) {
       context.go('/service');
+    } else if ((isAdmin && index == 4) || (!isAdmin && index == 3)) {
+      context.go('/history');
     }
   }
 
@@ -58,7 +61,7 @@ class AppNavigationScaffold extends StatelessWidget {
                   selectedColor: colors.primary,
                 ),
                 CrystalNavigationBarItem(
-                  icon: Icons.people_rounded,
+                  icon: Icons.person_add_rounded,
                   selectedColor: colors.primary,
                 ),
                 if (isAdmin)
@@ -68,6 +71,10 @@ class AppNavigationScaffold extends StatelessWidget {
                   ),
                 CrystalNavigationBarItem(
                   icon: Icons.design_services_rounded,
+                  selectedColor: colors.primary,
+                ),
+                CrystalNavigationBarItem(
+                  icon: Icons.history_rounded,
                   selectedColor: colors.primary,
                 ),
               ],

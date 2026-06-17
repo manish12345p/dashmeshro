@@ -13,8 +13,11 @@ class ServiceActivity with _$ServiceActivity {
     required double totalAmount,
     required double amountPaid,
     required String equipmentsUsed,
+    @Default('') String serviceDuration,
     @Default('') String guaranteeDuration,
     @Default('') String remarks,
+    @Default('pending') String status,
+    @Default(false) bool isComplaint,
     required DateTime serviceDate,
   }) = _ServiceActivity;
 
@@ -37,9 +40,6 @@ class Customer with _$Customer {
     @Default([]) List<ServiceActivity> serviceHistory,
     @Default(0) int totalAmcVisits,
     @Default(0) int remainingAmcVisits,
-    @Default(false) bool isDeleted,
-    String? deletedAt,
-    String? deletedBy,
   }) = _Customer;
 
   factory Customer.fromJson(Map<String, dynamic> json) =>

@@ -2,6 +2,7 @@ name: home_page
 description: "A new Flutter package project."
 version: 0.0.1
 homepage:
+publish_to: none
 
 environment:
   sdk: ^3.10.8
@@ -12,6 +13,8 @@ dependencies:
     sdk: flutter
   core_ui:
     path: ../core_ui
+  core:
+    path: ../core
   flutter_bloc:
   json_annotation:
   firebase_core: ^4.7.0
@@ -24,6 +27,9 @@ dependencies:
   sqflite: ^2.4.2+1
   path_provider: ^2.1.5
   path: ^1.9.1
+  flutter_dotenv: ^6.0.1
+  visit_entry:
+    path: ../visit_entry
 
 
 dev_dependencies:

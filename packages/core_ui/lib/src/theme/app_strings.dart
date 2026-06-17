@@ -24,7 +24,7 @@ class AppStrings {
   static const String complaintsPending = 'Complaints Pending';
 
   // Home Page - Schedule Section
-  static const String totalVisitSchedule = 'Total Visit Schedule';
+  static const String totalVisitSchedule = "Today's Visit Schedule";
   static const String noVisitsToday = 'No visits scheduled for today';
   static const String todayServiceSchedule = "Today's Service\nSchedule";
   static const String viewCalendar = 'VIEW CALENDAR';
@@ -55,20 +55,43 @@ class AppStrings {
   // Home Page - Banner
   static const String bannerText = 'Advanced Service\nMonitoring Active';
 
-  // Expenses Dialogs
-  static const String recentExpenses = 'Recent Expenses';
-  static const String noExpensesRecorded = 'No expenses recorded';
-  static const String expensesAutoDelete = 'Expenses auto-delete after 15 days';
+  // Notes Dialogs
+  static const String addNote = 'Estimate';
+  static const String allNotes = 'Estimates';
+  static const String noNotes = 'No notes yet';
+  static const String noNotesSubtitle = 'Tap the + button to add a note';
   static const String cancel = 'Cancel';
   static const String save = 'Save';
-  static const String addExpense = 'Add Expense';
-  static const String reasonLabel = 'Reason';
-  static const String reasonHint = 'Enter expense reason...';
-  static const String amountLabel = 'Amount';
-  static const String amountHint = 'Enter amount...';
-  static const String errorFillBothFields = 'Please fill in both fields';
-  static const String errorValidAmount = 'Please enter a valid amount';
-  static const String successExpenseSaved = 'Expense saved!';
+  static const String successNoteSaved = 'Note saved!';
+
+  // Note Fields
+  static const String nameLabel = 'Name';
+  static const String nameHint = 'Enter customer name...';
+  static const String phoneLabel = 'Phone Number';
+  static const String phoneHint = 'Enter 10-digit phone number...';
+  static const String addressLabel = 'Address';
+  static const String addressHint = 'Enter address...';
+  static const String noteLabel = 'Note';
+  static const String noteHint = 'Enter note or details...';
+  static const String priceLabel = 'Price (Optional)';
+  static const String priceHint = 'Enter price in ₹...';
+
+  // Note Validation
+  static const String errorRequired = 'This field is required';
+  static const String errorPhoneLength = 'Phone number must be 10 digits';
+
+  // Legacy (kept for backward compatibility)
+  static const String recentExpenses = 'Recent Notes';
+  static const String noExpensesRecorded = 'No notes recorded';
+  static const String expensesAutoDelete = '';
+  static const String addExpense = 'Add Note';
+  static const String reasonLabel = 'Note';
+  static const String reasonHint = 'Enter note...';
+  static const String amountLabel = 'Price';
+  static const String amountHint = 'Enter price...';
+  static const String errorFillBothFields = 'Please fill in all required fields';
+  static const String errorValidAmount = 'Please enter a valid price';
+  static const String successExpenseSaved = 'Note saved!';
 
   // EMI Page
   static const String emiAppTitle = 'Dashmesh Mechanix';

@@ -67,70 +67,23 @@ class EmiPageView extends StatelessWidget {
 
               final today = DateTime.now();
               // Filter active installments based on selected filter
-              final filteredInstallments = data.activeInstallments.where((
-                inst,
-              ) {
-                bool isRelevantThisMonth = false;
-
-                if (inst.status == 'overdue' ||
-                    inst.status == 'paid_this_month') {
-                  isRelevantThisMonth = true;
-                } else {
-                  try {
-                    if (inst.dueDate.isNotEmpty) {
-                      final dd = DateTime.parse(inst.dueDate);
-                      if (dd.month == today.month && dd.year == today.year) {
-                        isRelevantThisMonth = true;
-                      } else if (dd.isBefore(today)) {
-                        isRelevantThisMonth = true;
-                      }
-                    }
-                  } catch (_) {}
-
-                  try {
-                    if (inst.lastPaymentDateStr.isNotEmpty) {
-                      final pd = DateTime.parse(inst.lastPaymentDateStr);
-                      if (pd.month == today.month && pd.year == today.year) {
-                        isRelevantThisMonth = true;
-                      }
-                    }
-                  } catch (_) {}
-                }
-
-                // If it's not relevant for this month, don't show it at all unless Overdue
-                if (!isRelevantThisMonth) return false;
-
+              final filteredInstallments = data.activeInstallments.where((inst) {
+                // 1. Search Logic
                 if (state.searchQuery.isNotEmpty) {
-                  if (inst.status != 'pending' && inst.status != 'overdue')
-                    return false;
-
                   final q = state.searchQuery.toLowerCase();
-                  final mapData = inst.toJson();
-                  bool match = false;
-                  for (var entry in mapData.entries) {
-                    final keyLower = entry.key.toLowerCase();
-                    if (keyLower.contains('amount') ||
-                        keyLower.contains('date') ||
-                        keyLower.contains('time')) {
-                      continue;
-                    }
-                    if (entry.value?.toString().toLowerCase().contains(q) ==
-                        true) {
-                      match = true;
-                      break;
-                    }
+                  if (!inst.customerName.toLowerCase().contains(q) &&
+                      !inst.vehicleDetails.toLowerCase().contains(q) &&
+                      !inst.serviceName.toLowerCase().contains(q)) {
+                    return false;
                   }
-                  if (!match) return false;
                 }
 
+                // 2. Filter Logic
                 if (state.selectedFilter == 'All') return true;
-                if (state.selectedFilter == 'Rent') return inst.isRent;
-                if (state.selectedFilter == 'Overdue')
-                  return inst.status == 'overdue';
-                if (state.selectedFilter == 'Pending')
-                  return inst.status == 'pending';
+                if (state.selectedFilter == 'Overdue') return inst.status == 'overdue';
+                if (state.selectedFilter == 'Pending') return inst.status == 'pending';
                 if (state.selectedFilter == 'Paid') {
-                  if (inst.status == 'paid_this_month') return true;
+                  if (inst.status == 'paid_this_month' || inst.status == 'paid') return true;
                   try {
                     if (inst.lastPaymentDateStr.isNotEmpty) {
                       final pd = DateTime.parse(inst.lastPaymentDateStr);
@@ -169,42 +122,61 @@ class EmiPageView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: TextField(
-                        onChanged: (val) {
-                          context.read<EmiBloc>().add(SearchInstallments(val));
+                      child: Autocomplete<String>(
+                        optionsBuilder: (TextEditingValue textEditingValue) {
+                          if (textEditingValue.text.isEmpty) {
+                            return const Iterable<String>.empty();
+                          }
+                          final q = textEditingValue.text.toLowerCase();
+                          return data.activeInstallments
+                              .map((e) => e.customerName)
+                              .where((name) => name.toLowerCase().contains(q))
+                              .toSet();
                         },
-                        decoration: InputDecoration(
-                          hintText: AppStrings.searchPendingOrOverdue,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: context.colors.textSecondary,
-                          ),
-                          filled: true,
-                          fillColor: context.colors.surface,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(
-                              color: context.colors.border,
+                        onSelected: (String selection) {
+                          context.read<EmiBloc>().add(SearchInstallments(selection));
+                        },
+                        fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                          return TextField(
+                            controller: controller,
+                            focusNode: focusNode,
+                            onChanged: (val) {
+                              context.read<EmiBloc>().add(SearchInstallments(val));
+                            },
+                            decoration: InputDecoration(
+                              hintText: AppStrings.searchPendingOrOverdue,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: context.colors.textSecondary,
+                              ),
+                              filled: true,
+                              fillColor: context.colors.surface,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(
+                                  color: context.colors.border,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(
+                                  color: context.colors.border,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(
+                                  color: context.colors.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
                             ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(
-                              color: context.colors.border,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(
-                              color: context.colors.primary,
-                              width: 2,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 24),

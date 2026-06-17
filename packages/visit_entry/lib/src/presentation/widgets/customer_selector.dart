@@ -89,13 +89,17 @@ class CustomerSelectorWidget extends StatelessWidget {
             // ── Search Field ────────────────────────────────────
             Autocomplete<Map<String, dynamic>>(
               optionsBuilder: (TextEditingValue textEditingValue) async {
+                final bloc = context.read<VisitEntryBloc>();
                 if (textEditingValue.text.isEmpty) {
+                  bloc.add(const SelectCustomer('', '', 0));
                   return const Iterable<Map<String, dynamic>>.empty();
                 }
-                // Update bloc with arbitrary text in case user doesn't select from list
-                context.read<VisitEntryBloc>().add(
-                  SelectCustomer(textEditingValue.text, textEditingValue.text, 0),
-                );
+
+                // If user modified the text manually, clear the current selection
+                // to force them to pick an item from the list.
+                if (bloc.state.customerName != textEditingValue.text) {
+                  bloc.add(const SelectCustomer('', '', 0));
+                }
 
                 final repo = sl<IVisitEntryRepository>();
                 final results = await repo.searchCustomers(

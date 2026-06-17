@@ -1588,6 +1588,358 @@ abstract class _NotificationItem extends NotificationItem {
       throw _privateConstructorUsedError;
 }
 
+PendingServiceItem _$PendingServiceItemFromJson(Map<String, dynamic> json) {
+  return _PendingServiceItem.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PendingServiceItem {
+  String get id => throw _privateConstructorUsedError;
+  String get customerId => throw _privateConstructorUsedError;
+  String get customerName => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+  String get address => throw _privateConstructorUsedError;
+  String get serviceType => throw _privateConstructorUsedError;
+  String get serviceDate => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
+  bool get isComplaint => throw _privateConstructorUsedError;
+
+  /// Serializes this PendingServiceItem to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of PendingServiceItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $PendingServiceItemCopyWith<PendingServiceItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PendingServiceItemCopyWith<$Res> {
+  factory $PendingServiceItemCopyWith(
+    PendingServiceItem value,
+    $Res Function(PendingServiceItem) then,
+  ) = _$PendingServiceItemCopyWithImpl<$Res, PendingServiceItem>;
+  @useResult
+  $Res call({
+    String id,
+    String customerId,
+    String customerName,
+    String phone,
+    String address,
+    String serviceType,
+    String serviceDate,
+    String status,
+    bool isComplaint,
+  });
+}
+
+/// @nodoc
+class _$PendingServiceItemCopyWithImpl<$Res, $Val extends PendingServiceItem>
+    implements $PendingServiceItemCopyWith<$Res> {
+  _$PendingServiceItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of PendingServiceItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? customerId = null,
+    Object? customerName = null,
+    Object? phone = null,
+    Object? address = null,
+    Object? serviceType = null,
+    Object? serviceDate = null,
+    Object? status = null,
+    Object? isComplaint = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerName: null == customerName
+                ? _value.customerName
+                : customerName // ignore: cast_nullable_to_non_nullable
+                      as String,
+            phone: null == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                      as String,
+            address: null == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                      as String,
+            serviceType: null == serviceType
+                ? _value.serviceType
+                : serviceType // ignore: cast_nullable_to_non_nullable
+                      as String,
+            serviceDate: null == serviceDate
+                ? _value.serviceDate
+                : serviceDate // ignore: cast_nullable_to_non_nullable
+                      as String,
+            status: null == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                      as String,
+            isComplaint: null == isComplaint
+                ? _value.isComplaint
+                : isComplaint // ignore: cast_nullable_to_non_nullable
+                      as bool,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$PendingServiceItemImplCopyWith<$Res>
+    implements $PendingServiceItemCopyWith<$Res> {
+  factory _$$PendingServiceItemImplCopyWith(
+    _$PendingServiceItemImpl value,
+    $Res Function(_$PendingServiceItemImpl) then,
+  ) = __$$PendingServiceItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String id,
+    String customerId,
+    String customerName,
+    String phone,
+    String address,
+    String serviceType,
+    String serviceDate,
+    String status,
+    bool isComplaint,
+  });
+}
+
+/// @nodoc
+class __$$PendingServiceItemImplCopyWithImpl<$Res>
+    extends _$PendingServiceItemCopyWithImpl<$Res, _$PendingServiceItemImpl>
+    implements _$$PendingServiceItemImplCopyWith<$Res> {
+  __$$PendingServiceItemImplCopyWithImpl(
+    _$PendingServiceItemImpl _value,
+    $Res Function(_$PendingServiceItemImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of PendingServiceItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? customerId = null,
+    Object? customerName = null,
+    Object? phone = null,
+    Object? address = null,
+    Object? serviceType = null,
+    Object? serviceDate = null,
+    Object? status = null,
+    Object? isComplaint = null,
+  }) {
+    return _then(
+      _$PendingServiceItemImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerName: null == customerName
+            ? _value.customerName
+            : customerName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        phone: null == phone
+            ? _value.phone
+            : phone // ignore: cast_nullable_to_non_nullable
+                  as String,
+        address: null == address
+            ? _value.address
+            : address // ignore: cast_nullable_to_non_nullable
+                  as String,
+        serviceType: null == serviceType
+            ? _value.serviceType
+            : serviceType // ignore: cast_nullable_to_non_nullable
+                  as String,
+        serviceDate: null == serviceDate
+            ? _value.serviceDate
+            : serviceDate // ignore: cast_nullable_to_non_nullable
+                  as String,
+        status: null == status
+            ? _value.status
+            : status // ignore: cast_nullable_to_non_nullable
+                  as String,
+        isComplaint: null == isComplaint
+            ? _value.isComplaint
+            : isComplaint // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PendingServiceItemImpl extends _PendingServiceItem {
+  const _$PendingServiceItemImpl({
+    this.id = '',
+    this.customerId = '',
+    this.customerName = '',
+    this.phone = '',
+    this.address = '',
+    this.serviceType = '',
+    this.serviceDate = '',
+    this.status = '',
+    this.isComplaint = false,
+  }) : super._();
+
+  factory _$PendingServiceItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PendingServiceItemImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String id;
+  @override
+  @JsonKey()
+  final String customerId;
+  @override
+  @JsonKey()
+  final String customerName;
+  @override
+  @JsonKey()
+  final String phone;
+  @override
+  @JsonKey()
+  final String address;
+  @override
+  @JsonKey()
+  final String serviceType;
+  @override
+  @JsonKey()
+  final String serviceDate;
+  @override
+  @JsonKey()
+  final String status;
+  @override
+  @JsonKey()
+  final bool isComplaint;
+
+  @override
+  String toString() {
+    return 'PendingServiceItem(id: $id, customerId: $customerId, customerName: $customerName, phone: $phone, address: $address, serviceType: $serviceType, serviceDate: $serviceDate, status: $status, isComplaint: $isComplaint)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PendingServiceItemImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.serviceType, serviceType) ||
+                other.serviceType == serviceType) &&
+            (identical(other.serviceDate, serviceDate) ||
+                other.serviceDate == serviceDate) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.isComplaint, isComplaint) ||
+                other.isComplaint == isComplaint));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    customerId,
+    customerName,
+    phone,
+    address,
+    serviceType,
+    serviceDate,
+    status,
+    isComplaint,
+  );
+
+  /// Create a copy of PendingServiceItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PendingServiceItemImplCopyWith<_$PendingServiceItemImpl> get copyWith =>
+      __$$PendingServiceItemImplCopyWithImpl<_$PendingServiceItemImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PendingServiceItemImplToJson(this);
+  }
+}
+
+abstract class _PendingServiceItem extends PendingServiceItem {
+  const factory _PendingServiceItem({
+    final String id,
+    final String customerId,
+    final String customerName,
+    final String phone,
+    final String address,
+    final String serviceType,
+    final String serviceDate,
+    final String status,
+    final bool isComplaint,
+  }) = _$PendingServiceItemImpl;
+  const _PendingServiceItem._() : super._();
+
+  factory _PendingServiceItem.fromJson(Map<String, dynamic> json) =
+      _$PendingServiceItemImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get customerId;
+  @override
+  String get customerName;
+  @override
+  String get phone;
+  @override
+  String get address;
+  @override
+  String get serviceType;
+  @override
+  String get serviceDate;
+  @override
+  String get status;
+  @override
+  bool get isComplaint;
+
+  /// Create a copy of PendingServiceItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PendingServiceItemImplCopyWith<_$PendingServiceItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 HomeData _$HomeDataFromJson(Map<String, dynamic> json) {
   return _HomeData.fromJson(json);
 }
@@ -1609,6 +1961,8 @@ mixin _$HomeData {
       throw _privateConstructorUsedError;
   List<AmcProgress> get amcProgresses => throw _privateConstructorUsedError;
   List<NotificationItem> get todayNotifications =>
+      throw _privateConstructorUsedError;
+  List<PendingServiceItem> get pendingServices =>
       throw _privateConstructorUsedError;
   List<ExpiryItem> get expiringItems => throw _privateConstructorUsedError;
   List<PendingPaymentItem> get pendingPayments =>
@@ -1647,6 +2001,7 @@ abstract class $HomeDataCopyWith<$Res> {
     List<ComplaintItem> pendingComplaints,
     List<AmcProgress> amcProgresses,
     List<NotificationItem> todayNotifications,
+    List<PendingServiceItem> pendingServices,
     List<ExpiryItem> expiringItems,
     List<PendingPaymentItem> pendingPayments,
     int todaySellsSummary,
@@ -1684,6 +2039,7 @@ class _$HomeDataCopyWithImpl<$Res, $Val extends HomeData>
     Object? pendingComplaints = null,
     Object? amcProgresses = null,
     Object? todayNotifications = null,
+    Object? pendingServices = null,
     Object? expiringItems = null,
     Object? pendingPayments = null,
     Object? todaySellsSummary = null,
@@ -1748,6 +2104,10 @@ class _$HomeDataCopyWithImpl<$Res, $Val extends HomeData>
                 ? _value.todayNotifications
                 : todayNotifications // ignore: cast_nullable_to_non_nullable
                       as List<NotificationItem>,
+            pendingServices: null == pendingServices
+                ? _value.pendingServices
+                : pendingServices // ignore: cast_nullable_to_non_nullable
+                      as List<PendingServiceItem>,
             expiringItems: null == expiringItems
                 ? _value.expiringItems
                 : expiringItems // ignore: cast_nullable_to_non_nullable
@@ -1798,6 +2158,7 @@ abstract class _$$HomeDataImplCopyWith<$Res>
     List<ComplaintItem> pendingComplaints,
     List<AmcProgress> amcProgresses,
     List<NotificationItem> todayNotifications,
+    List<PendingServiceItem> pendingServices,
     List<ExpiryItem> expiringItems,
     List<PendingPaymentItem> pendingPayments,
     int todaySellsSummary,
@@ -1834,6 +2195,7 @@ class __$$HomeDataImplCopyWithImpl<$Res>
     Object? pendingComplaints = null,
     Object? amcProgresses = null,
     Object? todayNotifications = null,
+    Object? pendingServices = null,
     Object? expiringItems = null,
     Object? pendingPayments = null,
     Object? todaySellsSummary = null,
@@ -1898,6 +2260,10 @@ class __$$HomeDataImplCopyWithImpl<$Res>
             ? _value._todayNotifications
             : todayNotifications // ignore: cast_nullable_to_non_nullable
                   as List<NotificationItem>,
+        pendingServices: null == pendingServices
+            ? _value._pendingServices
+            : pendingServices // ignore: cast_nullable_to_non_nullable
+                  as List<PendingServiceItem>,
         expiringItems: null == expiringItems
             ? _value._expiringItems
             : expiringItems // ignore: cast_nullable_to_non_nullable
@@ -1941,6 +2307,7 @@ class _$HomeDataImpl extends _HomeData {
     final List<ComplaintItem> pendingComplaints = const [],
     final List<AmcProgress> amcProgresses = const [],
     final List<NotificationItem> todayNotifications = const [],
+    final List<PendingServiceItem> pendingServices = const [],
     final List<ExpiryItem> expiringItems = const [],
     final List<PendingPaymentItem> pendingPayments = const [],
     this.todaySellsSummary = 0,
@@ -1950,6 +2317,7 @@ class _$HomeDataImpl extends _HomeData {
        _pendingComplaints = pendingComplaints,
        _amcProgresses = amcProgresses,
        _todayNotifications = todayNotifications,
+       _pendingServices = pendingServices,
        _expiringItems = expiringItems,
        _pendingPayments = pendingPayments,
        super._();
@@ -2025,6 +2393,15 @@ class _$HomeDataImpl extends _HomeData {
     return EqualUnmodifiableListView(_todayNotifications);
   }
 
+  final List<PendingServiceItem> _pendingServices;
+  @override
+  @JsonKey()
+  List<PendingServiceItem> get pendingServices {
+    if (_pendingServices is EqualUnmodifiableListView) return _pendingServices;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pendingServices);
+  }
+
   final List<ExpiryItem> _expiringItems;
   @override
   @JsonKey()
@@ -2055,7 +2432,7 @@ class _$HomeDataImpl extends _HomeData {
 
   @override
   String toString() {
-    return 'HomeData(newSells: $newSells, activeRentals: $activeRentals, activeAmcs: $activeAmcs, totalServices: $totalServices, totalCollectedThisMonth: $totalCollectedThisMonth, amcServices: $amcServices, newRoServices: $newRoServices, repairServices: $repairServices, resolutionRatePercent: $resolutionRatePercent, pendingComplaintsCount: $pendingComplaintsCount, todaySchedules: $todaySchedules, pendingComplaints: $pendingComplaints, amcProgresses: $amcProgresses, todayNotifications: $todayNotifications, expiringItems: $expiringItems, pendingPayments: $pendingPayments, todaySellsSummary: $todaySellsSummary, weekSellsSummary: $weekSellsSummary, projectedGrowth: $projectedGrowth)';
+    return 'HomeData(newSells: $newSells, activeRentals: $activeRentals, activeAmcs: $activeAmcs, totalServices: $totalServices, totalCollectedThisMonth: $totalCollectedThisMonth, amcServices: $amcServices, newRoServices: $newRoServices, repairServices: $repairServices, resolutionRatePercent: $resolutionRatePercent, pendingComplaintsCount: $pendingComplaintsCount, todaySchedules: $todaySchedules, pendingComplaints: $pendingComplaints, amcProgresses: $amcProgresses, todayNotifications: $todayNotifications, pendingServices: $pendingServices, expiringItems: $expiringItems, pendingPayments: $pendingPayments, todaySellsSummary: $todaySellsSummary, weekSellsSummary: $weekSellsSummary, projectedGrowth: $projectedGrowth)';
   }
 
   @override
@@ -2103,6 +2480,10 @@ class _$HomeDataImpl extends _HomeData {
               _todayNotifications,
             ) &&
             const DeepCollectionEquality().equals(
+              other._pendingServices,
+              _pendingServices,
+            ) &&
+            const DeepCollectionEquality().equals(
               other._expiringItems,
               _expiringItems,
             ) &&
@@ -2136,6 +2517,7 @@ class _$HomeDataImpl extends _HomeData {
     const DeepCollectionEquality().hash(_pendingComplaints),
     const DeepCollectionEquality().hash(_amcProgresses),
     const DeepCollectionEquality().hash(_todayNotifications),
+    const DeepCollectionEquality().hash(_pendingServices),
     const DeepCollectionEquality().hash(_expiringItems),
     const DeepCollectionEquality().hash(_pendingPayments),
     todaySellsSummary,
@@ -2173,6 +2555,7 @@ abstract class _HomeData extends HomeData {
     final List<ComplaintItem> pendingComplaints,
     final List<AmcProgress> amcProgresses,
     final List<NotificationItem> todayNotifications,
+    final List<PendingServiceItem> pendingServices,
     final List<ExpiryItem> expiringItems,
     final List<PendingPaymentItem> pendingPayments,
     final int todaySellsSummary,
@@ -2212,6 +2595,8 @@ abstract class _HomeData extends HomeData {
   List<AmcProgress> get amcProgresses;
   @override
   List<NotificationItem> get todayNotifications;
+  @override
+  List<PendingServiceItem> get pendingServices;
   @override
   List<ExpiryItem> get expiringItems;
   @override

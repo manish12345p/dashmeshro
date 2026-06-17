@@ -7,6 +7,7 @@ import 'package:calendar/calendar.dart';
 import 'package:customer_directory/customer_directory.dart';
 import 'package:emi_page/emi_page.dart';
 import 'package:visit_entry/visit_entry.dart';
+import 'package:history_page/history_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
@@ -49,7 +50,7 @@ GoRouter createAppRouter({
       GoRoute(
         path: '/customers',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: shellBuilder(const CustomerDirectoryView()),
+          child: shellBuilder(const NewClientProfileView()),
         ),
         routes: [
           GoRoute(
@@ -87,6 +88,11 @@ GoRouter createAppRouter({
             ),
           );
         },
+      ),
+      GoRoute(
+        path: '/history',
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: shellBuilder(const HistoryView())),
       ),
     ],
   );

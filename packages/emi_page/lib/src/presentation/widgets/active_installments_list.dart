@@ -31,15 +31,6 @@ class ActiveInstallmentsList extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Active Installments',
-                style: TextStyle(
-                  color: context.colors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
                   color: context.colors.surface,
@@ -61,7 +52,6 @@ class ActiveInstallmentsList extends StatelessWidget {
                       _buildFilterChip(context, 'All'),
                       _buildFilterChip(context, 'Pending'),
                       _buildFilterChip(context, 'Overdue'),
-                      _buildFilterChip(context, 'Rent'),
                       _buildFilterChip(context, 'Paid'),
                     ],
                   ),

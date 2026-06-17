@@ -31,13 +31,69 @@ class ProfileHeaderCard extends StatelessWidget {
         child: Column(
           children: [
             // Removed Image and Badge, jumping straight to name
-            Text(
-              customer.name,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: context.colors.textPrimary,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    customer.name,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: context.colors.textPrimary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      final controller = TextEditingController(text: customer.name);
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: const Text('Edit Name'),
+                          content: TextField(
+                            controller: controller,
+                            textCapitalization: TextCapitalization.words,
+                            decoration: const InputDecoration(
+                              labelText: 'Name',
+                              hintText: 'Enter customer name',
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(dialogContext),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                final newName = controller.text.trim();
+                                if (newName.isNotEmpty) {
+                                  FirebaseFirestore.instance
+                                      .collection('Customer')
+                                      .doc(customer.id)
+                                      .update({'name': newName});
+                                  Navigator.pop(dialogContext);
+                                }
+                              },
+                              child: const Text('Save'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(Icons.edit, size: 20, color: context.colors.primary),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 24),
 
@@ -56,66 +112,81 @@ class ProfileHeaderCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.add_circle_outline,
-                    color: context.colors.primary,
-                  ),
-                  tooltip: 'Add another number',
-                  onPressed: () {
-                    final controller = TextEditingController();
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) => AlertDialog(
-                        title: const Text('Add Phone Number'),
-                        content: TextField(
-                          controller: controller,
-                          keyboardType: TextInputType.phone,
-                          decoration: const InputDecoration(
-                            labelText: 'New Phone Number',
-                            hintText: 'e.g. 9876543210',
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      final controller = TextEditingController();
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: const Text('Add Phone Number'),
+                          content: TextField(
+                            controller: controller,
+                            keyboardType: TextInputType.phone,
+                            decoration: const InputDecoration(
+                              labelText: 'New Phone Number',
+                              hintText: 'e.g. 9876543210',
+                            ),
                           ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(dialogContext),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                final newNumber = controller.text.trim();
+                                if (newNumber.isNotEmpty) {
+                                  final updatedNumber = customer.number.isEmpty
+                                      ? newNumber
+                                      : '${customer.number}, $newNumber';
+                                  FirebaseFirestore.instance
+                                      .collection('Customer')
+                                      .doc(customer.id)
+                                      .update({'number': updatedNumber});
+                                  Navigator.pop(dialogContext);
+                                }
+                              },
+                              child: const Text('Save'),
+                            ),
+                          ],
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(dialogContext),
-                            child: const Text('Cancel'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              final newNumber = controller.text.trim();
-                              if (newNumber.isNotEmpty) {
-                                final updatedNumber = customer.number.isEmpty
-                                    ? newNumber
-                                    : '${customer.number}, $newNumber';
-                                FirebaseFirestore.instance
-                                    .collection('Customer')
-                                    .doc(customer.id)
-                                    .update({'number': updatedNumber});
-                                Navigator.pop(dialogContext);
-                              }
-                            },
-                            child: const Text('Save'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.chat, color: context.colors.success),
-                  onPressed: () async {
-                    final url = PhoneUtils.getWhatsAppUri(customer.number);
-                    if (url == null) return;
-                    try {
-                      await launchUrl(
-                        url,
-                        mode: LaunchMode.externalApplication,
                       );
-                    } catch (e) {
-                      debugPrint('Could not launch WhatsApp: $e');
-                    }
-                  },
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(
+                        Icons.add_circle_outline,
+                        color: context.colors.primary,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () async {
+                      final url = PhoneUtils.getWhatsAppUri(customer.number);
+                      if (url == null) return;
+                      try {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      } catch (e) {
+                        debugPrint('Could not launch WhatsApp: $e');
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(Icons.chat, size: 20, color: context.colors.success),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -125,18 +196,125 @@ class ProfileHeaderCard extends StatelessWidget {
               Icons.location_on_outlined,
               customer.address,
               isMultiline: true,
+              onEdit: () {
+                final controller = TextEditingController(text: customer.address);
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    title: const Text('Edit Address'),
+                    content: TextField(
+                      controller: controller,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        labelText: 'Address',
+                        hintText: 'Enter full address',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final newAddress = controller.text.trim();
+                          if (newAddress.isNotEmpty) {
+                            FirebaseFirestore.instance
+                                .collection('Customer')
+                                .doc(customer.id)
+                                .update({'address': newAddress});
+                            Navigator.pop(dialogContext);
+                          }
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 12),
+            _buildContactRow(
+              context,
+              Icons.map_outlined,
+              customer.locality.isEmpty ? 'No locality added' : customer.locality,
+              onEdit: () {
+                final controller = TextEditingController(text: customer.locality);
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    title: const Text('Edit Locality'),
+                    content: TextField(
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        labelText: 'Locality',
+                        hintText: 'Enter locality',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final newLocality = controller.text.trim();
+                          FirebaseFirestore.instance
+                              .collection('Customer')
+                              .doc(customer.id)
+                              .update({'locality': newLocality});
+                          Navigator.pop(dialogContext);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
             SizedBox(height: 12),
             _buildRoTypeSection(context),
-            if (customer.note.isNotEmpty) ...[
-              SizedBox(height: 12),
-              _buildContactRow(
-                context,
-                Icons.note_alt_outlined,
-                customer.note,
-                isMultiline: true,
-              ),
-            ],
+            SizedBox(height: 12),
+            _buildContactRow(
+              context,
+              Icons.note_alt_outlined,
+              customer.note.isEmpty ? 'No internal note added' : customer.note,
+              isMultiline: true,
+              onEdit: () {
+                final controller = TextEditingController(text: customer.note);
+                showDialog(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    title: const Text('Edit Internal Note'),
+                    content: TextField(
+                      controller: controller,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        labelText: 'Internal Note',
+                        hintText: 'Enter internal note or remarks',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final newNote = controller.text.trim();
+                          FirebaseFirestore.instance
+                              .collection('Customer')
+                              .doc(customer.id)
+                              .update({'note': newNote});
+                          Navigator.pop(dialogContext);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -148,6 +326,7 @@ class ProfileHeaderCard extends StatelessWidget {
     IconData icon,
     String text, {
     bool isMultiline = false,
+    VoidCallback? onEdit,
   }) {
     return Row(
       crossAxisAlignment: isMultiline
@@ -166,6 +345,18 @@ class ProfileHeaderCard extends StatelessWidget {
             ),
           ),
         ),
+        if (onEdit != null)
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: onEdit,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Icon(Icons.edit, size: 18, color: context.colors.primary),
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -178,7 +369,7 @@ class ProfileHeaderCard extends StatelessWidget {
         .toList();
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(
           Icons.water_drop_outlined,
@@ -223,15 +414,20 @@ class ProfileHeaderCard extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(
-          icon: Icon(
-            Icons.add_circle_outline,
-            color: context.colors.primary,
-            size: 20,
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () => _showRoTypeUpdateDialog(context, roTypes),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.add_circle_outline,
+                color: context.colors.primary,
+                size: 20,
+              ),
+            ),
           ),
-          constraints: BoxConstraints(),
-          padding: EdgeInsets.zero,
-          onPressed: () => _showRoTypeUpdateDialog(context, roTypes),
         ),
       ],
     );

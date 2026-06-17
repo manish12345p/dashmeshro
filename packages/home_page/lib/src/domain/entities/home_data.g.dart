@@ -120,6 +120,34 @@ Map<String, dynamic> _$$NotificationItemImplToJson(
   'phone': instance.phone,
 };
 
+_$PendingServiceItemImpl _$$PendingServiceItemImplFromJson(
+  Map<String, dynamic> json,
+) => _$PendingServiceItemImpl(
+  id: json['id'] as String? ?? '',
+  customerId: json['customerId'] as String? ?? '',
+  customerName: json['customerName'] as String? ?? '',
+  phone: json['phone'] as String? ?? '',
+  address: json['address'] as String? ?? '',
+  serviceType: json['serviceType'] as String? ?? '',
+  serviceDate: json['serviceDate'] as String? ?? '',
+  status: json['status'] as String? ?? '',
+  isComplaint: json['isComplaint'] as bool? ?? false,
+);
+
+Map<String, dynamic> _$$PendingServiceItemImplToJson(
+  _$PendingServiceItemImpl instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'customerId': instance.customerId,
+  'customerName': instance.customerName,
+  'phone': instance.phone,
+  'address': instance.address,
+  'serviceType': instance.serviceType,
+  'serviceDate': instance.serviceDate,
+  'status': instance.status,
+  'isComplaint': instance.isComplaint,
+};
+
 _$HomeDataImpl _$$HomeDataImplFromJson(
   Map<String, dynamic> json,
 ) => _$HomeDataImpl(
@@ -155,6 +183,11 @@ _$HomeDataImpl _$$HomeDataImplFromJson(
           ?.map((e) => NotificationItem.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  pendingServices:
+      (json['pendingServices'] as List<dynamic>?)
+          ?.map((e) => PendingServiceItem.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
   expiringItems:
       (json['expiringItems'] as List<dynamic>?)
           ?.map((e) => ExpiryItem.fromJson(e as Map<String, dynamic>))
@@ -186,6 +219,7 @@ Map<String, dynamic> _$$HomeDataImplToJson(_$HomeDataImpl instance) =>
       'pendingComplaints': instance.pendingComplaints,
       'amcProgresses': instance.amcProgresses,
       'todayNotifications': instance.todayNotifications,
+      'pendingServices': instance.pendingServices,
       'expiringItems': instance.expiringItems,
       'pendingPayments': instance.pendingPayments,
       'todaySellsSummary': instance.todaySellsSummary,

@@ -153,7 +153,7 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
               } else {
                 Future.delayed(const Duration(seconds: 2), () {
                   if (context.mounted) {
-                    context.go('/customers');
+                    context.go('/');
                   }
                 });
               }

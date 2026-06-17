@@ -20,6 +20,8 @@ dependencies:
   go_router: ^17.2.1
   get_it: ^7.7.0
   url_launcher: ^6.3.2
+  visit_entry:
+    path: ../visit_entry
 
 dev_dependencies:
   flutter_test:

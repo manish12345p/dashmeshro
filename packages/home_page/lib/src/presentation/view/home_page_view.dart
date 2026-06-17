@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:core/core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:home_page/src/domain/entities/home_data.dart';
+import 'package:home_page/src/presentation/bloc/home_bloc.dart';
+import 'package:visit_entry/visit_entry.dart';
 
 import '../../data/repositories/home_repository.dart';
 import '../../domain/use_cases/get_home_data_usecase.dart';
@@ -15,6 +18,7 @@ import '../widgets/visit_search_delegate.dart';
 import '../widgets/notification_dialog.dart';
 import '../widgets/expense_dialogs.dart';
 import '../widgets/manage_ro_types_dialog.dart';
+import '../widgets/manage_service_types_dialog.dart';
 
 class HomePageView extends StatelessWidget {
   final HomeBloc? bloc;
@@ -69,18 +73,12 @@ class _HomeContent extends StatelessWidget {
           }
           if (state is HomeLoaded) {
             final data = state.data;
-            return SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(
-                AppPadding.p16,
-                AppPadding.p16,
-                AppPadding.p16,
-                AppPadding.p48 + 80, // Extra padding for bottom nav
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // App Bar Area
-                  Row(
+            return Column(
+              children: [
+                // Fixed App Bar Area
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppPadding.p16, AppPadding.p16, AppPadding.p16, AppPadding.p8),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
@@ -97,40 +95,58 @@ class _HomeContent extends StatelessWidget {
                           const SizedBox(width: AppPadding.p8),
                           const _AdminUnlockTitle(),
                           const SizedBox(width: AppPadding.p4),
-                          BlocBuilder<ThemeCubit, ThemeMode>(
-                            builder: (context, themeMode) {
-                              final isDark =
-                                  themeMode == ThemeMode.dark ||
-                                  (themeMode == ThemeMode.system &&
-                                      Theme.of(context).brightness ==
-                                          Brightness.dark);
-                              return GestureDetector(
-                                onTap: () =>
-                                    context.read<ThemeCubit>().toggleTheme(),
-                                child: Icon(
-                                  isDark ? Icons.light_mode : Icons.dark_mode,
-                                  color: isDark ? Colors.white : Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                              );
-                            },
-                          ),
                         ],
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.search),
-                            onPressed: () {
+                          GestureDetector(
+                            onTap: () {
                               showSearch(
                                 context: context,
                                 delegate: VisitSearchDelegate(),
                               );
                             },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.search, size: 20, color: Theme.of(context).primaryColor),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Search Customer',
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          IconButton(
+                          PopupMenuButton<String>(
                             icon: const Icon(Icons.settings_outlined),
-                            onPressed: () => ManageRoTypesDialog.show(context),
+                            onSelected: (value) {
+                              if (value == 'ro_types') {
+                                ManageRoTypesDialog.show(context);
+                              } else if (value == 'service_types') {
+                                ManageServiceTypesDialog.show(context);
+                              }
+                            },
+                            itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                value: 'ro_types',
+                                child: Text('Manage RO Types'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'service_types',
+                                child: Text('Manage Service Types'),
+                              ),
+                            ],
                           ),
                           IconButton(
                             icon: const Icon(Icons.notifications_outlined),
@@ -140,9 +156,20 @@ class _HomeContent extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppPadding.p24),
-
-                  // Top Summary Cards
+                ),
+                // Scrollable Content
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppPadding.p16,
+                      AppPadding.p8,
+                      AppPadding.p16,
+                      AppPadding.p48 + 80, // Extra padding for bottom nav
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Top Summary Cards
                   SummaryCard(
                     overlineText: AppStrings.totalVisits,
                     valueText: '${data.totalServices}',
@@ -237,9 +264,39 @@ class _HomeContent extends StatelessWidget {
                       ),
                     ),
                   const SizedBox(height: AppPadding.p32),
+
+                  // Pending Services
+                  SectionHeader(
+                    title: 'Pending Section',
+                    trailing: const SizedBox(),
+                  ),
+                  const SizedBox(height: AppPadding.p16),
+                  if (data.pendingServices.isNotEmpty)
+                    ...data.pendingServices.map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: _PendingServiceCard(item: item),
+                      ),
+                    ),
+                  if (data.pendingServices.isEmpty)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Text(
+                          'No pending services currently',
+                          style: TextStyle(
+                            color: context.colors.textQuaternary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: AppPadding.p32),
                 ],
               ),
-            );
+            ),
+          ),
+        ],
+      );
           }
           return const SizedBox();
         },
@@ -356,6 +413,183 @@ class _AdminUnlockTitleState extends State<_AdminUnlockTitle> {
               letterSpacing: 1.1,
               height: 1.1,
             ),
+      ),
+    );
+  }
+}
+
+class _PendingServiceCard extends StatefulWidget {
+  final PendingServiceItem item;
+
+  const _PendingServiceCard({required this.item});
+
+  @override
+  State<_PendingServiceCard> createState() => _PendingServiceCardState();
+}
+
+class _PendingServiceCardState extends State<_PendingServiceCard> {
+  bool? _optimisticIsCompleted;
+
+  @override
+  void didUpdateWidget(covariant _PendingServiceCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.item.status != widget.item.status) {
+       _optimisticIsCompleted = null;
+    }
+  }
+
+  void _toggleDone(bool isDone) {
+    setState(() => _optimisticIsCompleted = isDone);
+    
+    final updates = <String, dynamic>{
+      'status': isDone ? 'completed' : 'pending',
+    };
+    if (isDone) {
+      updates['completedAt'] = DateTime.now().toIso8601String();
+    }
+
+    FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(widget.item.customerId)
+        .collection('services')
+        .doc(widget.item.id)
+        .update(updates).catchError((e) {
+      if (mounted) {
+        setState(() => _optimisticIsCompleted = null);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating status: $e')),
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isCompleted = _optimisticIsCompleted ?? (widget.item.status == 'completed');
+    final textTheme = Theme.of(context).textTheme;
+
+    return Card(
+      elevation: 0,
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isCompleted 
+              ? Colors.grey.shade300 
+              : (widget.item.isComplaint ? context.colors.error.withValues(alpha: 0.3) : Colors.grey.shade300)
+        ),
+      ),
+      color: isCompleted 
+          ? Colors.grey.shade100 
+          : (widget.item.isComplaint ? context.colors.error.withValues(alpha: 0.02) : context.colors.surface),
+      child: InkWell(
+        onTap: isCompleted ? null : () {
+          EditVisitDialog.show(context, customerId: widget.item.customerId, serviceId: widget.item.id);
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 24,
+                height: 24,
+                child: Checkbox(
+                  value: isCompleted,
+                  activeColor: Colors.grey.shade400,
+                  side: BorderSide(color: isCompleted ? Colors.transparent : context.colors.error, width: 2),
+                  onChanged: (val) {
+                    if (val != null) {
+                      _toggleDone(val);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.item.customerName,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: isCompleted ? Colors.grey.shade500 : context.colors.textPrimary,
+                        decoration: isCompleted ? TextDecoration.lineThrough : null,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.build_circle_outlined,
+                          size: 14,
+                          color: isCompleted ? Colors.grey.shade400 : (widget.item.isComplaint ? Colors.red : context.colors.error),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${widget.item.serviceType} • ${isCompleted ? 'Done' : 'Not Done'}',
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: isCompleted ? Colors.grey.shade500 : (widget.item.isComplaint ? Colors.red : context.colors.error),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (widget.item.phone.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone_outlined,
+                            size: 14,
+                            color: isCompleted ? Colors.grey.shade400 : context.colors.textSecondary,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            widget.item.phone,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: isCompleted ? Colors.grey.shade500 : context.colors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]
+                  ],
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (!isCompleted) ...[
+                    Icon(Icons.edit_outlined, color: context.colors.error, size: 18),
+                    const SizedBox(height: 12),
+                  ],
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/customers/${widget.item.customerId}');
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Column(
+                      children: [
+                        Icon(Icons.person_outline, color: context.colors.primary, size: 18),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Profile',
+                          style: textTheme.labelSmall?.copyWith(
+                            color: context.colors.primary,
+                            fontSize: 9,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

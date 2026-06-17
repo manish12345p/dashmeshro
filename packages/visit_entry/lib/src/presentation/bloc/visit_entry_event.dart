@@ -9,6 +9,7 @@ class VisitEntryEvent with _$VisitEntryEvent {
   const factory VisitEntryEvent.selectServiceType(String type) =
       SelectServiceType;
   const factory VisitEntryEvent.toggleUrgency(bool isUrgent) = ToggleUrgency;
+  const factory VisitEntryEvent.toggleComplaint(bool isComplaint) = ToggleComplaint;
   const factory VisitEntryEvent.updateTotalAmcVisitsToPurchase(int visits) = UpdateTotalAmcVisitsToPurchase;
   const factory VisitEntryEvent.updateRemarks(String remarks) = UpdateRemarks;
   const factory VisitEntryEvent.updateFixes(String fixes) = UpdateFixes;

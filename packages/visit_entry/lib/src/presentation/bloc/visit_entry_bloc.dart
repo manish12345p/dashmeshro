@@ -23,6 +23,7 @@ class VisitEntryState {
   final String equipmentsUsed;
   final String serviceDuration;
   final String guaranteeDuration;
+  final bool isComplaint;
   final String? serviceDate;
   final int remainingAmcVisits;
   final int totalAmcVisitsToPurchase;
@@ -43,6 +44,7 @@ class VisitEntryState {
     this.equipmentsUsed = '',
     this.serviceDuration = '',
     this.guaranteeDuration = '',
+    this.isComplaint = false,
     this.serviceDate,
     this.remainingAmcVisits = 0,
     this.totalAmcVisitsToPurchase = 0,
@@ -68,6 +70,7 @@ class VisitEntryState {
     String? equipmentsUsed,
     String? serviceDuration,
     String? guaranteeDuration,
+    bool? isComplaint,
     String? serviceDate,
     int? remainingAmcVisits,
     int? totalAmcVisitsToPurchase,
@@ -90,6 +93,7 @@ class VisitEntryState {
       equipmentsUsed: equipmentsUsed ?? this.equipmentsUsed,
       serviceDuration: serviceDuration ?? this.serviceDuration,
       guaranteeDuration: guaranteeDuration ?? this.guaranteeDuration,
+      isComplaint: isComplaint ?? this.isComplaint,
       serviceDate: serviceDate ?? this.serviceDate,
       remainingAmcVisits: remainingAmcVisits ?? this.remainingAmcVisits,
       totalAmcVisitsToPurchase: totalAmcVisitsToPurchase ?? this.totalAmcVisitsToPurchase,
@@ -115,6 +119,7 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
     on<SelectCustomer>(_onSelectCustomer);
     on<SelectServiceType>(_onSelectServiceType);
     on<ToggleUrgency>(_onToggleUrgency);
+    on<ToggleComplaint>(_onToggleComplaint);
     on<UpdateTotalAmcVisitsToPurchase>(_onUpdateTotalAmcVisitsToPurchase);
     on<UpdateRemarks>(_onUpdateRemarks);
     on<UpdateFixes>(_onUpdateFixes);
@@ -153,6 +158,10 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
 
   void _onToggleUrgency(ToggleUrgency event, Emitter<VisitEntryState> emit) {
     emit(state.copyWith(isUrgent: event.isUrgent));
+  }
+
+  void _onToggleComplaint(ToggleComplaint event, Emitter<VisitEntryState> emit) {
+    emit(state.copyWith(isComplaint: event.isComplaint));
   }
 
   void _onUpdateRemarks(UpdateRemarks event, Emitter<VisitEntryState> emit) {
@@ -237,16 +246,9 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
       return;
     }
 
-    if (state.serviceType.isEmpty || state.serviceType == 'Sell') {
-      emit(
-        state.copyWith(
-          status: VisitEntryStatus.failure,
-          errorMessage: 'Please select a Service Type',
-        ),
-      );
-      emit(state.copyWith(status: VisitEntryStatus.initial));
-      return;
-    }
+    // No service type validation needed
+
+    // Service Duration is no longer mandatory
 
     if (state.amountPaid + state.amountPending > state.totalAmount) {
       emit(
@@ -268,6 +270,7 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
         customerId: state.customerId!,
         serviceType: state.serviceType,
         isUrgent: state.isUrgent,
+        isComplaint: state.isComplaint,
         serviceDate:
             DateTime.tryParse(state.effectiveServiceDate) ?? DateTime.now(),
         remarks: state.remarks,

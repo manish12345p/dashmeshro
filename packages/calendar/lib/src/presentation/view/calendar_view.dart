@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import '../../domain/entities/schedule_item.dart';
 import '../bloc/calendar_bloc.dart';
 import '../bloc/calendar_event.dart';
 import '../bloc/calendar_state.dart';
@@ -56,12 +54,17 @@ class _CalendarViewState extends State<CalendarView> {
                   item.date.day == activeDay;
             }).toList();
 
-            // Map dates to events for dots
+            // Map dates to events for dots and due-date highlights
             final daysWithEvents = <int>{};
+            final daysWithDueDates = <int>{}; // exact due date days (amber)
             for (var item in currentMonthItems) {
               if (item.date.year == _selectedDate.year &&
                   item.date.month == _selectedDate.month) {
-                daysWithEvents.add(item.date.day);
+                if (item.id.endsWith('_due')) {
+                  daysWithDueDates.add(item.date.day);
+                } else {
+                  daysWithEvents.add(item.date.day);
+                }
               }
             }
 
@@ -222,13 +225,41 @@ class _CalendarViewState extends State<CalendarView> {
                             const SizedBox(height: AppPadding.p12),
 
                             // Grid Builder
-                            _buildCalendarGrid(daysWithEvents),
+                            _buildCalendarGrid(daysWithEvents, daysWithDueDates),
                           ],
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: AppPadding.p24),
+                    const SizedBox(height: AppPadding.p12),
+
+                    // Legend
+                    Row(
+                      children: [
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFFF59E0B),
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Text(
+                          'Service due date',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFFF59E0B),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: AppPadding.p20),
 
                     // Scheduled Services Title Area
                     Text(
@@ -297,7 +328,10 @@ class _CalendarViewState extends State<CalendarView> {
     );
   }
 
-  Widget _buildCalendarGrid(Set<int> daysWithEvents) {
+  Widget _buildCalendarGrid(
+    Set<int> daysWithEvents,
+    Set<int> daysWithDueDates,
+  ) {
     final firstDayOfMonth = DateTime(
       _selectedDate.year,
       _selectedDate.month,
@@ -325,6 +359,7 @@ class _CalendarViewState extends State<CalendarView> {
           dayNumber: day,
           isSelected: _selectedDate.day == day,
           hasAmcDot: daysWithEvents.contains(day),
+          isDueDate: daysWithDueDates.contains(day),
           onTap: () => _selectDay(day),
         ),
       );

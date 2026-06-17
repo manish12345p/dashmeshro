@@ -27,6 +27,7 @@ mixin _$VisitRecord {
   DateTime get serviceDate => throw _privateConstructorUsedError;
   String get remarks => throw _privateConstructorUsedError;
   bool get isUrgent => throw _privateConstructorUsedError;
+  bool get isComplaint => throw _privateConstructorUsedError;
   String get fixes => throw _privateConstructorUsedError;
   double get amountPaid => throw _privateConstructorUsedError;
   double get amountPending => throw _privateConstructorUsedError;
@@ -34,6 +35,7 @@ mixin _$VisitRecord {
   String get equipmentsUsed => throw _privateConstructorUsedError;
   String get serviceDuration => throw _privateConstructorUsedError;
   String get guaranteeDuration => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   String? get roType => throw _privateConstructorUsedError;
   bool get isDeleted => throw _privateConstructorUsedError;
   String? get deletedAt => throw _privateConstructorUsedError;
@@ -63,6 +65,7 @@ abstract class $VisitRecordCopyWith<$Res> {
     DateTime serviceDate,
     String remarks,
     bool isUrgent,
+    bool isComplaint,
     String fixes,
     double amountPaid,
     double amountPending,
@@ -70,6 +73,7 @@ abstract class $VisitRecordCopyWith<$Res> {
     String equipmentsUsed,
     String serviceDuration,
     String guaranteeDuration,
+    String status,
     String? roType,
     bool isDeleted,
     String? deletedAt,
@@ -98,6 +102,7 @@ class _$VisitRecordCopyWithImpl<$Res, $Val extends VisitRecord>
     Object? serviceDate = null,
     Object? remarks = null,
     Object? isUrgent = null,
+    Object? isComplaint = null,
     Object? fixes = null,
     Object? amountPaid = null,
     Object? amountPending = null,
@@ -105,6 +110,7 @@ class _$VisitRecordCopyWithImpl<$Res, $Val extends VisitRecord>
     Object? equipmentsUsed = null,
     Object? serviceDuration = null,
     Object? guaranteeDuration = null,
+    Object? status = null,
     Object? roType = freezed,
     Object? isDeleted = null,
     Object? deletedAt = freezed,
@@ -136,6 +142,10 @@ class _$VisitRecordCopyWithImpl<$Res, $Val extends VisitRecord>
                 ? _value.isUrgent
                 : isUrgent // ignore: cast_nullable_to_non_nullable
                       as bool,
+            isComplaint: null == isComplaint
+                ? _value.isComplaint
+                : isComplaint // ignore: cast_nullable_to_non_nullable
+                      as bool,
             fixes: null == fixes
                 ? _value.fixes
                 : fixes // ignore: cast_nullable_to_non_nullable
@@ -163,6 +173,10 @@ class _$VisitRecordCopyWithImpl<$Res, $Val extends VisitRecord>
             guaranteeDuration: null == guaranteeDuration
                 ? _value.guaranteeDuration
                 : guaranteeDuration // ignore: cast_nullable_to_non_nullable
+                      as String,
+            status: null == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
                       as String,
             roType: freezed == roType
                 ? _value.roType
@@ -202,6 +216,7 @@ abstract class _$$VisitRecordImplCopyWith<$Res>
     DateTime serviceDate,
     String remarks,
     bool isUrgent,
+    bool isComplaint,
     String fixes,
     double amountPaid,
     double amountPending,
@@ -209,6 +224,7 @@ abstract class _$$VisitRecordImplCopyWith<$Res>
     String equipmentsUsed,
     String serviceDuration,
     String guaranteeDuration,
+    String status,
     String? roType,
     bool isDeleted,
     String? deletedAt,
@@ -236,6 +252,7 @@ class __$$VisitRecordImplCopyWithImpl<$Res>
     Object? serviceDate = null,
     Object? remarks = null,
     Object? isUrgent = null,
+    Object? isComplaint = null,
     Object? fixes = null,
     Object? amountPaid = null,
     Object? amountPending = null,
@@ -243,6 +260,7 @@ class __$$VisitRecordImplCopyWithImpl<$Res>
     Object? equipmentsUsed = null,
     Object? serviceDuration = null,
     Object? guaranteeDuration = null,
+    Object? status = null,
     Object? roType = freezed,
     Object? isDeleted = null,
     Object? deletedAt = freezed,
@@ -274,6 +292,10 @@ class __$$VisitRecordImplCopyWithImpl<$Res>
             ? _value.isUrgent
             : isUrgent // ignore: cast_nullable_to_non_nullable
                   as bool,
+        isComplaint: null == isComplaint
+            ? _value.isComplaint
+            : isComplaint // ignore: cast_nullable_to_non_nullable
+                  as bool,
         fixes: null == fixes
             ? _value.fixes
             : fixes // ignore: cast_nullable_to_non_nullable
@@ -301,6 +323,10 @@ class __$$VisitRecordImplCopyWithImpl<$Res>
         guaranteeDuration: null == guaranteeDuration
             ? _value.guaranteeDuration
             : guaranteeDuration // ignore: cast_nullable_to_non_nullable
+                  as String,
+        status: null == status
+            ? _value.status
+            : status // ignore: cast_nullable_to_non_nullable
                   as String,
         roType: freezed == roType
             ? _value.roType
@@ -334,6 +360,7 @@ class _$VisitRecordImpl implements _VisitRecord {
     required this.serviceDate,
     required this.remarks,
     this.isUrgent = false,
+    this.isComplaint = false,
     this.fixes = '',
     this.amountPaid = 0.0,
     this.amountPending = 0.0,
@@ -341,6 +368,7 @@ class _$VisitRecordImpl implements _VisitRecord {
     this.equipmentsUsed = '',
     this.serviceDuration = '',
     this.guaranteeDuration = '',
+    this.status = 'pending',
     this.roType,
     this.isDeleted = false,
     this.deletedAt,
@@ -365,6 +393,9 @@ class _$VisitRecordImpl implements _VisitRecord {
   final bool isUrgent;
   @override
   @JsonKey()
+  final bool isComplaint;
+  @override
+  @JsonKey()
   final String fixes;
   @override
   @JsonKey()
@@ -385,6 +416,9 @@ class _$VisitRecordImpl implements _VisitRecord {
   @JsonKey()
   final String guaranteeDuration;
   @override
+  @JsonKey()
+  final String status;
+  @override
   final String? roType;
   @override
   @JsonKey()
@@ -396,7 +430,7 @@ class _$VisitRecordImpl implements _VisitRecord {
 
   @override
   String toString() {
-    return 'VisitRecord(id: $id, customerId: $customerId, serviceType: $serviceType, serviceDate: $serviceDate, remarks: $remarks, isUrgent: $isUrgent, fixes: $fixes, amountPaid: $amountPaid, amountPending: $amountPending, totalAmount: $totalAmount, equipmentsUsed: $equipmentsUsed, serviceDuration: $serviceDuration, guaranteeDuration: $guaranteeDuration, roType: $roType, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
+    return 'VisitRecord(id: $id, customerId: $customerId, serviceType: $serviceType, serviceDate: $serviceDate, remarks: $remarks, isUrgent: $isUrgent, isComplaint: $isComplaint, fixes: $fixes, amountPaid: $amountPaid, amountPending: $amountPending, totalAmount: $totalAmount, equipmentsUsed: $equipmentsUsed, serviceDuration: $serviceDuration, guaranteeDuration: $guaranteeDuration, status: $status, roType: $roType, isDeleted: $isDeleted, deletedAt: $deletedAt, deletedBy: $deletedBy)';
   }
 
   @override
@@ -414,6 +448,8 @@ class _$VisitRecordImpl implements _VisitRecord {
             (identical(other.remarks, remarks) || other.remarks == remarks) &&
             (identical(other.isUrgent, isUrgent) ||
                 other.isUrgent == isUrgent) &&
+            (identical(other.isComplaint, isComplaint) ||
+                other.isComplaint == isComplaint) &&
             (identical(other.fixes, fixes) || other.fixes == fixes) &&
             (identical(other.amountPaid, amountPaid) ||
                 other.amountPaid == amountPaid) &&
@@ -427,6 +463,7 @@ class _$VisitRecordImpl implements _VisitRecord {
                 other.serviceDuration == serviceDuration) &&
             (identical(other.guaranteeDuration, guaranteeDuration) ||
                 other.guaranteeDuration == guaranteeDuration) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.roType, roType) || other.roType == roType) &&
             (identical(other.isDeleted, isDeleted) ||
                 other.isDeleted == isDeleted) &&
@@ -438,7 +475,7 @@ class _$VisitRecordImpl implements _VisitRecord {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     id,
     customerId,
@@ -446,6 +483,7 @@ class _$VisitRecordImpl implements _VisitRecord {
     serviceDate,
     remarks,
     isUrgent,
+    isComplaint,
     fixes,
     amountPaid,
     amountPending,
@@ -453,11 +491,12 @@ class _$VisitRecordImpl implements _VisitRecord {
     equipmentsUsed,
     serviceDuration,
     guaranteeDuration,
+    status,
     roType,
     isDeleted,
     deletedAt,
     deletedBy,
-  );
+  ]);
 
   /// Create a copy of VisitRecord
   /// with the given fields replaced by the non-null parameter values.
@@ -481,6 +520,7 @@ abstract class _VisitRecord implements VisitRecord {
     required final DateTime serviceDate,
     required final String remarks,
     final bool isUrgent,
+    final bool isComplaint,
     final String fixes,
     final double amountPaid,
     final double amountPending,
@@ -488,6 +528,7 @@ abstract class _VisitRecord implements VisitRecord {
     final String equipmentsUsed,
     final String serviceDuration,
     final String guaranteeDuration,
+    final String status,
     final String? roType,
     final bool isDeleted,
     final String? deletedAt,
@@ -510,6 +551,8 @@ abstract class _VisitRecord implements VisitRecord {
   @override
   bool get isUrgent;
   @override
+  bool get isComplaint;
+  @override
   String get fixes;
   @override
   double get amountPaid;
@@ -523,6 +566,8 @@ abstract class _VisitRecord implements VisitRecord {
   String get serviceDuration;
   @override
   String get guaranteeDuration;
+  @override
+  String get status;
   @override
   String? get roType;
   @override

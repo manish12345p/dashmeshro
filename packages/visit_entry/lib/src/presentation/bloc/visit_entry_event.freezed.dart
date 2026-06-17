@@ -23,6 +23,7 @@ mixin _$VisitEntryEvent {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -42,6 +43,7 @@ mixin _$VisitEntryEvent {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -61,6 +63,7 @@ mixin _$VisitEntryEvent {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -80,6 +83,7 @@ mixin _$VisitEntryEvent {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -102,6 +106,7 @@ mixin _$VisitEntryEvent {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -121,6 +126,7 @@ mixin _$VisitEntryEvent {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -256,6 +262,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -279,6 +286,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -302,6 +310,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -328,6 +337,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -354,6 +364,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -377,6 +388,7 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -494,6 +506,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -517,6 +530,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -540,6 +554,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -566,6 +581,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -592,6 +608,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -615,6 +632,7 @@ class _$SelectServiceTypeImpl implements SelectServiceType {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -724,6 +742,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -747,6 +766,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -770,6 +790,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -796,6 +817,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -822,6 +844,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -845,6 +868,7 @@ class _$ToggleUrgencyImpl implements ToggleUrgency {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -876,6 +900,245 @@ abstract class ToggleUrgency implements VisitEntryEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ToggleUrgencyImplCopyWith<_$ToggleUrgencyImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleComplaintImplCopyWith<$Res> {
+  factory _$$ToggleComplaintImplCopyWith(
+    _$ToggleComplaintImpl value,
+    $Res Function(_$ToggleComplaintImpl) then,
+  ) = __$$ToggleComplaintImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool isComplaint});
+}
+
+/// @nodoc
+class __$$ToggleComplaintImplCopyWithImpl<$Res>
+    extends _$VisitEntryEventCopyWithImpl<$Res, _$ToggleComplaintImpl>
+    implements _$$ToggleComplaintImplCopyWith<$Res> {
+  __$$ToggleComplaintImplCopyWithImpl(
+    _$ToggleComplaintImpl _value,
+    $Res Function(_$ToggleComplaintImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? isComplaint = null}) {
+    return _then(
+      _$ToggleComplaintImpl(
+        null == isComplaint
+            ? _value.isComplaint
+            : isComplaint // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ToggleComplaintImpl implements ToggleComplaint {
+  const _$ToggleComplaintImpl(this.isComplaint);
+
+  @override
+  final bool isComplaint;
+
+  @override
+  String toString() {
+    return 'VisitEntryEvent.toggleComplaint(isComplaint: $isComplaint)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleComplaintImpl &&
+            (identical(other.isComplaint, isComplaint) ||
+                other.isComplaint == isComplaint));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, isComplaint);
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleComplaintImplCopyWith<_$ToggleComplaintImpl> get copyWith =>
+      __$$ToggleComplaintImplCopyWithImpl<_$ToggleComplaintImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String id, String name, int remainingAmcVisits)
+    selectCustomer,
+    required TResult Function(String type) selectServiceType,
+    required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
+    required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
+    required TResult Function(String remarks) updateRemarks,
+    required TResult Function(String fixes) updateFixes,
+    required TResult Function(double amount) updateAmountPaid,
+    required TResult Function(double amount) updateAmountPending,
+    required TResult Function(double amount) updateTotalAmount,
+    required TResult Function(String equipments) updateEquipmentsUsed,
+    required TResult Function(String duration) updateServiceDuration,
+    required TResult Function(String duration) updateGuaranteeDuration,
+    required TResult Function(double? amount) updateEmiAmountPerMonth,
+    required TResult Function(String date) setDate,
+    required TResult Function() submit,
+  }) {
+    return toggleComplaint(isComplaint);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
+    TResult? Function(String type)? selectServiceType,
+    TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
+    TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
+    TResult? Function(String remarks)? updateRemarks,
+    TResult? Function(String fixes)? updateFixes,
+    TResult? Function(double amount)? updateAmountPaid,
+    TResult? Function(double amount)? updateAmountPending,
+    TResult? Function(double amount)? updateTotalAmount,
+    TResult? Function(String equipments)? updateEquipmentsUsed,
+    TResult? Function(String duration)? updateServiceDuration,
+    TResult? Function(String duration)? updateGuaranteeDuration,
+    TResult? Function(double? amount)? updateEmiAmountPerMonth,
+    TResult? Function(String date)? setDate,
+    TResult? Function()? submit,
+  }) {
+    return toggleComplaint?.call(isComplaint);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String id, String name, int remainingAmcVisits)?
+    selectCustomer,
+    TResult Function(String type)? selectServiceType,
+    TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
+    TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
+    TResult Function(String remarks)? updateRemarks,
+    TResult Function(String fixes)? updateFixes,
+    TResult Function(double amount)? updateAmountPaid,
+    TResult Function(double amount)? updateAmountPending,
+    TResult Function(double amount)? updateTotalAmount,
+    TResult Function(String equipments)? updateEquipmentsUsed,
+    TResult Function(String duration)? updateServiceDuration,
+    TResult Function(String duration)? updateGuaranteeDuration,
+    TResult Function(double? amount)? updateEmiAmountPerMonth,
+    TResult Function(String date)? setDate,
+    TResult Function()? submit,
+    required TResult orElse(),
+  }) {
+    if (toggleComplaint != null) {
+      return toggleComplaint(isComplaint);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(SelectServiceType value) selectServiceType,
+    required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
+    required TResult Function(UpdateTotalAmcVisitsToPurchase value)
+    updateTotalAmcVisitsToPurchase,
+    required TResult Function(UpdateRemarks value) updateRemarks,
+    required TResult Function(UpdateFixes value) updateFixes,
+    required TResult Function(UpdateAmountPaid value) updateAmountPaid,
+    required TResult Function(UpdateAmountPending value) updateAmountPending,
+    required TResult Function(UpdateTotalAmount value) updateTotalAmount,
+    required TResult Function(UpdateEquipmentsUsed value) updateEquipmentsUsed,
+    required TResult Function(UpdateServiceDuration value)
+    updateServiceDuration,
+    required TResult Function(UpdateGuaranteeDuration value)
+    updateGuaranteeDuration,
+    required TResult Function(UpdateEmiAmountPerMonth value)
+    updateEmiAmountPerMonth,
+    required TResult Function(SetDate value) setDate,
+    required TResult Function(SubmitVisitEntry value) submit,
+  }) {
+    return toggleComplaint(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(SelectServiceType value)? selectServiceType,
+    TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
+    TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
+    TResult? Function(UpdateRemarks value)? updateRemarks,
+    TResult? Function(UpdateFixes value)? updateFixes,
+    TResult? Function(UpdateAmountPaid value)? updateAmountPaid,
+    TResult? Function(UpdateAmountPending value)? updateAmountPending,
+    TResult? Function(UpdateTotalAmount value)? updateTotalAmount,
+    TResult? Function(UpdateEquipmentsUsed value)? updateEquipmentsUsed,
+    TResult? Function(UpdateServiceDuration value)? updateServiceDuration,
+    TResult? Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
+    TResult? Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult? Function(SetDate value)? setDate,
+    TResult? Function(SubmitVisitEntry value)? submit,
+  }) {
+    return toggleComplaint?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(SelectServiceType value)? selectServiceType,
+    TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
+    TResult Function(UpdateTotalAmcVisitsToPurchase value)?
+    updateTotalAmcVisitsToPurchase,
+    TResult Function(UpdateRemarks value)? updateRemarks,
+    TResult Function(UpdateFixes value)? updateFixes,
+    TResult Function(UpdateAmountPaid value)? updateAmountPaid,
+    TResult Function(UpdateAmountPending value)? updateAmountPending,
+    TResult Function(UpdateTotalAmount value)? updateTotalAmount,
+    TResult Function(UpdateEquipmentsUsed value)? updateEquipmentsUsed,
+    TResult Function(UpdateServiceDuration value)? updateServiceDuration,
+    TResult Function(UpdateGuaranteeDuration value)? updateGuaranteeDuration,
+    TResult Function(UpdateEmiAmountPerMonth value)? updateEmiAmountPerMonth,
+    TResult Function(SetDate value)? setDate,
+    TResult Function(SubmitVisitEntry value)? submit,
+    required TResult orElse(),
+  }) {
+    if (toggleComplaint != null) {
+      return toggleComplaint(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ToggleComplaint implements VisitEntryEvent {
+  const factory ToggleComplaint(final bool isComplaint) = _$ToggleComplaintImpl;
+
+  bool get isComplaint;
+
+  /// Create a copy of VisitEntryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ToggleComplaintImplCopyWith<_$ToggleComplaintImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -963,6 +1226,7 @@ class _$UpdateTotalAmcVisitsToPurchaseImpl
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -986,6 +1250,7 @@ class _$UpdateTotalAmcVisitsToPurchaseImpl
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -1009,6 +1274,7 @@ class _$UpdateTotalAmcVisitsToPurchaseImpl
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -1035,6 +1301,7 @@ class _$UpdateTotalAmcVisitsToPurchaseImpl
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -1061,6 +1328,7 @@ class _$UpdateTotalAmcVisitsToPurchaseImpl
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -1084,6 +1352,7 @@ class _$UpdateTotalAmcVisitsToPurchaseImpl
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -1195,6 +1464,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -1218,6 +1488,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -1241,6 +1512,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -1267,6 +1539,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -1293,6 +1566,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -1316,6 +1590,7 @@ class _$UpdateRemarksImpl implements UpdateRemarks {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -1424,6 +1699,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -1447,6 +1723,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -1470,6 +1747,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -1496,6 +1774,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -1522,6 +1801,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -1545,6 +1825,7 @@ class _$UpdateFixesImpl implements UpdateFixes {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -1656,6 +1937,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -1679,6 +1961,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -1702,6 +1985,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -1728,6 +2012,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -1754,6 +2039,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -1777,6 +2063,7 @@ class _$UpdateAmountPaidImpl implements UpdateAmountPaid {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -1888,6 +2175,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -1911,6 +2199,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -1934,6 +2223,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -1960,6 +2250,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -1986,6 +2277,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -2009,6 +2301,7 @@ class _$UpdateAmountPendingImpl implements UpdateAmountPending {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -2121,6 +2414,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -2144,6 +2438,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -2167,6 +2462,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -2193,6 +2489,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -2219,6 +2516,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -2242,6 +2540,7 @@ class _$UpdateTotalAmountImpl implements UpdateTotalAmount {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -2356,6 +2655,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -2379,6 +2679,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -2402,6 +2703,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -2428,6 +2730,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -2454,6 +2757,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -2477,6 +2781,7 @@ class _$UpdateEquipmentsUsedImpl implements UpdateEquipmentsUsed {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -2591,6 +2896,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -2614,6 +2920,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -2637,6 +2944,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -2663,6 +2971,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -2689,6 +2998,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -2712,6 +3022,7 @@ class _$UpdateServiceDurationImpl implements UpdateServiceDuration {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -2825,6 +3136,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -2848,6 +3160,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -2871,6 +3184,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -2897,6 +3211,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -2923,6 +3238,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -2946,6 +3262,7 @@ class _$UpdateGuaranteeDurationImpl implements UpdateGuaranteeDuration {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -3058,6 +3375,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -3081,6 +3399,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -3104,6 +3423,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -3130,6 +3450,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -3156,6 +3477,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -3179,6 +3501,7 @@ class _$UpdateEmiAmountPerMonthImpl implements UpdateEmiAmountPerMonth {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -3288,6 +3611,7 @@ class _$SetDateImpl implements SetDate {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -3311,6 +3635,7 @@ class _$SetDateImpl implements SetDate {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -3334,6 +3659,7 @@ class _$SetDateImpl implements SetDate {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -3360,6 +3686,7 @@ class _$SetDateImpl implements SetDate {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -3386,6 +3713,7 @@ class _$SetDateImpl implements SetDate {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -3409,6 +3737,7 @@ class _$SetDateImpl implements SetDate {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,
@@ -3490,6 +3819,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     selectCustomer,
     required TResult Function(String type) selectServiceType,
     required TResult Function(bool isUrgent) toggleUrgency,
+    required TResult Function(bool isComplaint) toggleComplaint,
     required TResult Function(int visits) updateTotalAmcVisitsToPurchase,
     required TResult Function(String remarks) updateRemarks,
     required TResult Function(String fixes) updateFixes,
@@ -3513,6 +3843,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     selectCustomer,
     TResult? Function(String type)? selectServiceType,
     TResult? Function(bool isUrgent)? toggleUrgency,
+    TResult? Function(bool isComplaint)? toggleComplaint,
     TResult? Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult? Function(String remarks)? updateRemarks,
     TResult? Function(String fixes)? updateFixes,
@@ -3536,6 +3867,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     selectCustomer,
     TResult Function(String type)? selectServiceType,
     TResult Function(bool isUrgent)? toggleUrgency,
+    TResult Function(bool isComplaint)? toggleComplaint,
     TResult Function(int visits)? updateTotalAmcVisitsToPurchase,
     TResult Function(String remarks)? updateRemarks,
     TResult Function(String fixes)? updateFixes,
@@ -3562,6 +3894,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     required TResult Function(SelectCustomer value) selectCustomer,
     required TResult Function(SelectServiceType value) selectServiceType,
     required TResult Function(ToggleUrgency value) toggleUrgency,
+    required TResult Function(ToggleComplaint value) toggleComplaint,
     required TResult Function(UpdateTotalAmcVisitsToPurchase value)
     updateTotalAmcVisitsToPurchase,
     required TResult Function(UpdateRemarks value) updateRemarks,
@@ -3588,6 +3921,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult? Function(SelectCustomer value)? selectCustomer,
     TResult? Function(SelectServiceType value)? selectServiceType,
     TResult? Function(ToggleUrgency value)? toggleUrgency,
+    TResult? Function(ToggleComplaint value)? toggleComplaint,
     TResult? Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult? Function(UpdateRemarks value)? updateRemarks,
@@ -3611,6 +3945,7 @@ class _$SubmitVisitEntryImpl implements SubmitVisitEntry {
     TResult Function(SelectCustomer value)? selectCustomer,
     TResult Function(SelectServiceType value)? selectServiceType,
     TResult Function(ToggleUrgency value)? toggleUrgency,
+    TResult Function(ToggleComplaint value)? toggleComplaint,
     TResult Function(UpdateTotalAmcVisitsToPurchase value)?
     updateTotalAmcVisitsToPurchase,
     TResult Function(UpdateRemarks value)? updateRemarks,

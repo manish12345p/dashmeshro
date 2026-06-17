@@ -95,6 +95,25 @@ class NotificationItem with _$NotificationItem {
 }
 
 @freezed
+class PendingServiceItem with _$PendingServiceItem {
+  const PendingServiceItem._();
+
+  const factory PendingServiceItem({
+    @Default('') String id,
+    @Default('') String customerId,
+    @Default('') String customerName,
+    @Default('') String phone,
+    @Default('') String address,
+    @Default('') String serviceType,
+    @Default('') String serviceDate,
+    @Default('') String status,
+    @Default(false) bool isComplaint,
+  }) = _PendingServiceItem;
+
+  factory PendingServiceItem.fromJson(Map<String, dynamic> json) => _$PendingServiceItemFromJson(json);
+}
+
+@freezed
 class HomeData with _$HomeData {
   const HomeData._();
 
@@ -113,6 +132,7 @@ class HomeData with _$HomeData {
     @Default([]) List<ComplaintItem> pendingComplaints,
     @Default([]) List<AmcProgress> amcProgresses,
     @Default([]) List<NotificationItem> todayNotifications,
+    @Default([]) List<PendingServiceItem> pendingServices,
     @Default([]) List<ExpiryItem> expiringItems,
     @Default([]) List<PendingPaymentItem> pendingPayments,
     @Default(0) int todaySellsSummary,

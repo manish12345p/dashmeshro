@@ -21,6 +21,8 @@ dependencies:
     path: ../home_page
   visit_entry:
     path: ../visit_entry
+  history_page:
+    path: ../history_page
 
 dev_dependencies:
   flutter_test:

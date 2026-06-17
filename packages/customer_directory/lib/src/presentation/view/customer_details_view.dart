@@ -333,7 +333,10 @@ class _ServiceHistorySectionState extends State<_ServiceHistorySection> {
           )
         else
           ...filteredHistory.map(
-            (activity) => ActivityCard(activity: activity),
+            (activity) => ActivityCard(
+              activity: activity,
+              customerId: widget.customer.id,
+            ),
           ),
         SizedBox(height: 80), // Margin below service history
       ],

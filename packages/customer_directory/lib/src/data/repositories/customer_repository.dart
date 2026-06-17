@@ -1,11 +1,14 @@
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/customer.dart';
 import '../../domain/repositories/customer_repository_interface.dart';
 
+import 'package:rxdart/rxdart.dart';
+
 class CustomerRepository implements ICustomerRepository {
   final FirebaseFirestore? _firestore;
+  Stream<List<Customer>>? _cachedCustomersStream;
 
   CustomerRepository({FirebaseFirestore? firestore}) : _firestore = firestore;
 
@@ -13,23 +16,26 @@ class CustomerRepository implements ICustomerRepository {
 
   @override
   Stream<List<Customer>> getCustomers() {
+    if (_cachedCustomersStream != null) return _cachedCustomersStream!;
+
     final collectionRef = firestore.collection('Customer');
-    return collectionRef
-        .where('is_deleted', isEqualTo: false)
+    _cachedCustomersStream = collectionRef
         .snapshots()
         .map((snapshot) {
           if (snapshot.docs.isEmpty) {
             return <Customer>[];
           }
 
-          return snapshot.docs.map((doc) {
-            return Customer.fromJson(doc.data() as Map<String, dynamic>..['id'] = doc.id);
-          }).toList();
+          final docsData = snapshot.docs.map((doc) => doc.data()..['id'] = doc.id).toList();
+          return _parseCustomersTask(docsData);
         })
         .handleError((error) {
-          print('Firestore error in getCustomers: $error');
+          debugPrint('Firestore error in getCustomers: $error');
           return <Customer>[];
-        });
+        })
+        .shareReplay(maxSize: 1);
+
+    return _cachedCustomersStream!;
   }
 
   @override
@@ -52,10 +58,10 @@ class CustomerRepository implements ICustomerRepository {
               .toList();
           data['service_history'] = servicesList;
 
-          return Customer.fromJson((data as Map<String, dynamic>)..['id'] = snapshot.id);
+          return Customer.fromJson(data..['id'] = snapshot.id);
         })
         .handleError((error) {
-          print('Firestore error in getCustomerById: $error');
+          debugPrint('Firestore error in getCustomerById: $error');
           throw Exception('Failed to load customer');
         });
   }
@@ -64,7 +70,11 @@ class CustomerRepository implements ICustomerRepository {
   Future<String> createCustomer(Customer customer) async {
     final collectionRef = firestore.collection('Customer');
     final docId = customer.id.isEmpty ? collectionRef.doc().id : customer.id;
-    await collectionRef.doc(docId).set(customer.toJson()..['id'] = docId);
+    await collectionRef.doc(docId).set(
+      customer.toJson()
+        ..['id'] = docId
+        ..['created_at'] = DateTime.now().toIso8601String(),
+    );
 
     return docId;
   }
@@ -77,11 +87,34 @@ class CustomerRepository implements ICustomerRepository {
 
   @override
   Future<void> deleteCustomer(String id) async {
-    final collectionRef = firestore.collection('Customer');
-    await collectionRef.doc(id).update({
-      'is_deleted': true,
-      'deletedAt': DateTime.now().toIso8601String(),
-    });
+    final customerRef = firestore.collection('Customer').doc(id);
+
+    // 1. Delete all services in the subcollection
+    final servicesSnap = await customerRef.collection('services').get();
+    for (var doc in servicesSnap.docs) {
+      await doc.reference.delete();
+    }
+
+    // 2. Delete all payments for this customer
+    final paymentsSnap = await firestore
+        .collection('payments')
+        .where('customer_id', isEqualTo: id)
+        .get();
+    for (var doc in paymentsSnap.docs) {
+      await doc.reference.delete();
+    }
+
+    // 3. Delete all installments for this customer
+    final installmentsSnap = await firestore
+        .collection('installments')
+        .where('customerId', isEqualTo: id)
+        .get();
+    for (var doc in installmentsSnap.docs) {
+      await doc.reference.delete();
+    }
+
+    // 4. Finally delete the customer document itself
+    await customerRef.delete();
   }
 
   @override
@@ -89,10 +122,23 @@ class CustomerRepository implements ICustomerRepository {
     final collectionRef = firestore.collection('Customer');
     final query = await collectionRef
         .where('number', isEqualTo: phone)
-        .where('is_deleted', isEqualTo: false)
         .limit(1)
         .get();
     return query.docs.isNotEmpty;
   }
 }
 
+List<Customer> _parseCustomersTask(List<Map<String, dynamic>> rawDataList) {
+  final filtered = rawDataList.toList();
+  
+  filtered.sort((a, b) {
+    final t1 = a['created_at'] as String?;
+    final t2 = b['created_at'] as String?;
+    if (t1 == null && t2 == null) return 0;
+    if (t1 == null) return 1;
+    if (t2 == null) return -1;
+    return t2.compareTo(t1);
+  });
+
+  return filtered.map((data) => Customer.fromJson(data)).toList();
+}

@@ -163,16 +163,15 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
               SizedBox(height: 24),
 
               // ── Fixes ──
-              _buildSectionLabel('FIXES / WORK DONE'),
+              _buildSectionLabel('FAULT'),
               TextField(
                 controller: _fixesController,
                 onChanged: (value) {
                   context.read<VisitEntryBloc>().add(UpdateFixes(value));
                 },
-                maxLines: 2,
                 decoration: _baseDecoration(
                   context: context,
-                  hintText: 'e.g. Replaced filter, cleaned membrane...',
+                  hintText: 'e.g. bad taste,leakage...',
                   prefixIcon: Icon(
                     Icons.handyman_rounded,
                     color: context.colors.primary,
@@ -474,30 +473,30 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
               SizedBox(height: 20),
 
               // ── Equipments Used ──
-              _buildSectionLabel('EQUIPMENTS USED'),
-              TextField(
-                controller: _equipmentsController,
-                onChanged: (value) {
-                  context.read<VisitEntryBloc>().add(
-                    UpdateEquipmentsUsed(value),
-                  );
-                },
-                maxLines: 2,
-                decoration: _baseDecoration(
-                  context: context,
-                  hintText: 'e.g. Spanner, filter wrench, TDS meter...',
-                  prefixIcon: Icon(
-                    Icons.construction_rounded,
-                    color: context.colors.primary,
-                    size: 20,
-                  ),
-                ),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: context.colors.textPrimary,
-                ),
-              ),
-              SizedBox(height: 20),
+              // _buildSectionLabel('EQUIPMENTS USED'),
+              // TextField(
+              //   controller: _equipmentsController,
+              //   onChanged: (value) {
+              //     context.read<VisitEntryBloc>().add(
+              //       UpdateEquipmentsUsed(value),
+              //     );
+              //   },
+              //   maxLines: 2,
+              //   decoration: _baseDecoration(
+              //     context: context,
+              //     hintText: 'e.g. Spanner, filter wrench, TDS meter...',
+              //     prefixIcon: Icon(
+              //       Icons.construction_rounded,
+              //       color: context.colors.primary,
+              //       size: 20,
+              //     ),
+              //   ),
+              //   style: TextStyle(
+              //     fontSize: 14,
+              //     color: context.colors.textPrimary,
+              //   ),
+              // ),
+              // SizedBox(height: 20),
 
               // ── Service Duration ──
               _buildSectionLabel('SERVICE DURATION'),
@@ -568,7 +567,6 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                       fontSize: 14,
                       color: context.colors.textPrimary,
                     ),
-                    dropdownColor: context.colors.surface,
                     borderRadius: BorderRadius.circular(20),
                   );
                 },
@@ -582,14 +580,9 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
 
   List<DropdownMenuItem<String>> _buildDurationItems() {
     final items = <DropdownMenuItem<String>>[];
-    // 1 to 11 months
-    for (int i = 1; i <= 11; i++) {
+    // 1 to 8 months
+    for (int i = 1; i <= 8; i++) {
       final label = i == 1 ? '1 Month' : '$i Months';
-      items.add(DropdownMenuItem(value: label, child: Text(label)));
-    }
-    // 1 to 3 years
-    for (int i = 1; i <= 3; i++) {
-      final label = i == 1 ? '1 Year' : '$i Years';
       items.add(DropdownMenuItem(value: label, child: Text(label)));
     }
     return items;
