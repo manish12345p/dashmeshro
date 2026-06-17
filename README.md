@@ -50,6 +50,8 @@ The project is divided into distinct local packages located in the `packages/` d
 5.  **`customer_directory`**: Manages the customer database, UI lists, and the detailed profile view containing the chronological service history.
 6.  **`emi_page`**: The financial module handling pending EMIs, payment logging, and installment data layers.
 7.  **`visit_entry`**: The wizard-like form module that allows technicians to log new service visits and update filter statuses.
+8.  **`history_page`**: The unified service history log showing all completed and pending services chronologically across the entire database.
+9.  **`calendar`**: A dedicated calendar view for scheduling and tracking daily appointments and service reminders.
 
 ### ⚙️ Tech Stack & State Management
 *   **Frontend Framework:** Flutter (Dart)
