@@ -555,7 +555,30 @@ class _PendingServiceCardState extends State<_PendingServiceCard> {
                           ),
                         ],
                       ),
-                    ]
+                    ],
+                    if (widget.item.note.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 14,
+                            color: isCompleted ? Colors.grey.shade400 : context.colors.error,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              widget.item.note,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: isCompleted ? Colors.grey.shade500 : context.colors.error,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
               ),

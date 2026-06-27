@@ -165,7 +165,20 @@ class VisitEntryRepository implements IVisitEntryRepository {
       if (query.isEmpty) return [];
 
       final queryLower = query.toLowerCase();
-      final snapshot = await _firestore.collection('Customer').limit(100).get();
+      
+      QuerySnapshot<Map<String, dynamic>> snapshot;
+      try {
+        // Try getting from local cache first (instant, free, and contains all customers
+        // due to Home/Customer Directory streams)
+        snapshot = await _firestore.collection('Customer').get(
+          const GetOptions(source: Source.cache),
+        );
+        if (snapshot.docs.isEmpty) {
+          snapshot = await _firestore.collection('Customer').get();
+        }
+      } catch (_) {
+        snapshot = await _firestore.collection('Customer').get();
+      }
 
       final results = snapshot.docs
           .map((doc) {

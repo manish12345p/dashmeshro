@@ -29,8 +29,10 @@ mixin _$HistoryItem {
   String get serviceType => throw _privateConstructorUsedError;
   DateTime get serviceDate => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
+  String get fault => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   String get serviceDuration => throw _privateConstructorUsedError;
+  String get guaranteeDuration => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   double get amountPaid => throw _privateConstructorUsedError;
   double get amountPending => throw _privateConstructorUsedError;
@@ -62,8 +64,10 @@ abstract class $HistoryItemCopyWith<$Res> {
     String serviceType,
     DateTime serviceDate,
     String note,
+    String fault,
     String status,
     String serviceDuration,
+    String guaranteeDuration,
     double totalAmount,
     double amountPaid,
     double amountPending,
@@ -94,8 +98,10 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
     Object? serviceType = null,
     Object? serviceDate = null,
     Object? note = null,
+    Object? fault = null,
     Object? status = null,
     Object? serviceDuration = null,
+    Object? guaranteeDuration = null,
     Object? totalAmount = null,
     Object? amountPaid = null,
     Object? amountPending = null,
@@ -135,6 +141,10 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
                 ? _value.note
                 : note // ignore: cast_nullable_to_non_nullable
                       as String,
+            fault: null == fault
+                ? _value.fault
+                : fault // ignore: cast_nullable_to_non_nullable
+                      as String,
             status: null == status
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
@@ -142,6 +152,10 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
             serviceDuration: null == serviceDuration
                 ? _value.serviceDuration
                 : serviceDuration // ignore: cast_nullable_to_non_nullable
+                      as String,
+            guaranteeDuration: null == guaranteeDuration
+                ? _value.guaranteeDuration
+                : guaranteeDuration // ignore: cast_nullable_to_non_nullable
                       as String,
             totalAmount: null == totalAmount
                 ? _value.totalAmount
@@ -183,8 +197,10 @@ abstract class _$$HistoryItemImplCopyWith<$Res>
     String serviceType,
     DateTime serviceDate,
     String note,
+    String fault,
     String status,
     String serviceDuration,
+    String guaranteeDuration,
     double totalAmount,
     double amountPaid,
     double amountPending,
@@ -214,8 +230,10 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
     Object? serviceType = null,
     Object? serviceDate = null,
     Object? note = null,
+    Object? fault = null,
     Object? status = null,
     Object? serviceDuration = null,
+    Object? guaranteeDuration = null,
     Object? totalAmount = null,
     Object? amountPaid = null,
     Object? amountPending = null,
@@ -255,6 +273,10 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
             ? _value.note
             : note // ignore: cast_nullable_to_non_nullable
                   as String,
+        fault: null == fault
+            ? _value.fault
+            : fault // ignore: cast_nullable_to_non_nullable
+                  as String,
         status: null == status
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
@@ -262,6 +284,10 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
         serviceDuration: null == serviceDuration
             ? _value.serviceDuration
             : serviceDuration // ignore: cast_nullable_to_non_nullable
+                  as String,
+        guaranteeDuration: null == guaranteeDuration
+            ? _value.guaranteeDuration
+            : guaranteeDuration // ignore: cast_nullable_to_non_nullable
                   as String,
         totalAmount: null == totalAmount
             ? _value.totalAmount
@@ -297,8 +323,10 @@ class _$HistoryItemImpl implements _HistoryItem {
     this.serviceType = '',
     required this.serviceDate,
     this.note = '',
+    this.fault = '',
     this.status = 'pending',
     this.serviceDuration = '',
+    this.guaranteeDuration = '',
     this.totalAmount = 0.0,
     this.amountPaid = 0.0,
     this.amountPending = 0.0,
@@ -331,10 +359,16 @@ class _$HistoryItemImpl implements _HistoryItem {
   final String note;
   @override
   @JsonKey()
+  final String fault;
+  @override
+  @JsonKey()
   final String status;
   @override
   @JsonKey()
   final String serviceDuration;
+  @override
+  @JsonKey()
+  final String guaranteeDuration;
   @override
   @JsonKey()
   final double totalAmount;
@@ -350,7 +384,7 @@ class _$HistoryItemImpl implements _HistoryItem {
 
   @override
   String toString() {
-    return 'HistoryItem(id: $id, customerId: $customerId, customerName: $customerName, customerAddress: $customerAddress, customerPhone: $customerPhone, serviceType: $serviceType, serviceDate: $serviceDate, note: $note, status: $status, serviceDuration: $serviceDuration, totalAmount: $totalAmount, amountPaid: $amountPaid, amountPending: $amountPending, isComplaint: $isComplaint)';
+    return 'HistoryItem(id: $id, customerId: $customerId, customerName: $customerName, customerAddress: $customerAddress, customerPhone: $customerPhone, serviceType: $serviceType, serviceDate: $serviceDate, note: $note, fault: $fault, status: $status, serviceDuration: $serviceDuration, guaranteeDuration: $guaranteeDuration, totalAmount: $totalAmount, amountPaid: $amountPaid, amountPending: $amountPending, isComplaint: $isComplaint)';
   }
 
   @override
@@ -372,9 +406,12 @@ class _$HistoryItemImpl implements _HistoryItem {
             (identical(other.serviceDate, serviceDate) ||
                 other.serviceDate == serviceDate) &&
             (identical(other.note, note) || other.note == note) &&
+            (identical(other.fault, fault) || other.fault == fault) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.serviceDuration, serviceDuration) ||
                 other.serviceDuration == serviceDuration) &&
+            (identical(other.guaranteeDuration, guaranteeDuration) ||
+                other.guaranteeDuration == guaranteeDuration) &&
             (identical(other.totalAmount, totalAmount) ||
                 other.totalAmount == totalAmount) &&
             (identical(other.amountPaid, amountPaid) ||
@@ -397,8 +434,10 @@ class _$HistoryItemImpl implements _HistoryItem {
     serviceType,
     serviceDate,
     note,
+    fault,
     status,
     serviceDuration,
+    guaranteeDuration,
     totalAmount,
     amountPaid,
     amountPending,
@@ -429,8 +468,10 @@ abstract class _HistoryItem implements HistoryItem {
     final String serviceType,
     required final DateTime serviceDate,
     final String note,
+    final String fault,
     final String status,
     final String serviceDuration,
+    final String guaranteeDuration,
     final double totalAmount,
     final double amountPaid,
     final double amountPending,
@@ -457,9 +498,13 @@ abstract class _HistoryItem implements HistoryItem {
   @override
   String get note;
   @override
+  String get fault;
+  @override
   String get status;
   @override
   String get serviceDuration;
+  @override
+  String get guaranteeDuration;
   @override
   double get totalAmount;
   @override

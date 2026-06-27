@@ -33,8 +33,10 @@ class _HistoryScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBody: true,
         backgroundColor: context.colors.background,
         body: SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -234,8 +236,24 @@ class _HistoryScaffold extends StatelessWidget {
                   if (state.searchQuery.isNotEmpty) {
                     final query = state.searchQuery.toLowerCase();
                     filteredServices = filteredServices.where((item) {
+                      final dateStr = DateFormat('dd/MM/yyyy').format(item.serviceDate).toLowerCase();
+                      final dateStr2 = DateFormat('MMM dd, yyyy').format(item.serviceDate).toLowerCase();
+                      
                       return item.customerName.toLowerCase().contains(query) ||
-                          item.customerAddress.toLowerCase().contains(query);
+                          item.customerAddress.toLowerCase().contains(query) ||
+                          item.customerPhone.toLowerCase().contains(query) ||
+                          item.serviceType.toLowerCase().contains(query) ||
+                          item.note.toLowerCase().contains(query) ||
+                          item.fault.toLowerCase().contains(query) ||
+                          item.status.toLowerCase().contains(query) ||
+                          item.totalAmount.toString().contains(query) ||
+                          item.amountPaid.toString().contains(query) ||
+                          item.amountPending.toString().contains(query) ||
+                          item.serviceDuration.toLowerCase().contains(query) ||
+                          item.guaranteeDuration.toLowerCase().contains(query) ||
+                          item.customerId.toLowerCase().contains(query) ||
+                          dateStr.contains(query) ||
+                          dateStr2.contains(query);
                     }).toList();
                   }
 

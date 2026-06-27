@@ -48,7 +48,6 @@ void main() {
         locality: 'Test Locality',
         roType: 'Kent',
         note: 'Test Note',
-        isDeleted: false,
         serviceHistory: [
           ServiceActivity(
             id: 'test_service',

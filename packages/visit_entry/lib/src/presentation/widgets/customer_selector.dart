@@ -107,14 +107,25 @@ class CustomerSelectorWidget extends StatelessWidget {
                 );
                 return results;
               },
-              displayStringForOption: (Map<String, dynamic> option) =>
-                  option['name'] ?? '',
+              displayStringForOption: (Map<String, dynamic> option) {
+                final name = option['name'] as String?;
+                if (name != null && name.trim().isNotEmpty) {
+                  return name;
+                }
+                return option['number'] as String? ?? 'Unknown Customer';
+              },
               onSelected: (Map<String, dynamic> selection) {
                 final remainingAmc = selection['remainingAmcVisits'] ?? selection['remaining_amc_visits'] ?? 0;
+                
+                final name = selection['name'] as String?;
+                final displayName = (name != null && name.trim().isNotEmpty) 
+                                      ? name 
+                                      : (selection['number'] as String? ?? 'Unknown Customer');
+
                 context.read<VisitEntryBloc>().add(
                   SelectCustomer(
                     selection['id'] as String,
-                    selection['name'] as String? ?? '',
+                    displayName,
                     remainingAmc as int,
                   ),
                 );

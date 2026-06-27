@@ -72,9 +72,11 @@ class HistoryRepository implements IHistoryRepository {
                 data['serviceType'] as String? ??
                 data['service_type'] as String? ??
                 '';
+            final fault = data['fixes'] as String? ?? '';
             final remarks = data['remarks'] as String? ?? '';
             final status = data['status'] as String? ?? 'pending';
             final serviceDuration = data['serviceDuration'] as String? ?? '';
+            final guaranteeDuration = data['guaranteeDuration'] as String? ?? '';
             final totalAmount =
                 (data['totalAmount'] as num?)?.toDouble() ?? 0.0;
             final amountPaid =
@@ -92,8 +94,10 @@ class HistoryRepository implements IHistoryRepository {
               serviceType: serviceType,
               serviceDate: serviceDate,
               note: remarks,
+              fault: fault,
               status: status,
               serviceDuration: serviceDuration,
+              guaranteeDuration: guaranteeDuration,
               totalAmount: totalAmount,
               amountPaid: amountPaid,
               amountPending: amountPending,

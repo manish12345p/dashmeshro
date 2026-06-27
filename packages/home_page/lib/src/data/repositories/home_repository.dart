@@ -208,6 +208,7 @@ HomeData _processHomeDataTask(_HomeComputePayload payload) {
                 notificationDate: dueDateStr,
                 isDismissed: false,
                 phone: phone,
+                note: idata['remarks'] as String? ?? '',
               ),
             );
           }
@@ -301,6 +302,7 @@ HomeData _processHomeDataTask(_HomeComputePayload payload) {
           notificationDate: serviceExpiry.toIso8601String().split('T')[0],
           isDismissed: data['isDismissed'] as bool? ?? false,
           phone: phone,
+          note: data['fixes'] as String? ?? '',
         ),
       );
     }
@@ -375,19 +377,22 @@ HomeData _processHomeDataTask(_HomeComputePayload payload) {
     }
 
     if (isPending) {
-       pendingServices.add(PendingServiceItem(
-         id: data['id'],
-         customerId: custId,
-         customerName: customerName,
-         phone: phone,
-         address: custData?['address'] ?? '',
-         serviceType: data['serviceType'] ?? data['service_type'] ?? '',
-         serviceDate: date,
-         status: status.isEmpty ? 'pending' : status,
-       ));
-    }
-  } 
-
+        pendingServices.add(
+          PendingServiceItem(
+            id: data['id'],
+            customerId: custId,
+            customerName: custData['name'] as String? ?? 'Unknown',
+            phone: custData['number'] as String? ?? '',
+            address: custData['address'] as String? ?? '',
+            serviceType: type,
+            serviceDate: date,
+            status: status,
+            note: data['fixes'] as String? ?? '',
+            isComplaint: type.contains('complaint'),
+          ),
+        ); 
+    } 
+  }
   String growthText = '0% vs LW';
   if (lastWeekNewSells > 0) {
     final growth = ((weekNewSells - lastWeekNewSells) / lastWeekNewSells) * 100;

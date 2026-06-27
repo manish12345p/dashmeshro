@@ -325,7 +325,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
 // VIEW NOTES DIALOG (shown from the document icon in the app bar)
 // ─────────────────────────────────────────────────────────────────────────────
 
-class ViewNotesDialog extends StatelessWidget {
+class ViewNotesDialog extends StatefulWidget {
   const ViewNotesDialog({super.key});
 
   static Future<void> show(BuildContext context) async {
@@ -333,6 +333,20 @@ class ViewNotesDialog extends StatelessWidget {
       context: context,
       builder: (_) => const ViewNotesDialog(),
     );
+  }
+
+  @override
+  State<ViewNotesDialog> createState() => _ViewNotesDialogState();
+}
+
+class _ViewNotesDialogState extends State<ViewNotesDialog> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -375,6 +389,38 @@ class ViewNotesDialog extends StatelessWidget {
               ),
             ),
 
+            // ── Search Bar ────────────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (val) {
+                  setState(() {
+                    _searchQuery = val.toLowerCase();
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search estimates...',
+                  prefixIcon: Icon(Icons.search, color: context.colors.textSecondary),
+                  filled: true,
+                  fillColor: context.colors.surface,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: context.colors.border),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: context.colors.border),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: context.colors.primary),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+              ),
+            ),
+
             // ── Body ──────────────────────────────────────────────────────
             Flexible(
               child: StreamBuilder<List<NoteModel>>(
@@ -397,7 +443,13 @@ class ViewNotesDialog extends StatelessWidget {
                     );
                   }
 
-                  final notes = snapshot.data ?? [];
+                  final allNotes = snapshot.data ?? [];
+                  
+                  final notes = allNotes.where((n) {
+                    if (_searchQuery.isEmpty) return true;
+                    final searchStr = '${n.name} ${n.phone} ${n.address} ${n.note}'.toLowerCase();
+                    return searchStr.contains(_searchQuery);
+                  }).toList();
 
                   if (notes.isEmpty) {
                     return Padding(
@@ -435,7 +487,7 @@ class ViewNotesDialog extends StatelessWidget {
                     constraints: const BoxConstraints(maxHeight: 520),
                     child: ListView.separated(
                       shrinkWrap: true,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.only(bottom: 16),
                       itemCount: notes.length,
                       separatorBuilder: (context, index) => const Divider(
                         height: 1,

@@ -1271,6 +1271,7 @@ mixin _$NotificationItem {
   String get notificationDate => throw _privateConstructorUsedError;
   bool get isDismissed => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+  String get note => throw _privateConstructorUsedError;
 
   /// Serializes this NotificationItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1298,6 +1299,7 @@ abstract class $NotificationItemCopyWith<$Res> {
     String notificationDate,
     bool isDismissed,
     String phone,
+    String note,
   });
 }
 
@@ -1324,6 +1326,7 @@ class _$NotificationItemCopyWithImpl<$Res, $Val extends NotificationItem>
     Object? notificationDate = null,
     Object? isDismissed = null,
     Object? phone = null,
+    Object? note = null,
   }) {
     return _then(
       _value.copyWith(
@@ -1359,6 +1362,10 @@ class _$NotificationItemCopyWithImpl<$Res, $Val extends NotificationItem>
                 ? _value.phone
                 : phone // ignore: cast_nullable_to_non_nullable
                       as String,
+            note: null == note
+                ? _value.note
+                : note // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -1383,6 +1390,7 @@ abstract class _$$NotificationItemImplCopyWith<$Res>
     String notificationDate,
     bool isDismissed,
     String phone,
+    String note,
   });
 }
 
@@ -1408,6 +1416,7 @@ class __$$NotificationItemImplCopyWithImpl<$Res>
     Object? notificationDate = null,
     Object? isDismissed = null,
     Object? phone = null,
+    Object? note = null,
   }) {
     return _then(
       _$NotificationItemImpl(
@@ -1443,6 +1452,10 @@ class __$$NotificationItemImplCopyWithImpl<$Res>
             ? _value.phone
             : phone // ignore: cast_nullable_to_non_nullable
                   as String,
+        note: null == note
+            ? _value.note
+            : note // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -1460,6 +1473,7 @@ class _$NotificationItemImpl extends _NotificationItem {
     this.notificationDate = '',
     this.isDismissed = false,
     this.phone = '',
+    this.note = '',
   }) : super._();
 
   factory _$NotificationItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -1489,10 +1503,13 @@ class _$NotificationItemImpl extends _NotificationItem {
   @override
   @JsonKey()
   final String phone;
+  @override
+  @JsonKey()
+  final String note;
 
   @override
   String toString() {
-    return 'NotificationItem(customerName: $customerName, customerId: $customerId, address: $address, serviceType: $serviceType, serviceId: $serviceId, notificationDate: $notificationDate, isDismissed: $isDismissed, phone: $phone)';
+    return 'NotificationItem(customerName: $customerName, customerId: $customerId, address: $address, serviceType: $serviceType, serviceId: $serviceId, notificationDate: $notificationDate, isDismissed: $isDismissed, phone: $phone, note: $note)';
   }
 
   @override
@@ -1513,7 +1530,8 @@ class _$NotificationItemImpl extends _NotificationItem {
                 other.notificationDate == notificationDate) &&
             (identical(other.isDismissed, isDismissed) ||
                 other.isDismissed == isDismissed) &&
-            (identical(other.phone, phone) || other.phone == phone));
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.note, note) || other.note == note));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1528,6 +1546,7 @@ class _$NotificationItemImpl extends _NotificationItem {
     notificationDate,
     isDismissed,
     phone,
+    note,
   );
 
   /// Create a copy of NotificationItem
@@ -1557,6 +1576,7 @@ abstract class _NotificationItem extends NotificationItem {
     final String notificationDate,
     final bool isDismissed,
     final String phone,
+    final String note,
   }) = _$NotificationItemImpl;
   const _NotificationItem._() : super._();
 
@@ -1579,6 +1599,8 @@ abstract class _NotificationItem extends NotificationItem {
   bool get isDismissed;
   @override
   String get phone;
+  @override
+  String get note;
 
   /// Create a copy of NotificationItem
   /// with the given fields replaced by the non-null parameter values.
@@ -1602,6 +1624,7 @@ mixin _$PendingServiceItem {
   String get serviceType => throw _privateConstructorUsedError;
   String get serviceDate => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  String get note => throw _privateConstructorUsedError;
   bool get isComplaint => throw _privateConstructorUsedError;
 
   /// Serializes this PendingServiceItem to a JSON map.
@@ -1630,6 +1653,7 @@ abstract class $PendingServiceItemCopyWith<$Res> {
     String serviceType,
     String serviceDate,
     String status,
+    String note,
     bool isComplaint,
   });
 }
@@ -1657,6 +1681,7 @@ class _$PendingServiceItemCopyWithImpl<$Res, $Val extends PendingServiceItem>
     Object? serviceType = null,
     Object? serviceDate = null,
     Object? status = null,
+    Object? note = null,
     Object? isComplaint = null,
   }) {
     return _then(
@@ -1693,6 +1718,10 @@ class _$PendingServiceItemCopyWithImpl<$Res, $Val extends PendingServiceItem>
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
                       as String,
+            note: null == note
+                ? _value.note
+                : note // ignore: cast_nullable_to_non_nullable
+                      as String,
             isComplaint: null == isComplaint
                 ? _value.isComplaint
                 : isComplaint // ignore: cast_nullable_to_non_nullable
@@ -1721,6 +1750,7 @@ abstract class _$$PendingServiceItemImplCopyWith<$Res>
     String serviceType,
     String serviceDate,
     String status,
+    String note,
     bool isComplaint,
   });
 }
@@ -1747,6 +1777,7 @@ class __$$PendingServiceItemImplCopyWithImpl<$Res>
     Object? serviceType = null,
     Object? serviceDate = null,
     Object? status = null,
+    Object? note = null,
     Object? isComplaint = null,
   }) {
     return _then(
@@ -1783,6 +1814,10 @@ class __$$PendingServiceItemImplCopyWithImpl<$Res>
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
                   as String,
+        note: null == note
+            ? _value.note
+            : note // ignore: cast_nullable_to_non_nullable
+                  as String,
         isComplaint: null == isComplaint
             ? _value.isComplaint
             : isComplaint // ignore: cast_nullable_to_non_nullable
@@ -1804,6 +1839,7 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
     this.serviceType = '',
     this.serviceDate = '',
     this.status = '',
+    this.note = '',
     this.isComplaint = false,
   }) : super._();
 
@@ -1836,11 +1872,14 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
   final String status;
   @override
   @JsonKey()
+  final String note;
+  @override
+  @JsonKey()
   final bool isComplaint;
 
   @override
   String toString() {
-    return 'PendingServiceItem(id: $id, customerId: $customerId, customerName: $customerName, phone: $phone, address: $address, serviceType: $serviceType, serviceDate: $serviceDate, status: $status, isComplaint: $isComplaint)';
+    return 'PendingServiceItem(id: $id, customerId: $customerId, customerName: $customerName, phone: $phone, address: $address, serviceType: $serviceType, serviceDate: $serviceDate, status: $status, note: $note, isComplaint: $isComplaint)';
   }
 
   @override
@@ -1860,6 +1899,7 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
             (identical(other.serviceDate, serviceDate) ||
                 other.serviceDate == serviceDate) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.note, note) || other.note == note) &&
             (identical(other.isComplaint, isComplaint) ||
                 other.isComplaint == isComplaint));
   }
@@ -1876,6 +1916,7 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
     serviceType,
     serviceDate,
     status,
+    note,
     isComplaint,
   );
 
@@ -1906,6 +1947,7 @@ abstract class _PendingServiceItem extends PendingServiceItem {
     final String serviceType,
     final String serviceDate,
     final String status,
+    final String note,
     final bool isComplaint,
   }) = _$PendingServiceItemImpl;
   const _PendingServiceItem._() : super._();
@@ -1929,6 +1971,8 @@ abstract class _PendingServiceItem extends PendingServiceItem {
   String get serviceDate;
   @override
   String get status;
+  @override
+  String get note;
   @override
   bool get isComplaint;
 

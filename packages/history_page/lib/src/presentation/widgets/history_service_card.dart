@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:intl/intl.dart';
 import '../../domain/entities/history_item.dart';
 
 class HistoryServiceCard extends StatelessWidget {
@@ -195,6 +194,31 @@ class HistoryServiceCard extends StatelessWidget {
                 ),
               ],
 
+              // Faults / Fixes
+              if (item.fault.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'FAULT',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: colors.error, // or another appropriate color
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  item.fault,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: colors.textSecondary,
+                    height: 1.4,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+
               // Note/Remarks
               if (item.note.isNotEmpty) ...[
                 const SizedBox(height: 8),
@@ -220,25 +244,45 @@ class HistoryServiceCard extends StatelessWidget {
                 ),
               ],
 
-              // Service Duration
-              if (item.serviceDuration.isNotEmpty) ...[
+              // Service Duration & Guarantee
+              if (item.serviceDuration.isNotEmpty || item.guaranteeDuration.isNotEmpty) ...[
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(
-                      Icons.timer_outlined,
-                      size: 14,
-                      color: colors.primary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Duration: ${item.serviceDuration}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: colors.textSecondary,
-                        fontWeight: FontWeight.w600,
+                    if (item.serviceDuration.isNotEmpty) ...[
+                      Icon(
+                        Icons.timer_outlined,
+                        size: 14,
+                        color: colors.primary,
                       ),
-                    ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Duration: ${item.serviceDuration}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (item.guaranteeDuration.isNotEmpty)
+                        const SizedBox(width: 12),
+                    ],
+                    if (item.guaranteeDuration.isNotEmpty) ...[
+                      Icon(
+                        Icons.verified_outlined,
+                        size: 14,
+                        color: colors.success,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Guarantee: ${item.guaranteeDuration}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ],

@@ -168,6 +168,34 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                       ],
                     ),
                   ],
+                  if (widget.item.note.isNotEmpty) ...[
+                    const SizedBox(height: 3),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 14,
+                          color: isDismissed
+                              ? Colors.grey.shade400
+                              : Colors.red.shade400,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            widget.item.note,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              color: isDismissed
+                                  ? Colors.grey.shade400
+                                  : Colors.red.shade600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),

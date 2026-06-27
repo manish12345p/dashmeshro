@@ -105,6 +105,7 @@ _$NotificationItemImpl _$$NotificationItemImplFromJson(
   notificationDate: json['notificationDate'] as String? ?? '',
   isDismissed: json['isDismissed'] as bool? ?? false,
   phone: json['phone'] as String? ?? '',
+  note: json['note'] as String? ?? '',
 );
 
 Map<String, dynamic> _$$NotificationItemImplToJson(
@@ -118,6 +119,7 @@ Map<String, dynamic> _$$NotificationItemImplToJson(
   'notificationDate': instance.notificationDate,
   'isDismissed': instance.isDismissed,
   'phone': instance.phone,
+  'note': instance.note,
 };
 
 _$PendingServiceItemImpl _$$PendingServiceItemImplFromJson(
@@ -131,6 +133,7 @@ _$PendingServiceItemImpl _$$PendingServiceItemImplFromJson(
   serviceType: json['serviceType'] as String? ?? '',
   serviceDate: json['serviceDate'] as String? ?? '',
   status: json['status'] as String? ?? '',
+  note: json['note'] as String? ?? '',
   isComplaint: json['isComplaint'] as bool? ?? false,
 );
 
@@ -145,6 +148,7 @@ Map<String, dynamic> _$$PendingServiceItemImplToJson(
   'serviceType': instance.serviceType,
   'serviceDate': instance.serviceDate,
   'status': instance.status,
+  'note': instance.note,
   'isComplaint': instance.isComplaint,
 };
 

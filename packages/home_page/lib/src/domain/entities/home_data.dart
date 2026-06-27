@@ -89,6 +89,7 @@ class NotificationItem with _$NotificationItem {
     @Default('') String notificationDate,
     @Default(false) bool isDismissed,
     @Default('') String phone,
+    @Default('') String note,
   }) = _NotificationItem;
 
   factory NotificationItem.fromJson(Map<String, dynamic> json) => _$NotificationItemFromJson(json);
@@ -107,6 +108,7 @@ class PendingServiceItem with _$PendingServiceItem {
     @Default('') String serviceType,
     @Default('') String serviceDate,
     @Default('') String status,
+    @Default('') String note,
     @Default(false) bool isComplaint,
   }) = _PendingServiceItem;
 
