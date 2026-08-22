@@ -9,4 +9,6 @@ class HistoryEvent with _$HistoryEvent {
       SearchQueryChanged;
   const factory HistoryEvent.filterByServiceType(String type) =
       FilterByServiceType;
+  const factory HistoryEvent.toggleAmountFilter(bool enabled) =
+      ToggleAmountFilter;
 }

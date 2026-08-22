@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:core_ui/core_ui.dart';
 
 class VisitSearchDelegate extends SearchDelegate<String?> {
   // Cache: customerId -> list of service data maps
@@ -251,7 +253,29 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
                 ],
               ],
             ),
-            trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (phone.isNotEmpty && phone != 'N/A')
+                  IconButton(
+                    icon: const Icon(Icons.call, color: Colors.green),
+                    onPressed: () {
+                      PhoneActionHandler.handleAction(
+                        context: context,
+                        rawNumbers: phone,
+                        actionName: 'Call',
+                        onSelected: (selectedNumber) async {
+                          final url = Uri.parse('tel:$selectedNumber');
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          }
+                        },
+                      );
+                    },
+                  ),
+                const Icon(Icons.chevron_right, color: Colors.grey),
+              ],
+            ),
           ),
         );
       },

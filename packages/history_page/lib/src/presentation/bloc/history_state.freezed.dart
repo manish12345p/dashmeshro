@@ -21,6 +21,7 @@ mixin _$HistoryState {
   List<HistoryItem> get allServices => throw _privateConstructorUsedError;
   String get searchQuery => throw _privateConstructorUsedError;
   String get selectedServiceType => throw _privateConstructorUsedError;
+  bool get amountFilterEnabled => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of HistoryState
@@ -42,6 +43,7 @@ abstract class $HistoryStateCopyWith<$Res> {
     List<HistoryItem> allServices,
     String searchQuery,
     String selectedServiceType,
+    bool amountFilterEnabled,
     String? errorMessage,
   });
 }
@@ -65,6 +67,7 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
     Object? allServices = null,
     Object? searchQuery = null,
     Object? selectedServiceType = null,
+    Object? amountFilterEnabled = null,
     Object? errorMessage = freezed,
   }) {
     return _then(
@@ -85,6 +88,10 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
                 ? _value.selectedServiceType
                 : selectedServiceType // ignore: cast_nullable_to_non_nullable
                       as String,
+            amountFilterEnabled: null == amountFilterEnabled
+                ? _value.amountFilterEnabled
+                : amountFilterEnabled // ignore: cast_nullable_to_non_nullable
+                      as bool,
             errorMessage: freezed == errorMessage
                 ? _value.errorMessage
                 : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -109,6 +116,7 @@ abstract class _$$HistoryStateImplCopyWith<$Res>
     List<HistoryItem> allServices,
     String searchQuery,
     String selectedServiceType,
+    bool amountFilterEnabled,
     String? errorMessage,
   });
 }
@@ -131,6 +139,7 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
     Object? allServices = null,
     Object? searchQuery = null,
     Object? selectedServiceType = null,
+    Object? amountFilterEnabled = null,
     Object? errorMessage = freezed,
   }) {
     return _then(
@@ -151,6 +160,10 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
             ? _value.selectedServiceType
             : selectedServiceType // ignore: cast_nullable_to_non_nullable
                   as String,
+        amountFilterEnabled: null == amountFilterEnabled
+            ? _value.amountFilterEnabled
+            : amountFilterEnabled // ignore: cast_nullable_to_non_nullable
+                  as bool,
         errorMessage: freezed == errorMessage
             ? _value.errorMessage
             : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -168,6 +181,7 @@ class _$HistoryStateImpl implements _HistoryState {
     final List<HistoryItem> allServices = const [],
     this.searchQuery = '',
     this.selectedServiceType = 'All',
+    this.amountFilterEnabled = false,
     this.errorMessage,
   }) : _allServices = allServices;
 
@@ -190,11 +204,14 @@ class _$HistoryStateImpl implements _HistoryState {
   @JsonKey()
   final String selectedServiceType;
   @override
+  @JsonKey()
+  final bool amountFilterEnabled;
+  @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'HistoryState(isLoading: $isLoading, allServices: $allServices, searchQuery: $searchQuery, selectedServiceType: $selectedServiceType, errorMessage: $errorMessage)';
+    return 'HistoryState(isLoading: $isLoading, allServices: $allServices, searchQuery: $searchQuery, selectedServiceType: $selectedServiceType, amountFilterEnabled: $amountFilterEnabled, errorMessage: $errorMessage)';
   }
 
   @override
@@ -212,6 +229,8 @@ class _$HistoryStateImpl implements _HistoryState {
                 other.searchQuery == searchQuery) &&
             (identical(other.selectedServiceType, selectedServiceType) ||
                 other.selectedServiceType == selectedServiceType) &&
+            (identical(other.amountFilterEnabled, amountFilterEnabled) ||
+                other.amountFilterEnabled == amountFilterEnabled) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -223,6 +242,7 @@ class _$HistoryStateImpl implements _HistoryState {
     const DeepCollectionEquality().hash(_allServices),
     searchQuery,
     selectedServiceType,
+    amountFilterEnabled,
     errorMessage,
   );
 
@@ -241,6 +261,7 @@ abstract class _HistoryState implements HistoryState {
     final List<HistoryItem> allServices,
     final String searchQuery,
     final String selectedServiceType,
+    final bool amountFilterEnabled,
     final String? errorMessage,
   }) = _$HistoryStateImpl;
 
@@ -252,6 +273,8 @@ abstract class _HistoryState implements HistoryState {
   String get searchQuery;
   @override
   String get selectedServiceType;
+  @override
+  bool get amountFilterEnabled;
   @override
   String? get errorMessage;
 

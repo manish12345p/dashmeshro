@@ -9,7 +9,7 @@ class ActiveInstallmentsList extends StatelessWidget {
   final Function(String) onFilterChanged;
   final Function(String) onRemind;
   final Function(String) onMarkPaid;
-  final Function(String, double) onAddPayment;
+  final Function(String, double, String, String, String) onAddPayment;
 
   const ActiveInstallmentsList({
     super.key,
@@ -90,7 +90,8 @@ class ActiveInstallmentsList extends StatelessWidget {
                 installment: installment,
                 onRemind: () => onRemind(installment.id),
                 onMarkPaid: () => onMarkPaid(installment.id),
-                onAddPayment: (amount) => onAddPayment(installment.id, amount),
+                onAddPayment: (amount, method, ref, notes) =>
+                    onAddPayment(installment.id, amount, method, ref, notes),
               );
             }),
         ],

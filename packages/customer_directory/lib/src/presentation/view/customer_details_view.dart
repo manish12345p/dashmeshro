@@ -336,6 +336,8 @@ class _ServiceHistorySectionState extends State<_ServiceHistorySection> {
             (activity) => ActivityCard(
               activity: activity,
               customerId: widget.customer.id,
+              customerName: widget.customer.name,
+              customerLocality: widget.customer.locality,
             ),
           ),
         SizedBox(height: 80), // Margin below service history

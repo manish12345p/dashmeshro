@@ -36,31 +36,37 @@ class EmiRepository implements EmiRepositoryInterface {
 
       final snapshot = await firestore.collection('installments').get();
 
-      double collectedThisMonth = 0;
-      double lifetimeCollection = 0;
-      List<RecentlyPaidInstallment> recentlyPaidInstallments = [];
-      List<ActiveInstallment> activeInstallments = [];
-      int earlyPayments = 0;
-      int defaulters = 0;
+      double totalOutstandingBalance = 0.0;
+      double expectedMonthlyDemand = 0.0;
+      double collectedThisMonth = 0.0;
+      int overdueClientsCount = 0;
       int pendingClientsCount = 0;
       Set<String> customersPaidThisMonth = {};
-      int totalActiveCount = 0;
-      double actualPendingThisMonth = 0.0;
-      int actualPendingClientsCount = 0;
+      List<RecentlyPaidInstallment> recentlyPaidInstallments = [];
+      List<ActiveInstallment> activeInstallments = [];
 
       final today = DateTime.now();
       final currentMonth = today.month;
       final currentYear = today.year;
 
-      // Fetch customers to map name -> id
+      // Fetch customers to map name -> id and id -> phone
       final customerSnap = await firestore.collection('Customer').get();
       final Map<String, String> nameToIdMap = {};
+      final Map<String, String> idToPhoneMap = {};
       for (var c in customerSnap.docs) {
         final name = c.data()['name'] as String? ?? '';
+        final phone = c.data()['number'] as String? ?? c.data()['phone_number'] as String? ?? c.data()['phone'] as String? ?? '';
         if (name.isNotEmpty) {
           nameToIdMap[name] = c.id;
         }
+        if (phone.isNotEmpty) {
+          idToPhoneMap[c.id] = phone;
+        }
       }
+
+      final Map<String, double> monthlyMap = {};
+      final Map<String, double> yearlyMap = {};
+      final Map<String, double> fallbackDailyMap = {};
 
       for (var doc in snapshot.docs) {
         final data = doc.data();
@@ -92,8 +98,9 @@ class EmiRepository implements EmiRepositoryInterface {
         final rentDueDay = data['rent_due_day'] as int?;
 
         // Skip completely empty/invalid records (but do NOT delete them)
-        if (amount <= 0 && totalAmount <= 0 && status != 'paid' && !isRent)
+        if (amount <= 0 && totalAmount <= 0 && status != 'paid' && !isRent) {
           continue;
+        }
 
         DateTime? dueDate;
         try {
@@ -102,8 +109,9 @@ class EmiRepository implements EmiRepositoryInterface {
 
         DateTime? lastPaymentDate;
         try {
-          if (lastPaymentDateStr.isNotEmpty)
+          if (lastPaymentDateStr.isNotEmpty) {
             lastPaymentDate = DateTime.parse(lastPaymentDateStr);
+          }
         } catch (_) {}
 
         // Determine effective status
@@ -114,9 +122,10 @@ class EmiRepository implements EmiRepositoryInterface {
 
         String effectiveStatus;
         if (isRent) {
+          final effectiveRentDueDay = rentDueDay ?? 1; // Default to 1st of month if missing
           if (paidThisMonth) {
             effectiveStatus = 'paid_this_month';
-          } else if (rentDueDay != null && today.day > rentDueDay) {
+          } else if (today.day > effectiveRentDueDay) {
             effectiveStatus = 'overdue';
           } else {
             effectiveStatus = 'pending';
@@ -125,16 +134,18 @@ class EmiRepository implements EmiRepositoryInterface {
           if (status == 'paid') {
             // Fully paid off (total_amount == 0)
             effectiveStatus = 'paid';
+          } else if (paidThisMonth) {
+            // They made a payment this month -> Paid this month (overrides overdue)
+            effectiveStatus = 'paid_this_month';
           } else if (status == 'overdue') {
             // It was explicitly marked as overdue in the database
             effectiveStatus = 'overdue';
-          } else if (dueDate != null &&
-              dueDate.isBefore(DateTime(today.year, today.month, today.day))) {
+          } else if (dueDate == null) {
+            // No due date, not paid this month, not fully paid -> Overdue
+            effectiveStatus = 'overdue';
+          } else if (dueDate.isBefore(DateTime(today.year, today.month, today.day))) {
             // Due date is in the past -> Overdue!
             effectiveStatus = 'overdue';
-          } else if (paidThisMonth && status == 'pending') {
-            // Due date is in the future, AND they made a payment this month
-            effectiveStatus = 'paid_this_month';
           } else {
             effectiveStatus = 'pending';
           }
@@ -145,92 +156,80 @@ class EmiRepository implements EmiRepositoryInterface {
         String serviceName = data['service_name'] as String? ?? '';
         final serviceId = data['service_id'] as String?;
 
-        if (originalLoanAmount == 0.0 || serviceName.isEmpty) {
-          if (serviceId != null && customerId.isNotEmpty) {
-            final svcDoc = await firestore
-                .collection('Customer')
-                .doc(customerId)
-                .collection('services')
-                .doc(serviceId)
-                .get();
-            if (svcDoc.exists) {
-              final svcData = svcDoc.data()!;
-              if (originalLoanAmount == 0.0) {
-                originalLoanAmount =
-                    (svcData['amountPending'] as num?)?.toDouble() ??
-                    totalAmount;
-              }
-              if (serviceName.isEmpty) {
-                final st = svcData['serviceType'] as String? ?? '';
-                final rt = svcData['roType'] as String? ?? '';
-                serviceName = [st, if (rt.isNotEmpty) '($rt)'].join(' ').trim();
-                if (serviceName.isEmpty)
-                  serviceName = 'Service #${serviceId.substring(0, 5)}';
-              }
-              // Backfill the data asynchronously
-              doc.reference
-                  .update({
-                    if ((data['original_loan_amount'] as num?)?.toDouble() !=
-                        originalLoanAmount)
-                      'original_loan_amount': originalLoanAmount,
-                    if ((data['service_name'] as String?) != serviceName)
-                      'service_name': serviceName,
-                  })
-                  .catchError((_) {});
+        if (originalLoanAmount == 0.0) {
+          originalLoanAmount = totalAmount; // Fallback
+        }
+        if (serviceName.isEmpty) {
+          if (serviceId != null && serviceId.length >= 5) {
+            serviceName = 'Service #${serviceId.substring(0, 5)}';
+          } else {
+            serviceName = 'Service';
+          }
+        }
+
+        // --- NEW Dashboard Aggregation ---
+
+        // Lifetime collection calculation
+        double totalPaidForInstallment = 0;
+        int paidInstallmentsCount = 0;
+        final monthKey = '$currentYear-${currentMonth.toString().padLeft(2, '0')}';
+        final monthlyPayments = data['monthly_payments'] as Map<String, dynamic>?;
+
+        if (monthlyPayments != null && monthlyPayments.isNotEmpty) {
+          for (var entry in monthlyPayments.entries) {
+            String mKey = entry.key;
+            double amt = (entry.value as num).toDouble();
+            
+            totalPaidForInstallment += amt;
+            paidInstallmentsCount++;
+            
+            // Build Graph Maps
+            monthlyMap[mKey] = (monthlyMap[mKey] ?? 0) + amt;
+            if (mKey.length >= 4) {
+              String yKey = mKey.substring(0, 4);
+              yearlyMap[yKey] = (yearlyMap[yKey] ?? 0) + amt;
             }
           }
-          if (originalLoanAmount == 0.0)
-            originalLoanAmount = totalAmount; // Fallback
+        } else if (lastPaymentAmount > 0) {
+          totalPaidForInstallment = lastPaymentAmount;
+          paidInstallmentsCount = 1;
+        }
+        
+        if (lastPaymentDate != null && lastPaymentAmount > 0) {
+           String dKey = lastPaymentDate.toIso8601String().substring(0, 10);
+           fallbackDailyMap[dKey] = (fallbackDailyMap[dKey] ?? 0) + lastPaymentAmount;
         }
 
-        // --- Dashboard aggregation ---
-
-        // Total expected this month snapshot logic
-        if (saveNewSnapshot && effectiveStatus != 'paid' && !isRent) {
-          if (dueDate != null &&
-              dueDate.month == currentMonth &&
-              dueDate.year == currentYear) {
-            totalExpectedThisMonth += emiMonthlyAmount;
+        // Calculate Outstanding Balance
+        if (effectiveStatus != 'paid') {
+          double remainingBalance = totalAmount - totalPaidForInstallment;
+          if (remainingBalance > 0) {
+            totalOutstandingBalance += remainingBalance;
           }
-        } else if (saveNewSnapshot && isRent) {
-          totalExpectedThisMonth += emiMonthlyAmount;
+          // Monthly Demand
+          expectedMonthlyDemand += emiMonthlyAmount;
         }
 
-        if (effectiveStatus == 'pending' || effectiveStatus == 'overdue') {
-          if (isRent) {
-            actualPendingThisMonth += emiMonthlyAmount;
-            actualPendingClientsCount++;
-          } else if (dueDate != null &&
-              dueDate.month == currentMonth &&
-              dueDate.year == currentYear) {
-            actualPendingThisMonth += emiMonthlyAmount;
-            actualPendingClientsCount++;
-          }
-        }
-
-        if (status != 'paid') {
-          totalActiveCount++;
-        }
-
-        // Collected this month = sum of payments made this month
-        final monthKey =
-            '${currentYear}-${currentMonth.toString().padLeft(2, '0')}';
-        final monthlyPayments =
-            data['monthly_payments'] as Map<String, dynamic>?;
+        // Collected This Month
         if (monthlyPayments != null && monthlyPayments.containsKey(monthKey)) {
           collectedThisMonth += (monthlyPayments[monthKey] as num).toDouble();
-          if (customerId.isNotEmpty) customersPaidThisMonth.add(customerId);
         } else if (paidThisMonth) {
           collectedThisMonth += lastPaymentAmount;
-          if (customerId.isNotEmpty) customersPaidThisMonth.add(customerId);
+        }
+
+        // Client Status Counters
+        if (effectiveStatus == 'overdue') {
+          overdueClientsCount++;
+        } else if (effectiveStatus == 'pending') {
+          pendingClientsCount++;
         }
 
         if (paidThisMonth) {
           if (customerId.isNotEmpty) customersPaidThisMonth.add(customerId);
 
           if (recentlyPaidInstallments.length < 5) {
-            final date = lastPaymentDate!;
-            final formattedDate = '${date.day}/${date.month}/${date.year}';
+            final date = lastPaymentDate;
+            final formattedDate = '${date!.day}/${date.month}/${date.year}';
             recentlyPaidInstallments.add(
               RecentlyPaidInstallment(
                 id: data['id'] as String? ?? doc.id,
@@ -243,22 +242,13 @@ class EmiRepository implements EmiRepositoryInterface {
           }
         }
 
-        // Lifetime collection: sum of all payments ever recorded
-        if (lastPaymentAmount > 0) {
-          lifetimeCollection += lastPaymentAmount;
-        }
-
-        // Count pending/overdue clients (not paid_this_month or fully paid)
-        if (effectiveStatus == 'pending' || effectiveStatus == 'overdue') {
-          pendingClientsCount++;
-          if (effectiveStatus == 'overdue') {
-            defaulters++;
-          }
-        }
-
-        if (effectiveStatus == 'paid_this_month') {
-          earlyPayments++; // Reuse as "on-time payments" count
-        }
+        final numberOfInstallments = data['number_of_installments'] as int? ?? 0;
+        // In this system, down payment is technically the amountCharged - amountPending at the time of creation.
+        // We can approximate it if we know the original loan amount.
+        // But for now, we leave it at 0 if not stored, as we don't have it directly.
+        final downPayment = (data['down_payment'] as num?)?.toDouble() ?? 0.0;
+        final invoiceNumber = doc.id;
+        final customerPhone = data['customer_phone'] as String? ?? idToPhoneMap[customerId] ?? '';
 
         activeInstallments.add(
           ActiveInstallment(
@@ -277,12 +267,51 @@ class EmiRepository implements EmiRepositoryInterface {
             avatarUrl: data['avatar_url'] as String? ?? '',
             isRent: isRent,
             rentDueDay: rentDueDay,
+            numberOfInstallments: numberOfInstallments,
+            paidInstallmentsCount: paidInstallmentsCount,
+            downPayment: downPayment,
+            invoiceNumber: invoiceNumber,
+            customerPhone: customerPhone,
           ),
         );
       }
 
       if (saveNewSnapshot) {
         await snapshotDoc.set({'totalExpected': totalExpectedThisMonth});
+      }
+      
+      // --- Fetch Daily Graph Data from new collection ---
+      Map<String, double> dailyMap = {};
+      try {
+        final paymentsSnap = await firestore.collection('payments')
+          .where('date', isGreaterThanOrEqualTo: DateTime.now().subtract(const Duration(days: 30)).toIso8601String())
+          .get();
+          
+        for (var pDoc in paymentsSnap.docs) {
+          final pData = pDoc.data();
+          final pDateStr = pData['date'] as String? ?? '';
+          final pAmt = (pData['amount'] as num?)?.toDouble() ?? 0.0;
+          if (pDateStr.length >= 10) { 
+            String dKey = pDateStr.substring(0, 10);
+            dailyMap[dKey] = (dailyMap[dKey] ?? 0) + pAmt;
+          }
+        }
+      } catch (e) {
+        // Ignore index errors if query fails initially
+      }
+      
+      if (dailyMap.isEmpty) {
+        dailyMap = fallbackDailyMap;
+      }
+      
+      List<GraphDataPoint> convertMapToList(Map<String, double> map, {int? limit}) {
+        final entries = map.entries.toList()
+          ..sort((a, b) => a.key.compareTo(b.key));
+        List<GraphDataPoint> points = entries.map((e) => GraphDataPoint(label: e.key, amount: e.value)).toList();
+        if (limit != null && points.length > limit) {
+           points = points.sublist(points.length - limit);
+        }
+        return points;
       }
 
       // Sort active installments by due date (oldest first for overdue prioritization)
@@ -293,31 +322,22 @@ class EmiRepository implements EmiRepositoryInterface {
       });
 
       int paidThisMonthCount = customersPaidThisMonth.length;
-      final double onTimePercent = totalActiveCount > 0
-          ? (paidThisMonthCount / totalActiveCount) * 100
-          : 100.0;
-
-      final double collectionPercentage = totalExpectedThisMonth > 0
-          ? (collectedThisMonth / totalExpectedThisMonth) * 100
-          : 0.0;
 
       return EmiDashboardData(
-        totalCollection: totalExpectedThisMonth,
+        totalOutstandingBalance: totalOutstandingBalance,
+        expectedMonthlyDemand: expectedMonthlyDemand,
         collectedThisMonth: collectedThisMonth,
-        lifetimeServiceRevenue: lifetimeCollection,
-        collectionGrowthPercentage: collectionPercentage,
-        pendingThisMonth: actualPendingThisMonth,
-        pendingClientsCount: actualPendingClientsCount,
-        monthlyTargetCollectionPercentage: collectionPercentage,
+        overdueClientsCount: overdueClientsCount,
+        pendingClientsCount: pendingClientsCount,
+        paidThisMonthCount: paidThisMonthCount,
         recentlyPaidInstallments: recentlyPaidInstallments,
         activeInstallments: activeInstallments,
-        onTimePaymentPercentage: onTimePercent,
-        earlyPayments: earlyPayments,
-        gracePeriod: paidThisMonthCount,
-        defaulters: defaulters,
+        dailyCollection: convertMapToList(dailyMap, limit: 14),
+        monthlyCollection: convertMapToList(monthlyMap, limit: 12),
+        yearlyCollection: convertMapToList(yearlyMap),
       );
     } catch (e) {
-      return _getInitialMockData();
+      throw Exception('Failed to load dashboard data: $e');
     }
   }
 
@@ -339,7 +359,14 @@ class EmiRepository implements EmiRepositoryInterface {
   }
 
   @override
-  Future<void> addPayment(String installmentId, double amountPaid) async {
+  Future<void> addPayment(
+    String installmentId,
+    double amountPaid, {
+    String paymentMethod = 'Cash',
+    String transactionRef = '',
+    String notes = '',
+    String recordedBy = '',
+  }) async {
     try {
       await firestore.runTransaction((transaction) async {
         final docRef = firestore.collection('installments').doc(installmentId);
@@ -387,6 +414,7 @@ class EmiRepository implements EmiRepositoryInterface {
         }
 
         monthlyPayments[monthKey] = currentMonthPaid + amountPaid;
+        final installmentNumber = monthlyPayments.keys.length;
 
         final isRent = data['is_rent'] as bool? ?? false;
         final rentDueDay = data['rent_due_day'] as int?;
@@ -437,6 +465,26 @@ class EmiRepository implements EmiRepositoryInterface {
           });
         }
 
+        // Create detailed payment record in subcollection
+        final recordRef = docRef.collection('payment_records').doc();
+        final paymentData = {
+          'id': recordRef.id,
+          'installment_id': installmentId,
+          'amount': amountPaid,
+          'date': DateTime.now().toIso8601String(),
+          'payment_method': paymentMethod,
+          'transaction_ref': transactionRef,
+          'recorded_by': recordedBy,
+          'notes': notes,
+          'remaining_balance_after': isRent ? 999999.0 : newTotalAmount,
+          'installment_number': installmentNumber,
+        };
+        transaction.set(recordRef, paymentData);
+        
+        // Also write to top-level `payments` collection for fast dashboard querying (daily/monthly/yearly aggregations)
+        final topPaymentRef = firestore.collection('payments').doc(recordRef.id);
+        transaction.set(topPaymentRef, paymentData);
+
         // Update the customer's service record
         final serviceId = data['service_id'] as String?;
         final customerId = data['customer_id'] as String?;
@@ -477,21 +525,80 @@ class EmiRepository implements EmiRepositoryInterface {
     }
   }
 
+  @override
+  Future<List<PaymentRecord>> getPaymentHistory() async {
+    try {
+      if (_firestore == null && Firebase.apps.isEmpty) {
+        return [];
+      }
+
+      final snapshot = await firestore.collectionGroup('payment_records').get();
+      List<PaymentRecord> history = [];
+
+      // We need to resolve names/invoices. Since payment_records are subcollections of installments,
+      // we ideally have the customer name inside the record. But currently, the new records don't have it explicitly.
+      // Wait, in addPayment, I didn't add customerName to the record. I should fetch parent info if needed,
+      // or rely on a Map. Let's do a join with installments or Customer collection if needed.
+      // For now, let's just construct the record. If some data is missing, we'll leave it empty.
+      // Ideally, the payment_record should have all the denormalized data.
+      
+      // Let's fetch all installments first for lookup, since it's faster than 1-by-1 reads.
+      final installmentsSnap = await firestore.collection('installments').get();
+      final installmentDataMap = {
+        for (var doc in installmentsSnap.docs) doc.id: doc.data()
+      };
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final instId = data['installment_id'] as String? ?? '';
+        final instData = installmentDataMap[instId];
+        
+        final customerName = instData?['customer_name'] as String? ?? 'Unknown';
+        final customerId = instData?['customer_id'] as String? ?? '';
+        final serviceName = instData?['service_name'] as String? ?? '';
+        
+        history.add(PaymentRecord(
+          id: data['id'] as String? ?? doc.id,
+          installmentId: instId,
+          customerId: customerId,
+          customerName: customerName,
+          serviceName: serviceName,
+          invoiceNumber: instId,
+          amount: (data['amount'] as num?)?.toDouble() ?? 0.0,
+          dateStr: data['date'] as String? ?? '',
+          paymentMethod: data['payment_method'] as String? ?? 'Cash',
+          transactionRef: data['transaction_ref'] as String? ?? '',
+          recordedBy: data['recorded_by'] as String? ?? '',
+          notes: data['notes'] as String? ?? '',
+          remainingBalanceAfter: (data['remaining_balance_after'] as num?)?.toDouble() ?? 0.0,
+          installmentNumber: data['installment_number'] as int? ?? 0,
+        ));
+      }
+
+      // Sort reverse chronological
+      history.sort((a, b) {
+        final dateA = DateTime.tryParse(a.dateStr) ?? DateTime.fromMillisecondsSinceEpoch(0);
+        final dateB = DateTime.tryParse(b.dateStr) ?? DateTime.fromMillisecondsSinceEpoch(0);
+        return dateB.compareTo(dateA);
+      });
+
+      return history;
+    } catch (e) {
+      // Return empty instead of crashing
+      return [];
+    }
+  }
+
   EmiDashboardData _getInitialMockData() {
     return const EmiDashboardData(
-      totalCollection: 0,
+      totalOutstandingBalance: 0,
+      expectedMonthlyDemand: 0,
       collectedThisMonth: 0,
-      lifetimeServiceRevenue: 0,
-      collectionGrowthPercentage: 0,
-      pendingThisMonth: 0,
+      overdueClientsCount: 0,
       pendingClientsCount: 0,
-      monthlyTargetCollectionPercentage: 0,
+      paidThisMonthCount: 0,
       recentlyPaidInstallments: [],
       activeInstallments: [],
-      onTimePaymentPercentage: 100,
-      earlyPayments: 0,
-      gracePeriod: 0,
-      defaulters: 0,
     );
   }
 }

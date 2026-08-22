@@ -196,6 +196,44 @@ class _HistoryScaffold extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: AppPadding.p8),
+                  // Amount > ₹1500 Filter Toggle
+                  BlocBuilder<HistoryBloc, HistoryState>(
+                    buildWhen: (previous, current) =>
+                        previous.amountFilterEnabled != current.amountFilterEnabled,
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: AppPadding.p8),
+                        child: FilterChip(
+                          label: const Text('Amount > ₹1500'),
+                          selected: state.amountFilterEnabled,
+                          onSelected: (selected) {
+                            context.read<HistoryBloc>().add(
+                                  HistoryEvent.toggleAmountFilter(selected),
+                                );
+                          },
+                          backgroundColor: context.colors.surface,
+                          selectedColor: context.colors.primary.withValues(alpha: 0.1),
+                          checkmarkColor: context.colors.primary,
+                          labelStyle: TextStyle(
+                            color: state.amountFilterEnabled
+                                ? context.colors.primary
+                                : context.colors.textSecondary,
+                            fontWeight: state.amountFilterEnabled
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(
+                              color: state.amountFilterEnabled
+                                  ? context.colors.primary
+                                  : context.colors.border,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -265,6 +303,15 @@ class _HistoryScaffold extends StatelessWidget {
                     }).toList();
                   }
 
+                  // Amount > ₹1500 Filter
+                  if (state.amountFilterEnabled) {
+                    filteredServices = filteredServices.where((item) {
+                      return item.totalAmount > 1500;
+                    }).toList();
+                    // Sort by service date ascending (oldest first)
+                    filteredServices.sort((a, b) => a.serviceDate.compareTo(b.serviceDate));
+                  }
+
                   if (filteredServices.isEmpty) {
                     return Center(
                       child: Column(
@@ -302,9 +349,13 @@ class _HistoryScaffold extends StatelessWidget {
                     groupedServices.putIfAbsent(dateKey, () => []).add(item);
                   }
 
-                  // Sort dates descending
-                  final sortedDates = groupedServices.keys.toList()
-                    ..sort((a, b) => b.compareTo(a));
+                  // Sort dates
+                  final sortedDates = groupedServices.keys.toList();
+                  if (state.amountFilterEnabled) {
+                    sortedDates.sort((a, b) => a.compareTo(b)); // Ascending (Older to Newer)
+                  } else {
+                    sortedDates.sort((a, b) => b.compareTo(a)); // Descending (Newer to Older)
+                  }
 
                   return RefreshIndicator(
                     onRefresh: () async {

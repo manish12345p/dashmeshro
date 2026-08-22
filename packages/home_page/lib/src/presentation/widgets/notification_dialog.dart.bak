@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:core_ui/core_ui.dart';
 import '../../domain/entities/home_data.dart';
 
 class NotificationDialog extends StatelessWidget {
@@ -262,18 +261,8 @@ class _NotificationBody extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Ends: ${item.expiryDate.split('T')[0]}',
+                    'Duration: ${item.duration} | Expiry: ${item.expiryDate.split('T')[0]}',
                     style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ServiceActionRow(
-                    phone: item.phone,
-                    serviceDetailsText: 'Name: ${item.customerName}\nType: ${item.type}\nDuration: ${item.duration}\nExpiry: ${item.expiryDate}\nPhone: ${item.phone}',
                   ),
                 ],
               ),
@@ -363,16 +352,6 @@ class _NotificationBody extends StatelessWidget {
                         ? 'Due: ${item.dueDate.split('T')[0]} (${item.daysOverdue} days overdue)'
                         : 'Payment pending (no due date set)',
                     style: TextStyle(fontSize: 12, color: Colors.red.shade400),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ServiceActionRow(
-                    phone: item.phone,
-                    serviceDetailsText: 'Name: ${item.customerName}\nType: ${item.type}\nAmount Pending: ₹${item.amountPending.toStringAsFixed(0)}\nDue: ${item.dueDate}\nPhone: ${item.phone}',
                   ),
                 ],
               ),

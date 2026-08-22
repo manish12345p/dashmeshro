@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:visit_entry/visit_entry.dart';
@@ -7,11 +9,15 @@ import '../../domain/entities/customer.dart';
 class ActivityCard extends StatelessWidget {
   final ServiceActivity activity;
   final String customerId;
+  final String customerName;
+  final String customerLocality;
 
   const ActivityCard({
     super.key, 
     required this.activity,
     required this.customerId,
+    required this.customerName,
+    required this.customerLocality,
   });
 
   @override
@@ -300,6 +306,67 @@ class ActivityCard extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 12),
+            // Share & Copy actions
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () {
+                    final text = _getServiceDetailsText();
+                    Share.share(text);
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.share, size: 16, color: context.colors.primary),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Share',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: context.colors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                InkWell(
+                  onTap: () {
+                    final text = _getServiceDetailsText();
+                    Clipboard.setData(ClipboardData(text: text));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Service details copied successfully')),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.copy, size: 16, color: context.colors.primary),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Copy',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: context.colors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -325,5 +392,33 @@ class ActivityCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: AppPadding.p16),
       child: cardContent,
     );
+  }
+
+  String _getServiceDetailsText() {
+    final buffer = StringBuffer();
+    buffer.writeln('Name: $customerName');
+    if (customerLocality.isNotEmpty) {
+      buffer.writeln('Locality: $customerLocality');
+    }
+    final dateStr = DateFormat('dd/MM/yyyy').format(activity.serviceDate);
+    buffer.writeln('Service Date: $dateStr');
+    buffer.writeln('Amount: ₹${activity.totalAmount.toStringAsFixed(2)}');
+    if (activity.serviceType.isNotEmpty) {
+      buffer.writeln('Service Type: ${activity.serviceType}');
+    }
+    if (activity.fixes.isNotEmpty) {
+      buffer.writeln('Fault: ${activity.fixes}');
+    }
+    if (activity.remarks.isNotEmpty) {
+      buffer.writeln('Note: ${activity.remarks}');
+    }
+    if (activity.serviceDuration.isNotEmpty) {
+      buffer.writeln('Duration: ${activity.serviceDuration}');
+    }
+    if (activity.guaranteeDuration.isNotEmpty) {
+      buffer.writeln('Guarantee: ${activity.guaranteeDuration}');
+    }
+    buffer.writeln('Paid: ₹${activity.amountPaid.toStringAsFixed(2)}');
+    return buffer.toString().trim();
   }
 }

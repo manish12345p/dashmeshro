@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:core_ui/core_ui.dart';
 
 class PendingMonthCard extends StatelessWidget {
   final double pendingAmount;

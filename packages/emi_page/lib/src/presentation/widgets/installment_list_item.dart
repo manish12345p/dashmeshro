@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:core_ui/core_ui.dart';
 import '../../domain/entities/emi_dashboard_data.dart';
 
@@ -7,7 +8,12 @@ class InstallmentListItem extends StatelessWidget {
   final ActiveInstallment installment;
   final VoidCallback onRemind;
   final VoidCallback onMarkPaid;
-  final Function(double) onAddPayment;
+  final void Function(
+    double amount,
+    String paymentMethod,
+    String transactionRef,
+    String notes,
+  ) onAddPayment;
 
   const InstallmentListItem({
     super.key,
@@ -98,50 +104,94 @@ class InstallmentListItem extends StatelessWidget {
                   ),
                 ),
                 if (installment.totalAmount > 0) ...[
-                  SizedBox(height: 4),
+                  SizedBox(height: 2),
                   Text(
-                    'Total: ₹${installment.totalAmount.toStringAsFixed(0)}',
+                    'Balance: ₹${installment.totalAmount.toStringAsFixed(0)}',
                     style: TextStyle(
-                      color: context.colors.textSecondary,
-                      fontSize: 11,
+                      color: context.colors.error,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ],
             ),
           ),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 '₹${installment.amount.toStringAsFixed(0)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: context.colors.error,
+                  color: context.colors.textPrimary,
                 ),
               ),
-              SizedBox(width: 12),
-              if (installment.status != 'paid')
-                InkWell(
-                  onTap: () {
-                    _showPartialPaymentDialog(context, installment);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: context.colors.success,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'Pay',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+              const SizedBox(height: 8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.call, color: installment.customerPhone.isNotEmpty ? context.colors.primary : context.colors.textTertiary, size: 20),
+                    onPressed: installment.customerPhone.isNotEmpty 
+                        ? () {
+                            PhoneActionHandler.handleAction(
+                              context: context,
+                              rawNumbers: installment.customerPhone,
+                              actionName: 'Call',
+                              onSelected: (selectedNumber) async {
+                                final url = Uri.parse('tel:$selectedNumber');
+                                try {
+                                  await launchUrl(url);
+                                } catch (e) {
+                                  debugPrint('Could not launch Call: $e');
+                                }
+                              },
+                            );
+                          }
+                        : null,
+                    constraints: const BoxConstraints(),
+                    padding: const EdgeInsets.all(4),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.message, color: installment.customerPhone.isNotEmpty ? Colors.green : context.colors.textTertiary, size: 20),
+                    onPressed: installment.customerPhone.isNotEmpty 
+                        ? () {
+                            PhoneActionHandler.handleAction(
+                              context: context,
+                              rawNumbers: installment.customerPhone,
+                              actionName: 'WhatsApp',
+                              onSelected: (selectedNumber) async {
+                                final url = Uri.parse('https://wa.me/91$selectedNumber');
+                                try {
+                                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                                } catch (e) {
+                                  debugPrint('Could not launch WhatsApp: $e');
+                                }
+                              },
+                            );
+                          }
+                        : null,
+                    constraints: const BoxConstraints(),
+                    padding: const EdgeInsets.all(4),
+                  ),
+                  const SizedBox(width: 4),
+                  ElevatedButton(
+                    onPressed: () => _showAddPaymentSheet(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.colors.success,
+                      foregroundColor: context.colors.surface,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                      minimumSize: const Size(60, 32),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    child: const Text('Pay', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                   ),
-                ),
+                ],
+              ),
             ],
           ),
         ],
@@ -149,128 +199,204 @@ class InstallmentListItem extends StatelessWidget {
     );
   }
 
-  void _showPartialPaymentDialog(
-    BuildContext context,
-    ActiveInstallment installment,
-  ) {
-    final TextEditingController controller = TextEditingController(
-      text: installment.amount.toStringAsFixed(0),
-    );
-
+  void _showAddPaymentSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: context.colors.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => _PaymentBottomSheet(
+        installment: installment,
+        onAddPayment: (amount, method, ref, notes) {
+          Navigator.pop(sheetContext);
+          onAddPayment(amount, method, ref, notes);
+        },
       ),
-      builder: (sheetContext) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+}
+
+class _PaymentBottomSheet extends StatefulWidget {
+  final ActiveInstallment installment;
+  final void Function(double amount, String paymentMethod, String transactionRef, String notes) onAddPayment;
+
+  const _PaymentBottomSheet({
+    required this.installment,
+    required this.onAddPayment,
+  });
+
+  @override
+  State<_PaymentBottomSheet> createState() => _PaymentBottomSheetState();
+}
+
+class _PaymentBottomSheetState extends State<_PaymentBottomSheet> {
+  late final TextEditingController amountController;
+  late final TextEditingController refController;
+  late final TextEditingController notesController;
+  String paymentMethod = 'Cash';
+
+  @override
+  void initState() {
+    super.initState();
+    amountController = TextEditingController(text: widget.installment.amount.toStringAsFixed(0));
+    refController = TextEditingController();
+    notesController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    refController.dispose();
+    notesController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 24,
+        right: 24,
+        top: 24,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
+      decoration: BoxDecoration(
+        color: context.colors.background,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Record Payment',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: context.colors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'For ${widget.installment.customerName}',
+              style: TextStyle(color: context.colors.textSecondary),
+            ),
+            const SizedBox(height: 24),
+            TextField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: context.colors.textPrimary,
+              ),
+              decoration: InputDecoration(
+                prefixText: '₹ ',
+                labelText: 'Amount',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              initialValue: paymentMethod,
+              decoration: InputDecoration(
+                labelText: 'Payment Method',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              items: ['Cash', 'UPI', 'Bank Transfer', 'Cheque']
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (val) {
+                if (val != null) setState(() => paymentMethod = val);
+              },
+            ),
+            if (paymentMethod != 'Cash') ...[
+              const SizedBox(height: 16),
+              TextField(
+                controller: refController,
+                decoration: InputDecoration(
+                  labelText: 'Transaction Ref / UTR',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
+            TextField(
+              controller: notesController,
+              decoration: InputDecoration(
+                labelText: 'Notes (Optional)',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              maxLines: 2,
+            ),
+            const SizedBox(height: 32),
+            Row(
               children: [
-                Text(
-                  'Record Payment',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: context.colors.textPrimary,
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: const Text('Cancel'),
                   ),
                 ),
-                const SizedBox(height: 24),
-                TextField(
-                  controller: controller,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Amount to Pay',
-                    prefixText: '₹ ',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => Navigator.pop(sheetContext),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: context.colors.textSecondary),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          final amount = double.tryParse(controller.text) ?? 0.0;
-                          if (amount > 0 && amount < installment.amount) {
-                            showDialog(
-                              context: sheetContext,
-                              builder: (confirmCtx) => AlertDialog(
-                                title: const Text('Partial Payment'),
-                                content: Text(
-                                  'The amount is ₹${installment.amount.toStringAsFixed(0)}, but you entered ₹${amount.toStringAsFixed(0)}. Are you sure you want to pay less?',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(confirmCtx),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(confirmCtx);
-                                      Navigator.pop(sheetContext);
-                                      onAddPayment(amount);
-                                    },
-                                    child: const Text('Confirm'),
-                                  ),
-                                ],
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final amount = double.tryParse(amountController.text) ?? 0.0;
+                      if (amount > 0 && amount < widget.installment.amount) {
+                        showDialog(
+                          context: context,
+                          builder: (confirmCtx) => AlertDialog(
+                            title: const Text('Partial Payment'),
+                            content: Text(
+                              'The EMI is ₹${widget.installment.amount.toStringAsFixed(0)}, but you entered ₹${amount.toStringAsFixed(0)}. Save anyway?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(confirmCtx),
+                                child: const Text('Cancel'),
                               ),
-                            );
-                          } else {
-                            Navigator.pop(sheetContext);
-                            onAddPayment(amount);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.colors.primaryDark,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(confirmCtx); // pop dialog
+                                  widget.onAddPayment(amount, paymentMethod, refController.text, notesController.text);
+                                },
+                                child: const Text('Confirm'),
+                              ),
+                            ],
                           ),
-                        ),
-                        child: Text(
-                          'Pay Now',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        );
+                      } else {
+                        widget.onAddPayment(amount, paymentMethod, refController.text, notesController.text);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.colors.primary,
+                      foregroundColor: context.colors.surface,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                  ],
+                    child: const Text('Save Payment'),
+                  ),
                 ),
-                const SizedBox(height: 24),
               ],
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

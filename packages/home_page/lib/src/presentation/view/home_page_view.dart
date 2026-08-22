@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:home_page/src/domain/entities/home_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_page/src/presentation/bloc/home_bloc.dart';
 import 'package:visit_entry/visit_entry.dart';
 
@@ -27,9 +31,14 @@ class HomePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value:
-          bloc ?? (sl<HomeBloc>()..add(const HomeEvent.loadHomeData())),
+    return BlocProvider(
+      create: (context) {
+        final b = bloc ?? sl<HomeBloc>();
+        if (bloc == null) {
+          b.add(const HomeEvent.loadHomeData());
+        }
+        return b;
+      },
       child: const Scaffold(
         body: _HomeContent(),
         floatingActionButton: _ExpenseFab(),
@@ -83,16 +92,6 @@ class _HomeContent extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          GestureDetector(
-                            onTap: () => ViewExpensesDialog.show(context),
-                            child: Icon(
-                              Icons.edit_document,
-                              color: Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.white
-                                  : Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          const SizedBox(width: AppPadding.p8),
                           const _AdminUnlockTitle(),
                           const SizedBox(width: AppPadding.p4),
                         ],
@@ -148,10 +147,7 @@ class _HomeContent extends StatelessWidget {
                               ),
                             ],
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.notifications_outlined),
-                            onPressed: () => NotificationDialog.show(context),
-                          ),
+                          _NotificationBell(data: data),
                         ],
                       ),
                     ],
@@ -169,100 +165,87 @@ class _HomeContent extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Top Summary Cards
-                  SummaryCard(
-                    overlineText: AppStrings.totalVisits,
-                    valueText: '${data.totalServices}',
-                    subtitleText: AppStrings.totalVisitsSubtitle,
-                    trailingIcon: Icon(
-                      Icons.trending_up,
-                      color: context.colors.success,
-                      size: 20,
-                    ),
-                    trailingBackgroundColor: context.colors.successBg,
-                  ),
-                  const SizedBox(height: AppPadding.p12),
-                  SummaryCard(
-                    overlineText: AppStrings.newRo,
-                    valueText: '${data.newRoServices}',
-                    subtitleText: AppStrings.newRoSubtitle,
-                    trailingIcon: Icon(
-                      Icons.water_drop,
-                      color: context.colors.primary,
-                      size: 20,
-                    ),
-                    trailingBackgroundColor: context.colors.primary.withValues(
-                      alpha: 0.1,
-                    ),
-                  ),
-                  const SizedBox(height: AppPadding.p12),
-                  SummaryCard(
-                    overlineText: AppStrings.totalAmc,
-                    valueText: '${data.amcServices}',
-                    subtitleText: AppStrings.totalAmcSubtitle,
-                    trailingIcon: Icon(
-                      Icons.verified_user,
-                      color: context.colors.success,
-                      size: 20,
-                    ),
-                    trailingBackgroundColor: context.colors.successBg,
-                  ),
-                  const SizedBox(height: AppPadding.p12),
-                  SummaryCard(
-                    overlineText: AppStrings.serviceAndRepair,
-                    valueText: '${data.repairServices}',
-                    subtitleText: AppStrings.serviceAndRepairSubtitle,
-                    trailingIcon: Icon(
-                      Icons.build,
-                      color: context.colors.warning,
-                      size: 20,
-                    ),
-                    trailingBackgroundColor: context.colors.warningBg,
-                  ),
-                  const SizedBox(height: AppPadding.p32),
-
-                  // Today's Service Schedule
-                  SectionHeader(
-                    title: AppStrings.totalVisitSchedule,
-                    trailing: TextButton(
-                      onPressed: () => context.go('/calendar'),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: Text(
-                        AppStrings.viewCalendar,
-                        style: TextStyle(
-                          color: context.colors.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                  // Top Summary Cards (2x2 Grid)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SummaryCard(
+                          overlineText: AppStrings.totalVisits,
+                          valueText: '${data.totalServices}',
+                          subtitleText: AppStrings.totalVisitsSubtitle,
+                          trailingIcon: Icon(
+                            Icons.trending_up,
+                            color: context.colors.success,
+                            size: 20,
+                          ),
+                          trailingBackgroundColor: context.colors.successBg,
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: AppPadding.p16),
-
-                  // List of today's visit schedules
-                  if (data.todayNotifications.isNotEmpty)
-                    ...data.todayNotifications.map(
-                      (item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: VisitScheduleCard(item: item),
-                      ),
-                    ),
-                  if (data.todayNotifications.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Text(
-                          AppStrings.noVisitsToday,
-                          style: TextStyle(
-                            color: context.colors.textQuaternary,
+                      const SizedBox(width: AppPadding.p12),
+                      Expanded(
+                        child: SummaryCard(
+                          overlineText: AppStrings.newRo,
+                          valueText: '${data.newRoServices}',
+                          subtitleText: AppStrings.newRoSubtitle,
+                          trailingIcon: Icon(
+                            Icons.water_drop,
+                            color: context.colors.primary,
+                            size: 20,
+                          ),
+                          trailingBackgroundColor: context.colors.primary.withValues(
+                            alpha: 0.1,
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: AppPadding.p12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SummaryCard(
+                          overlineText: AppStrings.totalAmc,
+                          valueText: '${data.amcServices}',
+                          subtitleText: AppStrings.totalAmcSubtitle,
+                          trailingIcon: Icon(
+                            Icons.verified_user,
+                            color: context.colors.success,
+                            size: 20,
+                          ),
+                          trailingBackgroundColor: context.colors.successBg,
+                        ),
+                      ),
+                      const SizedBox(width: AppPadding.p12),
+                      Expanded(
+                        child: SummaryCard(
+                          overlineText: AppStrings.serviceAndRepair,
+                          valueText: '${data.repairServices}',
+                          subtitleText: AppStrings.serviceAndRepairSubtitle,
+                          trailingIcon: Icon(
+                            Icons.build,
+                            color: context.colors.warning,
+                            size: 20,
+                          ),
+                          trailingBackgroundColor: context.colors.warningBg,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppPadding.p32),
+
+                  // Quick Actions
+                  _CalendarStatusCard(data: data),
+                  const SizedBox(height: AppPadding.p12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: _QuickActionBtn(
+                      icon: Icons.edit_document,
+                      label: 'Estimates',
+                      color: context.colors.primary,
+                      onTap: () => context.push('/estimates'),
+                      isHorizontal: true,
                     ),
+                  ),
                   const SizedBox(height: AppPadding.p32),
 
                   // Pending Services
@@ -438,6 +421,16 @@ class _PendingServiceCardState extends State<_PendingServiceCard> {
     }
   }
 
+  String _getServiceDetailsText() {
+    return '''*Pending Service Details*
+Customer: ${widget.item.customerName}
+Phone: ${widget.item.phone}
+Address: ${widget.item.address}
+Service: ${widget.item.serviceType}
+Date: ${widget.item.serviceDate}
+${widget.item.note.isNotEmpty ? 'Note: ${widget.item.note}' : ''}''';
+  }
+
   void _toggleDone(bool isDone) {
     setState(() => _optimisticIsCompleted = isDone);
     
@@ -468,152 +461,465 @@ class _PendingServiceCardState extends State<_PendingServiceCard> {
     final isCompleted = _optimisticIsCompleted ?? (widget.item.status == 'completed');
     final textTheme = Theme.of(context).textTheme;
 
-    return Card(
-      elevation: 0,
+    return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
+      decoration: BoxDecoration(
+        color: isCompleted ? Colors.grey.shade50 : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
           color: isCompleted 
-              ? Colors.grey.shade300 
-              : (widget.item.isComplaint ? context.colors.error.withValues(alpha: 0.3) : Colors.grey.shade300)
+              ? Colors.grey.shade200 
+              : (widget.item.isComplaint ? Colors.red.withValues(alpha: 0.3) : Colors.grey.shade200),
+          width: 1.5,
         ),
+        boxShadow: isCompleted ? [] : [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      color: isCompleted 
-          ? Colors.grey.shade100 
-          : (widget.item.isComplaint ? context.colors.error.withValues(alpha: 0.02) : context.colors.surface),
-      child: InkWell(
-        onTap: isCompleted ? null : () {
-          EditVisitDialog.show(context, customerId: widget.item.customerId, serviceId: widget.item.id);
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: Checkbox(
-                  value: isCompleted,
-                  activeColor: Colors.grey.shade400,
-                  side: BorderSide(color: isCompleted ? Colors.transparent : context.colors.error, width: 2),
-                  onChanged: (val) {
-                    if (val != null) {
-                      _toggleDone(val);
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: isCompleted ? null : () {
+            EditVisitDialog.show(context, customerId: widget.item.customerId, serviceId: widget.item.id);
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.item.customerName,
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isCompleted ? Colors.grey.shade500 : context.colors.textPrimary,
-                        decoration: isCompleted ? TextDecoration.lineThrough : null,
+                    GestureDetector(
+                      onTap: () => _toggleDone(!isCompleted),
+                      child: Container(
+                        width: 26,
+                        height: 26,
+                        margin: const EdgeInsets.only(top: 2),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isCompleted ? Colors.green : Colors.red,
+                            width: 2,
+                          ),
+                          color: isCompleted ? Colors.green : Colors.transparent,
+                        ),
+                        child: isCompleted ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.build_circle_outlined,
-                          size: 14,
-                          color: isCompleted ? Colors.grey.shade400 : (widget.item.isComplaint ? Colors.red : context.colors.error),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${widget.item.serviceType} • ${isCompleted ? 'Done' : 'Not Done'}',
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: isCompleted ? Colors.grey.shade500 : (widget.item.isComplaint ? Colors.red : context.colors.error),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (widget.item.phone.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.phone_outlined,
-                            size: 14,
-                            color: isCompleted ? Colors.grey.shade400 : context.colors.textSecondary,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            widget.item.phone,
-                            style: textTheme.bodySmall?.copyWith(
-                              color: isCompleted ? Colors.grey.shade500 : context.colors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    if (widget.item.note.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Row(
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.error_outline,
-                            size: 14,
-                            color: isCompleted ? Colors.grey.shade400 : context.colors.error,
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              widget.item.note,
-                              style: textTheme.bodySmall?.copyWith(
-                                color: isCompleted ? Colors.grey.shade500 : context.colors.error,
-                                fontStyle: FontStyle.italic,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  widget.item.customerName,
+                                  style: textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16,
+                                    color: isCompleted ? Colors.grey.shade500 : context.colors.textPrimary,
+                                    decoration: isCompleted ? TextDecoration.lineThrough : null,
+                                  ),
+                                ),
                               ),
-                            ),
+                              if (widget.item.isComplaint)
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.shade50,
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: Colors.red.shade100),
+                                  ),
+                                  child: const Text(
+                                    'COMPLAINT',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Icon(Icons.calendar_today_outlined, size: 14, color: isCompleted ? Colors.grey.shade400 : context.colors.textSecondary),
+                              const SizedBox(width: 6),
+                              Text(
+                                '${widget.item.serviceDate}  •  ${widget.item.serviceType}',
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: isCompleted ? Colors.grey.shade500 : context.colors.textSecondary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (widget.item.phone.isNotEmpty) ...[
+                            const SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Icon(Icons.phone_outlined, size: 14, color: isCompleted ? Colors.grey.shade400 : context.colors.textSecondary),
+                                const SizedBox(width: 6),
+                                Text(
+                                  widget.item.phone,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: isCompleted ? Colors.grey.shade500 : context.colors.textSecondary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ],
                       ),
-                    ],
+                    ),
                   ],
                 ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  if (!isCompleted) ...[
-                    Icon(Icons.edit_outlined, color: context.colors.error, size: 18),
-                    const SizedBox(height: 12),
-                  ],
-                  GestureDetector(
-                    onTap: () {
-                      context.push('/customers/${widget.item.customerId}');
-                    },
-                    behavior: HitTestBehavior.opaque,
-                    child: Column(
+                if (widget.item.note.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isCompleted ? Colors.grey.shade100 : Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: isCompleted ? Colors.transparent : Colors.blue.shade100),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.person_outline, color: context.colors.primary, size: 18),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Profile',
-                          style: textTheme.labelSmall?.copyWith(
-                            color: context.colors.primary,
-                            fontSize: 9,
+                        Icon(
+                          Icons.info_outline,
+                          size: 18,
+                          color: isCompleted ? Colors.grey.shade400 : Colors.blue.shade600,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            widget.item.note,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: isCompleted ? Colors.grey.shade500 : Colors.blue.shade900,
+                              height: 1.4,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ],
+                if (!isCompleted) ...[
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 8),
+                    child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: ServiceActionRow(
+                          phone: widget.item.phone,
+                          serviceDetailsText: _getServiceDetailsText(),
+                          isDisabled: false,
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: context.colors.surfaceSecondary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                EditVisitDialog.show(context, customerId: widget.item.customerId, serviceId: widget.item.id);
+                              },
+                              icon: Icon(Icons.edit_outlined, size: 18, color: context.colors.primary),
+                              tooltip: 'Edit',
+                              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: context.colors.primary.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                context.push('/customers/${widget.item.customerId}');
+                              },
+                              icon: Icon(Icons.person_outline, size: 18, color: context.colors.primary),
+                              tooltip: 'Profile',
+                              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QuickActionBtn extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+  final bool isHorizontal;
+
+  const _QuickActionBtn({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+    this.isHorizontal = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: color.withValues(alpha: 0.1),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: isHorizontal ? 16 : 16, horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.withValues(alpha: 0.2)),
+          ),
+          child: isHorizontal
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, color: color, size: 24),
+                  const SizedBox(width: 12),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, color: color, size: 28),
+                  const SizedBox(height: 8),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
               ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CalendarStatusCard extends StatelessWidget {
+  final HomeData data;
+  
+  const _CalendarStatusCard({required this.data});
+  
+  @override
+  Widget build(BuildContext context) {
+    int remaining = 0;
+    
+    for (var s in data.pendingServices) {
+      if (s.status == 'completed') continue;
+      remaining++;
+    }
+
+    for (var ts in data.todaySchedules) {
+      remaining++;
+    }
+    
+    final hasAlert = remaining > 0;
+    final color = context.colors.primary;
+    
+    return Material(
+      color: hasAlert ? Colors.red.withValues(alpha: 0.08) : color.withValues(alpha: 0.1),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: () => context.go('/calendar'),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: hasAlert ? Colors.red.withValues(alpha: 0.4) : color.withValues(alpha: 0.2), width: hasAlert ? 1.5 : 1.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.calendar_month, color: hasAlert ? Colors.red.shade700 : color, size: 24),
+              const SizedBox(width: 12),
+              Text(
+                "Today's Scheduled Visit",
+                style: TextStyle(
+                  color: hasAlert ? Colors.red.shade800 : color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              if (hasAlert) ...[
+                const SizedBox(width: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade100,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.error_outline, size: 12, color: Colors.red),
+                      const SizedBox(width: 4),
+                      Text('Action Needed', style: TextStyle(color: Colors.red.shade800, fontSize: 10, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+              ],
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _NotificationBell extends StatefulWidget {
+  final HomeData data;
+  const _NotificationBell({required this.data});
+
+  @override
+  State<_NotificationBell> createState() => _NotificationBellState();
+}
+
+class _NotificationBellState extends State<_NotificationBell> {
+  bool _hasUnread = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUnread();
+  }
+
+  @override
+  void didUpdateWidget(covariant _NotificationBell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.data != widget.data) {
+      _checkUnread();
+    }
+  }
+
+  Future<void> _checkUnread() async {
+    final prefs = await SharedPreferences.getInstance();
+    final seenList = prefs.getStringList('seen_notifications') ?? <String>[];
+    final seenSet = seenList.toSet();
+    
+    bool hasNew = false;
+    
+    for (var n in widget.data.todayNotifications) {
+      if (!seenSet.contains(n.serviceId)) { hasNew = true; break; }
+    }
+    
+    if (!hasNew) {
+      for (var e in widget.data.expiringItems) {
+        final id = '${e.customerId}_${e.type}_${e.expiryDate}';
+        if (!seenSet.contains(id)) { hasNew = true; break; }
+      }
+    }
+    
+    if (!hasNew) {
+      for (var p in widget.data.pendingPayments) {
+        final id = '${p.customerId}_payment_${p.dueDate}';
+        if (!seenSet.contains(id)) { hasNew = true; break; }
+      }
+    }
+    
+    if (mounted) setState(() => _hasUnread = hasNew);
+  }
+
+  void _openNotifications() async {
+    final prefs = await SharedPreferences.getInstance();
+    final seenList = prefs.getStringList('seen_notifications') ?? <String>[];
+    final seenSet = seenList.toSet();
+    
+    for (var n in widget.data.todayNotifications) {
+      seenSet.add(n.serviceId);
+    }
+    for (var e in widget.data.expiringItems) {
+      seenSet.add('${e.customerId}_${e.type}_${e.expiryDate}');
+    }
+    for (var p in widget.data.pendingPayments) {
+      seenSet.add('${p.customerId}_payment_${p.dueDate}');
+    }
+    
+    await prefs.setStringList('seen_notifications', seenSet.toList());
+    
+    if (mounted) {
+      setState(() => _hasUnread = false);
+      NotificationDialog.show(context, widget.data);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined),
+          onPressed: _openNotifications,
+        ),
+        if (_hasUnread)
+          Positioned(
+            right: 12,
+            top: 12,
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              constraints: const BoxConstraints(
+                minWidth: 10,
+                minHeight: 10,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

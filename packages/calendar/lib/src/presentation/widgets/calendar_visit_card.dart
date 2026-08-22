@@ -6,6 +6,8 @@ import 'package:core_ui/core_ui.dart';
 import 'package:core/core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../domain/entities/schedule_item.dart';
 
 class CalendarVisitCard extends StatefulWidget {
@@ -19,6 +21,10 @@ class CalendarVisitCard extends StatefulWidget {
 
 class _CalendarVisitCardState extends State<CalendarVisitCard> {
   bool isDismissed = false;
+
+  String _getServiceDetailsText() {
+    return 'Service: ${widget.item.name}\nCategory: ${widget.item.category}\nLocation: ${widget.item.machineId}\nPhone: ${widget.item.phone}';
+  }
 
   @override
   @override
@@ -59,6 +65,15 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
               child: Checkbox(
                 value: isDismissed,
                 activeColor: context.colors.textSecondary,
+                shape: const CircleBorder(),
+                side: WidgetStateBorderSide.resolveWith(
+                  (states) => BorderSide(
+                    width: 2.0,
+                    color: states.contains(WidgetState.selected) 
+                      ? context.colors.textSecondary 
+                      : Colors.red,
+                  ),
+                ),
                 onChanged: (val) {
                   setState(() {
                     isDismissed = val ?? false;
@@ -174,38 +189,14 @@ class _CalendarVisitCardState extends State<CalendarVisitCard> {
             ),
             // View and WA buttons
             Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (widget.item.phone.isNotEmpty)
-                  IconButton(
-                    icon: Icon(
-                      Icons.chat_bubble_outline,
-                      color: isDismissed
-                          ? context.colors.textTertiary
-                          : context.colors.success,
-                      size: 20,
-                    ),
-                    onPressed: isDismissed
-                        ? null
-                        : () async {
-                            final rawNumber = widget.item.phone
-                                .split(',')
-                                .first
-                                .trim();
-                            final cleanNum = rawNumber.replaceAll(
-                              RegExp(r'[^0-9]'),
-                              '',
-                            );
-                            final finalNum = cleanNum.length == 10
-                                ? '91$cleanNum'
-                                : cleanNum;
-                            final url = Uri.parse('https://wa.me/$finalNum');
-                            if (await canLaunchUrl(url)) {
-                              await launchUrl(url);
-                            }
-                          },
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
+                  ServiceActionRow(
+                    phone: widget.item.phone,
+                    serviceDetailsText: _getServiceDetailsText(),
+                    isDisabled: isDismissed,
                   ),
+                const SizedBox(height: 8),
                 TextButton(
                   onPressed: isDismissed
                       ? null

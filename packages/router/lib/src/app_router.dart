@@ -54,10 +54,6 @@ GoRouter createAppRouter({
         ),
         routes: [
           GoRoute(
-            path: 'new',
-            builder: (context, state) => const NewClientProfileView(),
-          ),
-          GoRoute(
             path: ':id',
             builder: (context, state) {
               final id = state.pathParameters['id']!;
@@ -70,6 +66,20 @@ GoRouter createAppRouter({
         path: '/emi',
         pageBuilder: (context, state) =>
             NoTransitionPage(child: shellBuilder(const EmiPageView())),
+        routes: [
+          GoRoute(
+            path: 'history',
+            builder: (context, state) => BlocProvider(
+              create: (_) => EmiBloc(
+                sl<GetEmiDashboardDataUseCase>(),
+                sl<MarkEmiPaidUseCase>(),
+                sl<AddEmiPaymentUseCase>(),
+                sl<GetPaymentHistoryUseCase>(),
+              ),
+              child: const PaymentHistoryView(),
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: '/service',
@@ -93,6 +103,11 @@ GoRouter createAppRouter({
         path: '/history',
         pageBuilder: (context, state) =>
             NoTransitionPage(child: shellBuilder(const HistoryView())),
+      ),
+      GoRoute(
+        path: '/estimates',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: EstimatesView()),
       ),
     ],
   );

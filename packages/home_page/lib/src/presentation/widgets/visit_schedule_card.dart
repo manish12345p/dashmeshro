@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:core_ui/core_ui.dart';
+import 'package:core/core.dart';
 import '../../domain/entities/home_data.dart';
 
 class VisitScheduleCard extends StatefulWidget {
@@ -59,12 +63,31 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
                   });
                   // Update Firestore
                   try {
-                    FirebaseFirestore.instance
-                        .collection('Customer')
-                        .doc(widget.item.customerId)
-                        .collection('services')
-                        .doc(widget.item.serviceId)
-                        .update({'isDismissed': val ?? false});
+                    if (widget.item.serviceId.startsWith('reminder_')) {
+                      // It's a dynamic 3-month reminder. Save dismissal to customer doc.
+                      if (val == true) {
+                        FirebaseFirestore.instance
+                            .collection('Customer')
+                            .doc(widget.item.customerId)
+                            .set({
+                          'lastDismissedReminder': widget.item.notificationDate,
+                        }, SetOptions(merge: true));
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('Customer')
+                            .doc(widget.item.customerId)
+                            .set({
+                          'lastDismissedReminder': FieldValue.delete(),
+                        }, SetOptions(merge: true));
+                      }
+                    } else {
+                      FirebaseFirestore.instance
+                          .collection('Customer')
+                          .doc(widget.item.customerId)
+                          .collection('services')
+                          .doc(widget.item.serviceId)
+                          .update({'isDismissed': val ?? false});
+                    }
                   } catch (_) {}
                 },
               ),
@@ -201,38 +224,14 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
             ),
             // View and WA buttons
             Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (widget.item.phone.isNotEmpty)
-                  IconButton(
-                    icon: Icon(
-                      Icons.chat_bubble_outline,
-                      color: isDismissed
-                          ? Colors.grey.shade400
-                          : Colors.green.shade600,
-                      size: 20,
-                    ),
-                    onPressed: isDismissed
-                        ? null
-                        : () async {
-                            final rawNumber = widget.item.phone
-                                .split(',')
-                                .first
-                                .trim();
-                            final cleanNum = rawNumber.replaceAll(
-                              RegExp(r'[^0-9]'),
-                              '',
-                            );
-                            final finalNum = cleanNum.length == 10
-                                ? '91$cleanNum'
-                                : cleanNum;
-                            final url = Uri.parse('https://wa.me/$finalNum');
-                            if (await canLaunchUrl(url)) {
-                              await launchUrl(url);
-                            }
-                          },
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
+                  ServiceActionRow(
+                    phone: widget.item.phone,
+                    serviceDetailsText: _getServiceDetailsText(),
+                    isDisabled: isDismissed,
                   ),
+                const SizedBox(height: 8),
                 TextButton(
                   onPressed: isDismissed
                       ? null
@@ -267,4 +266,28 @@ class _VisitScheduleCardState extends State<VisitScheduleCard> {
       ),
     );
   }
+
+
+  String _getServiceDetailsText() {
+    final buffer = StringBuffer();
+    buffer.writeln('Name: ${widget.item.customerName}');
+    if (widget.item.serviceDate.isNotEmpty) {
+      buffer.writeln('Service Date: ${widget.item.serviceDate}');
+    } else {
+      buffer.writeln('Service Date: ${widget.item.notificationDate}'); // Fallback to due date if no service date
+    }
+    
+    if (widget.item.amount > 0) {
+      buffer.writeln('Amount: ₹${widget.item.amount}');
+    }
+    if (widget.item.serviceType.isNotEmpty) {
+      buffer.writeln('Service Type: ${widget.item.serviceType}');
+    }
+    if (widget.item.note.isNotEmpty) {
+      buffer.writeln('Service Note: ${widget.item.note}');
+    }
+    return buffer.toString().trim();
+  }
+
+
 }

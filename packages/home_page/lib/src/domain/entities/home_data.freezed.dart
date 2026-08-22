@@ -27,6 +27,9 @@ mixin _$ExpiryItem {
       throw _privateConstructorUsedError; // 'Service' or 'Guarantee'
   String get expiryDate => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+  int get daysLeft => throw _privateConstructorUsedError;
+  String get serviceType => throw _privateConstructorUsedError;
+  String get duration => throw _privateConstructorUsedError;
 
   /// Serializes this ExpiryItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,6 +54,9 @@ abstract class $ExpiryItemCopyWith<$Res> {
     String type,
     String expiryDate,
     String phone,
+    int daysLeft,
+    String serviceType,
+    String duration,
   });
 }
 
@@ -74,6 +80,9 @@ class _$ExpiryItemCopyWithImpl<$Res, $Val extends ExpiryItem>
     Object? type = null,
     Object? expiryDate = null,
     Object? phone = null,
+    Object? daysLeft = null,
+    Object? serviceType = null,
+    Object? duration = null,
   }) {
     return _then(
       _value.copyWith(
@@ -97,6 +106,18 @@ class _$ExpiryItemCopyWithImpl<$Res, $Val extends ExpiryItem>
                 ? _value.phone
                 : phone // ignore: cast_nullable_to_non_nullable
                       as String,
+            daysLeft: null == daysLeft
+                ? _value.daysLeft
+                : daysLeft // ignore: cast_nullable_to_non_nullable
+                      as int,
+            serviceType: null == serviceType
+                ? _value.serviceType
+                : serviceType // ignore: cast_nullable_to_non_nullable
+                      as String,
+            duration: null == duration
+                ? _value.duration
+                : duration // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -118,6 +139,9 @@ abstract class _$$ExpiryItemImplCopyWith<$Res>
     String type,
     String expiryDate,
     String phone,
+    int daysLeft,
+    String serviceType,
+    String duration,
   });
 }
 
@@ -140,6 +164,9 @@ class __$$ExpiryItemImplCopyWithImpl<$Res>
     Object? type = null,
     Object? expiryDate = null,
     Object? phone = null,
+    Object? daysLeft = null,
+    Object? serviceType = null,
+    Object? duration = null,
   }) {
     return _then(
       _$ExpiryItemImpl(
@@ -163,6 +190,18 @@ class __$$ExpiryItemImplCopyWithImpl<$Res>
             ? _value.phone
             : phone // ignore: cast_nullable_to_non_nullable
                   as String,
+        daysLeft: null == daysLeft
+            ? _value.daysLeft
+            : daysLeft // ignore: cast_nullable_to_non_nullable
+                  as int,
+        serviceType: null == serviceType
+            ? _value.serviceType
+            : serviceType // ignore: cast_nullable_to_non_nullable
+                  as String,
+        duration: null == duration
+            ? _value.duration
+            : duration // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -177,6 +216,9 @@ class _$ExpiryItemImpl extends _ExpiryItem {
     this.type = '',
     this.expiryDate = '',
     this.phone = '',
+    this.daysLeft = 0,
+    this.serviceType = '',
+    this.duration = '',
   }) : super._();
 
   factory _$ExpiryItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -198,10 +240,19 @@ class _$ExpiryItemImpl extends _ExpiryItem {
   @override
   @JsonKey()
   final String phone;
+  @override
+  @JsonKey()
+  final int daysLeft;
+  @override
+  @JsonKey()
+  final String serviceType;
+  @override
+  @JsonKey()
+  final String duration;
 
   @override
   String toString() {
-    return 'ExpiryItem(customerName: $customerName, customerId: $customerId, type: $type, expiryDate: $expiryDate, phone: $phone)';
+    return 'ExpiryItem(customerName: $customerName, customerId: $customerId, type: $type, expiryDate: $expiryDate, phone: $phone, daysLeft: $daysLeft, serviceType: $serviceType, duration: $duration)';
   }
 
   @override
@@ -216,7 +267,13 @@ class _$ExpiryItemImpl extends _ExpiryItem {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.expiryDate, expiryDate) ||
                 other.expiryDate == expiryDate) &&
-            (identical(other.phone, phone) || other.phone == phone));
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.daysLeft, daysLeft) ||
+                other.daysLeft == daysLeft) &&
+            (identical(other.serviceType, serviceType) ||
+                other.serviceType == serviceType) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -228,6 +285,9 @@ class _$ExpiryItemImpl extends _ExpiryItem {
     type,
     expiryDate,
     phone,
+    daysLeft,
+    serviceType,
+    duration,
   );
 
   /// Create a copy of ExpiryItem
@@ -251,6 +311,9 @@ abstract class _ExpiryItem extends ExpiryItem {
     final String type,
     final String expiryDate,
     final String phone,
+    final int daysLeft,
+    final String serviceType,
+    final String duration,
   }) = _$ExpiryItemImpl;
   const _ExpiryItem._() : super._();
 
@@ -267,6 +330,12 @@ abstract class _ExpiryItem extends ExpiryItem {
   String get expiryDate;
   @override
   String get phone;
+  @override
+  int get daysLeft;
+  @override
+  String get serviceType;
+  @override
+  String get duration;
 
   /// Create a copy of ExpiryItem
   /// with the given fields replaced by the non-null parameter values.
@@ -286,6 +355,9 @@ mixin _$PendingPaymentItem {
   String get customerId => throw _privateConstructorUsedError;
   double get amountPending => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+  int get daysOverdue => throw _privateConstructorUsedError;
+  String get dueDate => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
 
   /// Serializes this PendingPaymentItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -309,6 +381,9 @@ abstract class $PendingPaymentItemCopyWith<$Res> {
     String customerId,
     double amountPending,
     String phone,
+    int daysOverdue,
+    String dueDate,
+    String type,
   });
 }
 
@@ -331,6 +406,9 @@ class _$PendingPaymentItemCopyWithImpl<$Res, $Val extends PendingPaymentItem>
     Object? customerId = null,
     Object? amountPending = null,
     Object? phone = null,
+    Object? daysOverdue = null,
+    Object? dueDate = null,
+    Object? type = null,
   }) {
     return _then(
       _value.copyWith(
@@ -349,6 +427,18 @@ class _$PendingPaymentItemCopyWithImpl<$Res, $Val extends PendingPaymentItem>
             phone: null == phone
                 ? _value.phone
                 : phone // ignore: cast_nullable_to_non_nullable
+                      as String,
+            daysOverdue: null == daysOverdue
+                ? _value.daysOverdue
+                : daysOverdue // ignore: cast_nullable_to_non_nullable
+                      as int,
+            dueDate: null == dueDate
+                ? _value.dueDate
+                : dueDate // ignore: cast_nullable_to_non_nullable
+                      as String,
+            type: null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
                       as String,
           )
           as $Val,
@@ -370,6 +460,9 @@ abstract class _$$PendingPaymentItemImplCopyWith<$Res>
     String customerId,
     double amountPending,
     String phone,
+    int daysOverdue,
+    String dueDate,
+    String type,
   });
 }
 
@@ -391,6 +484,9 @@ class __$$PendingPaymentItemImplCopyWithImpl<$Res>
     Object? customerId = null,
     Object? amountPending = null,
     Object? phone = null,
+    Object? daysOverdue = null,
+    Object? dueDate = null,
+    Object? type = null,
   }) {
     return _then(
       _$PendingPaymentItemImpl(
@@ -410,6 +506,18 @@ class __$$PendingPaymentItemImplCopyWithImpl<$Res>
             ? _value.phone
             : phone // ignore: cast_nullable_to_non_nullable
                   as String,
+        daysOverdue: null == daysOverdue
+            ? _value.daysOverdue
+            : daysOverdue // ignore: cast_nullable_to_non_nullable
+                  as int,
+        dueDate: null == dueDate
+            ? _value.dueDate
+            : dueDate // ignore: cast_nullable_to_non_nullable
+                  as String,
+        type: null == type
+            ? _value.type
+            : type // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -423,6 +531,9 @@ class _$PendingPaymentItemImpl extends _PendingPaymentItem {
     this.customerId = '',
     this.amountPending = 0.0,
     this.phone = '',
+    this.daysOverdue = 0,
+    this.dueDate = '',
+    this.type = '',
   }) : super._();
 
   factory _$PendingPaymentItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -440,10 +551,19 @@ class _$PendingPaymentItemImpl extends _PendingPaymentItem {
   @override
   @JsonKey()
   final String phone;
+  @override
+  @JsonKey()
+  final int daysOverdue;
+  @override
+  @JsonKey()
+  final String dueDate;
+  @override
+  @JsonKey()
+  final String type;
 
   @override
   String toString() {
-    return 'PendingPaymentItem(customerName: $customerName, customerId: $customerId, amountPending: $amountPending, phone: $phone)';
+    return 'PendingPaymentItem(customerName: $customerName, customerId: $customerId, amountPending: $amountPending, phone: $phone, daysOverdue: $daysOverdue, dueDate: $dueDate, type: $type)';
   }
 
   @override
@@ -457,13 +577,25 @@ class _$PendingPaymentItemImpl extends _PendingPaymentItem {
                 other.customerId == customerId) &&
             (identical(other.amountPending, amountPending) ||
                 other.amountPending == amountPending) &&
-            (identical(other.phone, phone) || other.phone == phone));
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.daysOverdue, daysOverdue) ||
+                other.daysOverdue == daysOverdue) &&
+            (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, customerName, customerId, amountPending, phone);
+  int get hashCode => Object.hash(
+    runtimeType,
+    customerName,
+    customerId,
+    amountPending,
+    phone,
+    daysOverdue,
+    dueDate,
+    type,
+  );
 
   /// Create a copy of PendingPaymentItem
   /// with the given fields replaced by the non-null parameter values.
@@ -488,6 +620,9 @@ abstract class _PendingPaymentItem extends PendingPaymentItem {
     final String customerId,
     final double amountPending,
     final String phone,
+    final int daysOverdue,
+    final String dueDate,
+    final String type,
   }) = _$PendingPaymentItemImpl;
   const _PendingPaymentItem._() : super._();
 
@@ -502,6 +637,12 @@ abstract class _PendingPaymentItem extends PendingPaymentItem {
   double get amountPending;
   @override
   String get phone;
+  @override
+  int get daysOverdue;
+  @override
+  String get dueDate;
+  @override
+  String get type;
 
   /// Create a copy of PendingPaymentItem
   /// with the given fields replaced by the non-null parameter values.
@@ -1272,6 +1413,8 @@ mixin _$NotificationItem {
   bool get isDismissed => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
+  String get serviceDate => throw _privateConstructorUsedError;
 
   /// Serializes this NotificationItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1300,6 +1443,8 @@ abstract class $NotificationItemCopyWith<$Res> {
     bool isDismissed,
     String phone,
     String note,
+    double amount,
+    String serviceDate,
   });
 }
 
@@ -1327,6 +1472,8 @@ class _$NotificationItemCopyWithImpl<$Res, $Val extends NotificationItem>
     Object? isDismissed = null,
     Object? phone = null,
     Object? note = null,
+    Object? amount = null,
+    Object? serviceDate = null,
   }) {
     return _then(
       _value.copyWith(
@@ -1366,6 +1513,14 @@ class _$NotificationItemCopyWithImpl<$Res, $Val extends NotificationItem>
                 ? _value.note
                 : note // ignore: cast_nullable_to_non_nullable
                       as String,
+            amount: null == amount
+                ? _value.amount
+                : amount // ignore: cast_nullable_to_non_nullable
+                      as double,
+            serviceDate: null == serviceDate
+                ? _value.serviceDate
+                : serviceDate // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -1391,6 +1546,8 @@ abstract class _$$NotificationItemImplCopyWith<$Res>
     bool isDismissed,
     String phone,
     String note,
+    double amount,
+    String serviceDate,
   });
 }
 
@@ -1417,6 +1574,8 @@ class __$$NotificationItemImplCopyWithImpl<$Res>
     Object? isDismissed = null,
     Object? phone = null,
     Object? note = null,
+    Object? amount = null,
+    Object? serviceDate = null,
   }) {
     return _then(
       _$NotificationItemImpl(
@@ -1456,6 +1615,14 @@ class __$$NotificationItemImplCopyWithImpl<$Res>
             ? _value.note
             : note // ignore: cast_nullable_to_non_nullable
                   as String,
+        amount: null == amount
+            ? _value.amount
+            : amount // ignore: cast_nullable_to_non_nullable
+                  as double,
+        serviceDate: null == serviceDate
+            ? _value.serviceDate
+            : serviceDate // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -1474,6 +1641,8 @@ class _$NotificationItemImpl extends _NotificationItem {
     this.isDismissed = false,
     this.phone = '',
     this.note = '',
+    this.amount = 0.0,
+    this.serviceDate = '',
   }) : super._();
 
   factory _$NotificationItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -1506,10 +1675,16 @@ class _$NotificationItemImpl extends _NotificationItem {
   @override
   @JsonKey()
   final String note;
+  @override
+  @JsonKey()
+  final double amount;
+  @override
+  @JsonKey()
+  final String serviceDate;
 
   @override
   String toString() {
-    return 'NotificationItem(customerName: $customerName, customerId: $customerId, address: $address, serviceType: $serviceType, serviceId: $serviceId, notificationDate: $notificationDate, isDismissed: $isDismissed, phone: $phone, note: $note)';
+    return 'NotificationItem(customerName: $customerName, customerId: $customerId, address: $address, serviceType: $serviceType, serviceId: $serviceId, notificationDate: $notificationDate, isDismissed: $isDismissed, phone: $phone, note: $note, amount: $amount, serviceDate: $serviceDate)';
   }
 
   @override
@@ -1531,7 +1706,10 @@ class _$NotificationItemImpl extends _NotificationItem {
             (identical(other.isDismissed, isDismissed) ||
                 other.isDismissed == isDismissed) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.note, note) || other.note == note));
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.serviceDate, serviceDate) ||
+                other.serviceDate == serviceDate));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1547,6 +1725,8 @@ class _$NotificationItemImpl extends _NotificationItem {
     isDismissed,
     phone,
     note,
+    amount,
+    serviceDate,
   );
 
   /// Create a copy of NotificationItem
@@ -1577,6 +1757,8 @@ abstract class _NotificationItem extends NotificationItem {
     final bool isDismissed,
     final String phone,
     final String note,
+    final double amount,
+    final String serviceDate,
   }) = _$NotificationItemImpl;
   const _NotificationItem._() : super._();
 
@@ -1601,6 +1783,10 @@ abstract class _NotificationItem extends NotificationItem {
   String get phone;
   @override
   String get note;
+  @override
+  double get amount;
+  @override
+  String get serviceDate;
 
   /// Create a copy of NotificationItem
   /// with the given fields replaced by the non-null parameter values.

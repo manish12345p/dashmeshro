@@ -13,6 +13,9 @@ class ExpiryItem with _$ExpiryItem {
     @Default('') String type, // 'Service' or 'Guarantee'
     @Default('') String expiryDate,
     @Default('') String phone,
+    @Default(0) int daysLeft,
+    @Default('') String serviceType,
+    @Default('') String duration,
   }) = _ExpiryItem;
 
   factory ExpiryItem.fromJson(Map<String, dynamic> json) => _$ExpiryItemFromJson(json);
@@ -27,6 +30,9 @@ class PendingPaymentItem with _$PendingPaymentItem {
     @Default('') String customerId,
     @Default(0.0) double amountPending,
     @Default('') String phone,
+    @Default(0) int daysOverdue,
+    @Default('') String dueDate,
+    @Default('') String type,
   }) = _PendingPaymentItem;
 
   factory PendingPaymentItem.fromJson(Map<String, dynamic> json) => _$PendingPaymentItemFromJson(json);
@@ -90,6 +96,8 @@ class NotificationItem with _$NotificationItem {
     @Default(false) bool isDismissed,
     @Default('') String phone,
     @Default('') String note,
+    @Default(0.0) double amount,
+    @Default('') String serviceDate,
   }) = _NotificationItem;
 
   factory NotificationItem.fromJson(Map<String, dynamic> json) => _$NotificationItemFromJson(json);

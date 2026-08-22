@@ -15,6 +15,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     on<LoadHistory>(_onLoadHistory);
     on<SearchQueryChanged>(_onSearchQueryChanged);
     on<FilterByServiceType>(_onFilterByServiceType);
+    on<ToggleAmountFilter>(_onToggleAmountFilter);
   }
 
   Future<void> _onLoadHistory(
@@ -65,6 +66,13 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     Emitter<HistoryState> emit,
   ) {
     emit(state.copyWith(selectedServiceType: event.type));
+  }
+
+  void _onToggleAmountFilter(
+    ToggleAmountFilter event,
+    Emitter<HistoryState> emit,
+  ) {
+    emit(state.copyWith(amountFilterEnabled: event.enabled));
   }
 
   @override

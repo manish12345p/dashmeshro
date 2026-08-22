@@ -19,6 +19,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetEmiDashboardDataUseCase(sl()));
   sl.registerLazySingleton(() => MarkEmiPaidUseCase(sl()));
   sl.registerLazySingleton(() => AddEmiPaymentUseCase(sl()));
+  sl.registerLazySingleton(() => GetPaymentHistoryUseCase(sl()));
 
   // Feature: Home Page
   sl.registerLazySingleton<IHomeRepository>(() => HomeRepository());

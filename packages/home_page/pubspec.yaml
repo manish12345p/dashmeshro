@@ -16,7 +16,7 @@ dependencies:
   core:
     path: ../core
   flutter_bloc:
-  json_annotation:
+  json_annotation: ^4.8.1
   firebase_core: ^4.7.0
   cloud_firestore: ^6.3.0
   freezed_annotation: ^2.4.1
@@ -28,6 +28,8 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.1
   flutter_dotenv: ^6.0.1
+  share_plus: ^13.2.0
+  shared_preferences: ^2.2.0
   visit_entry:
     path: ../visit_entry
 
@@ -36,9 +38,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  freezed: ^2.4.5
-  json_serializable:
-  build_runner: ^2.4.7
+  build_runner: ^2.4.9
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
   bloc_test:
 
 # For information on the generic Dart part of this file, see the

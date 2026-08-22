@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../domain/entities/history_item.dart';
 
 class HistoryServiceCard extends StatelessWidget {
@@ -167,6 +169,13 @@ class HistoryServiceCard extends StatelessWidget {
                   ),
                 ],
               ),
+
+              // Call & Share Actions
+              if (item.customerPhone.isNotEmpty)
+                ServiceActionRow(
+                  phone: item.customerPhone,
+                  serviceDetailsText: _getServiceDetailsText(),
+                ),
 
               // Address
               if (item.customerAddress.isNotEmpty) ...[
@@ -383,5 +392,30 @@ class HistoryServiceCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getServiceDetailsText() {
+    final buffer = StringBuffer();
+    buffer.writeln('Name: ${item.customerName.isNotEmpty ? item.customerName : 'Unknown'}');
+    
+    final dateStr = '${item.serviceDate.day.toString().padLeft(2, '0')}/${item.serviceDate.month.toString().padLeft(2, '0')}/${item.serviceDate.year}';
+    buffer.writeln('Service Date: $dateStr');
+    
+    if (item.totalAmount > 0) {
+      buffer.writeln('Amount: ₹${item.totalAmount.toStringAsFixed(0)}');
+    }
+    if (item.serviceType.isNotEmpty) {
+      buffer.writeln('Service Type: ${item.serviceType}');
+    }
+    if (item.fault.isNotEmpty) {
+      buffer.writeln('Service Note (Fault): ${item.fault}');
+    } else if (item.note.isNotEmpty) {
+      buffer.writeln('Service Note: ${item.note}');
+    }
+    return buffer.toString().trim();
+  }
+
+  void _shareServiceDetails(BuildContext context) {
+    Share.share(_getServiceDetailsText());
   }
 }

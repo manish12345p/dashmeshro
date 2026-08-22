@@ -13,6 +13,9 @@ _$ExpiryItemImpl _$$ExpiryItemImplFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String? ?? '',
       expiryDate: json['expiryDate'] as String? ?? '',
       phone: json['phone'] as String? ?? '',
+      daysLeft: (json['daysLeft'] as num?)?.toInt() ?? 0,
+      serviceType: json['serviceType'] as String? ?? '',
+      duration: json['duration'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$ExpiryItemImplToJson(_$ExpiryItemImpl instance) =>
@@ -22,6 +25,9 @@ Map<String, dynamic> _$$ExpiryItemImplToJson(_$ExpiryItemImpl instance) =>
       'type': instance.type,
       'expiryDate': instance.expiryDate,
       'phone': instance.phone,
+      'daysLeft': instance.daysLeft,
+      'serviceType': instance.serviceType,
+      'duration': instance.duration,
     };
 
 _$PendingPaymentItemImpl _$$PendingPaymentItemImplFromJson(
@@ -31,6 +37,9 @@ _$PendingPaymentItemImpl _$$PendingPaymentItemImplFromJson(
   customerId: json['customerId'] as String? ?? '',
   amountPending: (json['amountPending'] as num?)?.toDouble() ?? 0.0,
   phone: json['phone'] as String? ?? '',
+  daysOverdue: (json['daysOverdue'] as num?)?.toInt() ?? 0,
+  dueDate: json['dueDate'] as String? ?? '',
+  type: json['type'] as String? ?? '',
 );
 
 Map<String, dynamic> _$$PendingPaymentItemImplToJson(
@@ -40,6 +49,9 @@ Map<String, dynamic> _$$PendingPaymentItemImplToJson(
   'customerId': instance.customerId,
   'amountPending': instance.amountPending,
   'phone': instance.phone,
+  'daysOverdue': instance.daysOverdue,
+  'dueDate': instance.dueDate,
+  'type': instance.type,
 };
 
 _$ScheduleItemImpl _$$ScheduleItemImplFromJson(Map<String, dynamic> json) =>
@@ -106,6 +118,8 @@ _$NotificationItemImpl _$$NotificationItemImplFromJson(
   isDismissed: json['isDismissed'] as bool? ?? false,
   phone: json['phone'] as String? ?? '',
   note: json['note'] as String? ?? '',
+  amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
+  serviceDate: json['serviceDate'] as String? ?? '',
 );
 
 Map<String, dynamic> _$$NotificationItemImplToJson(
@@ -120,6 +134,8 @@ Map<String, dynamic> _$$NotificationItemImplToJson(
   'isDismissed': instance.isDismissed,
   'phone': instance.phone,
   'note': instance.note,
+  'amount': instance.amount,
+  'serviceDate': instance.serviceDate,
 };
 
 _$PendingServiceItemImpl _$$PendingServiceItemImplFromJson(

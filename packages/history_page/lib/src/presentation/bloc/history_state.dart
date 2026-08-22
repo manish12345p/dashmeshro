@@ -10,6 +10,7 @@ class HistoryState with _$HistoryState {
     @Default([]) List<HistoryItem> allServices,
     @Default('') String searchQuery,
     @Default('All') String selectedServiceType,
+    @Default(false) bool amountFilterEnabled,
     String? errorMessage,
   }) = _HistoryState;
 

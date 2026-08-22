@@ -22,18 +22,21 @@ mixin _$HistoryEvent {
     required TResult Function() loadHistory,
     required TResult Function(String query) searchQueryChanged,
     required TResult Function(String type) filterByServiceType,
+    required TResult Function(bool enabled) toggleAmountFilter,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
     TResult? Function(String query)? searchQueryChanged,
     TResult? Function(String type)? filterByServiceType,
+    TResult? Function(bool enabled)? toggleAmountFilter,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
     TResult Function(String query)? searchQueryChanged,
     TResult Function(String type)? filterByServiceType,
+    TResult Function(bool enabled)? toggleAmountFilter,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,18 +44,21 @@ mixin _$HistoryEvent {
     required TResult Function(LoadHistory value) loadHistory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
     required TResult Function(FilterByServiceType value) filterByServiceType,
+    required TResult Function(ToggleAmountFilter value) toggleAmountFilter,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoadHistory value)? loadHistory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
     TResult? Function(FilterByServiceType value)? filterByServiceType,
+    TResult? Function(ToggleAmountFilter value)? toggleAmountFilter,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoadHistory value)? loadHistory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
     TResult Function(FilterByServiceType value)? filterByServiceType,
+    TResult Function(ToggleAmountFilter value)? toggleAmountFilter,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -125,6 +131,7 @@ class _$LoadHistoryImpl implements LoadHistory {
     required TResult Function() loadHistory,
     required TResult Function(String query) searchQueryChanged,
     required TResult Function(String type) filterByServiceType,
+    required TResult Function(bool enabled) toggleAmountFilter,
   }) {
     return loadHistory();
   }
@@ -135,6 +142,7 @@ class _$LoadHistoryImpl implements LoadHistory {
     TResult? Function()? loadHistory,
     TResult? Function(String query)? searchQueryChanged,
     TResult? Function(String type)? filterByServiceType,
+    TResult? Function(bool enabled)? toggleAmountFilter,
   }) {
     return loadHistory?.call();
   }
@@ -145,6 +153,7 @@ class _$LoadHistoryImpl implements LoadHistory {
     TResult Function()? loadHistory,
     TResult Function(String query)? searchQueryChanged,
     TResult Function(String type)? filterByServiceType,
+    TResult Function(bool enabled)? toggleAmountFilter,
     required TResult orElse(),
   }) {
     if (loadHistory != null) {
@@ -159,6 +168,7 @@ class _$LoadHistoryImpl implements LoadHistory {
     required TResult Function(LoadHistory value) loadHistory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
     required TResult Function(FilterByServiceType value) filterByServiceType,
+    required TResult Function(ToggleAmountFilter value) toggleAmountFilter,
   }) {
     return loadHistory(this);
   }
@@ -169,6 +179,7 @@ class _$LoadHistoryImpl implements LoadHistory {
     TResult? Function(LoadHistory value)? loadHistory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
     TResult? Function(FilterByServiceType value)? filterByServiceType,
+    TResult? Function(ToggleAmountFilter value)? toggleAmountFilter,
   }) {
     return loadHistory?.call(this);
   }
@@ -179,6 +190,7 @@ class _$LoadHistoryImpl implements LoadHistory {
     TResult Function(LoadHistory value)? loadHistory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
     TResult Function(FilterByServiceType value)? filterByServiceType,
+    TResult Function(ToggleAmountFilter value)? toggleAmountFilter,
     required TResult orElse(),
   }) {
     if (loadHistory != null) {
@@ -268,6 +280,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     required TResult Function() loadHistory,
     required TResult Function(String query) searchQueryChanged,
     required TResult Function(String type) filterByServiceType,
+    required TResult Function(bool enabled) toggleAmountFilter,
   }) {
     return searchQueryChanged(query);
   }
@@ -278,6 +291,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult? Function()? loadHistory,
     TResult? Function(String query)? searchQueryChanged,
     TResult? Function(String type)? filterByServiceType,
+    TResult? Function(bool enabled)? toggleAmountFilter,
   }) {
     return searchQueryChanged?.call(query);
   }
@@ -288,6 +302,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult Function()? loadHistory,
     TResult Function(String query)? searchQueryChanged,
     TResult Function(String type)? filterByServiceType,
+    TResult Function(bool enabled)? toggleAmountFilter,
     required TResult orElse(),
   }) {
     if (searchQueryChanged != null) {
@@ -302,6 +317,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     required TResult Function(LoadHistory value) loadHistory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
     required TResult Function(FilterByServiceType value) filterByServiceType,
+    required TResult Function(ToggleAmountFilter value) toggleAmountFilter,
   }) {
     return searchQueryChanged(this);
   }
@@ -312,6 +328,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult? Function(LoadHistory value)? loadHistory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
     TResult? Function(FilterByServiceType value)? filterByServiceType,
+    TResult? Function(ToggleAmountFilter value)? toggleAmountFilter,
   }) {
     return searchQueryChanged?.call(this);
   }
@@ -322,6 +339,7 @@ class _$SearchQueryChangedImpl implements SearchQueryChanged {
     TResult Function(LoadHistory value)? loadHistory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
     TResult Function(FilterByServiceType value)? filterByServiceType,
+    TResult Function(ToggleAmountFilter value)? toggleAmountFilter,
     required TResult orElse(),
   }) {
     if (searchQueryChanged != null) {
@@ -420,6 +438,7 @@ class _$FilterByServiceTypeImpl implements FilterByServiceType {
     required TResult Function() loadHistory,
     required TResult Function(String query) searchQueryChanged,
     required TResult Function(String type) filterByServiceType,
+    required TResult Function(bool enabled) toggleAmountFilter,
   }) {
     return filterByServiceType(type);
   }
@@ -430,6 +449,7 @@ class _$FilterByServiceTypeImpl implements FilterByServiceType {
     TResult? Function()? loadHistory,
     TResult? Function(String query)? searchQueryChanged,
     TResult? Function(String type)? filterByServiceType,
+    TResult? Function(bool enabled)? toggleAmountFilter,
   }) {
     return filterByServiceType?.call(type);
   }
@@ -440,6 +460,7 @@ class _$FilterByServiceTypeImpl implements FilterByServiceType {
     TResult Function()? loadHistory,
     TResult Function(String query)? searchQueryChanged,
     TResult Function(String type)? filterByServiceType,
+    TResult Function(bool enabled)? toggleAmountFilter,
     required TResult orElse(),
   }) {
     if (filterByServiceType != null) {
@@ -454,6 +475,7 @@ class _$FilterByServiceTypeImpl implements FilterByServiceType {
     required TResult Function(LoadHistory value) loadHistory,
     required TResult Function(SearchQueryChanged value) searchQueryChanged,
     required TResult Function(FilterByServiceType value) filterByServiceType,
+    required TResult Function(ToggleAmountFilter value) toggleAmountFilter,
   }) {
     return filterByServiceType(this);
   }
@@ -464,6 +486,7 @@ class _$FilterByServiceTypeImpl implements FilterByServiceType {
     TResult? Function(LoadHistory value)? loadHistory,
     TResult? Function(SearchQueryChanged value)? searchQueryChanged,
     TResult? Function(FilterByServiceType value)? filterByServiceType,
+    TResult? Function(ToggleAmountFilter value)? toggleAmountFilter,
   }) {
     return filterByServiceType?.call(this);
   }
@@ -474,6 +497,7 @@ class _$FilterByServiceTypeImpl implements FilterByServiceType {
     TResult Function(LoadHistory value)? loadHistory,
     TResult Function(SearchQueryChanged value)? searchQueryChanged,
     TResult Function(FilterByServiceType value)? filterByServiceType,
+    TResult Function(ToggleAmountFilter value)? toggleAmountFilter,
     required TResult orElse(),
   }) {
     if (filterByServiceType != null) {
@@ -493,5 +517,163 @@ abstract class FilterByServiceType implements HistoryEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FilterByServiceTypeImplCopyWith<_$FilterByServiceTypeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleAmountFilterImplCopyWith<$Res> {
+  factory _$$ToggleAmountFilterImplCopyWith(
+    _$ToggleAmountFilterImpl value,
+    $Res Function(_$ToggleAmountFilterImpl) then,
+  ) = __$$ToggleAmountFilterImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool enabled});
+}
+
+/// @nodoc
+class __$$ToggleAmountFilterImplCopyWithImpl<$Res>
+    extends _$HistoryEventCopyWithImpl<$Res, _$ToggleAmountFilterImpl>
+    implements _$$ToggleAmountFilterImplCopyWith<$Res> {
+  __$$ToggleAmountFilterImplCopyWithImpl(
+    _$ToggleAmountFilterImpl _value,
+    $Res Function(_$ToggleAmountFilterImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? enabled = null}) {
+    return _then(
+      _$ToggleAmountFilterImpl(
+        null == enabled
+            ? _value.enabled
+            : enabled // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ToggleAmountFilterImpl implements ToggleAmountFilter {
+  const _$ToggleAmountFilterImpl(this.enabled);
+
+  @override
+  final bool enabled;
+
+  @override
+  String toString() {
+    return 'HistoryEvent.toggleAmountFilter(enabled: $enabled)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleAmountFilterImpl &&
+            (identical(other.enabled, enabled) || other.enabled == enabled));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, enabled);
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleAmountFilterImplCopyWith<_$ToggleAmountFilterImpl> get copyWith =>
+      __$$ToggleAmountFilterImplCopyWithImpl<_$ToggleAmountFilterImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
+    required TResult Function(String query) searchQueryChanged,
+    required TResult Function(String type) filterByServiceType,
+    required TResult Function(bool enabled) toggleAmountFilter,
+  }) {
+    return toggleAmountFilter(enabled);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
+    TResult? Function(String query)? searchQueryChanged,
+    TResult? Function(String type)? filterByServiceType,
+    TResult? Function(bool enabled)? toggleAmountFilter,
+  }) {
+    return toggleAmountFilter?.call(enabled);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
+    TResult Function(String query)? searchQueryChanged,
+    TResult Function(String type)? filterByServiceType,
+    TResult Function(bool enabled)? toggleAmountFilter,
+    required TResult orElse(),
+  }) {
+    if (toggleAmountFilter != null) {
+      return toggleAmountFilter(enabled);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadHistory value) loadHistory,
+    required TResult Function(SearchQueryChanged value) searchQueryChanged,
+    required TResult Function(FilterByServiceType value) filterByServiceType,
+    required TResult Function(ToggleAmountFilter value) toggleAmountFilter,
+  }) {
+    return toggleAmountFilter(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadHistory value)? loadHistory,
+    TResult? Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult? Function(FilterByServiceType value)? filterByServiceType,
+    TResult? Function(ToggleAmountFilter value)? toggleAmountFilter,
+  }) {
+    return toggleAmountFilter?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadHistory value)? loadHistory,
+    TResult Function(SearchQueryChanged value)? searchQueryChanged,
+    TResult Function(FilterByServiceType value)? filterByServiceType,
+    TResult Function(ToggleAmountFilter value)? toggleAmountFilter,
+    required TResult orElse(),
+  }) {
+    if (toggleAmountFilter != null) {
+      return toggleAmountFilter(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ToggleAmountFilter implements HistoryEvent {
+  const factory ToggleAmountFilter(final bool enabled) =
+      _$ToggleAmountFilterImpl;
+
+  bool get enabled;
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ToggleAmountFilterImplCopyWith<_$ToggleAmountFilterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

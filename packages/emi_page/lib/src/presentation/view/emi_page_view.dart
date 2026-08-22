@@ -6,13 +6,14 @@ import '../../domain/entities/emi_dashboard_data.dart';
 import '../../domain/use_cases/get_emi_dashboard_data_usecase.dart';
 import '../../domain/use_cases/mark_emi_paid_usecase.dart';
 import '../../domain/use_cases/add_emi_payment_usecase.dart';
+import '../../domain/use_cases/get_payment_history_usecase.dart';
 import '../bloc/emi_bloc.dart';
 import '../bloc/emi_event.dart';
 import '../bloc/emi_state.dart';
 import 'package:core_ui/core_ui.dart';
 import '../widgets/active_installments_list.dart';
 import '../widgets/emi_header.dart';
-// import '../widgets/pending_month_card.dart';
+import '../widgets/installment_list_item.dart';
 
 class EmiPageView extends StatelessWidget {
   const EmiPageView({super.key});
@@ -25,6 +26,7 @@ class EmiPageView extends StatelessWidget {
         sl<GetEmiDashboardDataUseCase>(),
         sl<MarkEmiPaidUseCase>(),
         sl<AddEmiPaymentUseCase>(),
+        sl<GetPaymentHistoryUseCase>(),
       )..add(const LoadDashboard()),
       child: Scaffold(
         appBar: AppBar(
@@ -40,7 +42,10 @@ class EmiPageView extends StatelessWidget {
             ),
           ),
           actions: [
-            // Removed person icon as requested
+            IconButton(
+              icon: Icon(Icons.history, color: context.colors.textPrimary),
+              onPressed: () => context.push('/emi/history'),
+            ),
           ],
         ),
         body: SafeArea(
@@ -67,7 +72,9 @@ class EmiPageView extends StatelessWidget {
 
               final today = DateTime.now();
               // Filter active installments based on selected filter
-              final filteredInstallments = data.activeInstallments.where((inst) {
+              final filteredInstallments = data.activeInstallments.where((
+                inst,
+              ) {
                 // 1. Search Logic
                 if (state.searchQuery.isNotEmpty) {
                   final q = state.searchQuery.toLowerCase();
@@ -80,10 +87,16 @@ class EmiPageView extends StatelessWidget {
 
                 // 2. Filter Logic
                 if (state.selectedFilter == 'All') return true;
-                if (state.selectedFilter == 'Overdue') return inst.status == 'overdue';
-                if (state.selectedFilter == 'Pending') return inst.status == 'pending';
+                if (state.selectedFilter == 'Overdue') {
+                  return inst.status == 'overdue';
+                }
+                if (state.selectedFilter == 'Pending') {
+                  return inst.status == 'pending';
+                }
                 if (state.selectedFilter == 'Paid') {
-                  if (inst.status == 'paid_this_month' || inst.status == 'paid') return true;
+                  if (inst.status == 'paid_this_month' || inst.status == 'paid') {
+                    return true;
+                  }
                   try {
                     if (inst.lastPaymentDateStr.isNotEmpty) {
                       final pd = DateTime.parse(inst.lastPaymentDateStr);
@@ -100,25 +113,57 @@ class EmiPageView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const EmiHeader(),
-                    // const SizedBox(height: 8),
-                    // PendingMonthCard(
-                    //   pendingAmount: data.pendingThisMonth,
-                    //   clientsCount: data.pendingClientsCount,
-                    //   collectionPercentage:
-                    //       data.monthlyTargetCollectionPercentage,
-                    // ),
-                    // const SizedBox(height: 16),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    //   child: Text(
-                    //     '${AppStrings.totalPaidThisMonth}: ₹${data.collectedThisMonth.toStringAsFixed(0)}',
-                    //     style: TextStyle(
-                    //       color: context.colors.primary,
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
+                    const SizedBox(height: 16),
+                    Builder(
+                      builder: (context) {
+                        final todayStr = DateTime.now().toIso8601String().substring(0, 10);
+                        final monthStr = todayStr.substring(0, 7);
+                        final yearStr = todayStr.substring(0, 4);
+
+                        final collectedToday = data.dailyCollection
+                            .where((e) => e.label.startsWith(todayStr))
+                            .fold(0.0, (sum, item) => sum + item.amount);
+
+                        final collectedMonth = data.monthlyCollection
+                            .where((e) => e.label.startsWith(monthStr))
+                            .fold(0.0, (sum, item) => sum + item.amount);
+                            
+                        final collectedYear = data.yearlyCollection
+                            .where((e) => e.label.startsWith(yearStr))
+                            .fold(0.0, (sum, item) => sum + item.amount);
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildMetricCard(
+                                      context,
+                                      'Pending',
+                                      '₹${data.totalOutstandingBalance.toInt()}',
+                                      Icons.account_balance_wallet,
+                                      context.colors.primary,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: _buildMetricCard(
+                                      context,
+                                      'This Month',
+                                      '₹${collectedMonth.toInt()}',
+                                      Icons.calendar_month,
+                                      context.colors.success,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    ),
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -134,49 +179,54 @@ class EmiPageView extends StatelessWidget {
                               .toSet();
                         },
                         onSelected: (String selection) {
-                          context.read<EmiBloc>().add(SearchInstallments(selection));
-                        },
-                        fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                          return TextField(
-                            controller: controller,
-                            focusNode: focusNode,
-                            onChanged: (val) {
-                              context.read<EmiBloc>().add(SearchInstallments(val));
-                            },
-                            decoration: InputDecoration(
-                              hintText: AppStrings.searchPendingOrOverdue,
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: context.colors.textSecondary,
-                              ),
-                              filled: true,
-                              fillColor: context.colors.surface,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: BorderSide(
-                                  color: context.colors.border,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: BorderSide(
-                                  color: context.colors.border,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: BorderSide(
-                                  color: context.colors.primary,
-                                  width: 2,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 14,
-                              ),
-                            ),
+                          context.read<EmiBloc>().add(
+                            SearchInstallments(selection),
                           );
                         },
+                        fieldViewBuilder:
+                            (context, controller, focusNode, onFieldSubmitted) {
+                              return TextField(
+                                controller: controller,
+                                focusNode: focusNode,
+                                onChanged: (val) {
+                                  context.read<EmiBloc>().add(
+                                    SearchInstallments(val),
+                                  );
+                                },
+                                decoration: InputDecoration(
+                                  hintText: AppStrings.searchPendingOrOverdue,
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: context.colors.textSecondary,
+                                  ),
+                                  filled: true,
+                                  fillColor: context.colors.surface,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                      color: context.colors.border,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                      color: context.colors.border,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                      color: context.colors.primary,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 14,
+                                  ),
+                                ),
+                              );
+                            },
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -192,8 +242,16 @@ class EmiPageView extends StatelessWidget {
                       onMarkPaid: (id) {
                         context.read<EmiBloc>().add(MarkAsPaid(id));
                       },
-                      onAddPayment: (id, amount) {
-                        context.read<EmiBloc>().add(AddPayment(id, amount));
+                      onAddPayment: (id, amount, method, ref, notes) {
+                        context.read<EmiBloc>().add(
+                          AddPayment(
+                            id,
+                            amount,
+                            paymentMethod: method,
+                            transactionRef: ref,
+                            notes: notes,
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 24),
@@ -330,6 +388,41 @@ class EmiPageView extends StatelessWidget {
                   ),
                 ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetricCard(BuildContext context, String title, String value, IconData icon, Color iconColor) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: context.colors.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: context.colors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: iconColor),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 10,
+              color: context.colors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14,
+              color: context.colors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

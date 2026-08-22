@@ -3,17 +3,39 @@ class PhoneUtils {
   static List<String> parsePhoneNumbers(String rawNumbers) {
     if (rawNumbers.trim().isEmpty) return [];
 
-    final parts = rawNumbers.split(',');
     final validNumbers = <String>[];
+    
+    // Split by any character that is NOT a digit or '+'
+    final parts = rawNumbers.split(RegExp(r'[^\d+]+'));
+    String currentBuffer = '';
 
     for (var part in parts) {
-      final cleanNum = part.replaceAll(RegExp(r'[^0-9]'), '');
-      if (cleanNum.length >= 10) {
-        // Just take the last 10 digits as standard Indian mobile
-        final last10 = cleanNum.substring(cleanNum.length - 10);
-        validNumbers.add(last10);
+      final cleanPart = part.replaceAll(RegExp(r'[^0-9]'), '');
+      if (cleanPart.isEmpty) continue;
+
+      currentBuffer += cleanPart;
+      
+      while (currentBuffer.length >= 10) {
+        int numLength = 10;
+        
+        // Handle common country codes +91 or 0
+        if (currentBuffer.startsWith('91') && currentBuffer.length >= 12) {
+          numLength = 12;
+        } else if (currentBuffer.startsWith('0') && currentBuffer.length >= 11) {
+          numLength = 11;
+        }
+
+        final numberBlock = currentBuffer.substring(0, numLength);
+        final last10 = numberBlock.substring(numberBlock.length - 10);
+        
+        if (!validNumbers.contains(last10)) {
+          validNumbers.add(last10);
+        }
+        
+        currentBuffer = currentBuffer.substring(numLength);
       }
     }
+
     return validNumbers;
   }
 

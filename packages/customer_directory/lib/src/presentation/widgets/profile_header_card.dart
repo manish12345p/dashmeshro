@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:core/core.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../domain/entities/customer.dart';
 import 'ro_type_dropdown.dart';
 
@@ -37,7 +39,7 @@ class ProfileHeaderCard extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    customer.name,
+                    customer.name.trim().isEmpty ? 'Unknown Name' : customer.name,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -117,16 +119,16 @@ class ProfileHeaderCard extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
                     onTap: () {
-                      final controller = TextEditingController();
+                      final controller = TextEditingController(text: customer.number);
                       showDialog(
                         context: context,
                         builder: (dialogContext) => AlertDialog(
-                          title: const Text('Add Phone Number'),
+                          title: const Text('Edit Phone Number'),
                           content: TextField(
                             controller: controller,
                             keyboardType: TextInputType.phone,
                             decoration: const InputDecoration(
-                              labelText: 'New Phone Number',
+                              labelText: 'Phone Number',
                               hintText: 'e.g. 9876543210',
                             ),
                           ),
@@ -139,13 +141,10 @@ class ProfileHeaderCard extends StatelessWidget {
                               onPressed: () {
                                 final newNumber = controller.text.trim();
                                 if (newNumber.isNotEmpty) {
-                                  final updatedNumber = customer.number.isEmpty
-                                      ? newNumber
-                                      : '${customer.number}, $newNumber';
                                   FirebaseFirestore.instance
                                       .collection('Customer')
                                       .doc(customer.id)
-                                      .update({'number': updatedNumber});
+                                      .update({'number': newNumber});
                                   Navigator.pop(dialogContext);
                                 }
                               },
@@ -158,7 +157,7 @@ class ProfileHeaderCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Icon(
-                        Icons.add_circle_outline,
+                        Icons.edit,
                         color: context.colors.primary,
                         size: 20,
                       ),
@@ -166,21 +165,53 @@ class ProfileHeaderCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
+
+                if (customer.number.isNotEmpty)
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        PhoneActionHandler.handleAction(
+                          context: context,
+                          rawNumbers: customer.number,
+                          actionName: 'Copy',
+                          onSelected: (selectedNumber) {
+                            Clipboard.setData(ClipboardData(text: selectedNumber));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('$selectedNumber copied')),
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(Icons.copy, size: 20, color: context.colors.primary),
+                      ),
+                    ),
+                  ),
+                const SizedBox(width: 8),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    onTap: () async {
-                      final url = PhoneUtils.getWhatsAppUri(customer.number);
-                      if (url == null) return;
-                      try {
-                        await launchUrl(
-                          url,
-                          mode: LaunchMode.externalApplication,
-                        );
-                      } catch (e) {
-                        debugPrint('Could not launch WhatsApp: $e');
-                      }
+                    onTap: () {
+                      PhoneActionHandler.handleAction(
+                        context: context,
+                        rawNumbers: customer.number,
+                        actionName: 'WhatsApp',
+                        onSelected: (selectedNumber) async {
+                          final url = Uri.parse('https://wa.me/91$selectedNumber');
+                          try {
+                            await launchUrl(
+                              url,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          } catch (e) {
+                            debugPrint('Could not launch WhatsApp: $e');
+                          }
+                        },
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -315,6 +346,8 @@ class ProfileHeaderCard extends StatelessWidget {
                 );
               },
             ),
+            SizedBox(height: 24),
+            _buildActionButtons(context),
           ],
         ),
       ),
@@ -520,4 +553,117 @@ class ProfileHeaderCard extends StatelessWidget {
       },
     );
   }
+
+  Widget _buildActionButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _ActionButton(
+          icon: Icons.call,
+          label: 'Call',
+          onTap: () {
+            PhoneActionHandler.handleAction(
+              context: context,
+              rawNumbers: customer.number,
+              actionName: 'Call',
+              onSelected: (selectedNumber) async {
+                final url = Uri.parse('tel:$selectedNumber');
+                try {
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  } else {
+                    await launchUrl(url);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Could not launch dialer')),
+                    );
+                  }
+                }
+              },
+            );
+          },
+        ),
+        _ActionButton(
+          icon: Icons.share,
+          label: 'Share',
+          onTap: () => _shareProfile(),
+        ),
+        _ActionButton(
+          icon: Icons.copy,
+          label: 'Copy',
+          onTap: () => _copyProfile(context),
+        ),
+      ],
+    );
+  }
+
+
+  String _getProfileText() {
+    final buffer = StringBuffer();
+    buffer.writeln('Name: ${customer.name}');
+    buffer.writeln('Phone: ${customer.number}');
+    if (customer.locality.isNotEmpty) {
+      buffer.writeln('Locality: ${customer.locality}');
+    }
+    if (customer.address.isNotEmpty) {
+      buffer.writeln('Address: ${customer.address}');
+    }
+    if (customer.note.isNotEmpty) {
+      buffer.writeln('Note: ${customer.note}');
+    }
+    return buffer.toString().trim();
+  }
+
+
+  void _shareProfile() {
+    Share.share(_getProfileText());
+  }
+
+  void _copyProfile(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: _getProfileText()));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile copied to clipboard')),
+    );
+  }
 }
+
+class _ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _ActionButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: context.colors.primary),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: context.colors.primary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

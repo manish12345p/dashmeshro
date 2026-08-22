@@ -153,7 +153,11 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
               } else {
                 Future.delayed(const Duration(seconds: 2), () {
                   if (context.mounted) {
-                    context.go('/');
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go('/customers');
+                    }
                   }
                 });
               }
@@ -169,8 +173,9 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
         child: Scaffold(
           backgroundColor: context.colors.background,
           body: SafeArea(
+            bottom: false,
             child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(20, 8, 20, 40),
+              padding: EdgeInsets.fromLTRB(20, 8, 20, 120),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
