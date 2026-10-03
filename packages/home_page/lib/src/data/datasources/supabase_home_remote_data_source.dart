@@ -190,7 +190,7 @@ HomeData _buildHomeData({
 
   final latestSvc = <String, DateTime>{};
   for (final s in services) {
-    if (s['deleted_at'] != null) continue;
+    // s['deleted_at'] does not exist on services
     final cid = (s['customerId'] ?? s['customer_id']) as String? ?? '';
     final ds = s['service_date'] as String? ?? s['serviceDate'] as String? ?? '';
     if (ds.isEmpty) continue;
@@ -234,7 +234,7 @@ HomeData _buildHomeData({
       } catch (_) {}
     }
     final name = c['name'] as String? ?? 'Unknown';
-    final phone = c['number'] as String? ?? '';
+    final phone = c['phone'] as String? ?? '';
     if (isToday && schedules.length < 5) {
       schedules.add(ScheduleItem(title: '3-Month Service - $name', subtitle: 'Routine Maintenance', time: 'Due Today', isUrgent: false));
     }
@@ -253,7 +253,7 @@ HomeData _buildHomeData({
     final status = inst['status'] as String? ?? 'pending';
     final due = inst['due_date'] as String? ?? '';
     final name = c['name'] as String? ?? 'Unknown';
-    final phone = c['number'] as String? ?? '';
+    final phone = c['phone'] as String? ?? '';
     if (isRent && (status == 'pending' || status == 'overdue') && due.isNotEmpty) {
       try {
         final dd = DateTime.parse(due);
@@ -268,7 +268,7 @@ HomeData _buildHomeData({
 
   // Services
   for (final s in services) {
-    if (s['is_deleted'] == true || s['isDeleted'] == true) continue;
+    // s['deleted_at'] does not exist on services
     final cid = (s['customerId'] ?? s['customer_id']) as String? ?? '';
     final c = custById[cid];
     if (c == null) continue;
@@ -280,7 +280,7 @@ HomeData _buildHomeData({
     final sDur = s['guarantee'] as String? ?? s['service_duration'] as String? ?? '';
     final gDur = s['guarantee'] as String? ?? s['guarantee_duration'] as String? ?? '';
     final name = c['name'] as String? ?? 'Unknown';
-    final phone = c['number'] as String? ?? '';
+    final phone = c['phone'] as String? ?? '';
     final addr = c['address'] as String? ?? '';
 
     if (date.startsWith(thisMonth)) collected += paid;
@@ -343,7 +343,7 @@ HomeData _buildHomeData({
     final diff = nextR.difference(DateTime(now.year, now.month, now.day)).inDays;
     final isOver = diff < 0 && diff >= -7;
     if (isToday || isOver) {
-      schedules.add(ScheduleItem(title: c['name'] as String? ?? 'Unknown', subtitle: '3-Month Recurring Service', time: isOver ? 'Overdue' : 'Today', isUrgent: isOver, phone: c['number'] as String? ?? '', customerId: cid));
+      schedules.add(ScheduleItem(title: c['name'] as String? ?? 'Unknown', subtitle: '3-Month Recurring Service', time: isOver ? 'Overdue' : 'Today', isUrgent: isOver, phone: c['phone'] as String? ?? '', customerId: cid));
     }
   }
 

@@ -25,7 +25,7 @@ class SupabaseHistoryRemoteDataSource implements IHistoryRemoteDataSource {
         // Fetch both customers and services in parallel
         final results = await Future.wait([
           _client.from('customers').select('id, name, number, address'),
-          _client.from('services').select().eq('is_deleted', false),
+          _client.from('services').select(),
         ]);
 
         final custRows = results[0] as List;

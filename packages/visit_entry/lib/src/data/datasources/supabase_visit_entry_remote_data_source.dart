@@ -63,7 +63,7 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
       'guarantee_duration': entry.guaranteeDuration,
       'status': entry.status,
       'ro_type': entry.roType,
-      'is_deleted': entry.isDeleted,
+      // 'is_deleted' does not exist in Supabase schema
       'customer_name': customerName,
       'customer_phone': customerPhone,
       'created_at': DateTime.now().toIso8601String(),
