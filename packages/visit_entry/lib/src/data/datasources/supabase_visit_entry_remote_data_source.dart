@@ -194,8 +194,8 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
       // Supabase full-text / ilike search across name, number, address
       final rows = await _client
           .from('customers')
-          .select('id, name, number, address, ro_type, customer_id')
-          .or('name.ilike.%$queryLower%,number.ilike.%$queryLower%,address.ilike.%$queryLower%,customer_id.ilike.%$queryLower%')
+          .select('id, name, phone, address, ro_type, customer_id')
+          .or('name.ilike.%$queryLower%,phone.ilike.%$queryLower%,address.ilike.%$queryLower%,customer_id.ilike.%$queryLower%')
           .limit(10);
 
       return (rows as List<dynamic>)

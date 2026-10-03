@@ -112,12 +112,24 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
 
     Future<void> fetchAll() async {
       try {
-        final rows = await _client
-            .from('customers')
-            .select()
-            .order('created_at', ascending: false);
+        final allRows = <Map<String, dynamic>>[];
+        const pageSize = 1000;
+        int from = 0;
+        while (true) {
+          final rows = await _client
+              .from('customers')
+              .select('*, services(*)')
+              .order('created_at', ascending: false)
+              .range(from, from + pageSize - 1);
+          final data = rows as List<dynamic>;
+          for (final r in data) {
+            allRows.add(r as Map<String, dynamic>);
+          }
+          if (data.length < pageSize) break;
+          from += pageSize;
+        }
 
-        final customers = (rows as List<dynamic>)
+        final customers = allRows
             .map((r) => _rowToCustomer(r as Map<String, dynamic>))
             .toList();
 

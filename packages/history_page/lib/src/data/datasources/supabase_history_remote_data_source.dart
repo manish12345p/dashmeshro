@@ -20,12 +20,29 @@ class SupabaseHistoryRemoteDataSource implements IHistoryRemoteDataSource {
   Stream<List<HistoryItem>> getAllServices() {
     final controller = StreamController<List<HistoryItem>>.broadcast();
 
+    Future<List<Map<String, dynamic>>> fetchAllRows(String table, String select) async {
+      final allRows = <Map<String, dynamic>>[];
+      const pageSize = 1000;
+      int from = 0;
+      
+      while (true) {
+        final response = await _client.from(table).select(select).range(from, from + pageSize - 1);
+        final data = response as List<dynamic>;
+        for (final r in data) {
+          allRows.add(r as Map<String, dynamic>);
+        }
+        if (data.length < pageSize) break;
+        from += pageSize;
+      }
+      return allRows;
+    }
+
     Future<void> fetchAll() async {
       try {
         // Fetch both customers and services in parallel
         final results = await Future.wait([
-          _client.from('customers').select('id, name, number, address'),
-          _client.from('services').select(),
+          fetchAllRows('customers', 'id, name, phone, address'),
+          fetchAllRows('services', '*'),
         ]);
 
         final custRows = results[0] as List;

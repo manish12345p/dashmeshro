@@ -58,18 +58,35 @@ class SupabaseHomeRemoteDataSource implements IHomeRemoteDataSource {
     final debouncer = PublishSubject<void>();
     final dSub = debouncer.debounceTime(const Duration(milliseconds: 500)).listen((_) => push());
 
+    Future<List<Map<String, dynamic>>> fetchAllRows(String table) async {
+      final allRows = <Map<String, dynamic>>[];
+      const pageSize = 1000;
+      int from = 0;
+      
+      while (true) {
+        final response = await _client.from(table).select().range(from, from + pageSize - 1);
+        final data = response as List<dynamic>;
+        for (final r in data) {
+          allRows.add(r as Map<String, dynamic>);
+        }
+        if (data.length < pageSize) break;
+        from += pageSize;
+      }
+      return allRows;
+    }
+
     // Initial load
     try {
-      for (final r in await _client.from('customers').select() as List) {
+      for (final r in await fetchAllRows('customers')) {
         final row = r as Map<String, dynamic>;
         customers[row['id'] as String] = _mapCustRow(row);
       }
-      for (final r in await _client.from('services').select() as List) {
+      for (final r in await fetchAllRows('services')) {
         final row = r as Map<String, dynamic>;
         row['customerId'] = row['customer_id'];
         services[row['id'] as String] = row;
       }
-      for (final r in await _client.from('installments').select() as List) {
+      for (final r in await fetchAllRows('installments')) {
         final row = r as Map<String, dynamic>;
         row['customerId'] = row['customer_id'];
         installments[row['id'] as String] = row;

@@ -34,11 +34,28 @@ class SupabaseCalendarRemoteDataSource implements ICalendarRemoteDataSource {
   Stream<List<ScheduleItem>> getSchedulesForMonth(int year, int month) {
     final controller = StreamController<List<ScheduleItem>>.broadcast();
 
+    Future<List<Map<String, dynamic>>> fetchAllRows(String table) async {
+      final allRows = <Map<String, dynamic>>[];
+      const pageSize = 1000;
+      int from = 0;
+      
+      while (true) {
+        final response = await _client.from(table).select().range(from, from + pageSize - 1);
+        final data = response as List<dynamic>;
+        for (final r in data) {
+          allRows.add(r as Map<String, dynamic>);
+        }
+        if (data.length < pageSize) break;
+        from += pageSize;
+      }
+      return allRows;
+    }
+
     Future<void> fetchAll() async {
       try {
         final results = await Future.wait([
-          _client.from('customers').select(),
-          _client.from('services').select(),
+          fetchAllRows('customers'),
+          fetchAllRows('services'),
         ]);
 
         final custRows = results[0] as List;

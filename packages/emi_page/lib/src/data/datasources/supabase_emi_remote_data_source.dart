@@ -24,8 +24,25 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
       final currentYear = today.year;
       final monthKey = '$currentYear-${currentMonth.toString().padLeft(2, '0')}';
 
+      Future<List<Map<String, dynamic>>> fetchAllRows(String table, {String select = '*'}) async {
+        final allRows = <Map<String, dynamic>>[];
+        const pageSize = 1000;
+        int from = 0;
+        
+        while (true) {
+          final response = await _client.from(table).select(select).range(from, from + pageSize - 1);
+          final data = response as List<dynamic>;
+          for (final r in data) {
+            allRows.add(r as Map<String, dynamic>);
+          }
+          if (data.length < pageSize) break;
+          from += pageSize;
+        }
+        return allRows;
+      }
+
       // Fetch customers for phone lookup
-      final custRows = await _client.from('customers').select('id, name, phone');
+      final custRows = await fetchAllRows('customers', select: 'id, name, phone');
       final Map<String, String> nameToId = {};
       final Map<String, String> idToPhone = {};
       for (final r in custRows as List) {
@@ -37,7 +54,7 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
       }
 
       // Fetch all installments
-      final instRows = await _client.from('installments').select();
+      final instRows = await fetchAllRows('installments');
 
       double totalOutstanding = 0;
       double expectedMonthly = 0;
@@ -342,8 +359,25 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
   @override
   Future<List<PaymentRecord>> getPaymentHistory() async {
     try {
-      final rows = await _client.from('payment_records').select();
-      final instRows = await _client.from('installments').select('id, customer_id, customer_name, service_name');
+      Future<List<Map<String, dynamic>>> fetchAllRows(String table, {String select = '*'}) async {
+        final allRows = <Map<String, dynamic>>[];
+        const pageSize = 1000;
+        int from = 0;
+        
+        while (true) {
+          final response = await _client.from(table).select(select).range(from, from + pageSize - 1);
+          final data = response as List<dynamic>;
+          for (final r in data) {
+            allRows.add(r as Map<String, dynamic>);
+          }
+          if (data.length < pageSize) break;
+          from += pageSize;
+        }
+        return allRows;
+      }
+
+      final rows = await fetchAllRows('payment_records');
+      final instRows = await fetchAllRows('installments', select: 'id, customer_id, customer_name, service_name');
       final instMap = <String, Map<String, dynamic>>{
         for (final r in instRows as List) (r as Map<String, dynamic>)['id'] as String: r
       };
