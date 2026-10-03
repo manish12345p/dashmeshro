@@ -1,5 +1,9 @@
 export 'src/presentation/view/visit_entry_view.dart';
 export 'src/data/repositories/visit_entry_repository.dart';
+export 'src/data/datasources/visit_entry_remote_data_source.dart';
+export 'src/data/datasources/firebase_visit_entry_remote_data_source.dart';
+export 'src/data/datasources/fake_visit_entry_remote_data_source.dart';
+export 'src/data/datasources/supabase_visit_entry_remote_data_source.dart';
 export 'src/domain/repositories/visit_repository_interface.dart';
 export 'src/domain/use_cases/save_visit_usecase.dart';
 export 'src/domain/entities/visit_record.dart';

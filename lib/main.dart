@@ -22,6 +22,7 @@ void main() async {
   ]);
 
   await dotenv.load(fileName: ".env");
+  await SupabaseClientProvider.initialize();
   await di.init();
   
   final prefs = await SharedPreferences.getInstance();

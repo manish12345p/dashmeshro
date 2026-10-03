@@ -17,6 +17,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   cloud_firestore: ^6.3.0
+  supabase_flutter: ^2.8.4
   flutter_bloc:
   go_router: ^17.2.1
 

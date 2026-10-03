@@ -17,6 +17,9 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^17.2.1
+  core:
+    path: ../core
+  flutter_bloc: ^9.1.1
   home_page:
     path: ../home_page
   visit_entry:

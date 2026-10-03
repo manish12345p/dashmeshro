@@ -8,26 +8,41 @@ import 'package:history_page/history_page.dart';
 
 Future<void> init() async {
   // Feature: Customer Directory
-  sl.registerLazySingleton<ICustomerRepository>(() => CustomerRepository());
+  sl.registerLazySingleton<ICustomerRemoteDataSource>(
+      () => SupabaseCustomerRemoteDataSource(client: SupabaseClientProvider.client));
+  sl.registerLazySingleton<ICustomerRepository>(
+      () => CustomerRepository(remoteDataSource: sl()));
 
   // Feature: Service Entry
-  sl.registerLazySingleton<IVisitEntryRepository>(() => VisitEntryRepository());
+  sl.registerLazySingleton<IVisitEntryRemoteDataSource>(
+      () => SupabaseVisitEntryRemoteDataSource(client: SupabaseClientProvider.client));
+  sl.registerLazySingleton<IVisitEntryRepository>(
+      () => VisitEntryRepository(remoteDataSource: sl()));
   sl.registerLazySingleton(() => SaveServiceUseCase(sl()));
 
   // Feature: EMI Page
-  sl.registerLazySingleton<EmiRepositoryInterface>(() => EmiRepository());
+  sl.registerLazySingleton<IEmiRemoteDataSource>(
+      () => SupabaseEmiRemoteDataSource(client: SupabaseClientProvider.client));
+  sl.registerLazySingleton<EmiRepositoryInterface>(
+      () => EmiRepository(remoteDataSource: sl()));
   sl.registerLazySingleton(() => GetEmiDashboardDataUseCase(sl()));
   sl.registerLazySingleton(() => MarkEmiPaidUseCase(sl()));
   sl.registerLazySingleton(() => AddEmiPaymentUseCase(sl()));
   sl.registerLazySingleton(() => GetPaymentHistoryUseCase(sl()));
 
   // Feature: Home Page
-  sl.registerLazySingleton<IHomeRepository>(() => HomeRepository());
+  sl.registerLazySingleton<IHomeRemoteDataSource>(
+      () => SupabaseHomeRemoteDataSource(client: SupabaseClientProvider.client));
+  sl.registerLazySingleton<IHomeRepository>(
+      () => HomeRepository(remoteDataSource: sl()));
   sl.registerLazySingleton(() => GetHomeDataUseCase(sl()));
   sl.registerFactory(() => HomeBloc(getHomeDataUseCase: sl()));
 
   // Feature: Calendar
-  sl.registerLazySingleton<ICalendarRepository>(() => CalendarRepository());
+  sl.registerLazySingleton<ICalendarRemoteDataSource>(
+      () => SupabaseCalendarRemoteDataSource(client: SupabaseClientProvider.client));
+  sl.registerLazySingleton<ICalendarRepository>(
+      () => CalendarRepository(remoteDataSource: sl()));
   sl.registerLazySingleton(() => GetCalendarSchedulesUseCase(sl()));
   sl.registerLazySingleton(() => DismissScheduleUseCase(sl()));
   sl.registerFactory(() => CalendarBloc(
@@ -36,7 +51,10 @@ Future<void> init() async {
   ));
 
   // Feature: History Page
-  sl.registerLazySingleton<IHistoryRepository>(() => HistoryRepository());
+  sl.registerLazySingleton<IHistoryRemoteDataSource>(
+      () => SupabaseHistoryRemoteDataSource(client: SupabaseClientProvider.client));
+  sl.registerLazySingleton<IHistoryRepository>(
+      () => HistoryRepository(remoteDataSource: sl()));
   sl.registerLazySingleton(() => GetAllServicesUseCase(sl()));
   sl.registerFactory(() => HistoryBloc(
     getAllServicesUseCase: sl(),
