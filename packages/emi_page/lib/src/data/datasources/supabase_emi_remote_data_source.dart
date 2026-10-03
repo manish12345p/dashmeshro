@@ -71,9 +71,9 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
 
       for (final r in instRows as List) {
         final data = r as Map<String, dynamic>;
-        final emiMonthly = (data['emi_monthly_amount'] as num? ?? data['amount'] as num? ?? 0).toDouble();
+        final emiMonthly = (data['emi_monthly_amount'] as num? ?? data['monthly_amount'] as num? ?? data['amount'] as num? ?? 0).toDouble();
         final status = data['status'] as String? ?? 'pending';
-        final amount = status == 'paid' ? emiMonthly : (data['amount'] as num? ?? 0).toDouble();
+        final amount = status == 'paid' ? emiMonthly : (data['amount'] as num? ?? data['monthly_amount'] as num? ?? 0).toDouble();
         final dueStr = data['due_date'] as String? ?? '';
         final customerName = data['customer_name'] as String? ?? 'Unknown';
         final customerId = data['customer_id'] as String? ?? nameToId[customerName] ?? '';
@@ -212,11 +212,11 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
       try {
         final pRows = await _client
             .from('payments')
-            .select('date, amount')
-            .gte('date', DateTime.now().subtract(const Duration(days: 30)).toIso8601String());
+            .select('paid_at, amount')
+            .gte('paid_at', DateTime.now().subtract(const Duration(days: 30)).toIso8601String());
         for (final r in pRows as List) {
           final row = r as Map<String, dynamic>;
-          final d = row['date'] as String? ?? '';
+          final d = row['paid_at'] as String? ?? '';
           final a = (row['amount'] as num? ?? 0).toDouble();
           if (d.length >= 10) dailyMap[d.substring(0, 10)] = (dailyMap[d.substring(0, 10)] ?? 0) + a;
         }
@@ -276,8 +276,8 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
       final row = await _client.from('installments').select().eq('id', installmentId).single();
       final data = row as Map<String, dynamic>;
 
-      final currentTotal = (data['total_amount'] as num? ?? data['totalAmount'] as num? ?? data['amount'] as num? ?? 0).toDouble();
-      final emiMonthly = (data['emi_monthly_amount'] as num? ?? data['amount'] as num? ?? currentTotal).toDouble();
+      final currentTotal = (data['total_amount'] as num? ?? data['totalAmount'] as num? ?? data['amount'] as num? ?? data['monthly_amount'] as num? ?? 0).toDouble();
+      final emiMonthly = (data['emi_monthly_amount'] as num? ?? data['amount'] as num? ?? data['monthly_amount'] as num? ?? currentTotal).toDouble();
       final newTotal = currentTotal - amountPaid;
       final isRent = data['is_rent'] as bool? ?? false;
 
@@ -296,6 +296,7 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
           'paid_at': DateTime.now().toIso8601String(),
           'last_payment_date': DateTime.now().toIso8601String(),
           'total_amount': 0.0,
+          'monthly_amount': 0.0,
           'amount': 0.0,
           'last_payment_amount': amountPaid,
           'monthly_payments': monthlyPayments,
@@ -308,6 +309,7 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
         updateData = {
           'total_amount': isRent ? 999999.0 : newTotal,
           'amount': nextMonthly,
+          'monthly_amount': nextMonthly,
           'emi_monthly_amount': emiMonthly,
           'due_date': nextDue.toIso8601String(),
           'last_payment_date': DateTime.now().toIso8601String(),
@@ -324,16 +326,13 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
       final payData = {
         'id': payId,
         'installment_id': installmentId,
+        'customer_id': data['customer_id'],
+        'service_id': data['service_id'],
         'amount': amountPaid,
-        'date': DateTime.now().toIso8601String(),
-        'payment_method': paymentMethod,
-        'transaction_ref': transactionRef,
-        'recorded_by': recordedBy,
-        'notes': notes,
-        'remaining_balance_after': isRent ? 999999.0 : newTotal,
-        'installment_number': instNumber,
+        'paid_at': DateTime.now().toIso8601String(),
+        'source': 'emi_page',
+        'note': notes.isNotEmpty ? notes : 'Method: $paymentMethod, Ref: $transactionRef',
       };
-      await _client.from('payment_records').insert(payData);
       await _client.from('payments').insert(payData);
 
       // Update linked service
@@ -376,7 +375,7 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
         return allRows;
       }
 
-      final rows = await fetchAllRows('payment_records');
+      final rows = await fetchAllRows('payments');
       final instRows = await fetchAllRows('installments', select: 'id, customer_id, customer_name, service_name');
       final instMap = <String, Map<String, dynamic>>{
         for (final r in instRows as List) (r as Map<String, dynamic>)['id'] as String: r
@@ -389,18 +388,18 @@ class SupabaseEmiRemoteDataSource implements IEmiRemoteDataSource {
         return PaymentRecord(
           id: data['id'] as String? ?? '',
           installmentId: instId,
-          customerId: inst?['customer_id'] as String? ?? '',
+          customerId: data['customer_id'] as String? ?? inst?['customer_id'] as String? ?? '',
           customerName: inst?['customer_name'] as String? ?? 'Unknown',
           serviceName: inst?['service_name'] as String? ?? '',
           invoiceNumber: instId,
           amount: (data['amount'] as num? ?? 0).toDouble(),
-          dateStr: data['date'] as String? ?? '',
-          paymentMethod: data['payment_method'] as String? ?? 'Cash',
-          transactionRef: data['transaction_ref'] as String? ?? '',
-          recordedBy: data['recorded_by'] as String? ?? '',
-          notes: data['notes'] as String? ?? '',
-          remainingBalanceAfter: (data['remaining_balance_after'] as num? ?? 0).toDouble(),
-          installmentNumber: data['installment_number'] as int? ?? 0,
+          dateStr: data['paid_at'] as String? ?? '',
+          paymentMethod: data['source'] as String? ?? 'Cash',
+          transactionRef: '',
+          recordedBy: '',
+          notes: data['note'] as String? ?? '',
+          remainingBalanceAfter: 0,
+          installmentNumber: 0,
         );
       }).toList();
 
