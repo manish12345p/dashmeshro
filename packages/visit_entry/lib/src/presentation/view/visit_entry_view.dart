@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 
-class VisitEntryView extends StatelessWidget {
+class VisitEntryView extends StatefulWidget {
   final bool showBackButton;
   final String? initialCustomerId;
   final String? initialCustomerName;
@@ -25,6 +25,19 @@ class VisitEntryView extends StatelessWidget {
     this.initialCustomerName,
     this.initialRemainingAmcVisits,
   });
+
+  @override
+  State<VisitEntryView> createState() => _VisitEntryViewState();
+}
+
+class _VisitEntryViewState extends State<VisitEntryView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void _showSuccessPopup(BuildContext context, String message) {
     final overlay = Overlay.of(context);
@@ -99,20 +112,25 @@ class VisitEntryView extends StatelessWidget {
     });
   }
 
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => VisitEntryBloc(
         sl<SaveServiceUseCase>(),
-        initialCustomerId: initialCustomerId,
-        initialCustomerName: initialCustomerName,
-        initialRemainingAmcVisits: initialRemainingAmcVisits,
+        initialCustomerId: widget.initialCustomerId,
+        initialCustomerName: widget.initialCustomerName,
+        initialRemainingAmcVisits: widget.initialRemainingAmcVisits,
       ),
       child: BlocListener<VisitEntryBloc, VisitEntryState>(
         listener: (context, state) {
           if (state.status == VisitEntryStatus.success) {
+            debugPrint('Commit successful, executing reset logic...');
             _showSuccessPopup(context, AppStrings.serviceEntrySaved);
-            context.go('/');
+            debugPrint('commit done');
+            // Remove context.go('/') to avoid stale states
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+            }
+            debugPrint('form reset');
           } else if (state.status == VisitEntryStatus.failure) {
             showDialog(
               context: context,
@@ -136,42 +154,39 @@ class VisitEntryView extends StatelessWidget {
           ),
           body: SafeArea(
             bottom: false,
-            child: CustomScrollView(
-              slivers: [
-                // Form sections
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      SizedBox(height: 8),
-                      // Show pre-filled customer info OR customer selector
-                      if (initialCustomerId != null &&
-                          initialCustomerName != null)
-                        _buildPrefilledCustomerCard(context)
-                      else
-                        const CustomerSelectorWidget(),
-                      SizedBox(height: 16),
-                      const ServiceDetailsCard(),
-                      SizedBox(height: 16),
-                      const ComplaintToggleWidget(),
-                      SizedBox(height: 16),
-                      const ServiceTypeSelectorWidget(),
-                      SizedBox(height: 16),
-                      const RemarksDateSelectorWidget(),
-                      SizedBox(height: 24),
-                      BlocBuilder<VisitEntryBloc, VisitEntryState>(
-                        builder: (context, state) {
-                          if (state.status == VisitEntryStatus.submitting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          return const ActionButtonsWidget();
-                        },
-                      ),
-                      SizedBox(height: 160), // extra bottom padding for navbar
-                    ]),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 8),
+                  // Show pre-filled customer info OR customer selector
+                  if (widget.initialCustomerId != null &&
+                      widget.initialCustomerName != null)
+                    _buildPrefilledCustomerCard(context)
+                  else
+                    const CustomerSelectorWidget(),
+                  const SizedBox(height: 16),
+                  const ServiceDetailsCard(),
+                  const SizedBox(height: 16),
+                  const ComplaintToggleWidget(),
+                  const SizedBox(height: 16),
+                  const ServiceTypeSelectorWidget(),
+                  const SizedBox(height: 16),
+                  const RemarksDateSelectorWidget(),
+                  const SizedBox(height: 24),
+                  BlocBuilder<VisitEntryBloc, VisitEntryState>(
+                    builder: (context, state) {
+                      if (state.status == VisitEntryStatus.submitting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return const ActionButtonsWidget();
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 250), // extra bottom padding for navbar
+                ],
+              ),
             ),
           ),
         ),
@@ -218,7 +233,7 @@ class VisitEntryView extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    initialCustomerName ?? '',
+                    widget.initialCustomerName ?? '',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -271,10 +286,12 @@ class VisitEntryView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (showBackButton)
+                  if (widget.showBackButton)
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        }
                       },
                       child: Icon(
                         Icons.arrow_back_ios_rounded,

@@ -37,19 +37,14 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
     super.dispose();
   }
 
-  /// Generate a unique customer ID in the format: firstname-landmark-xxxx
+  /// Generate a unique customer ID in UUID v4 format
   String _generateCustomerId() {
-    final firstName = _nameController.text.trim().split(' ').first;
-    final locality = _localityController.text.trim().replaceAll(' ', '');
-    final localityPart = locality.isNotEmpty ? locality : 'NA';
-    // Generate a short unique suffix
-    final random = Random();
-    final chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    final suffix = List.generate(
-      4,
-      (_) => chars[random.nextInt(chars.length)],
-    ).join();
-    return '$firstName-$localityPart-$suffix';
+    final rng = Random();
+    String generate(int length) {
+      final chars = '0123456789abcdef';
+      return List.generate(length, (_) => chars[rng.nextInt(chars.length)]).join();
+    }
+    return '${generate(8)}-${generate(4)}-4${generate(3)}-a${generate(3)}-${generate(12)}';
   }
 
   void _showSuccessPopup(BuildContext context, String message) {
@@ -81,7 +76,7 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: context.colors.primaryDark.withValues(alpha: 0.4),
+                    color: context.colors.primaryDark.withOpacity(0.4),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -92,7 +87,7 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
                   Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: context.colors.success.withValues(alpha: 0.2),
+                      color: context.colors.success.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
@@ -254,24 +249,37 @@ class _NewClientProfileViewState extends State<NewClientProfileView> {
   }
 
   void _submitForm(BuildContext context, bool navigateToService) {
-    if (_nameController.text.isEmpty || _phoneController.text.isEmpty) {
+    final name = _nameController.text.trim();
+    final phone = _phoneController.text.trim();
+    final locality = _localityController.text.trim();
+    final address = _addressController.text.trim();
+    final notes = _notesController.text.trim();
+
+    if (name.isEmpty && phone.isEmpty && locality.isEmpty && address.isEmpty && notes.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Name and Phone are required')),
+        const SnackBar(content: Text('Enter at least one detail to save')),
       );
       return;
     }
 
     final customerId = _generateCustomerId();
 
+    final finalName = name.isEmpty ? 'Unknown' : name;
+    final finalPhone = phone; // leave empty if empty for duplicate checks
+    final finalLocality = locality.isEmpty ? 'Not provided' : locality;
+    final finalAddress = address.isEmpty ? 'Not provided' : address;
+    final finalNotes = notes.isEmpty ? 'Not provided' : notes;
+    final finalRoType = _roType.isEmpty ? 'Not provided' : _roType;
+
     final newCustomer = Customer(
       id: '',
-      name: _nameController.text,
+      name: finalName,
       customerId: customerId,
-      number: _phoneController.text,
-      address: _addressController.text,
-      locality: _localityController.text,
-      roType: _roType,
-      note: _notesController.text,
+      number: finalPhone,
+      address: finalAddress,
+      locality: finalLocality,
+      roType: finalRoType,
+      note: finalNotes,
     );
 
     context.read<NewCustomerBloc>().add(

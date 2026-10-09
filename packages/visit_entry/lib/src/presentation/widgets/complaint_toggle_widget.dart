@@ -15,11 +15,11 @@ class ComplaintToggleWidget extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             color: state.isComplaint
-                ? context.colors.error.withValues(alpha: 0.05)
+                ? context.colors.error.withOpacity(0.05)
                 : context.colors.surface,
             border: Border.all(
               color: state.isComplaint
-                  ? context.colors.error.withValues(alpha: 0.3)
+                  ? context.colors.error.withOpacity(0.3)
                   : context.colors.border,
             ),
             borderRadius: BorderRadius.circular(12),

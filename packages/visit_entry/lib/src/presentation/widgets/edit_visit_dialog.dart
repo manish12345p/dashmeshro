@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/core.dart';
@@ -39,6 +38,8 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
   List<String> _selectedTypes = [];
   double? _emiAmountPerMonth;
   bool _isDone = false;
+  String? _serviceDuration;
+  String? _guaranteeDuration;
   
   static const List<String> _serviceTypes = [
     'Set Change', 'AMC', 'New RO', 'Repair', 'Service', 'Pump',
@@ -94,27 +95,27 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
 
   Future<void> _loadData() async {
     try {
-      final doc = await FirebaseFirestore.instance
-          .collection('Customer')
-          .doc(widget.customerId)
-          .collection('services')
-          .doc(widget.serviceId)
-          .get();
-          
-      if (doc.exists && mounted) {
-          final data = doc.data()!;
+      final supabaseData = await SupabaseClientProvider.client
+          .from('services')
+          .select()
+          .eq('id', widget.serviceId)
+          .maybeSingle();
+
+      if (supabaseData != null && mounted) {
         setState(() {
-          _data = data;
-          _fixesController.text = data['fixes'] ?? '';
-          _remarksController.text = data['remarks'] ?? '';
-          _amountPaidController.text = (data['amountPaid'] ?? 0.0).toString();
-          _amountPendingController.text = (data['amountPending'] ?? 0.0).toString();
-          _totalAmountController.text = (data['totalAmount'] ?? 0.0).toString();
+          _data = supabaseData;
+          _fixesController.text = supabaseData['fixes'] as String? ?? '';
+          _remarksController.text = supabaseData['remarks'] as String? ?? '';
+          _amountPaidController.text = ((supabaseData['amount_paid'] as num?) ?? 0.0).toString();
+          _amountPendingController.text = ((supabaseData['amount_pending'] as num?) ?? 0.0).toString();
+          _totalAmountController.text = ((supabaseData['total_amount'] as num?) ?? 0.0).toString();
           
-          final sType = data['serviceType'] as String? ?? data['service_type'] as String? ?? '';
+          final sType = supabaseData['service_type'] as String? ?? '';
           _selectedTypes = sType.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
           
-          _isDone = data['status'] == 'completed';
+          _isDone = supabaseData['status'] == 'completed';
+          _serviceDuration = supabaseData['service_duration'] as String?;
+          _guaranteeDuration = supabaseData['guarantee_duration'] as String?;
           _isLoading = false;
         });
       }
@@ -144,55 +145,39 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
       }
       
       final updates = <String, dynamic>{
-        'serviceType': _selectedTypes.join(', '),
         'service_type': _selectedTypes.join(', '),
         'fixes': _fixesController.text,
         'remarks': _remarksController.text,
-        'amountPaid': amountPaid,
-        'amountPending': amountPending,
-        'totalAmount': totalAmount,
-        'status': _isDone ? 'completed' : 'pending',
+        'amount_paid': amountPaid,
+        'total_amount': totalAmount,
+        'service_duration': _serviceDuration ?? '',
+        'guarantee_duration': _guaranteeDuration ?? '',
       };
       
-      if (_isDone && _data!['status'] != 'completed') {
-        updates['completedAt'] = DateTime.now().toIso8601String();
-      }
-
-      await FirebaseFirestore.instance
-          .collection('Customer')
-          .doc(widget.customerId)
-          .collection('services')
-          .doc(widget.serviceId)
-          .update(updates);
-      
-      // Create EMI installment if needed
-      if (amountPending > 0 && _data!['amountPending'] != amountPending) {
+      await SupabaseClientProvider.client
+          .from('services')
+          .update(updates)
+          .eq('id', widget.serviceId);
+          
+      if (amountPending > 0 && ((_data!['amount_pending'] as num?) ?? 0.0) != amountPending) {
         try {
-          final customerSnap = await FirebaseFirestore.instance.collection('Customer').doc(widget.customerId).get();
-          if (customerSnap.exists) {
-            final custData = customerSnap.data()!;
+          final custData = await SupabaseClientProvider.client.from('customers').select().eq('id', widget.customerId).maybeSingle();
+          if (custData != null) {
             final name = custData['name'] ?? 'Unknown';
             final address = custData['address'] ?? '';
             final phone = custData['number'] ?? '';
-
-            final contactInfo = [
-              if (address.toString().isNotEmpty) address,
-              if (phone.toString().isNotEmpty) phone,
-            ].join(' | ');
-
-            final emiCollection = FirebaseFirestore.instance.collection('installments');
+            final contactInfo = [if (address.toString().isNotEmpty) address, if (phone.toString().isNotEmpty) phone].join(' | ');
             final emiId = 'emi_${widget.serviceId}';
-
+            
             double monthlyAmount = amountPending;
             if (_emiAmountPerMonth != null && _emiAmountPerMonth! > 0 && _emiAmountPerMonth! < amountPending) {
               monthlyAmount = _emiAmountPerMonth!;
             }
-
             final now = DateTime.now();
             DateTime initialDueDate = DateTime(now.year, now.month + 1, now.day);
             final String svcName = _selectedTypes.isNotEmpty ? _selectedTypes.join(', ') : 'Service #${widget.serviceId.substring(0, 5)}';
-
-            await emiCollection.doc(emiId).set({
+            
+            await SupabaseClientProvider.client.from('installments').upsert({
               'id': emiId,
               'customer_name': name,
               'customer_id': widget.customerId,
@@ -208,18 +193,15 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
               'service_id': widget.serviceId,
             });
           }
-        } catch (e) {
-          // Ignore
-        }
+        } catch (_) {}
       }
-
-      // Record payment if amountPaid > 0 and it changed
-      final oldPaid = (_data!['amountPaid'] as num?)?.toDouble() ?? 0.0;
+      
+      final oldPaid = (_data!['amount_paid'] as num?)?.toDouble() ?? 0.0;
       if (amountPaid > 0 && amountPaid != oldPaid) {
         try {
-          final paymentAmount = amountPaid - oldPaid; // Only record the new addition
+          final paymentAmount = amountPaid - oldPaid;
           if (paymentAmount > 0) {
-            await FirebaseFirestore.instance.collection('payments').add({
+            await SupabaseClientProvider.client.from('payments').insert({
               'customer_id': widget.customerId,
               'amount': paymentAmount,
               'source': 'visit_edit',
@@ -227,9 +209,7 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
               'date': DateTime.now().toIso8601String(),
             });
           }
-        } catch (e) {
-          // ignore
-        }
+        } catch (_) {}
       }
 
       if (mounted) {
@@ -250,14 +230,14 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
         labelText: label,
         labelStyle: TextStyle(color: context.colors.textSecondary, fontSize: 14),
         filled: true,
-        fillColor: context.colors.surfaceSecondary.withValues(alpha: 0.3),
+        fillColor: context.colors.surfaceSecondary.withOpacity(0.3),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: context.colors.textQuaternary.withValues(alpha: 0.5)),
+          borderSide: BorderSide(color: context.colors.textQuaternary.withOpacity(0.5)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: context.colors.textQuaternary.withValues(alpha: 0.5)),
+          borderSide: BorderSide(color: context.colors.textQuaternary.withOpacity(0.5)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -292,7 +272,7 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               decoration: BoxDecoration(
-                color: context.colors.primary.withValues(alpha: 0.05),
+                color: context.colors.primary.withOpacity(0.05),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               ),
               child: Row(
@@ -340,7 +320,7 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
                             });
                           },
                           backgroundColor: context.colors.surfaceSecondary,
-                          selectedColor: context.colors.primary.withValues(alpha: 0.15),
+                          selectedColor: context.colors.primary.withOpacity(0.15),
                           checkmarkColor: context.colors.primary,
                           labelStyle: TextStyle(
                             color: isSelected ? context.colors.primary : context.colors.textSecondary,
@@ -349,7 +329,7 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                             side: BorderSide(
-                              color: isSelected ? context.colors.primary.withValues(alpha: 0.5) : Colors.transparent,
+                              color: isSelected ? context.colors.primary.withOpacity(0.5) : Colors.transparent,
                             ),
                           ),
                         );
@@ -374,6 +354,71 @@ class _EditVisitDialogState extends State<EditVisitDialog> {
                         const SizedBox(width: 16),
                         Expanded(child: _buildTextField('Pending', _amountPendingController, keyboardType: TextInputType.number)),
                       ],
+                    ),
+                    const SizedBox(height: 24),
+                    
+                    Text('Durations', style: TextStyle(fontWeight: FontWeight.bold, color: context.colors.textPrimary)),
+                    const SizedBox(height: 12),
+                    DurationDropdownWidget(
+                      label: 'SERVICE DURATION',
+                      value: _serviceDuration,
+                      onChanged: (val) {
+                        setState(() {
+                          _serviceDuration = val;
+                        });
+                      },
+                      prefixIcon: Icons.timer_rounded,
+                      decoration: InputDecoration(
+                        labelText: 'Service Duration',
+                        labelStyle: TextStyle(color: context.colors.textSecondary, fontSize: 14),
+                        prefixIcon: Icon(Icons.timer_rounded, color: context.colors.primary, size: 20),
+                        filled: true,
+                        fillColor: context.colors.surfaceSecondary.withOpacity(0.3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: context.colors.textQuaternary.withOpacity(0.5)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: context.colors.textQuaternary.withOpacity(0.5)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: context.colors.primary, width: 2),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    DurationDropdownWidget(
+                      label: 'GUARANTEE DURATION',
+                      value: _guaranteeDuration,
+                      onChanged: (val) {
+                        setState(() {
+                          _guaranteeDuration = val;
+                        });
+                      },
+                      prefixIcon: Icons.shield_rounded,
+                      decoration: InputDecoration(
+                        labelText: 'Guarantee Duration',
+                        labelStyle: TextStyle(color: context.colors.textSecondary, fontSize: 14),
+                        prefixIcon: Icon(Icons.shield_rounded, color: context.colors.primary, size: 20),
+                        filled: true,
+                        fillColor: context.colors.surfaceSecondary.withOpacity(0.3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: context.colors.textQuaternary.withOpacity(0.5)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: context.colors.textQuaternary.withOpacity(0.5)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: context.colors.primary, width: 2),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      ),
                     ),
                     if (double.tryParse(_amountPendingController.text) != null && double.parse(_amountPendingController.text) > 0) ...[
                       const SizedBox(height: 20),

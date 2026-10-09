@@ -5,6 +5,7 @@ import 'package:core_ui/core_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:home_page/src/domain/entities/home_data.dart';
@@ -108,7 +109,7 @@ class _HomeContent extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                                color: Theme.of(context).primaryColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Row(
@@ -155,128 +156,148 @@ class _HomeContent extends StatelessWidget {
                 ),
                 // Scrollable Content
                 Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppPadding.p16,
-                      AppPadding.p8,
-                      AppPadding.p16,
-                      AppPadding.p48 + 80, // Extra padding for bottom nav
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                  // Top Summary Cards (2x2 Grid)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SummaryCard(
-                          overlineText: AppStrings.totalVisits,
-                          valueText: '${data.totalServices}',
-                          subtitleText: AppStrings.totalVisitsSubtitle,
-                          trailingIcon: Icon(
-                            Icons.trending_up,
-                            color: context.colors.success,
-                            size: 20,
-                          ),
-                          trailingBackgroundColor: context.colors.successBg,
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(
+                          AppPadding.p16,
+                          AppPadding.p8,
+                          AppPadding.p16,
+                          AppPadding.p16,
+                        ),
+                        sliver: SliverList(
+                          delegate: SliverChildListDelegate([
+                            // Top Summary Cards (2x2 Grid)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: SummaryCard(
+                                    overlineText: AppStrings.totalVisits,
+                                    valueText: '${data.totalServices}',
+                                    subtitleText: AppStrings.totalVisitsSubtitle,
+                                    trailingIcon: Icon(
+                                      Icons.trending_up,
+                                      color: context.colors.success,
+                                      size: 20,
+                                    ),
+                                    trailingBackgroundColor: context.colors.successBg,
+                                  ),
+                                ),
+                                const SizedBox(width: AppPadding.p12),
+                                Expanded(
+                                  child: SummaryCard(
+                                    overlineText: AppStrings.newRo,
+                                    valueText: '${data.newRoServices}',
+                                    subtitleText: AppStrings.newRoSubtitle,
+                                    trailingIcon: Icon(
+                                      Icons.water_drop,
+                                      color: context.colors.primary,
+                                      size: 20,
+                                    ),
+                                    trailingBackgroundColor: context.colors.primary.withOpacity(0.1),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: AppPadding.p12),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: SummaryCard(
+                                    overlineText: AppStrings.totalAmc,
+                                    valueText: '${data.amcServices}',
+                                    subtitleText: AppStrings.totalAmcSubtitle,
+                                    trailingIcon: Icon(
+                                      Icons.verified_user,
+                                      color: context.colors.success,
+                                      size: 20,
+                                    ),
+                                    trailingBackgroundColor: context.colors.successBg,
+                                  ),
+                                ),
+                                const SizedBox(width: AppPadding.p12),
+                                Expanded(
+                                  child: SummaryCard(
+                                    overlineText: AppStrings.serviceAndRepair,
+                                    valueText: '${data.repairServices}',
+                                    subtitleText: AppStrings.serviceAndRepairSubtitle,
+                                    trailingIcon: Icon(
+                                      Icons.build,
+                                      color: context.colors.warning,
+                                      size: 20,
+                                    ),
+                                    trailingBackgroundColor: context.colors.warningBg,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: AppPadding.p32),
+
+                            // Quick Actions
+                            _CalendarStatusCard(data: data),
+                            const SizedBox(height: AppPadding.p12),
+                            SizedBox(
+                              width: double.infinity,
+                              child: _QuickActionBtn(
+                                icon: Icons.edit_document,
+                                label: 'Estimates',
+                                color: context.colors.primary,
+                                onTap: () => context.push('/estimates'),
+                                isHorizontal: true,
+                              ),
+                            ),
+                            const SizedBox(height: AppPadding.p32),
+
+                            // Pending Services
+                            SectionHeader(
+                              title: 'Pending Section',
+                              trailing: const SizedBox(),
+                            ),
+                            const SizedBox(height: AppPadding.p16),
+                          ]),
                         ),
                       ),
-                      const SizedBox(width: AppPadding.p12),
-                      Expanded(
-                        child: SummaryCard(
-                          overlineText: AppStrings.newRo,
-                          valueText: '${data.newRoServices}',
-                          subtitleText: AppStrings.newRoSubtitle,
-                          trailingIcon: Icon(
-                            Icons.water_drop,
-                            color: context.colors.primary,
-                            size: 20,
+                      if (data.pendingServices.isNotEmpty)
+                        SliverPadding(
+                          padding: const EdgeInsets.fromLTRB(
+                            AppPadding.p16, 
+                            0, 
+                            AppPadding.p16, 
+                            AppPadding.p48 + 80,
                           ),
-                          trailingBackgroundColor: context.colors.primary.withValues(
-                            alpha: 0.1,
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 12.0),
+                                  child: _PendingServiceCard(item: data.pendingServices[index]),
+                                );
+                              },
+                              childCount: data.pendingServices.length,
+                            ),
                           ),
                         ),
-                      ),
+                      if (data.pendingServices.isEmpty)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              AppPadding.p16,
+                              AppPadding.p16,
+                              AppPadding.p16,
+                              AppPadding.p48 + 80,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'No pending services currently',
+                                style: TextStyle(
+                                  color: context.colors.textQuaternary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
-                  const SizedBox(height: AppPadding.p12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SummaryCard(
-                          overlineText: AppStrings.totalAmc,
-                          valueText: '${data.amcServices}',
-                          subtitleText: AppStrings.totalAmcSubtitle,
-                          trailingIcon: Icon(
-                            Icons.verified_user,
-                            color: context.colors.success,
-                            size: 20,
-                          ),
-                          trailingBackgroundColor: context.colors.successBg,
-                        ),
-                      ),
-                      const SizedBox(width: AppPadding.p12),
-                      Expanded(
-                        child: SummaryCard(
-                          overlineText: AppStrings.serviceAndRepair,
-                          valueText: '${data.repairServices}',
-                          subtitleText: AppStrings.serviceAndRepairSubtitle,
-                          trailingIcon: Icon(
-                            Icons.build,
-                            color: context.colors.warning,
-                            size: 20,
-                          ),
-                          trailingBackgroundColor: context.colors.warningBg,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppPadding.p32),
-
-                  // Quick Actions
-                  _CalendarStatusCard(data: data),
-                  const SizedBox(height: AppPadding.p12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: _QuickActionBtn(
-                      icon: Icons.edit_document,
-                      label: 'Estimates',
-                      color: context.colors.primary,
-                      onTap: () => context.push('/estimates'),
-                      isHorizontal: true,
-                    ),
-                  ),
-                  const SizedBox(height: AppPadding.p32),
-
-                  // Pending Services
-                  SectionHeader(
-                    title: 'Pending Section',
-                    trailing: const SizedBox(),
-                  ),
-                  const SizedBox(height: AppPadding.p16),
-                  if (data.pendingServices.isNotEmpty)
-                    ...data.pendingServices.map(
-                      (item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: _PendingServiceCard(item: item),
-                      ),
-                    ),
-                  if (data.pendingServices.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Text(
-                          'No pending services currently',
-                          style: TextStyle(
-                            color: context.colors.textQuaternary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  const SizedBox(height: AppPadding.p32),
-                ],
-              ),
-            ),
           ),
         ],
       );
@@ -295,12 +316,12 @@ class _HomeContent extends StatelessWidget {
         color: isSelected ? Colors.white : Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isSelected ? Colors.transparent : Colors.grey.withValues(alpha: 0.3),
+          color: isSelected ? Colors.transparent : Colors.grey.withOpacity(0.3),
         ),
         boxShadow: isSelected
             ? [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -428,36 +449,52 @@ Phone: ${widget.item.phone}
 Address: ${widget.item.address}
 Service: ${widget.item.serviceType}
 Date: ${widget.item.serviceDate}
-${widget.item.note.isNotEmpty ? 'Note: ${widget.item.note}' : ''}''';
+${widget.item.amountPending > 0 ? 'Pending Amount: ₹${widget.item.amountPending.toStringAsFixed(2)}\n' : ''}${widget.item.note.isNotEmpty ? 'Note: ${widget.item.note}' : ''}'''.trim();
   }
 
-  void _toggleDone(bool isDone) {
+  void _toggleDone(bool isDone) async {
     setState(() => _optimisticIsCompleted = isDone);
     
     final updates = <String, dynamic>{
       'status': isDone ? 'completed' : 'pending',
     };
     if (isDone) {
-      updates['completedAt'] = DateTime.now().toIso8601String();
+      updates['completed_at'] = DateTime.now().toIso8601String();
     }
 
-    FirebaseFirestore.instance
-        .collection('Customer')
-        .doc(widget.item.customerId)
-        .collection('services')
-        .doc(widget.item.id)
-        .update(updates).catchError((e) {
+    try {
+      final response = await Supabase.instance.client
+          .from('services')
+          .update(updates)
+          .eq('id', widget.item.id)
+          .select('status, completed_at');
+      debugPrint('[_toggleDone] Supabase raw stored value for ${widget.item.id}: $response');
+    } catch (e) {
+      // If completed_at column doesn't exist, try without it
+      if (e.toString().contains('completed_at')) {
+        updates.remove('completed_at');
+        try {
+          final response2 = await Supabase.instance.client
+              .from('services')
+              .update(updates)
+              .eq('id', widget.item.id)
+              .select('status');
+          debugPrint('[_toggleDone] Supabase raw stored value (fallback) for ${widget.item.id}: $response2');
+          return;
+        } catch (_) {}
+      }
       if (mounted) {
         setState(() => _optimisticIsCompleted = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error updating status: $e')),
         );
       }
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('[_PendingServiceCard.build] Building card for ${widget.item.id}. Local _optimisticIsCompleted: $_optimisticIsCompleted, widget.item.status: ${widget.item.status}');
     final isCompleted = _optimisticIsCompleted ?? (widget.item.status == 'completed');
     final textTheme = Theme.of(context).textTheme;
 
@@ -469,12 +506,12 @@ ${widget.item.note.isNotEmpty ? 'Note: ${widget.item.note}' : ''}''';
         border: Border.all(
           color: isCompleted 
               ? Colors.grey.shade200 
-              : (widget.item.isComplaint ? Colors.red.withValues(alpha: 0.3) : Colors.grey.shade200),
+              : (widget.item.isComplaint ? Colors.red.withOpacity(0.3) : Colors.grey.shade200),
           width: 1.5,
         ),
         boxShadow: isCompleted ? [] : [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -654,7 +691,7 @@ ${widget.item.note.isNotEmpty ? 'Note: ${widget.item.note}' : ''}''';
                           const SizedBox(width: 8),
                           Container(
                             decoration: BoxDecoration(
-                              color: context.colors.primary.withValues(alpha: 0.1),
+                              color: context.colors.primary.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: IconButton(
@@ -698,7 +735,7 @@ class _QuickActionBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color.withValues(alpha: 0.1),
+      color: color.withOpacity(0.1),
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
@@ -707,7 +744,7 @@ class _QuickActionBtn extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: isHorizontal ? 16 : 16, horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: color.withValues(alpha: 0.2)),
+            border: Border.all(color: color.withOpacity(0.2)),
           ),
           child: isHorizontal
             ? Row(
@@ -769,7 +806,7 @@ class _CalendarStatusCard extends StatelessWidget {
     final color = context.colors.primary;
     
     return Material(
-      color: hasAlert ? Colors.red.withValues(alpha: 0.08) : color.withValues(alpha: 0.1),
+      color: hasAlert ? Colors.red.withOpacity(0.08) : color.withOpacity(0.1),
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: () => context.go('/calendar'),
@@ -778,7 +815,7 @@ class _CalendarStatusCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: hasAlert ? Colors.red.withValues(alpha: 0.4) : color.withValues(alpha: 0.2), width: hasAlert ? 1.5 : 1.0),
+            border: Border.all(color: hasAlert ? Colors.red.withOpacity(0.4) : color.withOpacity(0.2), width: hasAlert ? 1.5 : 1.0),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

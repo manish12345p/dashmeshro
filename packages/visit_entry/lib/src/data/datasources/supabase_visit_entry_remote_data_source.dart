@@ -1,3 +1,4 @@
+import 'dart:math' as dart_math;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/entities/visit_record.dart';
 import 'visit_entry_remote_data_source.dart';
@@ -56,16 +57,12 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
       'is_complaint': entry.isComplaint,
       'fixes': entry.fixes,
       'amount_paid': entry.amountPaid,
-      'amount_pending': entry.amountPending,
       'total_amount': entry.totalAmount,
       'equipments_used': entry.equipmentsUsed,
       'service_duration': entry.serviceDuration,
       'guarantee_duration': entry.guaranteeDuration,
       'status': entry.status,
       'ro_type': entry.roType,
-      // 'is_deleted' does not exist in Supabase schema
-      'customer_name': customerName,
-      'customer_phone': customerPhone,
       'created_at': DateTime.now().toIso8601String(),
     };
 
@@ -133,7 +130,7 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
           if (phone.isNotEmpty) phone,
         ].join(' | ');
 
-        final emiId = 'emi_$docId';
+        final emiId = _generateId();
 
         double monthlyAmount = entry.amountPending;
         if (emiAmountPerMonth != null &&
@@ -160,9 +157,11 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
               ? 'Service #${docId.substring(0, 5)}'
               : svcName,
           'amount': monthlyAmount,
+          'monthly_amount': monthlyAmount,
           'emi_monthly_amount': monthlyAmount,
           'total_amount': entry.amountPending,
           'original_loan_amount': entry.amountPending,
+          'last_payment_amount': 0,
           'status': 'pending',
           'due_date': initialDueDate.toIso8601String(),
           'created_at': now.toIso8601String(),
@@ -195,7 +194,7 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
       final rows = await _client
           .from('customers')
           .select('id, name, phone, address, ro_type, customer_id')
-          .or('name.ilike.%$queryLower%,phone.ilike.%$queryLower%,address.ilike.%$queryLower%,customer_id.ilike.%$queryLower%')
+          .or('name.ilike.%$queryLower%,phone.ilike.%$queryLower%,address.ilike.%$queryLower%')
           .limit(10);
 
       return (rows as List<dynamic>)
@@ -207,7 +206,12 @@ class SupabaseVisitEntryRemoteDataSource implements IVisitEntryRemoteDataSource 
   }
 
   // ---------------------------------------------------------------------------
-  String _generateId() =>
-      DateTime.now().millisecondsSinceEpoch.toRadixString(36) +
-      DateTime.now().microsecond.toRadixString(36).padLeft(4, '0');
+  String _generateId() {
+    final rng = dart_math.Random();
+    String generate(int length) {
+      final chars = '0123456789abcdef';
+      return List.generate(length, (_) => chars[rng.nextInt(chars.length)]).join();
+    }
+    return '${generate(8)}-${generate(4)}-4${generate(3)}-a${generate(3)}-${generate(12)}';
+  }
 }

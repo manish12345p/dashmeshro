@@ -144,17 +144,28 @@ class _RemarksDateSelectorWidgetState extends State<RemarksDateSelectorWidget> {
   }
 
   Widget _buildRemarksField() {
-    return TextField(
-      controller: _remarksController,
-      onChanged: (value) {
-        context.read<VisitEntryBloc>().add(UpdateRemarks(value));
+    return BlocBuilder<VisitEntryBloc, VisitEntryState>(
+      buildWhen: (prev, curr) => prev.remarks != curr.remarks || curr.status == VisitEntryStatus.success,
+      builder: (context, state) {
+        if (_remarksController.text != state.remarks) {
+          _remarksController.value = TextEditingValue(
+            text: state.remarks,
+            selection: TextSelection.collapsed(offset: state.remarks.length),
+          );
+        }
+        return TextField(
+          controller: _remarksController,
+          onChanged: (value) {
+            context.read<VisitEntryBloc>().add(UpdateRemarks(value));
+          },
+          maxLines: 3,
+          decoration: _baseDecoration(
+            context: context,
+            hintText: 'Detail any mechanical issues or special instructions..',
+          ),
+          style: TextStyle(fontSize: 14, color: context.colors.textPrimary),
+        );
       },
-      maxLines: 3,
-      decoration: _baseDecoration(
-        context: context,
-        hintText: 'Detail any mechanical issues or special instructions..',
-      ),
-      style: TextStyle(fontSize: 14, color: context.colors.textPrimary),
     );
   }
 

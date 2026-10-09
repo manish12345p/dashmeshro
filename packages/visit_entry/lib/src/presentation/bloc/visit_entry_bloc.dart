@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
+
 import '../../domain/use_cases/save_visit_usecase.dart';
 import '../../domain/entities/visit_record.dart';
 import 'visit_entry_event.dart';
@@ -266,7 +268,7 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
 
     try {
       final entry = VisitRecord(
-        id: 'SE-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}',
+        id: const Uuid().v4(),
         customerId: state.customerId!,
         serviceType: state.serviceType,
         isUrgent: state.isUrgent,
@@ -291,6 +293,14 @@ class VisitEntryBloc extends Bloc<VisitEntryEvent, VisitEntryState> {
             : null,
       );
       emit(const VisitEntryState(status: VisitEntryStatus.success));
+      
+      // Immediately reset the form state but retain the currently selected customer
+      emit(VisitEntryState(
+        status: VisitEntryStatus.initial,
+        customerId: state.customerId,
+        customerName: state.customerName,
+        remainingAmcVisits: state.remainingAmcVisits,
+      ));
     } catch (e) {
       emit(
         state.copyWith(

@@ -32,7 +32,7 @@ class ServiceScheduleCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: context.colors.textSecondary.withValues(alpha: 0.015),
+            color: context.colors.textSecondary.withOpacity(0.015),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

@@ -31,7 +31,7 @@ class TotalCollectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: context.colors.primaryDark.withValues(alpha: 0.3),
+            color: context.colors.primaryDark.withOpacity(0.3),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -47,7 +47,7 @@ class TotalCollectionCard extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(24),
                   bottomLeft: Radius.circular(120),
@@ -64,7 +64,7 @@ class TotalCollectionCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(

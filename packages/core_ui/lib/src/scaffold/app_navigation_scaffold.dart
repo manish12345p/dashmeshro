@@ -51,7 +51,7 @@ class AppNavigationScaffold extends StatelessWidget {
               currentIndex: _calculateSelectedIndex(context, isAdmin),
               onTap: (index) => _onItemTapped(index, context, isAdmin),
               indicatorColor: colors.primary,
-              backgroundColor: colors.surface.withValues(alpha: 0.85),
+              backgroundColor: colors.surface.withOpacity(0.85),
               selectedItemColor: colors.primary,
               unselectedItemColor: colors.textSecondary,
               splashBorderRadius: 30,

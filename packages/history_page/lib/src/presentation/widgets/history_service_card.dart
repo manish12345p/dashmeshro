@@ -30,7 +30,7 @@ class HistoryServiceCard extends StatelessWidget {
 
     final Color accentColor = config['color'] as Color;
     final Color badgeBg = item.isComplaint
-        ? colors.error.withValues(alpha: 0.1)
+        ? colors.error.withOpacity(0.1)
         : config['bg'] as Color;
     final IconData leadingIcon = item.isComplaint
         ? Icons.warning_amber_rounded
@@ -48,7 +48,7 @@ class HistoryServiceCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: AppPadding.p12),
         decoration: BoxDecoration(
           color: item.isComplaint
-              ? colors.error.withValues(alpha: 0.03)
+              ? colors.error.withOpacity(0.03)
               : colors.surface,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(20),
@@ -58,11 +58,11 @@ class HistoryServiceCard extends StatelessWidget {
           ),
           border: item.isComplaint
               ? Border.all(
-                  color: colors.error.withValues(alpha: 0.5), width: 1.5)
+                  color: colors.error.withOpacity(0.5), width: 1.5)
               : Border(left: BorderSide(color: iconColor, width: 4)),
           boxShadow: [
             BoxShadow(
-              color: colors.textSecondary.withValues(alpha: 0.02),
+              color: colors.textSecondary.withOpacity(0.02),
               blurRadius: 5,
               offset: const Offset(0, 2),
             ),
@@ -112,8 +112,8 @@ class HistoryServiceCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: isCompleted
-                          ? colors.success.withValues(alpha: 0.1)
-                          : colors.warning.withValues(alpha: 0.1),
+                          ? colors.success.withOpacity(0.1)
+                          : colors.warning.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(

@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math' as dart_math;
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/entities/customer.dart';
 import 'customer_remote_data_source.dart';
@@ -54,6 +57,8 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
   SupabaseCustomerRemoteDataSource({SupabaseClient? client})
       : _client = client ?? Supabase.instance.client;
 
+  static List<Customer>? _memCache;
+
   // ---------------------------------------------------------------------------
   // Internal helpers
   // ---------------------------------------------------------------------------
@@ -69,8 +74,8 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
     return Customer(
       id: row['id'] as String? ?? '',
       name: row['name'] as String? ?? '',
-      customerId: row['customer_code'] as String? ?? '',
-      number: row['phone'] as String? ?? '',
+      customerId: row['customer_id'] as String? ?? '',
+      number: row['phone'] as String? ?? row['number'] as String? ?? '',
       address: row['address'] as String? ?? '',
       locality: row['locality'] as String? ?? '',
       roType: row['ro_type'] as String? ?? '',
@@ -110,6 +115,27 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
     // snapshots() behaviour.
     final controller = StreamController<List<Customer>>.broadcast();
 
+    if (_memCache != null) {
+      Future.microtask(() {
+        if (!controller.isClosed) controller.add(_memCache!);
+      });
+    } else {
+      Future.microtask(() async {
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final cached = prefs.getString('cached_customer_directory_supabase');
+          if (cached != null) {
+            final List<dynamic> decoded = jsonDecode(cached);
+            final cachedItems = decoded.map((e) => Customer.fromJson(e as Map<String, dynamic>)).toList();
+            if (!controller.isClosed && _memCache == null) {
+              _memCache = cachedItems;
+              controller.add(cachedItems);
+            }
+          }
+        } catch (_) {}
+      });
+    }
+
     Future<void> fetchAll() async {
       try {
         final allRows = <Map<String, dynamic>>[];
@@ -133,7 +159,14 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
             .map((r) => _rowToCustomer(r as Map<String, dynamic>))
             .toList();
 
+        _memCache = customers;
         if (!controller.isClosed) controller.add(customers);
+        
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final itemsJson = customers.map((c) => c.toJson()).toList();
+          prefs.setString('cached_customer_directory_supabase', jsonEncode(itemsJson));
+        } catch (_) {}
       } catch (e) {
         debugPrint('Supabase error in getCustomers: $e');
         if (!controller.isClosed) controller.add([]);
@@ -166,18 +199,37 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
 
     Future<void> fetchOne() async {
       try {
-        final row = await _client
-            .from('customers')
-            .select()
-            .eq('id', id)
-            .single();
+        Map<String, dynamic>? row;
+        try {
+          row = await _client
+              .from('customers')
+              .select()
+              .eq('id', id)
+              .single();
+        } catch (e) {
+          if (e is PostgrestException && e.message.contains('invalid input syntax for type uuid')) {
+            debugPrint('Warning: ID $id is not a UUID. Falling back to search by customer_id column.');
+            row = await _client
+                .from('customers')
+                .select()
+                .eq('customer_id', id)
+                .single();
+          } else {
+            rethrow;
+          }
+        }
 
         // Fetch services ordered by service_date desc
-        final services = await _client
-            .from('services')
-            .select()
-            .eq('customer_id', id)
-            .order('service_date', ascending: false);
+        List<dynamic> services = [];
+        try {
+          services = await _client
+              .from('services')
+              .select()
+              .eq('customer_id', id)
+              .order('service_date', ascending: false);
+        } catch (e) {
+          debugPrint('Warning: Failed to fetch services for customer $id: $e');
+        }
 
         final customerData = Map<String, dynamic>.from(row as Map);
         customerData['services'] = services;
@@ -239,7 +291,7 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
       'id': id,
       'name': customer.name,
       'customer_id': customer.customerId,
-      'number': customer.number,
+      'phone': customer.number,
       'address': customer.address,
       'locality': customer.locality,
       'ro_type': customer.roType,
@@ -257,7 +309,7 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
     await _client.from('customers').update({
       'name': customer.name,
       'customer_id': customer.customerId,
-      'number': customer.number,
+      'phone': customer.number,
       'address': customer.address,
       'locality': customer.locality,
       'ro_type': customer.roType,
@@ -287,7 +339,7 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
     final result = await _client
         .from('customers')
         .select('id')
-        .eq('number', phone)
+        .eq('phone', phone)
         .limit(1);
 
     return (result as List).isNotEmpty;
@@ -297,12 +349,12 @@ class SupabaseCustomerRemoteDataSource implements ICustomerRemoteDataSource {
   // Private helpers
   // ---------------------------------------------------------------------------
 
-  String _generateId() =>
-      DateTime.now().millisecondsSinceEpoch.toRadixString(36) +
-      _randomSuffix();
-
-  String _randomSuffix() {
-    // Simple 4-char random suffix using DateTime micros
-    return DateTime.now().microsecond.toRadixString(36).padLeft(4, '0');
+  String _generateId() {
+    final rng = dart_math.Random();
+    String generate(int length) {
+      final chars = '0123456789abcdef';
+      return List.generate(length, (_) => chars[rng.nextInt(chars.length)]).join();
+    }
+    return '${generate(8)}-${generate(4)}-4${generate(3)}-a${generate(3)}-${generate(12)}';
   }
 }

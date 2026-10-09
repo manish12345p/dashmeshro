@@ -25,3 +25,4 @@ export 'src/widgets/schedule_item_card.dart';
 export 'src/widgets/complaint_list_item.dart';
 export 'src/widgets/progress_summary_card.dart';
 export 'src/widgets/service_action_row.dart';
+export 'src/widgets/duration_dropdown.dart';

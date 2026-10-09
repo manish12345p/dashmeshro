@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/entities/history_item.dart';
 import 'history_remote_data_source.dart';
@@ -16,9 +18,32 @@ class SupabaseHistoryRemoteDataSource implements IHistoryRemoteDataSource {
   SupabaseHistoryRemoteDataSource({SupabaseClient? client})
       : _client = client ?? Supabase.instance.client;
 
+  static List<HistoryItem>? _memCache;
+
   @override
   Stream<List<HistoryItem>> getAllServices() {
     final controller = StreamController<List<HistoryItem>>.broadcast();
+
+    if (_memCache != null) {
+      Future.microtask(() {
+        if (!controller.isClosed) controller.add(_memCache!);
+      });
+    } else {
+      Future.microtask(() async {
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final cached = prefs.getString('cached_history_data_supabase');
+          if (cached != null) {
+            final List<dynamic> decoded = jsonDecode(cached);
+            final cachedItems = decoded.map((e) => HistoryItem.fromJson(e as Map<String, dynamic>)).toList();
+            if (!controller.isClosed && _memCache == null) {
+              _memCache = cachedItems;
+              controller.add(cachedItems);
+            }
+          }
+        } catch (_) {}
+      });
+    }
 
     Future<List<Map<String, dynamic>>> fetchAllRows(String table, String select) async {
       final allRows = <Map<String, dynamic>>[];
@@ -26,7 +51,7 @@ class SupabaseHistoryRemoteDataSource implements IHistoryRemoteDataSource {
       int from = 0;
       
       while (true) {
-        final response = await _client.from(table).select(select).range(from, from + pageSize - 1);
+        final response = await _client.from(table).select(select).order('created_at', ascending: false).range(from, from + pageSize - 1);
         final data = response as List<dynamic>;
         for (final r in data) {
           allRows.add(r as Map<String, dynamic>);
@@ -74,14 +99,15 @@ class SupabaseHistoryRemoteDataSource implements IHistoryRemoteDataSource {
             final serviceDate = DateTime.tryParse(dateStr);
             if (serviceDate == null) continue;
 
-            final customerName =
-                data['customer_name'] as String? ??
-                custData['name'] as String? ??
-                'Unknown';
-            final customerPhone =
-                data['customer_phone'] as String? ??
-                custData['phone'] as String? ??
-                '';
+            final custNameVal = custData['name'] as String? ?? '';
+            final customerName = custNameVal.isNotEmpty 
+                ? custNameVal 
+                : (data['customer_name'] as String? ?? 'Unknown');
+                
+            final custPhoneVal = custData['phone'] as String? ?? '';
+            final customerPhone = custPhoneVal.isNotEmpty 
+                ? custPhoneVal 
+                : (data['customer_phone'] as String? ?? '');
             final customerAddress = custData['address'] as String? ?? '';
 
             items.add(HistoryItem(
@@ -133,7 +159,14 @@ class SupabaseHistoryRemoteDataSource implements IHistoryRemoteDataSource {
 
         items.sort((a, b) => b.serviceDate.compareTo(a.serviceDate));
 
+        _memCache = items;
         if (!controller.isClosed) controller.add(items);
+        
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final itemsJson = items.map((i) => i.toJson()).toList();
+          prefs.setString('cached_history_data_supabase', jsonEncode(itemsJson));
+        } catch (_) {}
       } catch (e) {
         debugPrint('Supabase error in getAllServices: $e');
         if (!controller.isClosed) controller.add([]);

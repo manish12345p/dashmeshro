@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get_it/get_it.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/repositories/customer_repository_interface.dart';
 import '../../data/repositories/customer_repository.dart';
@@ -353,21 +353,23 @@ class _PendingAmountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('installments')
-          .where('customer_name', isEqualTo: customer.name)
-          .where('status', whereIn: ['pending', 'overdue'])
-          .snapshots(),
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: Supabase.instance.client
+          .from('installments')
+          .stream(primaryKey: ['id'])
+          .eq('customer_id', customer.id),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.shrink();
 
-        final docs = snapshot.data!.docs;
+        final docs = snapshot.data!.where((doc) => 
+            doc['status'] == 'pending' || doc['status'] == 'overdue').toList();
+            
         if (docs.isEmpty) return SizedBox.shrink();
 
         double totalPending = 0;
         for (var doc in docs) {
-          totalPending += (doc.data() as Map<String, dynamic>)['amount'] ?? 0.0;
+          final amount = doc['total_amount'] ?? doc['amount'];
+          if (amount is num) totalPending += amount.toDouble();
         }
 
         return Container(
@@ -427,20 +429,21 @@ class _PendingAmountCard extends StatelessWidget {
     );
   }
 
+
   Future<void> _showEmiDialog(
     BuildContext context,
     CustomerDetailsBloc bloc,
   ) async {
     // Check if there are any EMIs first
-    final snapshot = await FirebaseFirestore.instance
-        .collection('installments')
-        .where('customer_name', isEqualTo: customer.name)
-        .where('status', whereIn: ['pending', 'overdue'])
-        .get();
+    final snapshot = await Supabase.instance.client
+        .from('installments')
+        .select()
+        .eq('customer_id', customer.id)
+        .inFilter('status', ['pending', 'overdue']);
 
     if (!context.mounted) return;
 
-    if (snapshot.docs.isEmpty) {
+    if (snapshot.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('No pending EMIs left for this customer.'),
@@ -457,19 +460,19 @@ class _PendingAmountCard extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
-        return StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('installments')
-              .where('customer_name', isEqualTo: customer.name)
-              .where('status', whereIn: ['pending', 'overdue'])
-              .snapshots(),
+        return StreamBuilder<List<Map<String, dynamic>>>(
+          stream: Supabase.instance.client
+              .from('installments')
+              .stream(primaryKey: ['id'])
+              .eq('customer_id', customer.id),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return Padding(
                 padding: EdgeInsets.all(24),
                 child: Center(child: CircularProgressIndicator()),
               );
-            final docs = snapshot.data!.docs;
+            final docs = snapshot.data!.where((doc) => 
+                doc['status'] == 'pending' || doc['status'] == 'overdue').toList();
 
             if (docs.isEmpty) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -499,8 +502,8 @@ class _PendingAmountCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    ...docs.map((doc) {
-                      final data = doc.data() as Map<String, dynamic>;
+                    ...docs.map((data) {
+
                       final dateStr =
                           data['due_date']?.toString().split('T').first ??
                           'N/A';
@@ -564,7 +567,7 @@ class _PendingAmountCard extends StatelessWidget {
                                       _showPartialPaymentDialog(
                                         context,
                                         bloc,
-                                        doc,
+                                        data,
                                       );
                                     },
                                     child: Container(
@@ -606,12 +609,12 @@ class _PendingAmountCard extends StatelessWidget {
   Future<void> _processPayment(
     BuildContext context,
     CustomerDetailsBloc bloc,
-    QueryDocumentSnapshot doc,
+    Map<String, dynamic> data,
     double emiAmount,
     double paidAmount,
-    Map<String, dynamic> data,
   ) async {
     try {
+      final docId = data['id'];
       final totalAmount =
           (data['total_amount'] as num?)?.toDouble() ??
           (data['amount'] as num?)?.toDouble() ??
@@ -619,23 +622,22 @@ class _PendingAmountCard extends StatelessWidget {
       final newTotalAmount = totalAmount - paidAmount;
 
       if (newTotalAmount <= 0) {
-        await FirebaseFirestore.instance
-            .collection('installments')
-            .doc(doc.id)
+        await Supabase.instance.client
+            .from('installments')
             .update({
               'status': 'paid',
               'paid_at': DateTime.now().toIso8601String(),
               'total_amount': 0.0,
               'amount': 0.0,
-            });
+            })
+            .eq('id', docId);
       } else {
         DateTime currentDueDate = DateTime.now();
         if (data['due_date'] != null) {
           currentDueDate = DateTime.parse(data['due_date']);
         }
-        await FirebaseFirestore.instance
-            .collection('installments')
-            .doc(doc.id)
+        await Supabase.instance.client
+            .from('installments')
             .update({
               'total_amount': newTotalAmount,
               'amount': newTotalAmount < emiAmount ? newTotalAmount : emiAmount,
@@ -644,29 +646,28 @@ class _PendingAmountCard extends StatelessWidget {
                   .toIso8601String(),
               'last_payment_date': DateTime.now().toIso8601String(),
               'status': 'pending',
-            });
+            })
+            .eq('id', docId);
       }
 
       final serviceId = data['service_id'];
       if (serviceId != null) {
-        await FirebaseFirestore.instance
-            .collection('Customer')
-            .doc(customer.id)
-            .collection('services')
-            .doc(serviceId)
-            .update({
-              'amountPaid': FieldValue.increment(paidAmount),
-              'amountPending': FieldValue.increment(-paidAmount),
-            });
+        final svcData = await Supabase.instance.client.from('services').select('amount_paid').eq('id', serviceId).maybeSingle();
+        if (svcData != null) {
+          final prevPaid = (svcData['amount_paid'] as num?)?.toDouble() ?? 0.0;
+          await Supabase.instance.client.from('services').update({
+            'amount_paid': prevPaid + paidAmount,
+          }).eq('id', serviceId);
+        }
       }
 
       if (paidAmount > 0) {
         try {
-          await FirebaseFirestore.instance.collection('payments').add({
+          await Supabase.instance.client.from('payments').insert({
             'customer_id': customer.id,
             'amount': paidAmount,
-            'source': 'emi_payment',
-            'reference_id': doc.id,
+            'source': 'visit_entry',
+            'reference_id': docId,
             'date': DateTime.now().toIso8601String(),
           });
         } catch (_) {}
@@ -690,9 +691,8 @@ class _PendingAmountCard extends StatelessWidget {
   void _showPartialPaymentDialog(
     BuildContext context,
     CustomerDetailsBloc bloc,
-    QueryDocumentSnapshot doc,
+    Map<String, dynamic> data,
   ) {
-    final data = doc.data() as Map<String, dynamic>;
     final emiAmount = (data['amount'] as num).toDouble();
     final controller = TextEditingController(
       text: emiAmount.toStringAsFixed(0),
@@ -755,10 +755,9 @@ class _PendingAmountCard extends StatelessWidget {
                             _processPayment(
                               context,
                               bloc,
-                              doc,
+                              data,
                               emiAmount,
                               paidAmount,
-                              data,
                             );
                           },
                           child: Text('Confirm'),
@@ -771,10 +770,9 @@ class _PendingAmountCard extends StatelessWidget {
                   _processPayment(
                     context,
                     bloc,
-                    doc,
+                    data,
                     emiAmount,
                     paidAmount,
-                    data,
                   );
                 }
               },

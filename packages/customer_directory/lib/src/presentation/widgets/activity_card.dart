@@ -48,7 +48,7 @@ class ActivityCard extends StatelessWidget {
 
     // Override colors if it's a complaint
     if (activity.isComplaint) {
-      badgeBg = context.colors.error.withValues(alpha: 0.1);
+      badgeBg = context.colors.error.withOpacity(0.1);
       badgeText = context.colors.error;
       leadingIconColor = context.colors.error;
       leadingIcon = Icons.warning_amber_rounded;
@@ -59,7 +59,7 @@ class ActivityCard extends StatelessWidget {
     Widget cardContent = Container(
       decoration: BoxDecoration(
         color: activity.isComplaint 
-            ? context.colors.error.withValues(alpha: 0.03) 
+            ? context.colors.error.withOpacity(0.03) 
             : context.colors.surface,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(isEmptyService && !activity.isComplaint ? 16 : 20),
@@ -68,11 +68,11 @@ class ActivityCard extends StatelessWidget {
           bottomRight: Radius.circular(20),
         ),
         border: activity.isComplaint
-            ? Border.all(color: context.colors.error.withValues(alpha: 0.5), width: 1.5)
+            ? Border.all(color: context.colors.error.withOpacity(0.5), width: 1.5)
             : (isEmptyService ? null : Border(left: BorderSide(color: leadingIconColor, width: 4))),
         boxShadow: [
           BoxShadow(
-            color: context.colors.textSecondary.withValues(alpha: 0.02),
+            color: context.colors.textSecondary.withOpacity(0.02),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -87,19 +87,24 @@ class ActivityCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(leadingIcon, color: leadingIconColor, size: 20),
-                    SizedBox(width: 8),
-                    Text(
-                      activity.serviceType.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: context.colors.textPrimary,
+                Flexible(
+                  child: Row(
+                    children: [
+                      Icon(leadingIcon, color: leadingIconColor, size: 20),
+                      SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          activity.serviceType.toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: context.colors.textPrimary,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Row(
                   children: [

@@ -151,6 +151,7 @@ _$PendingServiceItemImpl _$$PendingServiceItemImplFromJson(
   status: json['status'] as String? ?? '',
   note: json['note'] as String? ?? '',
   isComplaint: json['isComplaint'] as bool? ?? false,
+  amountPending: (json['amountPending'] as num?)?.toDouble() ?? 0.0,
 );
 
 Map<String, dynamic> _$$PendingServiceItemImplToJson(
@@ -166,6 +167,7 @@ Map<String, dynamic> _$$PendingServiceItemImplToJson(
   'status': instance.status,
   'note': instance.note,
   'isComplaint': instance.isComplaint,
+  'amountPending': instance.amountPending,
 };
 
 _$HomeDataImpl _$$HomeDataImplFromJson(

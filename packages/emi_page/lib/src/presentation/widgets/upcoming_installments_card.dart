@@ -32,7 +32,7 @@ class UpcomingInstallmentsCard extends StatelessWidget {
             child: Icon(
               Icons.calendar_month,
               size: 100,
-              color: Colors.white.withValues(alpha: 0.05),
+              color: Colors.white.withOpacity(0.05),
             ),
           ),
           Column(
@@ -53,7 +53,7 @@ class UpcomingInstallmentsCard extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 12),
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: Colors.white.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(

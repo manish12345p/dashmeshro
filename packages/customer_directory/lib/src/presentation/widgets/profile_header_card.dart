@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:core/core.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../domain/entities/customer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/customer_details_bloc.dart';
+import '../bloc/customer_details_event.dart';
 import 'ro_type_dropdown.dart';
 
 class ProfileHeaderCard extends StatelessWidget {
@@ -73,14 +76,19 @@ class ProfileHeaderCard extends StatelessWidget {
                               child: const Text('Cancel'),
                             ),
                             ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 final newName = controller.text.trim();
                                 if (newName.isNotEmpty) {
-                                  FirebaseFirestore.instance
-                                      .collection('Customer')
-                                      .doc(customer.id)
-                                      .update({'name': newName});
-                                  Navigator.pop(dialogContext);
+                                  await Supabase.instance.client
+                                      .from('customers')
+                                      .update({'name': newName})
+                                      .eq('id', customer.id);
+                                  if (dialogContext.mounted) {
+                                    Navigator.pop(dialogContext);
+                                  }
+                                  if (context.mounted) {
+                                    context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
+                                  }
                                 }
                               },
                               child: const Text('Save'),
@@ -106,7 +114,7 @@ class ProfileHeaderCard extends StatelessWidget {
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    customer.number,
+                    customer.number.trim().isEmpty ? 'Not provided' : customer.number,
                     style: TextStyle(
                       fontSize: 13,
                       color: context.colors.textPrimary,
@@ -138,14 +146,19 @@ class ProfileHeaderCard extends StatelessWidget {
                               child: const Text('Cancel'),
                             ),
                             ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 final newNumber = controller.text.trim();
                                 if (newNumber.isNotEmpty) {
-                                  FirebaseFirestore.instance
-                                      .collection('Customer')
-                                      .doc(customer.id)
-                                      .update({'number': newNumber});
-                                  Navigator.pop(dialogContext);
+                                  await Supabase.instance.client
+                                      .from('customers')
+                                      .update({'phone': newNumber})
+                                      .eq('id', customer.id);
+                                  if (dialogContext.mounted) {
+                                    Navigator.pop(dialogContext);
+                                  }
+                                  if (context.mounted) {
+                                    context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
+                                  }
                                 }
                               },
                               child: const Text('Save'),
@@ -165,8 +178,67 @@ class ProfileHeaderCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      final controller = TextEditingController();
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: const Text('Add Phone Number'),
+                          content: TextField(
+                            controller: controller,
+                            keyboardType: TextInputType.phone,
+                            decoration: const InputDecoration(
+                              labelText: 'New Phone Number',
+                              hintText: 'e.g. 9876543210',
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(dialogContext),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final newNumber = controller.text.trim();
+                                if (newNumber.isNotEmpty) {
+                                  final combinedNumber = customer.number.isEmpty 
+                                      ? newNumber 
+                                      : '$newNumber,${customer.number}';
+                                  await Supabase.instance.client
+                                      .from('customers')
+                                      .update({'phone': combinedNumber})
+                                      .eq('id', customer.id);
+                                  if (dialogContext.mounted) {
+                                    Navigator.pop(dialogContext);
+                                  }
+                                  if (context.mounted) {
+                                    context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
+                                  }
+                                }
+                              },
+                              child: const Text('Add'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(
+                        Icons.add_circle_outline,
+                        color: context.colors.primary,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
 
-                if (customer.number.isNotEmpty)
+                if (customer.number.isNotEmpty) ...[
                   Material(
                     color: Colors.transparent,
                     child: InkWell(
@@ -190,42 +262,43 @@ class ProfileHeaderCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                const SizedBox(width: 8),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      PhoneActionHandler.handleAction(
-                        context: context,
-                        rawNumbers: customer.number,
-                        actionName: 'WhatsApp',
-                        onSelected: (selectedNumber) async {
-                          final url = Uri.parse('https://wa.me/91$selectedNumber');
-                          try {
-                            await launchUrl(
-                              url,
-                              mode: LaunchMode.externalApplication,
-                            );
-                          } catch (e) {
-                            debugPrint('Could not launch WhatsApp: $e');
-                          }
-                        },
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(Icons.chat, size: 20, color: context.colors.success),
+                  const SizedBox(width: 8),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        PhoneActionHandler.handleAction(
+                          context: context,
+                          rawNumbers: customer.number,
+                          actionName: 'WhatsApp',
+                          onSelected: (selectedNumber) async {
+                            final url = Uri.parse('https://wa.me/91$selectedNumber');
+                            try {
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalApplication,
+                              );
+                            } catch (e) {
+                              debugPrint('Could not launch WhatsApp: $e');
+                            }
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(Icons.chat, size: 20, color: context.colors.success),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
             SizedBox(height: 12),
             _buildContactRow(
               context,
               Icons.location_on_outlined,
-              customer.address,
+              customer.address.isEmpty ? 'Not provided' : customer.address,
               isMultiline: true,
               onEdit: () {
                 final controller = TextEditingController(text: customer.address);
@@ -247,14 +320,19 @@ class ProfileHeaderCard extends StatelessWidget {
                         child: const Text('Cancel'),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final newAddress = controller.text.trim();
                           if (newAddress.isNotEmpty) {
-                            FirebaseFirestore.instance
-                                .collection('Customer')
-                                .doc(customer.id)
-                                .update({'address': newAddress});
-                            Navigator.pop(dialogContext);
+                            await Supabase.instance.client
+                                .from('customers')
+                                .update({'address': newAddress})
+                                .eq('id', customer.id);
+                            if (dialogContext.mounted) {
+                              Navigator.pop(dialogContext);
+                            }
+                            if (context.mounted) {
+                              context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
+                            }
                           }
                         },
                         child: const Text('Save'),
@@ -288,13 +366,18 @@ class ProfileHeaderCard extends StatelessWidget {
                         child: const Text('Cancel'),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final newLocality = controller.text.trim();
-                          FirebaseFirestore.instance
-                              .collection('Customer')
-                              .doc(customer.id)
-                              .update({'locality': newLocality});
-                          Navigator.pop(dialogContext);
+                          await Supabase.instance.client
+                              .from('customers')
+                              .update({'locality': newLocality})
+                              .eq('id', customer.id);
+                          if (dialogContext.mounted) {
+                            Navigator.pop(dialogContext);
+                          }
+                          if (context.mounted) {
+                            context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
+                          }
                         },
                         child: const Text('Save'),
                       ),
@@ -331,13 +414,18 @@ class ProfileHeaderCard extends StatelessWidget {
                         child: const Text('Cancel'),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final newNote = controller.text.trim();
-                          FirebaseFirestore.instance
-                              .collection('Customer')
-                              .doc(customer.id)
-                              .update({'note': newNote});
-                          Navigator.pop(dialogContext);
+                          await Supabase.instance.client
+                              .from('customers')
+                              .update({'note': newNote})
+                              .eq('id', customer.id);
+                          if (dialogContext.mounted) {
+                            Navigator.pop(dialogContext);
+                          }
+                          if (context.mounted) {
+                            context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
+                          }
                         },
                         child: const Text('Save'),
                       ),
@@ -428,10 +516,10 @@ class ProfileHeaderCard extends StatelessWidget {
                 (ro) => Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: context.colors.primaryLight.withValues(alpha: 0.1),
+                    color: context.colors.primaryLight.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
-                      color: context.colors.primaryLight.withValues(alpha: 0.3),
+                      color: context.colors.primaryLight.withOpacity(0.3),
                     ),
                   ),
                   child: Text(
@@ -508,12 +596,15 @@ class ProfileHeaderCard extends StatelessWidget {
               onPressed: () async {
                 if (selectedRoType.isNotEmpty) {
                   final newRoType = selectedRoType;
-                  await FirebaseFirestore.instance
-                      .collection('Customer')
-                      .doc(customer.id)
-                      .update({'ro_type': newRoType});
+                  await Supabase.instance.client
+                      .from('customers')
+                      .update({'ro_type': newRoType})
+                      .eq('id', customer.id);
                   if (dialogContext.mounted) {
                     Navigator.pop(dialogContext);
+                  }
+                  if (context.mounted) {
+                    context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
                   }
                 }
               },
@@ -531,12 +622,15 @@ class ProfileHeaderCard extends StatelessWidget {
                   final newRoTypes = List<String>.from(currentRoTypes)
                     ..add(selectedRoType);
                   final newRoTypeString = newRoTypes.join(', ');
-                  await FirebaseFirestore.instance
-                      .collection('Customer')
-                      .doc(customer.id)
-                      .update({'ro_type': newRoTypeString});
+                  await Supabase.instance.client
+                      .from('customers')
+                      .update({'ro_type': newRoTypeString})
+                      .eq('id', customer.id);
                   if (dialogContext.mounted) {
                     Navigator.pop(dialogContext);
+                  }
+                  if (context.mounted) {
+                    context.read<CustomerDetailsBloc>().add(LoadCustomerDetails(customer.id));
                   }
                 }
               },

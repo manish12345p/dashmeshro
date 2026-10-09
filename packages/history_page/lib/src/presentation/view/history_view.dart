@@ -94,9 +94,7 @@ class _HistoryScaffold extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: context.colors.textSecondary.withValues(
-                            alpha: 0.05,
-                          ),
+                          color: context.colors.textSecondary.withOpacity(0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -171,7 +169,7 @@ class _HistoryScaffold extends StatelessWidget {
                                 },
                                 backgroundColor: context.colors.surface,
                                 selectedColor:
-                                    context.colors.primary.withValues(alpha: 0.1),
+                                    context.colors.primary.withOpacity(0.1),
                                 labelStyle: TextStyle(
                                   color: isSelected
                                       ? context.colors.primary
@@ -212,7 +210,7 @@ class _HistoryScaffold extends StatelessWidget {
                                 );
                           },
                           backgroundColor: context.colors.surface,
-                          selectedColor: context.colors.primary.withValues(alpha: 0.1),
+                          selectedColor: context.colors.primary.withOpacity(0.1),
                           checkmarkColor: context.colors.primary,
                           labelStyle: TextStyle(
                             color: state.amountFilterEnabled

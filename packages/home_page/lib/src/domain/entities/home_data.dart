@@ -118,6 +118,7 @@ class PendingServiceItem with _$PendingServiceItem {
     @Default('') String status,
     @Default('') String note,
     @Default(false) bool isComplaint,
+    @Default(0.0) double amountPending,
   }) = _PendingServiceItem;
 
   factory PendingServiceItem.fromJson(Map<String, dynamic> json) => _$PendingServiceItemFromJson(json);

@@ -145,7 +145,7 @@ class _NotificationBody extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
+            color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: color, size: 20),
@@ -163,7 +163,7 @@ class _NotificationBody extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
+            color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -193,7 +193,7 @@ class _NotificationBody extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: statusColor.withValues(alpha: 0.3)),
+        side: BorderSide(color: statusColor.withOpacity(0.3)),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -223,7 +223,7 @@ class _NotificationBody extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: statusColor.withValues(alpha: 0.1),
+                      color: statusColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -290,7 +290,7 @@ class _NotificationBody extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.red.withValues(alpha: 0.3)),
+        side: BorderSide(color: Colors.red.withOpacity(0.3)),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -320,7 +320,7 @@ class _NotificationBody extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.1),
+                      color: Colors.red.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(

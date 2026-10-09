@@ -64,7 +64,7 @@ class SupabaseHomeRemoteDataSource implements IHomeRemoteDataSource {
       int from = 0;
       
       while (true) {
-        final response = await _client.from(table).select().range(from, from + pageSize - 1);
+        final response = await _client.from(table).select().order('created_at', ascending: false).range(from, from + pageSize - 1);
         final data = response as List<dynamic>;
         for (final r in data) {
           allRows.add(r as Map<String, dynamic>);
@@ -77,23 +77,36 @@ class SupabaseHomeRemoteDataSource implements IHomeRemoteDataSource {
 
     // Initial load
     try {
-      for (final r in await fetchAllRows('customers')) {
+      final custRows = await fetchAllRows('customers');
+      for (final r in custRows) {
         final row = r as Map<String, dynamic>;
         customers[row['id'] as String] = _mapCustRow(row);
       }
-      for (final r in await fetchAllRows('services')) {
+      
+      final svcRows = await fetchAllRows('services');
+      for (final r in svcRows) {
         final row = r as Map<String, dynamic>;
         row['customerId'] = row['customer_id'];
         services[row['id'] as String] = row;
       }
-      for (final r in await fetchAllRows('installments')) {
+      
+      final instRows = await fetchAllRows('installments');
+      for (final r in instRows) {
         final row = r as Map<String, dynamic>;
         row['customerId'] = row['customer_id'];
         installments[row['id'] as String] = row;
       }
+      
       push();
-    } catch (e) {
-      debugPrint('Supabase home initial fetch error: $e');
+    } catch (e, stack) {
+      debugPrint('!!! FATAL Supabase home initial fetch error: $e');
+      debugPrint('Stacktrace: $stack');
+      // Attempt to push whatever data we have so far instead of freezing
+      try {
+        push();
+      } catch (innerE) {
+        debugPrint('!!! FATAL push() error: $innerE');
+      }
     }
 
     // Realtime subscriptions
@@ -284,20 +297,46 @@ HomeData _buildHomeData({
   }
 
   // Services
+  debugPrint('=== HOME DEBUG: Total services in memory: ${services.length} ===');
+  debugPrint('=== HOME DEBUG: Total customers in memory: ${custById.length} ===');
+  int _skippedNoCust = 0;
+  int _passedFilter = 0;
+  int _failedFilter = 0;
   for (final s in services) {
     // s['deleted_at'] does not exist on services
     final cid = (s['customerId'] ?? s['customer_id']) as String? ?? '';
     final c = custById[cid];
-    if (c == null) continue;
+    if (c == null) {
+      _skippedNoCust++;
+      // Log ALL services that have no matching customer
+      final sDate = s['service_date'] as String? ?? s['serviceDate'] as String? ?? '';
+      if (sDate.startsWith(today)) {
+        debugPrint('!!! HOME DEBUG: TODAY visit SKIPPED (no customer match) !!!');
+        debugPrint('  service id: ${s['id']}');
+        debugPrint('  customer_id on service: "$cid"');
+        debugPrint('  service_date: $sDate');
+        debugPrint('  service_type: ${s['service_type'] ?? s['serviceType']}');
+        debugPrint('  status: ${s['status']}');
+        debugPrint('  Customer IDs in map (first 10): ${custById.keys.take(10).toList()}');
+      }
+      continue;
+    }
     final type = (s['service_type'] as String? ?? s['serviceType'] as String? ?? '').toLowerCase().trim();
-    final status = s['status'] as String? ?? '';
+    final rawStatus = s['status'] as String?;
+    final status = (rawStatus == null || rawStatus.isEmpty) ? 'pending' : rawStatus.trim().toLowerCase();
+    final isDeleted = s['is_deleted'] == true || s['is_deleted'] == 'true' || s['deleted_at'] != null;
+    
+    if (isDeleted) {
+      _failedFilter++;
+      continue;
+    }
     final date = s['service_date'] as String? ?? s['serviceDate'] as String? ?? '';
     final paid = (s['amount_paid'] as num? ?? s['amountPaid'] as num? ?? 0).toDouble();
     final amtP = (s['amount_pending'] as num? ?? s['amountPending'] as num? ?? 0).toDouble();
     final sDur = s['guarantee'] as String? ?? s['service_duration'] as String? ?? '';
     final gDur = s['guarantee'] as String? ?? s['guarantee_duration'] as String? ?? '';
     final name = c['name'] as String? ?? 'Unknown';
-    final phone = c['phone'] as String? ?? '';
+    final phone = c['number'] as String? ?? c['phone'] as String? ?? '';
     final addr = c['address'] as String? ?? '';
 
     if (date.startsWith(thisMonth)) collected += paid;
@@ -345,11 +384,51 @@ HomeData _buildHomeData({
 
     if (amtP > 0) pendingPay.add(PendingPaymentItem(customerName: name, customerId: cid, amountPending: amtP, phone: phone, daysOverdue: 0, dueDate: date, type: 'Service Payment'));
     if (status == 'pending' && type.contains('complaint')) { pendingCmpl++; complaints.add(ComplaintItem(customerName: name, customerId: cid, issueType: type, status: 'pending')); }
-    if (status == 'pending' || (status.isEmpty && date.compareTo(today) >= 0)) {
-      pendingSvcs.add(PendingServiceItem(id: s['id'] as String? ?? '', customerId: cid, customerName: name, phone: phone, address: addr, serviceType: type, serviceDate: date, status: status, note: s['fixes'] as String? ?? '', isComplaint: type.contains('complaint')));
+    
+    final completedAtStr = s['completed_at'] as String? ?? s['completedAt'] as String? ?? '';
+    bool isRecentlyCompleted = false;
+    if (status == 'completed') {
+      if (completedAtStr.isNotEmpty) {
+        try {
+          final compDate = DateTime.parse(completedAtStr);
+          if (now.difference(compDate).inHours < 24) isRecentlyCompleted = true;
+        } catch (_) {}
+      }
+      if (!isRecentlyCompleted && date.startsWith(today)) {
+        isRecentlyCompleted = true;
+      }
+    }
+
+    final passesPendingFilter = status == 'pending' || isRecentlyCompleted;
+
+    // Log today's visits specifically
+    if (date.startsWith(today)) {
+      debugPrint('--- HOME DEBUG: TODAY VISIT ---');
+      debugPrint('  id: ${s['id']}');
+      debugPrint('  cid: $cid');
+      debugPrint('  name: $name');
+      debugPrint('  type: $type');
+      debugPrint('  rawStatus: "$rawStatus"');
+      debugPrint('  status: "$status"');
+      debugPrint('  date: $date');
+      debugPrint('  passesPendingFilter: $passesPendingFilter');
+      debugPrint('------------------------------');
+    }
+
+    if (passesPendingFilter) {
+      _passedFilter++;
+      pendingSvcs.add(PendingServiceItem(id: s['id'] as String? ?? '', customerId: cid, customerName: name, phone: phone, address: addr, serviceType: type, serviceDate: date, status: status, note: s['fixes'] as String? ?? '', isComplaint: type.contains('complaint'), amountPending: amtP));
       explicitDue.add(cid);
+    } else {
+      _failedFilter++;
     }
   }
+  debugPrint('=== HOME DEBUG SUMMARY ===');
+  debugPrint('  Skipped (no customer): $_skippedNoCust');
+  debugPrint('  Passed pending filter: $_passedFilter');
+  debugPrint('  Failed pending filter: $_failedFilter');
+  debugPrint('  pendingSvcs count: ${pendingSvcs.length}');
+  debugPrint('==========================');
 
   // Second-pass reminders
   for (final c in custById.values) {
@@ -371,6 +450,16 @@ HomeData _buildHomeData({
   } else if (weekSells > 0) {
     growth = '+100% vs LW';
   }
+
+  pendingSvcs.sort((a, b) {
+    try {
+      final da = DateTime.parse(a.serviceDate);
+      final db = DateTime.parse(b.serviceDate);
+      return db.compareTo(da);
+    } catch (_) {
+      return 0;
+    }
+  });
 
   return HomeData(newSells: 0, activeRentals: 0, activeAmcs: activeAmcs, totalServices: totalSvc, totalCollectedThisMonth: collected, amcServices: amcSvc, newRoServices: newRoSvc, repairServices: repairSvc, resolutionRatePercent: 100, pendingComplaintsCount: pendingCmpl, todaySchedules: schedules, pendingComplaints: complaints, pendingServices: pendingSvcs, amcProgresses: const [], todayNotifications: notifs, expiringItems: expiring, pendingPayments: pendingPay, todaySellsSummary: todaySells, weekSellsSummary: weekSells, projectedGrowth: growth);
 }

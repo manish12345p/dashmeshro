@@ -177,19 +177,20 @@ class InstallmentListItem extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                   ),
                   const SizedBox(width: 4),
-                  ElevatedButton(
-                    onPressed: () => _showAddPaymentSheet(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: context.colors.success,
-                      foregroundColor: context.colors.surface,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                      minimumSize: const Size(60, 32),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  if (installment.status != 'paid' && installment.status != 'paid_this_month')
+                    ElevatedButton(
+                      onPressed: () => _showAddPaymentSheet(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: context.colors.success,
+                        foregroundColor: context.colors.surface,
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                        minimumSize: const Size(60, 32),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
+                      child: const Text('Pay', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                     ),
-                    child: const Text('Pay', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                  ),
                 ],
               ),
             ],

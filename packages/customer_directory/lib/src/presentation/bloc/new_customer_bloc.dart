@@ -35,10 +35,12 @@ class NewCustomerBloc extends Bloc<NewCustomerEvent, NewCustomerState> {
   Future<void> _onSubmit(_Submit event, Emitter<NewCustomerState> emit) async {
     emit(const NewCustomerState.submitting());
     try {
-      final exists = await _repository.checkCustomerExistsByPhone(event.customer.number);
-      if (exists) {
-        emit(const NewCustomerState.failure("A customer with this phone number already exists. Please select them from the directory instead."));
-        return;
+      if (event.customer.number.isNotEmpty) {
+        final exists = await _repository.checkCustomerExistsByPhone(event.customer.number);
+        if (exists) {
+          emit(const NewCustomerState.failure("A customer with this phone number already exists. Please select them from the directory instead."));
+          return;
+        }
       }
 
       final docId = await _repository.createCustomer(event.customer);

@@ -56,7 +56,7 @@ class CustomerCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    customer.name,
+                    customer.number.isNotEmpty ? '${customer.name} - ${customer.number}' : customer.name,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

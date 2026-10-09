@@ -49,7 +49,7 @@ class CustomAppScaffold extends StatelessWidget {
         ),
         if (isLoading)
           Container(
-            color: Colors.black.withValues(alpha: 0.3),
+            color: Colors.black.withOpacity(0.3),
             child: Center(
               child: CircularProgressIndicator(color: colors.primary),
             ),

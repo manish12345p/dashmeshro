@@ -15,7 +15,7 @@ class UrgencySelectorWidget extends StatelessWidget {
       builder: (context, state) {
         return Card(
           elevation: 2,
-          shadowColor: context.colors.textSecondary.withValues(alpha: 0.08),
+          shadowColor: context.colors.textSecondary.withOpacity(0.08),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -30,7 +30,7 @@ class UrgencySelectorWidget extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: context.colors.error.withValues(alpha: 0.1),
+                        color: context.colors.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(

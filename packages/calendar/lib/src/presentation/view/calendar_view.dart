@@ -134,9 +134,7 @@ class _CalendarViewState extends State<CalendarView> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: context.colors.textSecondary.withValues(
-                                  alpha: 0.05,
-                                ),
+                                color: context.colors.textSecondary.withOpacity(0.05),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -197,9 +195,7 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: context.colors.textSecondary.withValues(
-                                alpha: 0.03,
-                              ),
+                              color: context.colors.textSecondary.withOpacity(0.03),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),

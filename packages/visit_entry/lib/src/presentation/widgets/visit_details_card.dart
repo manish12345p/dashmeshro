@@ -107,7 +107,7 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shadowColor: context.colors.textSecondary.withValues(alpha: 0.08),
+      shadowColor: context.colors.textSecondary.withOpacity(0.08),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: context.colors.surface,
       child: Padding(
@@ -140,7 +140,7 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                   Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: context.colors.primary.withValues(alpha: 0.1),
+                      color: context.colors.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
@@ -504,12 +504,8 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                 buildWhen: (prev, curr) =>
                     prev.serviceDuration != curr.serviceDuration,
                 builder: (context, state) {
-                  return DropdownButtonFormField<String>(
-                    value: state.serviceDuration.isEmpty
-                        ? null
-                        : state.serviceDuration,
-                    hint: const Text(AppStrings.selectDuration),
-                    items: _buildDurationItems(),
+                  return DurationDropdownWidget(
+                    value: state.serviceDuration,
                     onChanged: (val) {
                       if (val != null) {
                         context.read<VisitEntryBloc>().add(
@@ -517,6 +513,7 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                         );
                       }
                     },
+                    prefixIcon: Icons.timer_rounded,
                     decoration: _baseDecoration(
                       context: context,
                       prefixIcon: Icon(
@@ -525,12 +522,6 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                         size: 20,
                       ),
                     ),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.colors.textPrimary,
-                    ),
-                    dropdownColor: context.colors.surface,
-                    borderRadius: BorderRadius.circular(20),
                   );
                 },
               ),
@@ -542,12 +533,8 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                 buildWhen: (prev, curr) =>
                     prev.guaranteeDuration != curr.guaranteeDuration,
                 builder: (context, state) {
-                  return DropdownButtonFormField<String>(
-                    value: state.guaranteeDuration.isEmpty
-                        ? null
-                        : state.guaranteeDuration,
-                    hint: const Text(AppStrings.selectDuration),
-                    items: _buildDurationItems(),
+                  return DurationDropdownWidget(
+                    value: state.guaranteeDuration,
                     onChanged: (val) {
                       if (val != null) {
                         context.read<VisitEntryBloc>().add(
@@ -555,6 +542,7 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                         );
                       }
                     },
+                    prefixIcon: Icons.shield_rounded,
                     decoration: _baseDecoration(
                       context: context,
                       prefixIcon: Icon(
@@ -563,11 +551,6 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
                         size: 20,
                       ),
                     ),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.colors.textPrimary,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
                   );
                 },
               ),
@@ -578,13 +561,4 @@ class _ServiceDetailsCardState extends State<ServiceDetailsCard> {
     );
   }
 
-  List<DropdownMenuItem<String>> _buildDurationItems() {
-    final items = <DropdownMenuItem<String>>[];
-    // 1 to 8 months
-    for (int i = 1; i <= 8; i++) {
-      final label = i == 1 ? '1 Month' : '$i Months';
-      items.add(DropdownMenuItem(value: label, child: Text(label)));
-    }
-    return items;
-  }
 }

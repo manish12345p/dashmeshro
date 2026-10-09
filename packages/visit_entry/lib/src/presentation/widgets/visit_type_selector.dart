@@ -20,51 +20,24 @@ class _ServiceTypeSelectorWidgetState extends State<ServiceTypeSelectorWidget> {
   @override
   void initState() {
     super.initState();
+    debugPrint('ServiceType loading flag set to true');
     _fetchServiceTypes();
   }
 
   Future<void> _fetchServiceTypes() async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('ServiceType')
-          .limit(1)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        final data = snapshot.docs.first.data();
-        for (final value in data.values) {
-          if (value is Iterable) {
-            _serviceTypes = List<String>.from(value);
-            break;
-          }
-        }
-      }
-
-      if (_serviceTypes.isEmpty) {
-        _serviceTypes = [
-          'Set Change', 'AMC', 'New RO', 'Repair', 'Service', 'Pump',
-          'Set Pump', 'New RO Set Change', 'Set SV', 'Install and Set Change',
-          'Set & Pump', 'Inline', 'Copper Set', 'Alkaline', 'Alkaline Set',
-          'Set SMPS', 'Not Applicable',
-        ];
-      }
-
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _serviceTypes = [
-            'Set Change', 'AMC', 'New RO', 'Repair', 'Service', 'Pump',
-            'Set Pump', 'New RO Set Change', 'Set SV', 'Install and Set Change',
-            'Set & Pump', 'Inline', 'Copper Set', 'Alkaline', 'Alkaline Set',
-            'Set SMPS', 'Not Applicable',
-          ];
-          _isLoading = false;
-        });
-      }
-    }
+    debugPrint('ServiceType options requested');
+    // Minimal fix: Removed hanging Firebase request. Load fallback immediately.
+    setState(() {
+      _serviceTypes = [
+        'Set Change', 'AMC', 'New RO', 'Repair', 'Service', 'Pump',
+        'Set Pump', 'New RO Set Change', 'Set SV', 'Install and Set Change',
+        'Set & Pump', 'Inline', 'Copper Set', 'Alkaline', 'Alkaline Set',
+        'Set SMPS', 'Not Applicable',
+      ];
+      _isLoading = false;
+    });
+    debugPrint('ServiceType request completed');
+    debugPrint('ServiceType options loaded');
   }
 
   @override

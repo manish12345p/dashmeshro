@@ -112,7 +112,7 @@ class CustomerSelectorWidget extends StatelessWidget {
                 if (name != null && name.trim().isNotEmpty) {
                   return name;
                 }
-                return option['number'] as String? ?? 'Unknown Customer';
+                return option['phone'] as String? ?? option['number'] as String? ?? 'Unknown Customer';
               },
               onSelected: (Map<String, dynamic> selection) {
                 final remainingAmc = selection['remainingAmcVisits'] ?? selection['remaining_amc_visits'] ?? 0;
@@ -120,7 +120,7 @@ class CustomerSelectorWidget extends StatelessWidget {
                 final name = selection['name'] as String?;
                 final displayName = (name != null && name.trim().isNotEmpty) 
                                       ? name 
-                                      : (selection['number'] as String? ?? 'Unknown Customer');
+                                      : (selection['phone'] as String? ?? selection['number'] as String? ?? 'Unknown Customer');
 
                 context.read<VisitEntryBloc>().add(
                   SelectCustomer(
@@ -149,14 +149,14 @@ class CustomerSelectorWidget extends StatelessWidget {
                           final option = options.elementAt(index);
                           return ListTile(
                             title: Text(
-                              option['name'] ?? 'Unknown',
+                              '${option['name'] ?? 'Unknown'}${((option['phone'] ?? option['number'])?.toString().isNotEmpty == true) ? ' - ${option['phone'] ?? option['number']}' : ''}',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
                               ),
                             ),
                             subtitle: Text(
-                              '${option['number'] ?? 'No Phone'} • ${option['address'] ?? option['locality'] ?? 'No Address'}',
+                              '${option['phone'] ?? option['number'] ?? 'No Phone'} • ${option['address'] ?? option['locality'] ?? 'No Address'}',
                               style: TextStyle(
                                 color: context.colors.textSecondary,
                                 fontSize: 12,

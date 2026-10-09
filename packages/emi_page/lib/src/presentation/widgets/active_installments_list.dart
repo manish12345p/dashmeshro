@@ -37,9 +37,7 @@ class ActiveInstallmentsList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: context.colors.textSecondary.withValues(
-                        alpha: 0.02,
-                      ),
+                      color: context.colors.textSecondary.withOpacity(0.02),
                       blurRadius: 5,
                       offset: const Offset(0, 2),
                     ),
@@ -111,7 +109,7 @@ class ActiveInstallmentsList extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: context.colors.textSecondary.withValues(alpha: 0.05),
+                    color: context.colors.textSecondary.withOpacity(0.05),
                     blurRadius: 4,
                   ),
                 ]

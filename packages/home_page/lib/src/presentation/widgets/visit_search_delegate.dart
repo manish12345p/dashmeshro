@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class VisitSearchDelegate extends SearchDelegate<String?> {
-  // Cache: customerId -> list of service data maps
-  Map<String, List<Map<String, dynamic>>>? _servicesCache;
+  // Cache the future so we only fetch from Supabase once per search session
+  Future<List<Map<String, dynamic>>>? _customersFuture;
 
   VisitSearchDelegate();
 
@@ -43,51 +43,40 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
   }
 
   Widget _buildList() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Customer').snapshots(),
+    _customersFuture ??= _fetchCustomersWithServices();
+
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _customersFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final docs = snapshot.data!.docs;
+        final docs = snapshot.data!;
 
         if (query.isEmpty) {
           // Show all customers when no query
           return _buildCustomerList(context, docs);
         }
 
-        // For search with services, we need FutureBuilder
-        return FutureBuilder<List<DocumentSnapshot>>(
-          future: _filterWithServices(docs),
-          builder: (context, asyncSnap) {
-            if (!asyncSnap.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            return _buildCustomerList(context, asyncSnap.data!);
-          },
-        );
+        return _buildCustomerList(context, _filterWithServices(docs));
       },
     );
   }
 
-  Future<List<DocumentSnapshot>> _filterWithServices(
-    List<QueryDocumentSnapshot> docs,
-  ) async {
-    // Build services cache if not exists
-    if (_servicesCache == null) {
-      _servicesCache = {};
-      for (var doc in docs) {
-        final servicesSnap = await doc.reference.collection('services').get();
-        _servicesCache![doc.id] = servicesSnap.docs
-            .map((s) => s.data())
-            .toList();
-      }
-    }
+  Future<List<Map<String, dynamic>>> _fetchCustomersWithServices() async {
+    final response = await Supabase.instance.client
+        .from('customers')
+        .select('*, services(*)');
+    return List<Map<String, dynamic>>.from(response as List);
+  }
 
+  List<Map<String, dynamic>> _filterWithServices(
+    List<Map<String, dynamic>> docs,
+  ) {
     final q = query.toLowerCase();
     return docs.where((doc) {
-      final data = doc.data() as Map<String, dynamic>? ?? {};
+      final data = doc;
 
       // Search customer-level fields: name, address, phone, ro_type
       final name = (data['name'] as String? ?? '').toLowerCase();
@@ -106,8 +95,9 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
       }
 
       // Search service-level fields (except amount, duration, equipment)
-      final services = _servicesCache?[doc.id] ?? [];
-      for (var svc in services) {
+      final services = (data['services'] as List<dynamic>? ?? []);
+      for (var svcDyn in services) {
+        final svc = svcDyn as Map<String, dynamic>;
         final serviceType =
             (svc['serviceType'] as String? ??
                     svc['service_type'] as String? ??
@@ -138,7 +128,7 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
 
   Widget _buildCustomerList(
     BuildContext context,
-    List<DocumentSnapshot> filtered,
+    List<Map<String, dynamic>> filtered,
   ) {
     if (filtered.isEmpty) {
       return Center(
@@ -161,7 +151,7 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
       itemCount: filtered.length,
       itemBuilder: (context, index) {
         final doc = filtered[index];
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc;
         final name = data['name'] as String? ?? 'Unknown';
         final phone =
             data['number'] as String? ?? data['phone'] as String? ?? 'N/A';
@@ -178,7 +168,7 @@ class VisitSearchDelegate extends SearchDelegate<String?> {
           color: Colors.white,
           child: ListTile(
             onTap: () {
-              context.push('/customers/${doc.id}');
+              context.push('/customers/${data['id']}');
             },
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,

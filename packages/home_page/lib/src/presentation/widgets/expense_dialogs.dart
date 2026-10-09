@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:core_ui/core_ui.dart';
 import '../../data/remote/note_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ADD NOTE DIALOG (shown from FAB)
 // ─────────────────────────────────────────────────────────────────────────────
 
 class AddNoteDialog extends StatefulWidget {
-  const AddNoteDialog({super.key});
+  final NoteModel? noteToEdit;
+  const AddNoteDialog({super.key, this.noteToEdit});
 
-  static Future<void> show(BuildContext context) async {
+  static Future<void> show(BuildContext context, {NoteModel? note}) async {
     await showDialog(
       context: context,
-      builder: (_) => const AddNoteDialog(),
+      builder: (_) => AddNoteDialog(noteToEdit: note),
     );
   }
 
@@ -29,6 +31,19 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
   final _noteController = TextEditingController();
   final _priceController = TextEditingController();
   bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.noteToEdit != null) {
+      final note = widget.noteToEdit!;
+      _nameController.text = note.name == 'not provided' ? '' : note.name;
+      _phoneController.text = note.phone == 'not provided' ? '' : note.phone;
+      _addressController.text = note.address == 'not provided' ? '' : note.address;
+      _noteController.text = note.note == 'not provided' ? '' : note.note;
+      _priceController.text = note.price != null && note.price! > 0 ? note.price!.toStringAsFixed(0) : '';
+    }
+  }
 
   @override
   void dispose() {
@@ -63,7 +78,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      AppStrings.addNote,
+                      widget.noteToEdit != null ? 'Edit Estimate' : AppStrings.addNote,
                       style: TextStyle(
                         color: context.colors.textPrimary,
                         fontSize: 20,
@@ -102,9 +117,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
                         hint: AppStrings.nameHint,
                         icon: Icons.person_rounded,
                         capitalization: TextCapitalization.words,
-                        validator: (v) => (v == null || v.trim().isEmpty)
-                            ? AppStrings.errorRequired
-                            : null,
+                        validator: null,
                       ),
                       const SizedBox(height: 20),
                       _buildField(
@@ -118,15 +131,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
                           FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(10),
                         ],
-                        validator: (v) {
-                          if (v == null || v.trim().isEmpty) {
-                            return AppStrings.errorRequired;
-                          }
-                          if (v.trim().length < 10) {
-                            return AppStrings.errorPhoneLength;
-                          }
-                          return null;
-                        },
+                        validator: null,
                       ),
                       const SizedBox(height: 20),
                       _buildField(
@@ -136,9 +141,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
                         hint: AppStrings.addressHint,
                         icon: Icons.location_on_rounded,
                         maxLines: 2,
-                        validator: (v) => (v == null || v.trim().isEmpty)
-                            ? AppStrings.errorRequired
-                            : null,
+                        validator: null,
                       ),
                       const SizedBox(height: 20),
                       _buildField(
@@ -148,9 +151,7 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
                         hint: AppStrings.noteHint,
                         icon: Icons.notes_rounded,
                         maxLines: 3,
-                        validator: (v) => (v == null || v.trim().isEmpty)
-                            ? AppStrings.errorRequired
-                            : null,
+                        validator: null,
                       ),
                       const SizedBox(height: 20),
                       _buildField(
@@ -293,30 +294,49 @@ class _AddNoteDialogState extends State<AddNoteDialog> {
   }
 
   Future<void> _save() async {
+    // Form validation is no longer required since fields are optional
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     setState(() => _saving = true);
 
     final priceText = _priceController.text.trim();
-    final price =
-        priceText.isEmpty ? null : double.tryParse(priceText);
+    final price = priceText.isEmpty ? 0.0 : double.tryParse(priceText) ?? 0.0;
 
-    final note = NoteModel(
-      name: _nameController.text.trim(),
-      phone: _phoneController.text.trim(),
-      address: _addressController.text.trim(),
-      note: _noteController.text.trim(),
-      price: price,
-      createdAt: DateTime.now(),
-    );
+    final nameText = _nameController.text.trim();
+    final phoneText = _phoneController.text.trim();
+    final addressText = _addressController.text.trim();
+    final noteText = _noteController.text.trim();
 
-    await NoteFirestore.addNote(note);
+    try {
+      final data = {
+        'name': nameText.isEmpty ? 'not provided' : nameText,
+        'phone': phoneText.isEmpty ? 'not provided' : phoneText,
+        'address': addressText.isEmpty ? 'not provided' : addressText,
+        'note': noteText.isEmpty ? 'not provided' : noteText,
+        'price': price,
+        'created_at': widget.noteToEdit != null ? widget.noteToEdit!.createdAt.toIso8601String() : DateTime.now().toIso8601String(),
+      };
 
-    if (mounted) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.successNoteSaved)),
-      );
+      if (widget.noteToEdit != null && widget.noteToEdit!.id != null) {
+        await Supabase.instance.client.from('estimates').update(data).eq('id', widget.noteToEdit!.id!);
+      } else {
+        await Supabase.instance.client.from('estimates').insert(data);
+      }
+
+      if (mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(AppStrings.successNoteSaved)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving estimate: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
   }
 }
@@ -586,7 +606,7 @@ class _NoteCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
-                      color: primary.withValues(alpha: 0.1),
+                      color: primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(

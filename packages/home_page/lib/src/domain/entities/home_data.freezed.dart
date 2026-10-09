@@ -1812,6 +1812,7 @@ mixin _$PendingServiceItem {
   String get status => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
   bool get isComplaint => throw _privateConstructorUsedError;
+  double get amountPending => throw _privateConstructorUsedError;
 
   /// Serializes this PendingServiceItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1841,6 +1842,7 @@ abstract class $PendingServiceItemCopyWith<$Res> {
     String status,
     String note,
     bool isComplaint,
+    double amountPending,
   });
 }
 
@@ -1869,6 +1871,7 @@ class _$PendingServiceItemCopyWithImpl<$Res, $Val extends PendingServiceItem>
     Object? status = null,
     Object? note = null,
     Object? isComplaint = null,
+    Object? amountPending = null,
   }) {
     return _then(
       _value.copyWith(
@@ -1912,6 +1915,10 @@ class _$PendingServiceItemCopyWithImpl<$Res, $Val extends PendingServiceItem>
                 ? _value.isComplaint
                 : isComplaint // ignore: cast_nullable_to_non_nullable
                       as bool,
+            amountPending: null == amountPending
+                ? _value.amountPending
+                : amountPending // ignore: cast_nullable_to_non_nullable
+                      as double,
           )
           as $Val,
     );
@@ -1938,6 +1945,7 @@ abstract class _$$PendingServiceItemImplCopyWith<$Res>
     String status,
     String note,
     bool isComplaint,
+    double amountPending,
   });
 }
 
@@ -1965,6 +1973,7 @@ class __$$PendingServiceItemImplCopyWithImpl<$Res>
     Object? status = null,
     Object? note = null,
     Object? isComplaint = null,
+    Object? amountPending = null,
   }) {
     return _then(
       _$PendingServiceItemImpl(
@@ -2008,6 +2017,10 @@ class __$$PendingServiceItemImplCopyWithImpl<$Res>
             ? _value.isComplaint
             : isComplaint // ignore: cast_nullable_to_non_nullable
                   as bool,
+        amountPending: null == amountPending
+            ? _value.amountPending
+            : amountPending // ignore: cast_nullable_to_non_nullable
+                  as double,
       ),
     );
   }
@@ -2027,6 +2040,7 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
     this.status = '',
     this.note = '',
     this.isComplaint = false,
+    this.amountPending = 0.0,
   }) : super._();
 
   factory _$PendingServiceItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -2062,10 +2076,13 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
   @override
   @JsonKey()
   final bool isComplaint;
+  @override
+  @JsonKey()
+  final double amountPending;
 
   @override
   String toString() {
-    return 'PendingServiceItem(id: $id, customerId: $customerId, customerName: $customerName, phone: $phone, address: $address, serviceType: $serviceType, serviceDate: $serviceDate, status: $status, note: $note, isComplaint: $isComplaint)';
+    return 'PendingServiceItem(id: $id, customerId: $customerId, customerName: $customerName, phone: $phone, address: $address, serviceType: $serviceType, serviceDate: $serviceDate, status: $status, note: $note, isComplaint: $isComplaint, amountPending: $amountPending)';
   }
 
   @override
@@ -2087,7 +2104,9 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.note, note) || other.note == note) &&
             (identical(other.isComplaint, isComplaint) ||
-                other.isComplaint == isComplaint));
+                other.isComplaint == isComplaint) &&
+            (identical(other.amountPending, amountPending) ||
+                other.amountPending == amountPending));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2104,6 +2123,7 @@ class _$PendingServiceItemImpl extends _PendingServiceItem {
     status,
     note,
     isComplaint,
+    amountPending,
   );
 
   /// Create a copy of PendingServiceItem
@@ -2135,6 +2155,7 @@ abstract class _PendingServiceItem extends PendingServiceItem {
     final String status,
     final String note,
     final bool isComplaint,
+    final double amountPending,
   }) = _$PendingServiceItemImpl;
   const _PendingServiceItem._() : super._();
 
@@ -2161,6 +2182,8 @@ abstract class _PendingServiceItem extends PendingServiceItem {
   String get note;
   @override
   bool get isComplaint;
+  @override
+  double get amountPending;
 
   /// Create a copy of PendingServiceItem
   /// with the given fields replaced by the non-null parameter values.

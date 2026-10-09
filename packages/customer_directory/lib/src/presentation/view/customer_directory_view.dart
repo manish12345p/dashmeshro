@@ -131,9 +131,7 @@ class _CustomerDirectoryContentState extends State<_CustomerDirectoryContent> {
                             borderRadius: BorderRadius.circular(14),
                             boxShadow: [
                               BoxShadow(
-                                color: context.colors.primaryDark.withValues(
-                                  alpha: 0.35,
-                                ),
+                                color: context.colors.primaryDark.withOpacity(0.35),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
